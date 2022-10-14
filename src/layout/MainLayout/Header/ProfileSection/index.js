@@ -32,7 +32,6 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
-import UpgradePlanCard from './UpgradePlanCard';
 import User1 from 'assets/images/users/user-round.svg';
 
 // assets
@@ -202,7 +201,7 @@ const ProfileSection = () => {
                                             >
                                                 <ListItemButton
                                                     selected={selectedIndex === 0}
-                                                    onClick={(event) => handleListItemClick(event, 0, '/user/account-profile/profile1')}
+                                                    onClick={(event) => handleListItemClick(event, 0, '/profile')}
                                                 >
                                                     <ListItemIcon>
                                                         <IconSettings stroke={1.5} size="1.3rem" />
@@ -210,7 +209,7 @@ const ProfileSection = () => {
                                                     <ListItemText primary={<Typography variant="body2">Cài đặt tài khoản</Typography>} />
                                                 </ListItemButton>
 
-                                                <ListItemButton selected={selectedIndex === 4} onClick={handleLogout}>
+                                                <ListItemButton selected={selectedIndex === 1} onClick={handleLogout}>
                                                     <ListItemIcon>
                                                         <IconLogout stroke={1.5} size="1.3rem" />
                                                     </ListItemIcon>

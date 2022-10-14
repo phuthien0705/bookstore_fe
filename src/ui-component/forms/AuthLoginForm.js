@@ -76,7 +76,7 @@ const AuthLoginForm = ({ ...others }) => {
                             <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
                                 <img src={Google} alt="google" width={16} height={16} style={{ marginRight: matchDownSM ? 8 : 16 }} />
                             </Box>
-                            Sign in with Google
+                            Đăng nhập với google
                         </Button>
                     </AnimateButton>
                 </Grid>
@@ -104,7 +104,7 @@ const AuthLoginForm = ({ ...others }) => {
                             disableRipple
                             disabled
                         >
-                            OR
+                            Hoặc
                         </Button>
 
                         <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
@@ -112,7 +112,7 @@ const AuthLoginForm = ({ ...others }) => {
                 </Grid>
                 <Grid item xs={12} container alignItems="center" justifyContent="center">
                     <Box sx={{ mb: 2 }}>
-                        <Typography variant="subtitle1">Sign in with Email address</Typography>
+                        <Typography variant="subtitle1">Đăng nhập bằng Email</Typography>
                     </Box>
                 </Grid>
             </Grid>
@@ -146,7 +146,7 @@ const AuthLoginForm = ({ ...others }) => {
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit} {...others}>
                         <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-                            <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
+                            <InputLabel htmlFor="outlined-adornment-email-login">Email</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-email-login"
                                 type="email"
@@ -154,7 +154,7 @@ const AuthLoginForm = ({ ...others }) => {
                                 name="email"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                label="Email Address / Username"
+                                label="Email"
                                 inputProps={{}}
                             />
                             {touched.email && errors.email && (
@@ -169,7 +169,7 @@ const AuthLoginForm = ({ ...others }) => {
                             error={Boolean(touched.password && errors.password)}
                             sx={{ ...theme.typography.customInput }}
                         >
-                            <InputLabel htmlFor="outlined-adornment-password-login">Password</InputLabel>
+                            <InputLabel htmlFor="outlined-adornment-password-login">Mật khẩu</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-password-login"
                                 type={showPassword ? 'text' : 'password'}
@@ -190,7 +190,7 @@ const AuthLoginForm = ({ ...others }) => {
                                         </IconButton>
                                     </InputAdornment>
                                 }
-                                label="Password"
+                                label="Mật khẩu"
                                 inputProps={{}}
                             />
                             {touched.password && errors.password && (
@@ -209,10 +209,10 @@ const AuthLoginForm = ({ ...others }) => {
                                         color="primary"
                                     />
                                 }
-                                label="Remember me"
+                                label="Ghi nhớ đăng nhập"
                             />
                             <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
-                                Forgot Password?
+                                Quên mật khẩu
                             </Typography>
                         </Stack>
                         {errors.submit && (
@@ -232,7 +232,7 @@ const AuthLoginForm = ({ ...others }) => {
                                     variant="contained"
                                     color="secondary"
                                 >
-                                    Sign in
+                                    Đăng nhập
                                 </Button>
                             </AnimateButton>
                         </Box>

@@ -89,7 +89,7 @@ const AuthRegisterForm = ({ ...others }) => {
                             <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
                                 <img src={Google} alt="google" width={16} height={16} style={{ marginRight: matchDownSM ? 8 : 16 }} />
                             </Box>
-                            Sign up with Google
+                            Đăng ký với Google
                         </Button>
                     </AnimateButton>
                 </Grid>
@@ -111,27 +111,29 @@ const AuthRegisterForm = ({ ...others }) => {
                             disableRipple
                             disabled
                         >
-                            OR
+                            Hoặc
                         </Button>
                         <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
                     </Box>
                 </Grid>
                 <Grid item xs={12} container alignItems="center" justifyContent="center">
                     <Box sx={{ mb: 2 }}>
-                        <Typography variant="subtitle1">Sign up with Email address</Typography>
+                        <Typography variant="subtitle1">Đăng ký bằng Email</Typography>
                     </Box>
                 </Grid>
             </Grid>
 
             <Formik
                 initialValues={{
+                    fullName: '',
                     email: '',
                     password: '',
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
-                    email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                    password: Yup.string().max(255).required('Password is required')
+                    email: Yup.string().email('Must be a valid email').max(255).required('Email là bắt buộc'),
+                    password: Yup.string().max(255).required('Mật khẩu là bắt buộc'),
+                    fullName: Yup.string().max(255).required('Họ và tên là bắt buộc')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
@@ -151,32 +153,29 @@ const AuthRegisterForm = ({ ...others }) => {
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit} {...others}>
-                        <Grid container spacing={matchDownSM ? 0 : 2}>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    fullWidth
-                                    label="First Name"
-                                    margin="normal"
-                                    name="fname"
-                                    type="text"
-                                    defaultValue=""
-                                    sx={{ ...theme.typography.customInput }}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    fullWidth
-                                    label="Last Name"
-                                    margin="normal"
-                                    name="lname"
-                                    type="text"
-                                    defaultValue=""
-                                    sx={{ ...theme.typography.customInput }}
-                                />
-                            </Grid>
-                        </Grid>
+                        <FormControl
+                            fullWidth
+                            error={Boolean(touched.fullName && errors.fullName)}
+                            sx={{ ...theme.typography.customInput }}
+                        >
+                            <InputLabel htmlFor="outlined-adornment-email-register">Họ và Tên</InputLabel>
+                            <OutlinedInput
+                                id="outlined-adornment-email-register"
+                                type="text"
+                                value={values.fullName}
+                                name="fullName"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                inputProps={{}}
+                            />
+                            {touched.fullName && errors.fullName && (
+                                <FormHelperText error id="standard-weight-helper-text--register">
+                                    {errors.fullName}
+                                </FormHelperText>
+                            )}
+                        </FormControl>
                         <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-                            <InputLabel htmlFor="outlined-adornment-email-register">Email Address / Username</InputLabel>
+                            <InputLabel htmlFor="outlined-adornment-email-register">Email</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-email-register"
                                 type="email"
@@ -198,7 +197,7 @@ const AuthRegisterForm = ({ ...others }) => {
                             error={Boolean(touched.password && errors.password)}
                             sx={{ ...theme.typography.customInput }}
                         >
-                            <InputLabel htmlFor="outlined-adornment-password-register">Password</InputLabel>
+                            <InputLabel htmlFor="outlined-adornment-password-register">Mật khẩu</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-password-register"
                                 type={showPassword ? 'text' : 'password'}
@@ -252,7 +251,7 @@ const AuthRegisterForm = ({ ...others }) => {
                             </FormControl>
                         )}
 
-                        <Grid container alignItems="center" justifyContent="space-between">
+                        <Grid container alignItems="start" justifyContent="space-between">
                             <Grid item>
                                 <FormControlLabel
                                     control={
@@ -265,9 +264,9 @@ const AuthRegisterForm = ({ ...others }) => {
                                     }
                                     label={
                                         <Typography variant="subtitle1">
-                                            Agree with &nbsp;
+                                            Tôi đồng ý với &nbsp;
                                             <Typography variant="subtitle1" component={Link} to="#">
-                                                Terms & Condition.
+                                                Điều khoản dịch vụ & Chính sách bảo mật
                                             </Typography>
                                         </Typography>
                                     }
@@ -291,7 +290,7 @@ const AuthRegisterForm = ({ ...others }) => {
                                     variant="contained"
                                     color="secondary"
                                 >
-                                    Sign up
+                                    Đăng ký
                                 </Button>
                             </AnimateButton>
                         </Box>

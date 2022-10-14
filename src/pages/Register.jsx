@@ -43,7 +43,7 @@ const RegisterPage = () => {
                                                         fontSize="16px"
                                                         textAlign={matchDownSM ? 'center' : 'inherit'}
                                                     >
-                                                        Enter your credentials to continue
+                                                        Nhập thông tin đăng nhập để tiếp tục
                                                     </Typography>
                                                 </Stack>
                                             </Grid>
@@ -57,13 +57,8 @@ const RegisterPage = () => {
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Grid item container direction="column" alignItems="center" xs={12}>
-                                            <Typography
-                                                component={Link}
-                                                to="/pages/login/login3"
-                                                variant="subtitle1"
-                                                sx={{ textDecoration: 'none' }}
-                                            >
-                                                Already have an account?
+                                            <Typography component={Link} to="/login" variant="subtitle1" sx={{ textDecoration: 'none' }}>
+                                                Bạn đã có tài khoản rồi? Đi đến đăng nhập.
                                             </Typography>
                                         </Grid>
                                     </Grid>

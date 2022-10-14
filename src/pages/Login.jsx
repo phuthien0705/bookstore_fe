@@ -37,14 +37,14 @@ const LoginPage = () => {
                                                         gutterBottom
                                                         variant={matchDownSM ? 'h3' : 'h2'}
                                                     >
-                                                        Hi, Welcome Back
+                                                        Đăng nhập
                                                     </Typography>
                                                     <Typography
                                                         variant="caption"
                                                         fontSize="16px"
                                                         textAlign={matchDownSM ? 'center' : 'inherit'}
                                                     >
-                                                        Enter your credentials to continue
+                                                        Nhập thông tin đăng nhập để tiếp tục
                                                     </Typography>
                                                 </Stack>
                                             </Grid>
@@ -58,13 +58,8 @@ const LoginPage = () => {
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Grid item container direction="column" alignItems="center" xs={12}>
-                                            <Typography
-                                                component={Link}
-                                                to="/pages/register/register3"
-                                                variant="subtitle1"
-                                                sx={{ textDecoration: 'none' }}
-                                            >
-                                                Don&apos;t have an account?
+                                            <Typography component={Link} to="/register" variant="subtitle1" sx={{ textDecoration: 'none' }}>
+                                                Bạn chưa có tài khoản? Đi đến đăng ký.
                                             </Typography>
                                         </Grid>
                                     </Grid>

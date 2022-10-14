@@ -49,36 +49,6 @@ const CardStyle = styled(Card)(({ theme }) => ({
     }
 }));
 
-// ==============================|| PROGRESS BAR WITH LABEL ||============================== //
-
-function LinearProgressWithLabel({ value, ...others }) {
-    const theme = useTheme();
-
-    return (
-        <Grid container direction="column" spacing={1} sx={{ mt: 1.5 }}>
-            <Grid item>
-                <Grid container justifyContent="space-between">
-                    <Grid item>
-                        <Typography variant="h6" sx={{ color: theme.palette.primary[800] }}>
-                            Progress
-                        </Typography>
-                    </Grid>
-                    <Grid item>
-                        <Typography variant="h6" color="inherit">{`${Math.round(value)}%`}</Typography>
-                    </Grid>
-                </Grid>
-            </Grid>
-            <Grid item>
-                <BorderLinearProgress variant="determinate" value={value} {...others} />
-            </Grid>
-        </Grid>
-    );
-}
-
-LinearProgressWithLabel.propTypes = {
-    value: PropTypes.number
-};
-
 // ==============================|| SIDEBAR MENU Card ||============================== //
 
 const MenuCard = () => {
@@ -116,7 +86,6 @@ const MenuCard = () => {
                         />
                     </ListItem>
                 </List>
-                <LinearProgressWithLabel value={80} />
             </CardContent>
         </CardStyle>
     );
