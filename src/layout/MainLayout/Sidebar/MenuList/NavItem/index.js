@@ -1,67 +1,30 @@
 import PropTypes from 'prop-types';
-import { forwardRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import config from 'config';
-
-import { menuOpen, setMenu } from 'store/sidebarSlice';
-
-// ==============================|| SIDEBAR MENU LIST ITEMS ||============================== //
+import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { setMenu } from 'store/sidebarReducer';
 
 const NavItem = ({ item, level }) => {
-    const theme = useTheme();
+    const navigate = useNavigate();
+    const location = useLocation();
     const dispatch = useDispatch();
-    const customization = useSelector((state) => state.sidebar);
+    const theme = useTheme();
     const matchesSM = useMediaQuery(theme.breakpoints.down('lg'));
 
     const Icon = item.icon;
-    const itemIcon = item?.icon ? (
-        <Icon stroke={1.5} size="1.3rem" />
-    ) : (
-        <FiberManualRecordIcon
-            sx={{
-                width: customization.isOpen.findIndex((id) => id === item?.id) > -1 ? 8 : 6,
-                height: customization.isOpen.findIndex((id) => id === item?.id) > -1 ? 8 : 6
-            }}
-            fontSize={level > 0 ? 'inherit' : 'medium'}
-        />
-    );
+    const itemIcon = item?.icon && <Icon stroke={1.5} size="1.3rem" />;
 
-    let itemTarget = '_self';
-    if (item.target) {
-        itemTarget = '_blank';
-    }
-
-    let listItemProps = {
-        component: forwardRef((props, ref) => <Link ref={ref} {...props} to={item.url} target={itemTarget} />)
-    };
-    if (item?.external) {
-        listItemProps = { component: 'a', href: item.url, target: itemTarget };
-    }
-
-    const itemHandler = (id) => {
-        dispatch(menuOpen(id));
+    const handleClickMenuItem = (url) => {
+        navigate(url);
         if (matchesSM) dispatch(setMenu(false));
     };
 
-    // active menu item on page load
-    useEffect(() => {
-        const currentIndex = document.location.pathname
-            .toString()
-            .split('/')
-            .findIndex((id) => id === item.id);
-        if (currentIndex > -1) {
-            dispatch(menuOpen(id));
-        }
-        // eslint-disable-next-line
-    }, []);
-
     return (
         <ListItemButton
-            {...listItemProps}
             disabled={item.disabled}
             sx={{
                 borderRadius: `${config.borderRadius}px`,
@@ -71,13 +34,13 @@ const NavItem = ({ item, level }) => {
                 py: level > 1 ? 1 : 1.25,
                 pl: `${level * 24}px`
             }}
-            selected={customization.isOpen.findIndex((id) => id === item.id) > -1}
-            onClick={() => itemHandler(item.id)}
+            selected={location.pathname == item.url}
+            onClick={() => handleClickMenuItem(item.url)}
         >
             <ListItemIcon sx={{ my: 'auto', minWidth: !item?.icon ? 18 : 36 }}>{itemIcon}</ListItemIcon>
             <ListItemText
                 primary={
-                    <Typography variant={customization.isOpen.findIndex((id) => id === item.id) > -1 ? 'h5' : 'body1'} color="inherit">
+                    <Typography variant={'h5'} color="inherit">
                         {item.title}
                     </Typography>
                 }

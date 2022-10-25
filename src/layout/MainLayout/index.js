@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
 import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material';
-import Breadcrumbs from 'ui-component/extended/Breadcrumbs';
+import Breadcrumbs from 'components/extended/Breadcrumbs';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import navigation from 'menu-items';
 import { drawerWidth } from 'store/constant';
 import { IconChevronRight } from '@tabler/icons';
-import { setMenu, toggleSidebar } from 'store/sidebarSlice';
+import { setMenu, toggleSidebar } from 'store/sidebarReducer';
 
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({

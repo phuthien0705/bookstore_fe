@@ -1,27 +1,35 @@
 // material-ui
-import { Typography } from '@mui/material';
+import { Typography, List, Divider } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import NavItem from './NavItem';
+import { IconDashboard } from '@tabler/icons';
 
-// project imports
-import NavGroup from './NavGroup';
-import menuItem from 'menu-items';
-
-// ==============================|| SIDEBAR MENU LIST ||============================== //
+const icons = { IconDashboard };
 
 const MenuList = () => {
-    const navItems = menuItem.items.map((item) => {
-        switch (item.type) {
-            case 'group':
-                return <NavGroup key={item.id} item={item} />;
-            default:
-                return (
-                    <Typography key={item.id} variant="h6" color="error" align="center">
-                        Menu Items Error
-                    </Typography>
-                );
+    const listItem = [
+        {
+            title: 'Tất cả sản phẩm',
+            url: '/product',
+            icon: icons.IconDashboard
         }
-    });
+    ];
+    const theme = useTheme();
 
-    return <>{navItems}</>;
+    return (
+        <>
+            <List
+                subheader={
+                    <Typography variant="caption" sx={{ ...theme.typography.menuCaption }} display="block" gutterBottom>
+                        Doanh mục
+                    </Typography>
+                }
+            >
+                <NavItem item={listItem[0]} level={1} />
+            </List>
+            <Divider sx={{ mt: 0.25, mb: 1.25 }} />
+        </>
+    );
 };
 
 export default MenuList;

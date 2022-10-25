@@ -12,6 +12,10 @@ import 'assets/scss/style.scss';
 import config from './config';
 import { store } from 'store';
 
+import initRequest from 'services/initRequest';
+
+initRequest();
+
 const container = document.getElementById('root');
 const root = createRoot(container);
 root.render(

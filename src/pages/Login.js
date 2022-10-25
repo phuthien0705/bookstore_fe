@@ -1,11 +1,11 @@
 import { useTheme } from '@mui/material/styles';
 import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
-import AuthWrapper from 'ui-component/auth/AuthWrapper';
-import AuthLoginForm from 'ui-component/forms/AuthLoginForm';
-import AuthCardWrapper from 'ui-component/auth/AuthCardWrapper';
-import Logo from 'ui-component/Logo';
+import AuthWrapper from 'components/auth/AuthWrapper';
+import AuthLoginForm from 'components/forms/AuthLoginForm';
+import AuthCardWrapper from 'components/auth/AuthCardWrapper';
+import Logo from 'components/Logo';
 import { Link } from 'react-router-dom';
-import AuthFooter from 'ui-component/cards/AuthFooter';
+import AuthFooter from 'components/cards/AuthFooter';
 
 const LoginPage = () => {
     const theme = useTheme();

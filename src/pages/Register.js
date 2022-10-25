@@ -1,11 +1,11 @@
 import { useTheme } from '@mui/material/styles';
 import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
-import AuthWrapper from 'ui-component/auth/AuthWrapper';
-import AuthCardWrapper from 'ui-component/auth/AuthCardWrapper';
-import Logo from 'ui-component/Logo';
+import AuthWrapper from 'components/auth/AuthWrapper';
+import AuthCardWrapper from 'components/auth/AuthCardWrapper';
+import Logo from 'components/Logo';
 import { Link } from 'react-router-dom';
-import AuthFooter from 'ui-component/cards/AuthFooter';
-import AuthRegisterForm from 'ui-component/forms/AuthRegisterForm';
+import AuthFooter from 'components/cards/AuthFooter';
+import AuthRegisterForm from 'components/forms/AuthRegisterForm';
 const RegisterPage = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));

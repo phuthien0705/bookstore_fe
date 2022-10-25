@@ -2,37 +2,20 @@ import { lazy } from 'react';
 
 // project imports
 import MainLayout from 'layout/MainLayout';
-import Loadable from 'ui-component/Loadable';
+import Loadable from 'components/Loadable';
+import ProductLayout from 'layout/ProductLayot';
 
-// dashboard routing
-const DashboardDefault = Loadable(lazy(() => import('pages/Dashboard')));
-
-// sample page routing
-const SamplePage = Loadable(lazy(() => import('pages/SamplePage')));
+const HomePage = Loadable(lazy(() => import('pages/Home')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
     path: '/',
-    element: <MainLayout />,
+    element: <ProductLayout />,
     children: [
         {
             path: '/',
-            element: <DashboardDefault />
-        },
-        {
-            path: 'dashboard',
-            children: [
-                {
-                    path: 'default',
-                    element: <DashboardDefault />
-                }
-            ]
-        },
-
-        {
-            path: 'sample-page',
-            element: <SamplePage />
+            element: <HomePage />
         }
     ]
 };
