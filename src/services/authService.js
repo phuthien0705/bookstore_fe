@@ -17,7 +17,6 @@ class AuthService {
 
     logOut = () => {
         cookie.remove('accessToken');
-
         localStorage.clear();
     };
 

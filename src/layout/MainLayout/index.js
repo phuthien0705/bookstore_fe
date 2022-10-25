@@ -4,8 +4,8 @@ import { Outlet } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
 import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material';
 import Breadcrumbs from 'components/extended/Breadcrumbs';
-import Header from './Header';
-import Sidebar from './Sidebar';
+import Header from '../../components/Header';
+import Sidebar from '../../components/Sidebar';
 import navigation from 'menu-items';
 import { drawerWidth } from 'store/constant';
 import { IconChevronRight } from '@tabler/icons';
@@ -97,8 +97,6 @@ const MainLayout = () => {
 
             {/* main content */}
             <Main theme={theme} open={leftDrawerOpened}>
-                {/* breadcrumb */}
-                <Breadcrumbs separator={IconChevronRight} navigation={navigation} icon title rightAlign />
                 <Outlet />
             </Main>
         </Box>
