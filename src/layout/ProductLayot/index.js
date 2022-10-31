@@ -8,7 +8,10 @@ import { Outlet } from 'react-router-dom';
 import { setMenu } from 'store/sidebarReducer';
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme }) => ({
-    ...theme.typography.mainContent
+    ...theme.typography.mainContent,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    marginLeft: '20px'
 }));
 
 const ProductLayout = () => {

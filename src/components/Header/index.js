@@ -70,7 +70,8 @@ const Header = ({ handleLeftDrawerToggle, hideSidebarIcon = false }) => {
 };
 
 Header.propTypes = {
-    handleLeftDrawerToggle: PropTypes.func
+    handleLeftDrawerToggle: PropTypes.func,
+    hideSidebarIcon: PropTypes.bool
 };
 
 export default Header;
