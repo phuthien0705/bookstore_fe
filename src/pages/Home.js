@@ -3,7 +3,7 @@ import { Typography, Card, CardActionArea, CardMedia, CardContent, Grid, Rating,
 import { useTheme } from '@mui/material/styles';
 import ProductCardItems from 'components/cards/products/ProductCardItems';
 import CarouselHome from 'components/carousel/CarouselHome';
-
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 const sampleData = [
     {
         name: 'product 1',
@@ -48,7 +48,12 @@ const Home = () => {
     return (
         <Container>
             <CarouselHome />
-            <ProductCardItems data={sampleData} />
+            <ProductCardItems
+                data={sampleData}
+                title="Xu hướng mua sắm"
+                titleIcon={<LocalFireDepartmentIcon color="error" />}
+                titleBackground="#FCDDEF"
+            />
         </Container>
     );
 };

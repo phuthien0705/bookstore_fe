@@ -11,7 +11,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
     ...theme.typography.mainContent,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
-    marginLeft: '20px'
+    marginRight: 0
 }));
 
 const ProductLayout = () => {
