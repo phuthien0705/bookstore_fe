@@ -7,7 +7,7 @@ import config from 'config';
 const useStyles = makeStyles({
     container: (props) => ({
         display: 'flex',
-        rowGap: '1rem',
+        rowGap: '0.2rem',
         flexDirection: 'column',
         borderRadius: config.borderRadius,
         backgroundColor: '#fff',
@@ -39,9 +39,11 @@ const ProductCardItems = ({ data, title, titleIcon, titleBackground = '#fff' }) 
                     {title}
                 </Typography>
             </Stack>
-            <Grid container spacing={{ xs: 1, lg: 2 }}>
-                {renderProducts()}
-            </Grid>
+            <Stack sx={{ p: 1 }}>
+                <Grid container spacing={{ xs: 1, lg: 2 }}>
+                    {renderProducts()}
+                </Grid>
+            </Stack>
         </section>
     );
 };

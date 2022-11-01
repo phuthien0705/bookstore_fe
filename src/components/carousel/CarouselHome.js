@@ -18,6 +18,8 @@ const useStyles = makeStyles({
     },
     carousel: {
         position: 'relative',
+        borderRadius: config.borderRadius,
+        overflow: 'hidden',
         '& .swiper-pagination-bullet': {
             width: '10px',
             height: '10px',
@@ -32,8 +34,7 @@ const useStyles = makeStyles({
         '& img': {
             width: '100%',
             maxHeight: '25rem',
-            objectFit: 'cover',
-            borderRadius: config.borderRadius
+            objectFit: 'cover'
         }
     },
     next: {
@@ -42,7 +43,7 @@ const useStyles = makeStyles({
         position: 'absolute',
         top: '50%',
         right: 0,
-        zIndex: 50,
+        zIndex: 10,
         backgroundColor: '#fff !important',
         translate: '50% -50%'
     },
@@ -52,7 +53,7 @@ const useStyles = makeStyles({
         position: 'absolute',
         top: '50%',
         left: 0,
-        zIndex: 50,
+        zIndex: 10,
         backgroundColor: '#fff !important',
         translate: '-50% -50%'
     }
