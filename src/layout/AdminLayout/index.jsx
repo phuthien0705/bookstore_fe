@@ -55,7 +55,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
     })
 }));
 
-const MainLayout = () => {
+const AdminLayout = () => {
     const theme = useTheme();
     const matchDownMd = useMediaQuery(theme.breakpoints.down('lg'));
     const leftDrawerOpened = useSelector((state) => state.sidebar.open);
@@ -99,4 +99,4 @@ const MainLayout = () => {
     );
 };
 
-export default MainLayout;
+export default AdminLayout;

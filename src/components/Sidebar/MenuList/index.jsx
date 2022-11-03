@@ -2,16 +2,19 @@
 import { Typography, List, Divider } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import NavItem from './NavItem';
-import { IconDashboard } from '@tabler/icons';
-
-const icons = { IconDashboard };
+import { IconUsers, IconBook2 } from '@tabler/icons';
 
 const MenuList = () => {
     const listItem = [
         {
-            title: 'Tất cả sản phẩm',
-            url: '/product',
-            icon: icons.IconDashboard
+            title: 'Sản phẩm',
+            url: '/admin/product',
+            icon: IconBook2
+        },
+        {
+            title: 'Người dùng',
+            url: '/admin/user',
+            icon: IconUsers
         }
     ];
     const theme = useTheme();
@@ -25,7 +28,10 @@ const MenuList = () => {
                     </Typography>
                 }
             >
-                <NavItem item={listItem[0]} level={1} />
+                {/* <NavItem item={listItem[0]} level={1} /> */}
+                {listItem.map((item, _index) => (
+                    <NavItem key={_index} item={item} />
+                ))}
             </List>
             <Divider sx={{ mt: 0.25, mb: 1.25 }} />
         </>
