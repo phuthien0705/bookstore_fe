@@ -1,21 +1,13 @@
 import PropTypes from 'prop-types';
-
-// material-ui
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Box, ButtonBase } from '@mui/material';
-
-// project imports
 import LogoSection from '../LogoSection';
 import SearchSection from './SearchSection';
 import ProfileSection from './ProfileSection';
 import NotificationSection from './NotificationSection';
-
-// assets
 import { IconMenu2 } from '@tabler/icons';
 
-// ==============================|| MAIN NAVBAR / HEADER ||============================== //
-
-const Header = ({ handleLeftDrawerToggle, hideSidebarIcon = false }) => {
+const Header = ({ handleLeftDrawerToggle, hideSidebarIcon = false, hideSearch = false }) => {
     const theme = useTheme();
 
     return (
@@ -58,7 +50,7 @@ const Header = ({ handleLeftDrawerToggle, hideSidebarIcon = false }) => {
             </Box>
 
             {/* header search */}
-            <SearchSection />
+            {!hideSearch && <SearchSection />}
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexGrow: 1 }} />
 
@@ -71,7 +63,8 @@ const Header = ({ handleLeftDrawerToggle, hideSidebarIcon = false }) => {
 
 Header.propTypes = {
     handleLeftDrawerToggle: PropTypes.func,
-    hideSidebarIcon: PropTypes.bool
+    hideSidebarIcon: PropTypes.bool,
+    hideSearch: PropTypes.bool
 };
 
 export default Header;

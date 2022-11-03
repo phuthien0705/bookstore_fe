@@ -24,7 +24,7 @@ const MenuList = () => {
             <List
                 subheader={
                     <Typography variant="caption" sx={{ ...theme.typography.menuCaption }} display="block" gutterBottom>
-                        Doanh mục
+                        ADMIN
                     </Typography>
                 }
             >
