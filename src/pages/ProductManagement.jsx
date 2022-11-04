@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Box, Pagination, Stack, Typography } from '@mui/material';
+import { Box, Button, Pagination, Stack, Typography } from '@mui/material';
 import MainCard from 'components/cards/MainCard';
 import SearchAdminSection from 'components/Header/SearchSection/SearchAdmin';
 import { DataGrid } from '@mui/x-data-grid';
 import LinearProgress from '@mui/material/LinearProgress';
 import CustomNoRowsOverlay from 'components/empty/CustomNoRowsOverlay';
-
+import AddIcon from '@mui/icons-material/Add';
 import { styled } from '@mui/material/styles';
 import config from 'config';
 import ProductAdminModal from 'components/modals/ProductAdminModal';
@@ -54,6 +54,8 @@ const ProductManagement = () => {
         { field: 'description', headerName: 'Mô tả', description: 'Mô tả sản phẩm', flex: 1 },
         { field: 'price', headerName: 'Giá', description: 'Giá sản phẩm', width: 100, renderCell: (params) => <p>{params?.value}đ</p> },
         { field: 'rating', headerName: 'Đánh giá', description: 'Đánh giá sản phẩm', width: 100 },
+        { field: 'quantity', headerName: 'Số lượng', description: 'Số lượng sản phẩm', width: 100 },
+
         {
             field: 'actions',
 
@@ -79,7 +81,8 @@ const ProductManagement = () => {
             description: 'Ga osi ovemosoki kon hohon raepi jegjoted no ki waetahe',
             image: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
             price: '30000',
-            rating: 4.5
+            rating: 4.5,
+            quantity: 100
         },
         {
             id: 1,
@@ -87,7 +90,8 @@ const ProductManagement = () => {
             description: 'Ga osi ovemosoki kon hohon raepi jegjoted no ki waetahe',
             image: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
             price: '30000',
-            rating: 4.5
+            rating: 4.5,
+            quantity: 100
         },
         {
             id: 2,
@@ -95,7 +99,8 @@ const ProductManagement = () => {
             description: 'Ga osi ovemosoki kon hohon raepi jegjoted no ki waetahe',
             image: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
             price: '30000',
-            rating: 4.5
+            rating: 4.5,
+            quantity: 100
         },
         {
             id: 3,
@@ -103,7 +108,8 @@ const ProductManagement = () => {
             description: 'Ga osi ovemosoki kon hohon raepi jegjoted no ki waetahe',
             image: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
             price: '30000',
-            rating: 4.5
+            rating: 4.5,
+            quantity: 100
         },
         {
             id: 4,
@@ -111,7 +117,8 @@ const ProductManagement = () => {
             description: 'Ga osi ovemosoki kon hohon raepi jegjoted no ki waetahe',
             image: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
             price: '30000',
-            rating: 4.5
+            rating: 4.5,
+            quantity: 100
         },
         {
             id: 5,
@@ -119,7 +126,8 @@ const ProductManagement = () => {
             description: 'Ga osi ovemosoki kon hohon raepi jegjoted no ki waetahe',
             image: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
             price: '30000',
-            rating: 4.5
+            rating: 4.5,
+            quantity: 100
         }
     ];
     useEffect(() => {
@@ -132,7 +140,15 @@ const ProductManagement = () => {
     return (
         <>
             <MainCard title="Danh sách các sản phẩm" darkTitle>
-                <SearchAdminSection value={searchContent} setValue={setSearchContent} />
+                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                    <SearchAdminSection value={searchContent} setValue={setSearchContent} />
+                    <Button variant="contained" sx={{ padding: '5px 10px 5px 2px' }}>
+                        <Stack direction="row" alignItems="center" spacing={0.5}>
+                            <AddIcon fontSize="small" />
+                            <Typography>Thêm sản phẩm</Typography>
+                        </Stack>
+                    </Button>
+                </Stack>
                 <Box mt={2}>
                     <DataGrid
                         sx={{
