@@ -6,6 +6,7 @@ import SearchSection from './SearchSection';
 import ProfileSection from './ProfileSection';
 import NotificationSection from './NotificationSection';
 import { IconMenu2 } from '@tabler/icons';
+import CartSection from './CartSection';
 
 const Header = ({ handleLeftDrawerToggle, hideSidebarIcon = false, hideSearch = false }) => {
     const theme = useTheme();
@@ -54,8 +55,9 @@ const Header = ({ handleLeftDrawerToggle, hideSidebarIcon = false, hideSearch = 
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexGrow: 1 }} />
 
-            {/* notification & profile */}
+            {/* notification & profile & cart */}
             <NotificationSection />
+            <CartSection />
             <ProfileSection />
         </>
     );

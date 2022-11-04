@@ -59,6 +59,11 @@ const Home = () => {
                 titleIcon={<LocalFireDepartmentIcon color="error" />}
                 titleBackground="#FCDDEF"
             />
+            <ProductCardItems data={sampleData} title="Sách tham khảo" titleBackground={theme.palette.secondary.light} />
+            <ProductCardItems data={sampleData} title="Sách học ngoại ngữ" titleBackground={theme.palette.secondary.light} />
+            <ProductCardItems data={sampleData} title="Sách văn học" titleBackground={theme.palette.secondary.light} />
+            <ProductCardItems data={sampleData} title="Sách tâm lỹ kỹ năng" titleBackground={theme.palette.secondary.light} />
+            <ProductCardItems data={sampleData} title="Sách kinh tế" titleBackground={theme.palette.secondary.light} />
         </Container>
     );
 };
