@@ -8,7 +8,7 @@ import NotificationSection from './NotificationSection';
 import { IconMenu2 } from '@tabler/icons';
 import CartSection from './CartSection';
 
-const Header = ({ handleLeftDrawerToggle, hideSidebarIcon = false, hideSearch = false }) => {
+const Header = ({ handleLeftDrawerToggle, hideSidebarIcon = false, hideSearch = false, hideCart = false, hideNoti = false }) => {
     const theme = useTheme();
 
     return (
@@ -56,8 +56,8 @@ const Header = ({ handleLeftDrawerToggle, hideSidebarIcon = false, hideSearch = 
             <Box sx={{ flexGrow: 1 }} />
 
             {/* notification & profile & cart */}
-            <NotificationSection />
-            <CartSection />
+            {!hideNoti && <NotificationSection />}
+            {!hideCart && <CartSection />}
             <ProfileSection />
         </>
     );
@@ -66,7 +66,9 @@ const Header = ({ handleLeftDrawerToggle, hideSidebarIcon = false, hideSearch = 
 Header.propTypes = {
     handleLeftDrawerToggle: PropTypes.func,
     hideSidebarIcon: PropTypes.bool,
-    hideSearch: PropTypes.bool
+    hideSearch: PropTypes.bool,
+    hideCart: PropTypes.bool,
+    hideNoti: PropTypes.bool
 };
 
 export default Header;

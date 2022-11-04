@@ -83,7 +83,7 @@ const AdminLayout = () => {
                 }}
             >
                 <Toolbar>
-                    <Header handleLeftDrawerToggle={handleLeftDrawerToggle} hideSearch />
+                    <Header handleLeftDrawerToggle={handleLeftDrawerToggle} hideSearch hideCart hideNoti />
                 </Toolbar>
             </AppBar>
 
