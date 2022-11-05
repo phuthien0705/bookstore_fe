@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { useTheme } from '@mui/material/styles';
 import {
     Alert,
@@ -19,111 +18,41 @@ import {
     Typography,
     useMediaQuery
 } from '@mui/material';
-
-// third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-
-// project imports
-import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'components/extended/AnimateButton';
-
-// assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
 import Google from 'assets/images/icons/social-google.svg';
 import config from 'config';
-import { login, reSendVerifyEmail } from 'apis/auth.api';
+import { forgotPassword, login, resetPassword } from 'apis/auth.api';
 import authService from 'services/authService';
 import { useNavigate } from 'react-router';
-import checkIsAdminOrManager from 'common/checkIsAdminOrManager';
 
-const AuthLoginForm = ({ ...others }) => {
+const ResetPasswordForm = ({ params, ...others }) => {
     const theme = useTheme();
     const navigate = useNavigate();
-    const scriptedRef = useScriptRef();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-    const [checked, setChecked] = useState(true);
-    const [showPassword, setShowPassword] = useState(false);
     const [showAlert, setShowAlert] = useState(null);
-    const googleHandler = async () => {
-        console.error('Login');
-    };
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
 
     const handleClickShowPassword = () => {
-        setShowPassword(!showPassword);
+        setShowPassword((i) => !i);
     };
-
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-
+    const handleClickShowPasswordConfirmation = () => {
+        setShowPasswordConfirmation((i) => !i);
+    };
     return (
         <>
-            <Grid container direction="column" justifyContent="center" spacing={2}>
-                <Grid item xs={12}>
-                    <AnimateButton>
-                        <Button
-                            disableElevation
-                            fullWidth
-                            onClick={googleHandler}
-                            size="large"
-                            variant="outlined"
-                            sx={{
-                                color: 'grey.700',
-                                backgroundColor: theme.palette.grey[50],
-                                borderColor: theme.palette.grey[100]
-                            }}
-                        >
-                            <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
-                                <img src={Google} alt="google" width={16} height={16} style={{ marginRight: matchDownSM ? 8 : 16 }} />
-                            </Box>
-                            Đăng nhập với google
-                        </Button>
-                    </AnimateButton>
-                </Grid>
-                <Grid item xs={12}>
-                    <Box
-                        sx={{
-                            alignItems: 'center',
-                            display: 'flex'
-                        }}
-                    >
-                        <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-
-                        <Button
-                            variant="outlined"
-                            sx={{
-                                cursor: 'unset',
-                                m: 2,
-                                py: 0.5,
-                                px: 7,
-                                borderColor: `${theme.palette.grey[100]} !important`,
-                                color: `${theme.palette.grey[900]}!important`,
-                                fontWeight: 500,
-                                borderRadius: `${config.borderRadius}px`
-                            }}
-                            disableRipple
-                            disabled
-                        >
-                            Hoặc
-                        </Button>
-
-                        <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-                    </Box>
-                </Grid>
-                <Grid item xs={12} container alignItems="center" justifyContent="center">
-                    <Box sx={{ mb: 2 }}>
-                        <Typography variant="subtitle1">Đăng nhập bằng Email</Typography>
-                    </Box>
-                </Grid>
-            </Grid>
-
             <Formik
                 initialValues={{
                     email: '',
                     password: '',
+                    password_confirmation: '',
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
@@ -131,37 +60,39 @@ const AuthLoginForm = ({ ...others }) => {
                     password: Yup.string()
                         .min(8, 'Mật khẩu phải ít nhất 8 ký tự')
                         .max(255, 'Mật khẩu tối đa 255 ký tự')
-                        .required('Mật khẩu là bắt buộc')
+                        .required('Mật khẩu là bắt buộc'),
+                    password_confirmation: Yup.string()
+                        .min(8, 'Nhập lại mật khẩu phải ít nhất 8 ký tự')
+                        .max(255, 'Nhập lại mật khẩu tối đa 255 ký tự')
+                        .required('Nhập lại mật khẩu là bắt buộc')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-                    try {
-                        const req = { email: values.email, password: values.password };
-                        const res = await login(req);
-                        console.log(res);
-                        if (!res.is_active) {
-                            await reSendVerifyEmail({ email: values.email });
-                            setShowAlert({
-                                type: 'success',
-                                content:
-                                    'Tài khoản của bạn chưa được kích hoạt. Một Email đã được gửi, hãy kiểm tra Email để kích hoạt tài khoản.'
-                            });
-                            setStatus({ success: true });
-                            setSubmitting(false);
-                            return;
-                        }
-                        authService.login({ accessToken: res.access_token, name: res.user.name, id: res.user.id, role: res.user?.role });
+                    if (values.password !== values.password_confirmation) {
+                        setShowAlert({ type: 'error', content: 'Mật khẩu và mật khẩu nhập lại phải trùng nhau.' });
                         setStatus({ success: true });
                         setSubmitting(false);
-                        if (checkIsAdminOrManager(res?.roles)) {
-                            navigate('/');
-                        } else {
-                            navigate('../admin/product');
-                        }
+                        return;
+                    }
+                    try {
+                        const req = { email: values.email, password: values.password, password_confirmation: values.password_confirmation };
+                        const res = await resetPassword(params, req);
+                        setShowAlert({
+                            type: 'success',
+                            content: 'Đặt lại mật khẩu thành công, bạn sẽ được chuyển về trang đăng nhập sau 3 giây.'
+                        });
+                        setStatus({ success: true });
+                        setSubmitting(false);
+                        setTimeout(() => {
+                            navigate('../login');
+                        }, 3000);
                     } catch (err) {
                         console.error(err);
-                        setShowAlert({ type: 'error', content: 'Xảy ra lỗi trong quá trình đăng nhập' });
+                        setShowAlert({
+                            type: 'error',
+                            content: 'Xảy ra lỗi trong quá trình đặt lại mật khẩu.'
+                        });
                         setStatus({ success: false });
-
+                        setErrors({ submit: err.message });
                         setSubmitting(false);
                     }
                 }}
@@ -186,7 +117,6 @@ const AuthLoginForm = ({ ...others }) => {
                                 </FormHelperText>
                             )}
                         </FormControl>
-
                         <FormControl
                             fullWidth
                             error={Boolean(touched.password && errors.password)}
@@ -222,27 +152,41 @@ const AuthLoginForm = ({ ...others }) => {
                                 </FormHelperText>
                             )}
                         </FormControl>
-                        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        checked={checked}
-                                        onChange={(event) => setChecked(event.target.checked)}
-                                        name="checked"
-                                        color="primary"
-                                    />
+                        <FormControl
+                            fullWidth
+                            error={Boolean(touched.password_confirmation && errors.password_confirmation)}
+                            sx={{ ...theme.typography.customInput }}
+                        >
+                            <InputLabel htmlFor="outlined-adornment-password_confirmation-login">Nhập lại mật khẩu</InputLabel>
+                            <OutlinedInput
+                                id="outlined-adornment-password_confirmation-login"
+                                type={showPasswordConfirmation ? 'text' : 'password'}
+                                value={values.password_confirmation}
+                                name="password_confirmation"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPasswordConfirmation}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                            size="large"
+                                        >
+                                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>
                                 }
-                                label="Ghi nhớ đăng nhập"
+                                label="Nhập lại mật khẩu"
+                                inputProps={{}}
                             />
-                            <Typography
-                                onClick={() => navigate('../forgot-password')}
-                                variant="subtitle1"
-                                color="secondary"
-                                sx={{ textDecoration: 'none', cursor: 'pointer' }}
-                            >
-                                Quên mật khẩu
-                            </Typography>
-                        </Stack>
+                            {touched.password_confirmation && errors.password_confirmation && (
+                                <FormHelperText error id="standard-weight-helper-text-password-login">
+                                    {errors.password_confirmation}
+                                </FormHelperText>
+                            )}
+                        </FormControl>
                         {errors.submit && (
                             <Box sx={{ mt: 3 }}>
                                 <FormHelperText error>{errors.submit}</FormHelperText>
@@ -260,14 +204,14 @@ const AuthLoginForm = ({ ...others }) => {
                                     variant="contained"
                                     color="secondary"
                                 >
-                                    Đăng nhập
+                                    Gửi email
                                 </Button>
                             </AnimateButton>
                             {!!showAlert && (
                                 <Alert
                                     sx={{ marginTop: 2 }}
                                     severity={showAlert?.type.toString()}
-                                    color={showAlert?.type.toString() === 'success' ? 'info' : showAlert?.type.toString()}
+                                    color={showAlert?.type.toString() === 'success' ? 'info' : 'error'}
                                     onClose={() => setShowAlert(null)}
                                 >
                                     {showAlert?.content}
@@ -281,4 +225,4 @@ const AuthLoginForm = ({ ...others }) => {
     );
 };
 
-export default AuthLoginForm;
+export default ResetPasswordForm;

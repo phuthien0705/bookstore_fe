@@ -7,10 +7,9 @@ class AuthService {
     //   cookie.set('accessToken', accessToken, { expires: 1 });
     // };
 
-    login = ({ accessToken, fullName, role, id, ...rest }) => {
+    login = ({ accessToken, name, role, id, ...rest }) => {
         cookie.set('accessToken', `${accessToken}`, { expires: 7 });
-        const userPayload = { user: { fullName }, role, id };
-
+        const userPayload = { name, role, id };
         const userStringify = JSON.stringify(userPayload);
         localStorage.setItem('user', userStringify);
     };
@@ -21,7 +20,10 @@ class AuthService {
     };
 
     getUser = () => {
-        const user = localStorage.getItem('user') || '';
+        let user = localStorage.getItem('user') || '';
+        if (user) {
+            user = JSON.parse(user);
+        }
         return user;
     };
 

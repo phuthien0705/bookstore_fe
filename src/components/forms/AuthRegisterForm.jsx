@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
-// material-ui
 import { useTheme } from '@mui/material/styles';
 import {
+    Alert,
     Box,
     Button,
     Checkbox,
@@ -20,23 +19,17 @@ import {
     Typography,
     useMediaQuery
 } from '@mui/material';
-
-// third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-
-// project imports
 import useScriptRef from 'hooks/useScriptRef';
 import Google from 'assets/images/icons/social-google.svg';
 import AnimateButton from 'components/extended/AnimateButton';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
-
-// assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import config from 'config';
-
-// ===========================|| FIREBASE - REGISTER ||=========================== //
+import { register } from 'apis/auth.api';
+import authService from 'services/authService';
 
 const AuthRegisterForm = ({ ...others }) => {
     const theme = useTheme();
@@ -47,6 +40,7 @@ const AuthRegisterForm = ({ ...others }) => {
 
     const [strength, setStrength] = useState(0);
     const [level, setLevel] = useState();
+    const [showAlertCheckMail, setShowAlertCheckMail] = useState(null);
 
     const googleHandler = async () => {
         console.error('Register');
@@ -125,52 +119,63 @@ const AuthRegisterForm = ({ ...others }) => {
 
             <Formik
                 initialValues={{
-                    fullName: '',
+                    name: '',
                     email: '',
                     password: '',
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
-                    email: Yup.string().email('Must be a valid email').max(255).required('Email là bắt buộc'),
-                    password: Yup.string().max(255).required('Mật khẩu là bắt buộc'),
-                    fullName: Yup.string().max(255).required('Họ và tên là bắt buộc')
+                    email: Yup.string().email('Email phải đúng địng dạng').max(255, 'Email tối đa 255 ký tự').required('Email là bắt buộc'),
+                    password: Yup.string()
+                        .min(8, 'Mật khẩu phải ít nhất 8 ký tự')
+                        .max(255, 'Mật khẩu tối đa 255 ký tự')
+                        .required('Mật khẩu là bắt buộc'),
+                    name: Yup.string().max(255, 'Họ tên tối đa 255 ký tự').required('Họ và tên là bắt buộc')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
-                        if (scriptedRef.current) {
-                            setStatus({ success: true });
-                            setSubmitting(false);
-                        }
+                        const req = { name: values.name, email: values.email, password: values.password };
+                        await register(req);
+                        authService.login({
+                            accessToken: res.access_token,
+                            name: res.user.name,
+                            id: res.user.id,
+                            role: res.user?.role
+                        });
+                        setShowAlertCheckMail({
+                            type: 'success',
+                            message: 'Đăng ký thành công vui lòng kiểm tra Email để kích hoạt tài khoản'
+                        });
+                        setStatus({ success: true });
+                        setSubmitting(false);
                     } catch (err) {
                         console.error(err);
-                        if (scriptedRef.current) {
-                            setStatus({ success: false });
-                            setErrors({ submit: err.message });
-                            setSubmitting(false);
-                        }
+                        setShowAlertCheckMail({
+                            type: 'error',
+                            message: 'Xảy ra lỗi trong quá trình đăng ký.'
+                        });
+                        setStatus({ success: false });
+                        setErrors({ submit: err.message });
+                        setSubmitting(false);
                     }
                 }}
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit} {...others}>
-                        <FormControl
-                            fullWidth
-                            error={Boolean(touched.fullName && errors.fullName)}
-                            sx={{ ...theme.typography.customInput }}
-                        >
-                            <InputLabel htmlFor="outlined-adornment-email-register">Họ và Tên</InputLabel>
+                        <FormControl fullWidth error={Boolean(touched.name && errors.name)} sx={{ ...theme.typography.customInput }}>
+                            <InputLabel htmlFor="outlined-adornment-name-register">Họ và Tên</InputLabel>
                             <OutlinedInput
-                                id="outlined-adornment-email-register"
+                                id="outlined-adornment-name-register"
                                 type="text"
-                                value={values.fullName}
-                                name="fullName"
+                                value={values.name}
+                                name="name"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
                                 inputProps={{}}
                             />
-                            {touched.fullName && errors.fullName && (
+                            {touched.name && errors.name && (
                                 <FormHelperText error id="standard-weight-helper-text--register">
-                                    {errors.fullName}
+                                    {errors.name}
                                 </FormHelperText>
                             )}
                         </FormControl>
@@ -293,6 +298,16 @@ const AuthRegisterForm = ({ ...others }) => {
                                     Đăng ký
                                 </Button>
                             </AnimateButton>
+                            {!!showAlertCheckMail && (
+                                <Alert
+                                    sx={{ marginTop: 2 }}
+                                    severity={showAlertCheckMail?.type.toString()}
+                                    color={showAlertCheckMail?.type.toString() === 'success' ? 'info' : 'error'}
+                                    onClose={() => setShowAlertCheckMail(null)}
+                                >
+                                    Đăng ký thành công vui lòng kiểm tra Email để kích hoạt tài khoản
+                                </Alert>
+                            )}
                         </Box>
                     </form>
                 )}

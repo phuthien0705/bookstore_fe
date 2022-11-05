@@ -7,7 +7,7 @@ function getAccessToken() {
 }
 
 const requestConfig = {
-    baseURL: process.env.API_BASE_URL || 'http://localhost:8000'
+    baseURL: process.env.API_BASE_URL || 'https://bookstore-39jw3.ondigitalocean.app/api'
 };
 
 export const axiosInstance = axios.create(requestConfig);
@@ -37,7 +37,6 @@ export default function initRequest() {
         (error) => {
             switch (error.response?.status) {
                 case 401: {
-                    alert('Thời gian đăng nhập của bạn đã hết. Vui lòng đăng nhập lại để tiếp tục');
                     break;
                 }
                 case 400: {

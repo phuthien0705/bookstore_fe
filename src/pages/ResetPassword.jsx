@@ -1,13 +1,15 @@
 import { useTheme } from '@mui/material/styles';
-import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 import AuthWrapper from 'components/auth/AuthWrapper';
-import AuthLoginForm from 'components/forms/AuthLoginForm';
 import AuthCardWrapper from 'components/auth/AuthCardWrapper';
 import Logo from 'components/Logo';
 import { Link } from 'react-router-dom';
-import AuthFooter from 'components/cards/AuthFooter';
+import ResetPasswordForm from 'components/forms/ResetPasswordForm';
+import { useLocation } from 'react-router-dom';
 
-const LoginPage = () => {
+const ResetPassword = () => {
+    const location = useLocation();
+
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     return (
@@ -37,31 +39,21 @@ const LoginPage = () => {
                                                         gutterBottom
                                                         variant={matchDownSM ? 'h3' : 'h2'}
                                                     >
-                                                        Đăng nhập
+                                                        Đặt lại mật khẩu
                                                     </Typography>
                                                     <Typography
                                                         variant="caption"
                                                         fontSize="16px"
                                                         textAlign={matchDownSM ? 'center' : 'inherit'}
                                                     >
-                                                        Nhập thông tin đăng nhập để tiếp tục
+                                                        Nhập các thông tin bên dưới để tiếp hành đặt lại mật khẩu
                                                     </Typography>
                                                 </Stack>
                                             </Grid>
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <AuthLoginForm />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Divider />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Grid item container direction="column" alignItems="center" xs={12}>
-                                            <Typography component={Link} to="/register" variant="subtitle1" sx={{ textDecoration: 'none' }}>
-                                                Bạn chưa có tài khoản? Đi đến đăng ký.
-                                            </Typography>
-                                        </Grid>
+                                        <ResetPasswordForm params={location?.search} />
                                     </Grid>
                                 </Grid>
                             </AuthCardWrapper>
@@ -73,4 +65,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default ResetPassword;

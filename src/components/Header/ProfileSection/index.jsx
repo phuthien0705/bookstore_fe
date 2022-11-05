@@ -37,6 +37,7 @@ import User1 from 'assets/images/users/user-round.svg';
 // assets
 import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
 import config from 'config';
+import authService from 'services/authService';
 
 // ==============================|| PROFILE MENU ||============================== //
 
@@ -49,14 +50,15 @@ const ProfileSection = () => {
     const [notification, setNotification] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const [open, setOpen] = useState(false);
-    /**
-     * anchorRef is used on different componets and specifying one type leads to other components throwing an error
-     * */
+
     const anchorRef = useRef(null);
     const handleLogout = async () => {
-        console.log('Logout');
+        authService.logOut();
+        setOpen(false);
     };
-
+    const handleClickLogin = () => {
+        navigate('login');
+    };
     const handleClose = (event) => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
@@ -84,7 +86,6 @@ const ProfileSection = () => {
 
         prevOpen.current = open;
     }, [open]);
-
     return (
         <>
             <Chip
@@ -149,75 +150,81 @@ const ProfileSection = () => {
             >
                 {({ TransitionProps }) => (
                     <Transitions in={open} {...TransitionProps}>
-                        <Paper sx={{ width: '12rem' }}>
+                        <Paper
+                            sx={{
+                                width: '12rem',
+                                overflow: 'hidden',
+                                filter: 'drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06))'
+                            }}
+                        >
                             <ClickAwayListener onClickAway={handleClose}>
-                                <MainCard border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
-                                    <Box sx={{ p: '1rem 1rem 0 1rem' }}>
-                                        <Stack>
-                                            <Stack direction="row" spacing={0.5} alignItems="center">
-                                                <Typography variant="h4">Chào,</Typography>
-                                                <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                                                    Phu Thien
-                                                </Typography>
+                                <MainCard
+                                    sx={{ overflow: 'hidden' }}
+                                    border={false}
+                                    elevation={16}
+                                    content={false}
+                                    boxShadow
+                                    shadow={theme.shadows[16]}
+                                >
+                                    {authService.isAuthenticated() && (
+                                        <Box sx={{ p: '1rem 1rem 0 1rem', overflow: 'hidden' }}>
+                                            <Stack>
+                                                <Stack direction="row" spacing={0.5} alignItems="center">
+                                                    <Typography variant="h4">Chào,</Typography>
+                                                    <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
+                                                        {authService.getUser()?.name}
+                                                    </Typography>
+                                                </Stack>
                                             </Stack>
-                                            {/* <Typography variant="subtitle2"></Typography> */}
-                                        </Stack>
-                                        {/* <OutlinedInput
-                                            sx={{ width: '100%', pr: 1, pl: 2, my: 2 }}
-                                            id="input-search-profile"
-                                            value={value}
-                                            onChange={(e) => setValue(e.target.value)}
-                                            placeholder="Search profile options"
-                                            startAdornment={
-                                                <InputAdornment position="start">
-                                                    <IconSearch stroke={1.5} size="1rem" color={theme.palette.grey[500]} />
-                                                </InputAdornment>
-                                            }
-                                            aria-describedby="search-helper-text"
-                                            inputProps={{
-                                                'aria-label': 'weight'
-                                            }}
-                                        /> */}
-                                    </Box>
-                                    <PerfectScrollbar
-                                        style={{ width: '100%', height: '100%', maxHeight: 'calc(100vh - 250px)', overflowX: 'hidden' }}
-                                    >
-                                        <Box>
-                                            <List
-                                                component="nav"
-                                                sx={{
-                                                    width: '100%',
-                                                    maxWidth: 350,
-
-                                                    backgroundColor: theme.palette.background.paper,
-                                                    borderRadius: '10px',
-                                                    [theme.breakpoints.down('md')]: {
-                                                        minWidth: '100%'
-                                                    },
-                                                    '& .MuiListItemButton-root': {
-                                                        mt: 0.5
-                                                    }
-                                                }}
-                                            >
-                                                <ListItemButton
-                                                    selected={selectedIndex === 0}
-                                                    onClick={(event) => handleListItemClick(event, 0, '/profile')}
-                                                >
-                                                    <ListItemIcon>
-                                                        <IconSettings stroke={1.5} size="1.3rem" />
-                                                    </ListItemIcon>
-                                                    <ListItemText primary={<Typography variant="body2">Cài đặt tài khoản</Typography>} />
-                                                </ListItemButton>
-
-                                                <ListItemButton selected={selectedIndex === 1} onClick={handleLogout}>
-                                                    <ListItemIcon>
-                                                        <IconLogout stroke={1.5} size="1.3rem" />
-                                                    </ListItemIcon>
-                                                    <ListItemText primary={<Typography variant="body2">Đăng xuất</Typography>} />
-                                                </ListItemButton>
-                                            </List>
                                         </Box>
-                                    </PerfectScrollbar>
+                                    )}
+
+                                    <Box
+                                        sx={{
+                                            overflow: 'hidden'
+                                        }}
+                                    >
+                                        <List
+                                            component="nav"
+                                            sx={{
+                                                width: '100%',
+                                                maxWidth: 350,
+                                                overflow: 'hidden',
+                                                backgroundColor: theme.palette.background.paper,
+                                                borderRadius: '10px',
+                                                [theme.breakpoints.down('md')]: {
+                                                    minWidth: '100%'
+                                                },
+                                                '& .MuiListItemButton-root': {}
+                                            }}
+                                        >
+                                            {!authService.isAuthenticated() ? (
+                                                <ListItemButton selected={selectedIndex === 1} onClick={handleClickLogin}>
+                                                    <ListItemText primary={<Typography variant="body2">Đăng nhập</Typography>} />
+                                                </ListItemButton>
+                                            ) : (
+                                                <>
+                                                    <ListItemButton
+                                                        selected={selectedIndex === 0}
+                                                        onClick={(event) => handleListItemClick(event, 0, '/profile')}
+                                                    >
+                                                        <ListItemIcon>
+                                                            <IconSettings stroke={1.5} size="1.3rem" />
+                                                        </ListItemIcon>
+                                                        <ListItemText
+                                                            primary={<Typography variant="body2">Cài đặt tài khoản</Typography>}
+                                                        />
+                                                    </ListItemButton>
+                                                    <ListItemButton selected={selectedIndex === 1} onClick={handleLogout}>
+                                                        <ListItemIcon>
+                                                            <IconLogout stroke={1.5} size="1.3rem" />
+                                                        </ListItemIcon>
+                                                        <ListItemText primary={<Typography variant="body2">Đăng xuất</Typography>} />
+                                                    </ListItemButton>
+                                                </>
+                                            )}
+                                        </List>
+                                    </Box>
                                 </MainCard>
                             </ClickAwayListener>
                         </Paper>
