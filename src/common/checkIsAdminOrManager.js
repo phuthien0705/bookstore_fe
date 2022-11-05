@@ -1,5 +1,6 @@
 const checkIsAdminOrManager = (roles) => {
-    return roles.includes('Admin') || roles.includes('Manager');
+    if (roles && (roles.includes('Admin') || roles.includes('Manager'))) return true;
+    return false;
 };
 
 export default checkIsAdminOrManager;
