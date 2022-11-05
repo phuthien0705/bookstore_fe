@@ -138,6 +138,7 @@ const AuthLoginForm = ({ ...others }) => {
                         const req = { email: values.email, password: values.password };
                         const res = await login(req);
                         console.log(res);
+                        authService.login({ accessToken: res.access_token, name: res.user.name, id: res.user.id, role: res.user?.role });
                         if (!res.is_active) {
                             await reSendVerifyEmail({ email: values.email });
                             setShowAlert({
@@ -145,14 +146,14 @@ const AuthLoginForm = ({ ...others }) => {
                                 content:
                                     'Tài khoản của bạn chưa được kích hoạt. Một Email đã được gửi, hãy kiểm tra Email để kích hoạt tài khoản.'
                             });
+                            // authService.logOut();
                             setStatus({ success: true });
                             setSubmitting(false);
                             return;
                         }
-                        authService.login({ accessToken: res.access_token, name: res.user.name, id: res.user.id, role: res.user?.role });
                         setStatus({ success: true });
                         setSubmitting(false);
-                        if (checkIsAdminOrManager(res?.roles)) {
+                        if (!checkIsAdminOrManager(res?.roles)) {
                             navigate('/');
                         } else {
                             navigate('../admin/product');
