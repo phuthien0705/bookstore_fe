@@ -136,7 +136,7 @@ const AuthRegisterForm = ({ ...others }) => {
                     try {
                         const req = { name: values.name, email: values.email, password: values.password };
                         await register(req);
-                        authService.login({
+                        const res = authService.login({
                             accessToken: res.access_token,
                             name: res.user.name,
                             id: res.user.id,
@@ -301,11 +301,11 @@ const AuthRegisterForm = ({ ...others }) => {
                             {!!showAlertCheckMail && (
                                 <Alert
                                     sx={{ marginTop: 2 }}
-                                    severity={showAlertCheckMail?.type.toString()}
-                                    color={showAlertCheckMail?.type.toString() === 'success' ? 'info' : 'error'}
+                                    severity={showAlertCheckMail?.type}
+                                    color={showAlertCheckMail?.type === 'success' ? 'info' : 'error'}
                                     onClose={() => setShowAlertCheckMail(null)}
                                 >
-                                    Đăng ký thành công vui lòng kiểm tra Email để kích hoạt tài khoản
+                                    {showAlertCheckMail.content}
                                 </Alert>
                             )}
                         </Box>
