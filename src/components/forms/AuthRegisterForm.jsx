@@ -305,7 +305,7 @@ const AuthRegisterForm = ({ ...others }) => {
                                     color={showAlertCheckMail?.type === 'success' ? 'info' : 'error'}
                                     onClose={() => setShowAlertCheckMail(null)}
                                 >
-                                    {showAlertCheckMail.content}
+                                    {showAlertCheckMail.message}
                                 </Alert>
                             )}
                         </Box>
