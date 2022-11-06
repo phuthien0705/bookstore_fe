@@ -7,6 +7,7 @@ const CartPage = Loadable(lazy(() => import('pages/Cart')));
 const ProductDetailPage = Loadable(lazy(() => import('pages/ProductDetail')));
 const ProductPage = Loadable(lazy(() => import('pages/Product')));
 const NotFoundPage = Loadable(lazy(() => import('pages/404')));
+const ProfilePage = Loadable(lazy(() => import('pages/Profile')));
 
 const MainRoutes = {
     path: '/',
@@ -27,6 +28,10 @@ const MainRoutes = {
         {
             path: 'product/:id',
             element: <ProductDetailPage />
+        },
+        {
+            path: 'profile',
+            element: <ProfilePage />
         },
         {
             path: '*',
