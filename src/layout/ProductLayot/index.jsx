@@ -1,6 +1,7 @@
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material';
+import Footer from 'components/Footer';
 import Header from 'components/Header';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,7 +29,7 @@ const ProductLayout = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [matchDownMd]);
     return (
-        <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+        <Box sx={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
             <CssBaseline />
             <AppBar
                 enableColorOnDark
@@ -47,6 +48,7 @@ const ProductLayout = () => {
             <Main theme={theme}>
                 <Outlet />
             </Main>
+            <Footer />
         </Box>
     );
 };
