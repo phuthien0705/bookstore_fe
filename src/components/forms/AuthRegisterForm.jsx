@@ -136,11 +136,12 @@ const AuthRegisterForm = ({ ...others }) => {
                     try {
                         const req = { name: values.name, email: values.email, password: values.password };
                         await register(req);
-                        const res = authService.login({
+                        authService.login({
                             accessToken: res.access_token,
                             name: res.user.name,
                             id: res.user.id,
-                            role: res.user?.role
+                            roles: res.roles,
+                            email: res.user.email
                         });
                         setShowAlertCheckMail({
                             type: 'success',

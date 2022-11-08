@@ -42,6 +42,11 @@ export default function initRequest() {
                 case 400: {
                     break;
                 }
+                case 403: {
+                    alert('Bạn không có quyền truy cập vào trang này');
+                    window.location = '/';
+                    break;
+                }
                 case 500: {
                     break;
                 }
