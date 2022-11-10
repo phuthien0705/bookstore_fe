@@ -24,8 +24,9 @@ import { createGenre, editGenre } from 'apis/genre.api';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from 'store/snackbarReducer';
 import { createAuthor, editAuthor } from 'apis/author.api';
+import createRequest from 'common/createRequest';
 
-const AuthorModal = ({ handleClose, open, currentProduct }) => {
+const AuthorModal = ({ handleClose, open, currentProduct, refetchAfterClose }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
 
@@ -67,22 +68,22 @@ const AuthorModal = ({ handleClose, open, currentProduct }) => {
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
-                        const req = {
+                        const req = createRequest({
                             name: values.name,
                             bio: values.bio,
                             address: values.address,
                             phone: values.phone,
                             email: values.email
-                        };
+                        });
                         if (data === null) {
-                            await createAuthor(data);
+                            await createAuthor(req);
                         } else {
                             await editAuthor(data?.id, req);
                         }
                         setStatus({ success: true });
                         setSubmitting(false);
-                        // setShowAlert({ type: 'success', content: `${'Cập nhật'} thành công` });
                         toast({ type: 'success', message: `${data === null ? 'Tạo' : 'Cập nhật'} thành công` });
+                        refetchAfterClose();
                         setTimeout(() => {
                             handleClose();
                         }, 1000);
@@ -248,6 +249,7 @@ const AuthorModal = ({ handleClose, open, currentProduct }) => {
 AuthorModal.propTypes = {
     open: PropTypes.bool,
     handleClose: PropTypes.func,
-    currentProduct: PropTypes.any
+    currentProduct: PropTypes.any,
+    refetchAfterClose: PropTypes.func
 };
 export default AuthorModal;

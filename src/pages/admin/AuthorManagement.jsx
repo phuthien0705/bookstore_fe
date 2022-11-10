@@ -43,6 +43,14 @@ const AuthorManagement = () => {
     const handleCloseProductModal = useCallback(() => {
         setCurrentProduct(null);
     }, []);
+    const fetchData = useCallback(async () => {
+        try {
+            const res = await getAllAuthor();
+            setRows(res.authors);
+        } catch (error) {
+            toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
+        }
+    }, [toast]);
     const columns = [
         { field: 'id', headerName: 'ID', description: 'ID sản phẩm', width: 50 },
         { field: 'name', headerName: 'Tên sản phẩm', description: 'Tên sản phẩm', flex: 1 },
@@ -72,11 +80,8 @@ const AuthorManagement = () => {
         console.log({ currentProduct, rows });
     });
     useEffect(() => {
-        (async () => {
-            const res = await getAllAuthor();
-            setRows(res.authors);
-        })();
-    }, []);
+        fetchData();
+    }, [fetchData]);
 
     return (
         <>
@@ -122,7 +127,12 @@ const AuthorManagement = () => {
                         pagination
                     />
                 </Box>
-                <AuthorModal open={currentProduct !== null} currentProduct={currentProduct} handleClose={handleCloseProductModal} />
+                <AuthorModal
+                    open={currentProduct !== null}
+                    currentProduct={currentProduct}
+                    handleClose={handleCloseProductModal}
+                    refetchAfterClose={fetchData}
+                />
             </MainCard>
         </>
     );

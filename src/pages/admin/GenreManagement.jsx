@@ -39,9 +39,18 @@ const GenreManagement = () => {
     const toggleModalEdit = useCallback((product) => {
         setCurrentProduct({ data: product });
     }, []);
-    const handleCloseProductModal = useCallback(() => {
+    const fetchData = useCallback(async () => {
+        try {
+            const res = await getAllGenre();
+            setRows(res.genres);
+        } catch (error) {
+            toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
+        }
+    }, [toast]);
+    const handleCloseProductModal = useCallback(async () => {
         setCurrentProduct(null);
     }, []);
+
     const columns = [
         { field: 'id', headerName: 'ID', description: 'ID sản phẩm', width: 50 },
         { field: 'name', headerName: 'Tên sản phẩm', description: 'Tên sản phẩm', width: 200 },
@@ -69,11 +78,8 @@ const GenreManagement = () => {
         console.log({ currentProduct, rows });
     });
     useEffect(() => {
-        (async () => {
-            const res = await getAllGenre();
-            setRows(res.genres);
-        })();
-    }, []);
+        fetchData();
+    }, [fetchData]);
 
     return (
         <>
@@ -119,7 +125,12 @@ const GenreManagement = () => {
                         pagination
                     />
                 </Box>
-                <GenreModal open={currentProduct !== null} currentProduct={currentProduct} handleClose={handleCloseProductModal} />
+                <GenreModal
+                    open={currentProduct !== null}
+                    currentProduct={currentProduct}
+                    handleClose={handleCloseProductModal}
+                    refetchAfterClose={fetchData}
+                />
             </MainCard>
         </>
     );

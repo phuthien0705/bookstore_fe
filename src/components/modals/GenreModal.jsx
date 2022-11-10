@@ -23,8 +23,9 @@ import ConfirmModal from './ConfirmModal';
 import { createGenre, editGenre } from 'apis/genre.api';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from 'store/snackbarReducer';
+import createRequest from 'common/createRequest';
 
-const GenreModal = ({ handleClose, open, currentProduct }) => {
+const GenreModal = ({ handleClose, open, currentProduct, refetchAfterClose }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
 
@@ -61,16 +62,16 @@ const GenreModal = ({ handleClose, open, currentProduct }) => {
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
-                        const req = { name: values.name, description: values.description };
+                        const req = createRequest({ name: values.name, description: values.description });
                         if (data === null) {
-                            await createGenre(data);
+                            await createGenre(req);
                         } else {
                             await editGenre(data?.id, req);
                         }
                         setStatus({ success: true });
                         setSubmitting(false);
-                        // setShowAlert({ type: 'success', content: `${'Cập nhật'} thành công` });
                         toast({ type: 'success', message: `${data === null ? 'Tạo' : 'Cập nhật'} thành công` });
+                        refetchAfterClose();
                         setTimeout(() => {
                             handleClose();
                         }, 1000);
@@ -182,6 +183,7 @@ const GenreModal = ({ handleClose, open, currentProduct }) => {
 GenreModal.propTypes = {
     open: PropTypes.bool,
     handleClose: PropTypes.func,
-    currentProduct: PropTypes.any
+    currentProduct: PropTypes.any,
+    refetchAfterClose: PropTypes.func
 };
 export default GenreModal;

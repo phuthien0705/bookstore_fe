@@ -17,10 +17,6 @@ export const snackbarSlice = createSlice({
         },
         closeSnackbar: (state) => {
             state.open = false;
-            setTimeout(() => {
-                state.message = '';
-                state.type = '';
-            }, 500);
         }
     }
 });
