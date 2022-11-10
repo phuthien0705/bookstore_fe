@@ -14,12 +14,12 @@ import {
     Alert,
     Button
 } from '@mui/material';
-import CustomModal from './CustomModal';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { useState } from 'react';
 import AnimateButton from 'components/extended/AnimateButton';
+import CustomModal from './CustomModal';
 
 const ProductAdminModal = ({ handleClose, open }) => {
     const [showAlert, setShowAlert] = useState(false);

@@ -16,7 +16,7 @@ const ImageStyle = styled('img')({
     borderRadius: 4,
     objectFit: 'cover'
 });
-const PublisherManagement = () => {
+const ProductManagement = () => {
     const [searchContent, setSearchContent] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [pageSize, setPageSize] = useState(5);
@@ -140,10 +140,19 @@ const PublisherManagement = () => {
     return (
         <>
             <MainCard title="Danh sách các sản phẩm" darkTitle>
-                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                <Stack
+                    direction={{ xs: 'column-reverse', sm: 'row' }}
+                    alignItems={{ xs: 'flex-end', sm: 'center' }}
+                    justifyContent={{ xs: 'space-between', sm: 'space-between' }}
+                    spacing={1}
+                >
                     <SearchAdminSection value={searchContent} setValue={setSearchContent} />
-                    <Button variant="contained" sx={{ padding: '5px 10px 5px 2px' }}>
-                        <Stack direction="row" alignItems="center" spacing={0.5}>
+                    <Button
+                        variant="contained"
+                        sx={{ width: { xs: '100%', sm: 'fit-content' }, whiteSpace: 'nowrap', boxShadow: 'none' }}
+                        onClick={() => setCurrentProduct({ data: null })}
+                    >
+                        <Stack sx={{ padding: '5px 10px 5px 2px' }} direction="row" alignItems="center" spacing={0.5}>
                             <AddIcon fontSize="small" />
                             <Typography>Thêm sản phẩm</Typography>
                         </Stack>
@@ -186,4 +195,4 @@ const PublisherManagement = () => {
     );
 };
 
-export default PublisherManagement;
+export default ProductManagement;

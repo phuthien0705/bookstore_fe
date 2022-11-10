@@ -10,8 +10,10 @@ import config from 'config';
 import ProductAdminModal from 'components/modals/ProductAdminModal';
 import MenuActionAdmin from 'components/menus/MenuActionAdmin';
 import CustomPagination from 'components/Paginations/CustomPagination';
-import { getAllGenre } from 'apis/genre.api';
+import { deleteGenre, getAllGenre } from 'apis/genre.api';
 import GenreModal from 'components/modals/GenreModal';
+import { useDispatch } from 'react-redux';
+import { toggleSnackbar } from 'store/snackbarReducer';
 
 const GenreManagement = () => {
     const [searchContent, setSearchContent] = useState('');
@@ -20,8 +22,20 @@ const GenreManagement = () => {
     const [page, setPage] = useState(0);
     const [rows, setRows] = useState([]);
     const [currentProduct, setCurrentProduct] = useState(null);
+    const dispatch = useDispatch();
+    const toast = useCallback(({ type, message }) => {
+        dispatch(toggleSnackbar({ open: true, message, type }));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    const deleteGenreCallback = useCallback(async (id) => {
+        try {
+            await deleteGenre(id);
+            setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+        } catch (error) {
+            toast({ type: error, message: 'Xảy ra lỗi trong quá trình xóa thể loại' });
+        }
+    }, []);
 
-    const deleteGenre = useCallback((id) => setRows((prevRows) => prevRows.filter((row) => row.id !== id)), []);
     const toggleModalEdit = useCallback((product) => {
         setCurrentProduct({ data: product });
     }, []);
@@ -43,7 +57,7 @@ const GenreManagement = () => {
                 return (
                     <MenuActionAdmin
                         id={params?.row?.id}
-                        deleteCallback={() => deleteGenre(params?.row?.id)}
+                        deleteCallback={() => deleteGenreCallback(params?.row?.id)}
                         editCallback={() => toggleModalEdit(params?.row)}
                     />
                 );
@@ -64,10 +78,19 @@ const GenreManagement = () => {
     return (
         <>
             <MainCard title="Danh sách thể loại" darkTitle>
-                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                <Stack
+                    direction={{ xs: 'column-reverse', sm: 'row' }}
+                    alignItems={{ xs: 'flex-end', sm: 'center' }}
+                    justifyContent={{ xs: 'space-between', sm: 'space-between' }}
+                    spacing={1}
+                >
                     <SearchAdminSection value={searchContent} setValue={setSearchContent} />
-                    <Button variant="contained" sx={{ padding: '5px 10px 5px 2px' }} onClick={() => setCurrentProduct({ data: null })}>
-                        <Stack direction="row" alignItems="center" spacing={0.5}>
+                    <Button
+                        variant="contained"
+                        sx={{ width: { xs: '100%', sm: 'fit-content' }, whiteSpace: 'nowrap', boxShadow: 'none' }}
+                        onClick={() => setCurrentProduct({ data: null })}
+                    >
+                        <Stack sx={{ padding: '5px 10px 5px 2px' }} direction="row" alignItems="center" spacing={0.5}>
                             <AddIcon fontSize="small" />
                             <Typography>Thêm thể loại</Typography>
                         </Stack>

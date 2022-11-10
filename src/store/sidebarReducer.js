@@ -5,7 +5,7 @@ const initialState = {
     isOpen: []
 };
 
-export const sidebarReducer = createSlice({
+export const sidebarSlice = createSlice({
     name: 'sidebar',
     initialState,
     reducers: {
@@ -21,6 +21,6 @@ export const sidebarReducer = createSlice({
     }
 });
 
-export const { toggleSidebar, setMenu, menuOpen } = sidebarReducer.actions;
+export const { toggleSidebar, setMenu, menuOpen } = sidebarSlice.actions;
 
-export default sidebarReducer.reducer;
+export default sidebarSlice.reducer;

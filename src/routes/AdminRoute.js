@@ -2,12 +2,12 @@ import { lazy } from 'react';
 import Loadable from 'components/Loadable';
 import AdminLayout from 'layout/AdminLayout';
 
-const ProductManagementPage = Loadable(lazy(() => import('pages/ProductManagement')));
-const UserManagementPage = Loadable(lazy(() => import('pages/UserManagement')));
-const PublisherManagementPage = Loadable(lazy(() => import('pages/PublisherManagement')));
-const GenreManagementPage = Loadable(lazy(() => import('pages/GenreManagement')));
-const AuthorManagementPage = Loadable(lazy(() => import('pages/AuthorManagement')));
-const DiscountManagementPage = Loadable(lazy(() => import('pages/DiscountManagement')));
+const ProductManagementPage = Loadable(lazy(() => import('pages/admin/ProductManagement')));
+const UserManagementPage = Loadable(lazy(() => import('pages/admin/UserManagement')));
+const PublisherManagementPage = Loadable(lazy(() => import('pages/admin/PublisherManagement')));
+const GenreManagementPage = Loadable(lazy(() => import('pages/admin/GenreManagement')));
+const AuthorManagementPage = Loadable(lazy(() => import('pages/admin/AuthorManagement')));
+const DiscountManagementPage = Loadable(lazy(() => import('pages/admin/DiscountManagement')));
 
 const AdminRoute = {
     path: '/',

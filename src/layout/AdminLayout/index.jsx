@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
-import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material';
+import { AppBar, Box, CssBaseline, Snackbar, SnackbarContent, Toolbar, useMediaQuery } from '@mui/material';
 import Breadcrumbs from 'components/extended/Breadcrumbs';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
@@ -10,6 +10,8 @@ import { drawerWidth } from 'store/constant';
 import { IconChevronRight } from '@tabler/icons';
 import { setMenu, toggleSidebar } from 'store/sidebarReducer';
 import authService from 'services/authService';
+import { closeSnackbar } from 'store/snackbarReducer';
+import CustomizedSnackbar from 'components/snackbar/CustomizedSnackbar';
 
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
@@ -74,32 +76,36 @@ const AdminLayout = () => {
     }, [matchDownMd]);
 
     return (
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            {/* header */}
-            <AppBar
-                enableColorOnDark
-                position="fixed"
-                color="inherit"
-                elevation={0}
-                sx={{
-                    bgcolor: theme.palette.background.default,
-                    transition: leftDrawerOpened ? theme.transitions.create('width') : 'none'
-                }}
-            >
-                <Toolbar>
-                    <Header handleLeftDrawerToggle={handleLeftDrawerToggle} hideSearch hideCart hideNoti />
-                </Toolbar>
-            </AppBar>
+        <>
+            {' '}
+            <Box sx={{ display: 'flex' }}>
+                <CssBaseline />
+                {/* header */}
+                <AppBar
+                    enableColorOnDark
+                    position="fixed"
+                    color="inherit"
+                    elevation={0}
+                    sx={{
+                        bgcolor: theme.palette.background.default,
+                        transition: leftDrawerOpened ? theme.transitions.create('width') : 'none'
+                    }}
+                >
+                    <Toolbar>
+                        <Header handleLeftDrawerToggle={handleLeftDrawerToggle} hideSearch hideCart hideNoti />
+                    </Toolbar>
+                </AppBar>
 
-            {/* drawer */}
-            <Sidebar drawerOpen={leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
+                {/* drawer */}
+                <Sidebar drawerOpen={leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
 
-            {/* main content */}
-            <Main theme={theme} open={leftDrawerOpened}>
-                <Outlet />
-            </Main>
-        </Box>
+                {/* main content */}
+                <Main theme={theme} open={leftDrawerOpened}>
+                    <Outlet />
+                </Main>
+            </Box>
+            <CustomizedSnackbar />
+        </>
     );
 };
 

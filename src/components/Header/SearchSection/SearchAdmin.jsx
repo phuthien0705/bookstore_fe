@@ -18,9 +18,8 @@ const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(({ theme 
     [theme.breakpoints.down('lg')]: {
         width: 250
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
         width: '100%',
-        marginLeft: 4,
         background: '#fff'
     }
 }));
@@ -29,7 +28,7 @@ const SearchAdminSection = ({ value, setValue }) => {
     const theme = useTheme();
 
     return (
-        <Box>
+        <Box sx={{ width: '100%' }}>
             <OutlineInputStyle
                 id="input-search-admin"
                 size="small"
