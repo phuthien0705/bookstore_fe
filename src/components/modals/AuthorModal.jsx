@@ -23,8 +23,9 @@ import ConfirmModal from './ConfirmModal';
 import { createGenre, editGenre } from 'apis/genre.api';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from 'store/snackbarReducer';
+import { createAuthor, editAuthor } from 'apis/author.api';
 
-const GenreModal = ({ handleClose, open, currentProduct }) => {
+const AuthorModal = ({ handleClose, open, currentProduct }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
 
@@ -32,11 +33,13 @@ const GenreModal = ({ handleClose, open, currentProduct }) => {
     const [showConfirm, setShowConfirm] = useState(false);
 
     const data = currentProduct?.data;
-    console.log(data);
 
     const initialValues = {
         name: data?.name ? data?.name : '',
-        description: data?.description ? data?.description : '',
+        bio: data?.bio ? data?.bio : '',
+        address: data?.address ? data?.address : '',
+        phone: data?.phone ? data?.phone : '',
+        email: data?.email ? data?.email : '',
         submit: null
     };
     const handleExit = (currentValues) => {
@@ -56,16 +59,25 @@ const GenreModal = ({ handleClose, open, currentProduct }) => {
             <Formik
                 initialValues={initialValues}
                 validationSchema={Yup.object().shape({
-                    name: Yup.string().max(255, 'Tên thể loại tối đa 255 ký tự').required('Tên thể loại là bắt buộc'),
-                    description: Yup.string().max(255, 'Mô tả thể loại tối đa 255 ký tự')
+                    name: Yup.string().max(255, 'Tên tác giả tối đa 255 ký tự').required('Tên tác giả là bắt buộc'),
+                    bio: Yup.string().max(255, 'Tiểu sử tác giả tối đa 255 ký tự'),
+                    address: Yup.string().max(255, 'Địa chỉ tác giả tối đa 255 ký tự'),
+                    phone: Yup.string().max(255, 'Số điện thoại tác giả tối đa 255 ký tự'),
+                    email: Yup.string().email('Email phải đúng định dạng').max(255, 'Email tác giả tối đa 255 ký tự')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
-                        const req = { name: values.name, description: values.description };
+                        const req = {
+                            name: values.name,
+                            bio: values.bio,
+                            address: values.address,
+                            phone: values.phone,
+                            email: values.email
+                        };
                         if (data === null) {
-                            await createGenre(data);
+                            await createAuthor(data);
                         } else {
-                            await editGenre(data?.id, req);
+                            await editAuthor(data?.id, req);
                         }
                         setStatus({ success: true });
                         setSubmitting(false);
@@ -76,7 +88,7 @@ const GenreModal = ({ handleClose, open, currentProduct }) => {
                         }, 1000);
                     } catch (err) {
                         console.error(err);
-                        toast({ type: 'error', message: `Xảy ra lỗi trong quá trình ${data === null ? 'tạo' : 'cập nhật'} thể loại` });
+                        toast({ type: 'error', message: `Xảy ra lỗi trong quá trình ${data === null ? 'tạo' : 'cập nhật'} thể tác giả` });
                         setStatus({ success: false });
                         setSubmitting(false);
                     }
@@ -92,7 +104,7 @@ const GenreModal = ({ handleClose, open, currentProduct }) => {
                     >
                         <form noValidate onSubmit={handleSubmit}>
                             <FormControl fullWidth error={Boolean(touched.name && errors.name)} sx={{ ...theme.typography.customInput }}>
-                                <InputLabel htmlFor="outlined-adornment-name">Tên thể loại</InputLabel>
+                                <InputLabel htmlFor="outlined-adornment-name">Tên tác giả</InputLabel>
                                 <OutlinedInput
                                     id="outlined-adornment-name"
                                     type="text"
@@ -100,7 +112,7 @@ const GenreModal = ({ handleClose, open, currentProduct }) => {
                                     name="name"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
-                                    label="Tên thể loại"
+                                    label="Tên tác giả"
                                     inputProps={{}}
                                 />
                                 {touched.name && errors.name && (
@@ -109,25 +121,79 @@ const GenreModal = ({ handleClose, open, currentProduct }) => {
                                     </FormHelperText>
                                 )}
                             </FormControl>
-                            <FormControl
-                                fullWidth
-                                error={Boolean(touched.description && errors.description)}
-                                sx={{ ...theme.typography.customInput }}
-                            >
-                                <InputLabel htmlFor="outlined-adornment-description">Mô tả thể loại</InputLabel>
+                            <FormControl fullWidth error={Boolean(touched.bio && errors.bio)} sx={{ ...theme.typography.customInput }}>
+                                <InputLabel htmlFor="outlined-adornment-bio">Tiểu sử tác giả</InputLabel>
                                 <OutlinedInput
-                                    id="outlined-adornment-description"
+                                    id="outlined-adornment-bio"
                                     type="text"
-                                    value={values.description}
-                                    name="description"
+                                    value={values.bio}
+                                    name="bio"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
-                                    label="Mô tả thể loại"
+                                    label="Tiểu sử tác giả"
                                     inputProps={{}}
                                 />
-                                {touched.description && errors.description && (
-                                    <FormHelperText error id="standard-weight-helper-text-description">
-                                        {errors.description}
+                                {touched.bio && errors.bio && (
+                                    <FormHelperText error id="standard-weight-helper-text-bio">
+                                        {errors.bio}
+                                    </FormHelperText>
+                                )}
+                            </FormControl>
+                            <FormControl
+                                fullWidth
+                                error={Boolean(touched.address && errors.address)}
+                                sx={{ ...theme.typography.customInput }}
+                            >
+                                <InputLabel htmlFor="outlined-adornment-address">Địa chỉ tác giả</InputLabel>
+                                <OutlinedInput
+                                    id="outlined-adornment-address"
+                                    type="text"
+                                    value={values.address}
+                                    name="address"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    label="Địa chỉ tác giả"
+                                    inputProps={{}}
+                                />
+                                {touched.address && errors.address && (
+                                    <FormHelperText error id="standard-weight-helper-text-address">
+                                        {errors.address}
+                                    </FormHelperText>
+                                )}
+                            </FormControl>
+                            <FormControl fullWidth error={Boolean(touched.phone && errors.phone)} sx={{ ...theme.typography.customInput }}>
+                                <InputLabel htmlFor="outlined-adornment-phone">Số điện thoại tác giả</InputLabel>
+                                <OutlinedInput
+                                    id="outlined-adornment-phone"
+                                    type="text"
+                                    value={values.phone}
+                                    name="phone"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    label="Số điện thoại tác giả"
+                                    inputProps={{}}
+                                />
+                                {touched.phone && errors.phone && (
+                                    <FormHelperText error id="standard-weight-helper-text-phone">
+                                        {errors.phone}
+                                    </FormHelperText>
+                                )}
+                            </FormControl>
+                            <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
+                                <InputLabel htmlFor="outlined-adornment-email">Email tác giả</InputLabel>
+                                <OutlinedInput
+                                    id="outlined-adornment-email"
+                                    type="email"
+                                    value={values.email}
+                                    name="email"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    label="Email tác giả"
+                                    inputProps={{}}
+                                />
+                                {touched.email && errors.email && (
+                                    <FormHelperText error id="standard-weight-helper-text-email">
+                                        {errors.email}
                                     </FormHelperText>
                                 )}
                             </FormControl>
@@ -179,9 +245,9 @@ const GenreModal = ({ handleClose, open, currentProduct }) => {
         </>
     ) : null;
 };
-GenreModal.propTypes = {
+AuthorModal.propTypes = {
     open: PropTypes.bool,
     handleClose: PropTypes.func,
     currentProduct: PropTypes.any
 };
-export default GenreModal;
+export default AuthorModal;

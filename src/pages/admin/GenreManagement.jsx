@@ -7,7 +7,6 @@ import LinearProgress from '@mui/material/LinearProgress';
 import CustomNoRowsOverlay from 'components/empty/CustomNoRowsOverlay';
 import AddIcon from '@mui/icons-material/Add';
 import config from 'config';
-import ProductAdminModal from 'components/modals/ProductAdminModal';
 import MenuActionAdmin from 'components/menus/MenuActionAdmin';
 import CustomPagination from 'components/Paginations/CustomPagination';
 import { deleteGenre, getAllGenre } from 'apis/genre.api';
@@ -32,8 +31,9 @@ const GenreManagement = () => {
             await deleteGenre(id);
             setRows((prevRows) => prevRows.filter((row) => row.id !== id));
         } catch (error) {
-            toast({ type: error, message: 'Xảy ra lỗi trong quá trình xóa thể loại' });
+            toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình xóa thể loại' });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const toggleModalEdit = useCallback((product) => {

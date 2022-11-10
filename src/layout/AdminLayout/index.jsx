@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
-import { AppBar, Box, CssBaseline, Snackbar, SnackbarContent, Toolbar, useMediaQuery } from '@mui/material';
+import { AppBar, Box, CssBaseline, Snackbar, Toolbar, useMediaQuery } from '@mui/material';
 import Breadcrumbs from 'components/extended/Breadcrumbs';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';

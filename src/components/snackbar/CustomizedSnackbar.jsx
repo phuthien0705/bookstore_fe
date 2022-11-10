@@ -26,7 +26,7 @@ const CustomizedSnackbar = () => {
                 onClose={() => {
                     dispatch(closeSnackbar());
                 }}
-                severity={typeSnackbar}
+                severity={typeSnackbar || 'success'}
                 sx={{ width: '100%' }}
             >
                 {messageSnackbar}
