@@ -11,7 +11,7 @@ const CustomPagination = () => {
             sx={{ marginRight: 2 }}
             variant="outlined"
             shape="rounded"
-            color="secondary"
+            color="primary"
             count={pageCount}
             page={page + 1}
             onChange={(event, value) => apiRef.current.setPage(value - 1)}

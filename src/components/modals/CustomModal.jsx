@@ -1,12 +1,10 @@
-import { Box, Button, Dialog, DialogTitle, Drawer, Stack, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogTitle, Drawer, IconButton, Stack, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CloseIcon from '@mui/icons-material/Close';
 
 const CustomModal = ({ children, handleClose, open, title }) => {
     const matches = useMediaQuery('(min-width:768px)');
-
-    console.log(open);
     return matches ? (
         <Dialog onClose={() => handleClose()} open={open}>
             <Stack direction="column" sx={{ padding: 2 }} spacing={2}>
@@ -14,11 +12,13 @@ const CustomModal = ({ children, handleClose, open, title }) => {
                     <Typography fontWeight="bold" fontSize="20px">
                         {title}
                     </Typography>
-                    <CloseIcon
+                    <IconButton
                         onClick={() => {
                             handleClose();
                         }}
-                    />
+                    >
+                        <CloseIcon />
+                    </IconButton>
                 </Box>
                 <Box>{children}</Box>
             </Stack>
@@ -42,11 +42,13 @@ const CustomModal = ({ children, handleClose, open, title }) => {
                 <Typography fontWeight="bold" fontSize="20px">
                     {title}
                 </Typography>
-                <CloseIcon
+                <IconButton
                     onClick={() => {
                         handleClose();
                     }}
-                />
+                >
+                    <CloseIcon />
+                </IconButton>
             </Box>
             <Box sx={{ padding: 2 }}>{children}</Box>
         </Drawer>
