@@ -7,9 +7,10 @@ class AuthService {
     //   cookie.set('accessToken', accessToken, { expires: 1 });
     // };
 
-    login = ({ accessToken, name, role, id, ...rest }) => {
+    login = ({ accessToken, name, roles, id, email, ...rest }) => {
         cookie.set('accessToken', `${accessToken}`, { expires: 7 });
-        const userPayload = { name, role, id };
+        const userPayload = { name, roles, id, email };
+        console.log(userPayload);
         const userStringify = JSON.stringify(userPayload);
         localStorage.setItem('user', userStringify);
     };

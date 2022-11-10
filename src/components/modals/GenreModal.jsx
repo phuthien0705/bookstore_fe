@@ -21,19 +21,24 @@ import { Formik } from 'formik';
 import { useState } from 'react';
 import AnimateButton from 'components/extended/AnimateButton';
 
-const ProductAdminModal = ({ handleClose, open }) => {
+const GenreModal = ({ handleClose, open, currentProduct }) => {
     const [showAlert, setShowAlert] = useState(false);
     const theme = useTheme();
+    const data = currentProduct?.data;
+    console.log(data);
+    const initialValues = {
+        name: data?.name ? data?.name : '',
+        description: data?.description ? data?.description : '',
+        submit: null
+    };
 
     return (
-        <CustomModal open={open} handleClose={handleClose} title={'Chỉnh sửa'} submitContent={'Lưu'}>
+        <CustomModal open={open} handleClose={handleClose} title={data === null ? 'Tạo thể loại' : 'Chỉnh sửa thể loại'}>
             <Formik
-                initialValues={{
-                    email: '',
-                    submit: null
-                }}
+                initialValues={initialValues}
                 validationSchema={Yup.object().shape({
-                    email: Yup.string().email('Email phải đúng định dạng').max(255, 'Email tối đa 255 ký tự').required('Email là bắt buộc')
+                    name: Yup.string().max(255, 'Tên thể loại tối đa 255 ký tự').required('Tên thể loại là bắt buộc'),
+                    description: Yup.string().max(255, 'Mô tả thể loại tối đa 255 ký tự').required('Mô tả thể loại là bắt buộc')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
@@ -65,25 +70,46 @@ const ProductAdminModal = ({ handleClose, open }) => {
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit}>
-                        <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-                            <InputLabel htmlFor="outlined-adornment-email-login">Email</InputLabel>
+                        <FormControl fullWidth error={Boolean(touched.name && errors.name)} sx={{ ...theme.typography.customInput }}>
+                            <InputLabel htmlFor="outlined-adornment-name-login">Tên thể loại</InputLabel>
                             <OutlinedInput
-                                id="outlined-adornment-email-login"
-                                type="email"
-                                value={values.email}
-                                name="email"
+                                id="outlined-adornment-name-login"
+                                type="text"
+                                value={values.name}
+                                name="name"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                label="Email"
+                                label="Tên thể loại"
                                 inputProps={{}}
                             />
-                            {touched.email && errors.email && (
-                                <FormHelperText error id="standard-weight-helper-text-email-login">
-                                    {errors.email}
+                            {touched.name && errors.name && (
+                                <FormHelperText error id="standard-weight-helper-text-name-login">
+                                    {errors.name}
                                 </FormHelperText>
                             )}
                         </FormControl>
-
+                        <FormControl
+                            fullWidth
+                            error={Boolean(touched.description && errors.description)}
+                            sx={{ ...theme.typography.customInput }}
+                        >
+                            <InputLabel htmlFor="outlined-adornment-description-login">Mô tả thể loại</InputLabel>
+                            <OutlinedInput
+                                id="outlined-adornment-description-login"
+                                type="text"
+                                value={values.description}
+                                name="description"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                label="Mô tả thể loại"
+                                inputProps={{}}
+                            />
+                            {touched.description && errors.description && (
+                                <FormHelperText error id="standard-weight-helper-text-description-login">
+                                    {errors.description}
+                                </FormHelperText>
+                            )}
+                        </FormControl>
                         {errors.submit && (
                             <Box sx={{ mt: 3 }}>
                                 <FormHelperText error>{errors.submit}</FormHelperText>
@@ -101,7 +127,7 @@ const ProductAdminModal = ({ handleClose, open }) => {
                                     variant="contained"
                                     color="primary"
                                 >
-                                    Lưu
+                                    {data === null ? 'Tạo' : 'Lưu'}
                                 </Button>
                             </AnimateButton>
                             {!!showAlert && (
@@ -121,8 +147,9 @@ const ProductAdminModal = ({ handleClose, open }) => {
         </CustomModal>
     );
 };
-ProductAdminModal.propTypes = {
+GenreModal.propTypes = {
     open: PropTypes.bool,
-    handleClose: PropTypes.func
+    handleClose: PropTypes.func,
+    currentProduct: PropTypes.any
 };
-export default ProductAdminModal;
+export default GenreModal;

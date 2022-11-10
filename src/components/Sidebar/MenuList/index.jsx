@@ -2,7 +2,7 @@
 import { Typography, List, Divider } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import NavItem from './NavItem';
-import { IconUsers, IconBook2 } from '@tabler/icons';
+import { IconUsers, IconBook2, IconShoppingCartDiscount, IconUser, IconCategory, IconBuilding } from '@tabler/icons';
 
 const MenuList = () => {
     const listItem = [
@@ -10,6 +10,26 @@ const MenuList = () => {
             title: 'Sản phẩm',
             url: '/admin/product',
             icon: IconBook2
+        },
+        {
+            title: 'Nhà xuất bản',
+            url: '/admin/publisher',
+            icon: IconBuilding
+        },
+        {
+            title: 'Thể loại',
+            url: '/admin/genre',
+            icon: IconCategory
+        },
+        {
+            title: 'Tác giả',
+            url: '/admin/author',
+            icon: IconUser
+        },
+        {
+            title: 'Mã giảm giá',
+            url: '/admin/discount',
+            icon: IconShoppingCartDiscount
         },
         {
             title: 'Người dùng',

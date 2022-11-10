@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
@@ -9,6 +9,7 @@ import Sidebar from '../../components/Sidebar';
 import { drawerWidth } from 'store/constant';
 import { IconChevronRight } from '@tabler/icons';
 import { setMenu, toggleSidebar } from 'store/sidebarReducer';
+import authService from 'services/authService';
 
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
@@ -62,7 +63,11 @@ const AdminLayout = () => {
     const handleLeftDrawerToggle = () => {
         dispatch(toggleSidebar());
     };
-
+    useLayoutEffect(() => {
+        if (!authService.isAuthenticated()) {
+            window.location = '/login';
+        }
+    }, []);
     useEffect(() => {
         dispatch(setMenu(!matchDownMd));
         // eslint-disable-next-line react-hooks/exhaustive-deps

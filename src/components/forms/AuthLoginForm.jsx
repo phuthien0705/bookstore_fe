@@ -138,7 +138,13 @@ const AuthLoginForm = ({ ...others }) => {
                         const req = { email: values.email, password: values.password };
                         const res = await login(req);
                         console.log(res);
-                        authService.login({ accessToken: res.access_token, name: res.user.name, id: res.user.id, role: res.user?.role });
+                        authService.login({
+                            accessToken: res.access_token,
+                            name: res.user.name,
+                            id: res.user.id,
+                            roles: res.roles,
+                            email: res.user.email
+                        });
                         if (!res.is_active) {
                             await reSendVerifyEmail({ email: values.email });
                             setShowAlert({
