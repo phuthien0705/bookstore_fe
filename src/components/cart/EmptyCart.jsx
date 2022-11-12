@@ -5,12 +5,12 @@ const EmptyCart = () => {
         <Grid container>
             <Grid item xs={12}>
                 <Typography variant="h1" align="center">
-                    Cart is empty
+                    Giỏ hàng trống
                 </Typography>
             </Grid>
             <Grid item xs={12}>
                 <Typography variant="h4" align="center">
-                    Look like you have no items in your shopping cart.
+                    Bạn chưa thêm bất cứ một sản phẩm nào.
                 </Typography>
             </Grid>
         </Grid>

@@ -32,7 +32,7 @@ const ProductInfo = ({ data }) => {
                     <Grid item xs={12} sx={{ p: 2.5 }}>
                         <Stack direction="row" spacing={4}>
                             <Typography variant="body1" align="center">
-                                Quantity
+                                Số lượng
                             </Typography>
                             <QuantityButton init={1} />
                         </Stack>
@@ -42,11 +42,11 @@ const ProductInfo = ({ data }) => {
                             <ButtonBase sx={{ width: '50%' }}>
                                 <Button color="secondary" variant="contained" sx={{ width: '100%', p: 1, m: 0.5 }}>
                                     <ShoppingCartOutlined />
-                                    Add to cart
+                                    Thêm vào giỏ hàng
                                 </Button>
                             </ButtonBase>
                             <Button variant="contained" sx={{ width: '50%', p: 1, m: 0.5 }}>
-                                Buy now
+                                Mua ngay
                             </Button>
                         </Stack>
                     </Grid>

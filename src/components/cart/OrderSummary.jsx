@@ -13,14 +13,14 @@ const OrderSummary = ({ items }) => {
                     <TableHead>
                         <TableRow>
                             <TableCell colSpan={2}>
-                                <Typography variant="h5">Order Summary</Typography>
+                                <Typography variant="h5">Tổng</Typography>
                             </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         <TableRow>
                             <TableCell>
-                                <Typography variant="body1">Sub Total</Typography>
+                                <Typography variant="body1">Tổng tiền</Typography>
                             </TableCell>
                             <TableCell align="right">
                                 <Typography variant="h5">{subsum}</Typography>
@@ -28,7 +28,7 @@ const OrderSummary = ({ items }) => {
                         </TableRow>
                         <TableRow>
                             <TableCell>
-                                <Typography variant="body1">Coupon Discount</Typography>
+                                <Typography variant="body1">Mã giảm</Typography>
                             </TableCell>
                             <TableCell align="right">
                                 <Typography variant="h5">-</Typography>
@@ -36,7 +36,7 @@ const OrderSummary = ({ items }) => {
                         </TableRow>
                         <TableRow>
                             <TableCell>
-                                <Typography variant="h5">Total</Typography>
+                                <Typography variant="h5">Còn lại</Typography>
                             </TableCell>
                             <TableCell align="right">
                                 <Typography variant="h5">{subsum.toString()}</Typography>
