@@ -11,18 +11,22 @@ import EmptyCart from './EmptyCart';
 const sampleData = [
     {
         id: 0,
-        name: 'product 0',
-        description: 'Ga osi ovemosoki kon hohon raepi jegjoted no ki waetahe',
+        name: 'Gatsby Vĩ Đại',
+        description:
+            'Kiệt tác Gatsby vĩ đại (1925) của văn hào Mỹ F. Scott Fitzgerald (1896-1940) là câu chuyện về chàng trai Jay Gatsby muốn thoát khỏi thân phận nghèo hèn và đặt chân vào tầng lớp cao sang mà hiện thân là một cô gái nhà giầu anh đã yêu và được yêu khi còn khoác trên vai bộ quân phục không phân biệt đẳng cấp giầu nghèo.',
         image: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
-        price: '29999',
+        price: '30000',
+        rating: 4.5,
         quantity: 1
     },
     {
         id: 1,
-        name: 'product 1',
-        description: 'Ga osi ovemosoki kon hohon raepi jegjoted no ki waetahe',
+        name: 'Không Gia Đình (Bìa Cứng)',
+        description:
+            'Không gia đình là tiểu thuyết nổi tiếng nhất trong sự nghiệp văn chương của Hector Malot. Hơn một trăm năm nay, tác phẩm giành giải thưởng của Viện Hàn Lâm Văn học Pháp này đã trở thành người bạn thân thiết của thiếu nhi và tất cả những người yêu mến trẻ khắp thế giới.',
         image: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
-        price: '29999',
+        price: '130000',
+        rating: 4.5,
         quantity: 1
     }
 ];
@@ -41,9 +45,9 @@ const CartItems = () => {
         <Grid container>
             <Grid item xs={12}>
                 <Tabs value={value} onChange={handleChange}>
-                    <Tab icon={<ShoppingCart />} label="Product Added" />
-                    <Tab icon={<Apartment />} label="Address" disabled />
-                    <Tab icon={<Payment />} label="Payment" disabled />
+                    <Tab icon={<ShoppingCart />} label="Giỏ" />
+                    <Tab icon={<Apartment />} label="Thông tin địa chỉ" disabled />
+                    <Tab icon={<Payment />} label="Thanh toán" disabled />
                 </Tabs>
             </Grid>
             <Grid item xs={12}>

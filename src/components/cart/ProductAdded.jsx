@@ -6,7 +6,7 @@ const ProductAdded = ({ amount }) => {
     return (
         <Stack direction="row" spacing={1} sx={{ m: 3 }}>
             <div>
-                <Typography variant="h5">Cart Item</Typography>
+                <Typography variant="h5">Sản phẩm</Typography>
             </div>
             <div>
                 <Typography variant="body1">({amount})</Typography>

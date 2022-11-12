@@ -20,16 +20,16 @@ const ItemTable = ({ items }) => {
                 <TableHead>
                     <TableRow>
                         <TableCell>
-                            <Typography variant="h5">Product</Typography>
+                            <Typography variant="h5">Sản phẩm</Typography>
                         </TableCell>
                         <TableCell>
-                            <Typography variant="h5">Price</Typography>
+                            <Typography variant="h5">Giá</Typography>
                         </TableCell>
                         <TableCell>
-                            <Typography variant="h5">Quantity</Typography>
+                            <Typography variant="h5">Số lượng</Typography>
                         </TableCell>
                         <TableCell colSpan={2}>
-                            <Typography variant="h5">Total</Typography>
+                            <Typography variant="h5">Tổng</Typography>
                         </TableCell>
                     </TableRow>
                 </TableHead>
