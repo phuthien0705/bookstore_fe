@@ -5,8 +5,9 @@ import ProductCard from 'components/cards/products/ProductCard';
 
 const sampleData = {
     id: 0,
-    name: 'product 1',
-    description: 'Ga osi ovemosoki kon hohon raepi jegjoted no ki waetahe',
+    name: 'Gatsby Vĩ Đại',
+    description:
+        'Kiệt tác Gatsby vĩ đại (1925) của văn hào Mỹ F. Scott Fitzgerald (1896-1940) là câu chuyện về chàng trai Jay Gatsby muốn thoát khỏi thân phận nghèo hèn và đặt chân vào tầng lớp cao sang mà hiện thân là một cô gái nhà giầu anh đã yêu và được yêu khi còn khoác trên vai bộ quân phục không phân biệt đẳng cấp giầu nghèo.',
     image: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
     price: '30000',
     rating: 4.5
@@ -14,12 +15,12 @@ const sampleData = {
 
 const sampleSpec = {
     id: 0,
-    provider: 'dsfwgefw',
-    author: 'sqf psoa',
-    publisher: 'serwa dsfagpb asdg',
-    totalpages: 100,
-    weight: 500,
-    datepublished: '2022'
+    provider: 'Cty Sách Hương Giang',
+    author: 'F Scott Fitzgerald',
+    publisher: 'Thế Giới',
+    totalpages: 200,
+    weight: 550,
+    datepublished: '06/2015'
 };
 
 const ProductDetail = () => {
@@ -31,16 +32,16 @@ const ProductDetail = () => {
                 </Stack>
                 <Stack sx={{ p: 4 }}>
                     <Typography variant="h3" sx={{ p: 3 }}>
-                        Thong tin
+                        Thông tin sản phẩm
                     </Typography>
                     <Stack direction="row" spacing={9}>
                         <div>
-                            <Typography variant="h4">Nha cung cap</Typography>
-                            <Typography variant="h4">Tac gia</Typography>
-                            <Typography variant="h4">Nha xuat ban</Typography>
-                            <Typography variant="h4">Tong so trang</Typography>
-                            <Typography variant="h4">Trong luong</Typography>
-                            <Typography variant="h4">Nam xuat ban</Typography>
+                            <Typography variant="h4">Nhà Cung Cấp</Typography>
+                            <Typography variant="h4">Tác giả</Typography>
+                            <Typography variant="h4">NXB</Typography>
+                            <Typography variant="h4">Số trang</Typography>
+                            <Typography variant="h4">Trọng lượng (gr)</Typography>
+                            <Typography variant="h4">Năm XB</Typography>
                         </div>
                         <div>
                             <Typography variant="body2">{sampleSpec.provider}</Typography>
@@ -53,7 +54,7 @@ const ProductDetail = () => {
                     </Stack>
                 </Stack>
             </Paper>
-            <h2> Related Product </h2>
+            <h2> Sản phẩm liên quan </h2>
             <ProductSlides />
         </Container>
     );

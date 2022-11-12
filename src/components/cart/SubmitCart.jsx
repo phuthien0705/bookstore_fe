@@ -9,7 +9,7 @@ const SubmitCart = () => {
                     <IconButton disableRipple disableFocusRipple>
                         <ArrowBack />
                     </IconButton>
-                    Continue Shopping
+                    Tiếp tục mua hàng
                 </ButtonBase>
             </Grid>
             <Grid item xs={4}>
@@ -18,13 +18,13 @@ const SubmitCart = () => {
                         <Paper variant="outlined" sx={{ width: 594, display: 'flex', flexDirection: 'row' }}>
                             <InputBase placeholder="Coupon Code" sx={{ width: 500, m: 1 }} />
                             <Button variant="text" sx={{ width: '20%' }}>
-                                Apply
+                                Áp dụng
                             </Button>
                         </Paper>
                     </form>
                     <div style={{ width: '100%' }}>
                         <Button variant="contained" fullWidth>
-                            Checkout
+                            Tiếp theo
                         </Button>
                     </div>
                 </Stack>
