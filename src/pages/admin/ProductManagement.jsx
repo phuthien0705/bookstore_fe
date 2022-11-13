@@ -8,9 +8,12 @@ import CustomNoRowsOverlay from 'components/empty/CustomNoRowsOverlay';
 import AddIcon from '@mui/icons-material/Add';
 import { styled } from '@mui/material/styles';
 import config from 'config';
-import ProductAdminModal from 'components/modals/ProductAdminModal';
 import MenuActionAdmin from 'components/menus/MenuActionAdmin';
 import CustomPagination from 'components/Paginations/CustomPagination';
+import { deleteBook, getAllBook } from 'apis/product.api';
+import { useDispatch } from 'react-redux';
+import { toggleSnackbar } from 'store/snackbarReducer';
+import BookModal from 'components/modals/BookModal';
 const ImageStyle = styled('img')({
     width: '80%',
     borderRadius: 4,
@@ -24,21 +27,38 @@ const ProductManagement = () => {
     const [selectionModel, setSelectionModel] = useState([]);
     const [rows, setRows] = useState([]);
     const [currentProduct, setCurrentProduct] = useState(null);
-
-    const deleteProduct = useCallback(
-        (id) => () => {
-            setTimeout(() => {
-                setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-            });
-        },
-        []
-    );
-    const toggleModalEdit = useCallback((product) => {
-        setCurrentProduct(product);
+    const dispatch = useDispatch();
+    const toast = useCallback(({ type, message }) => {
+        dispatch(toggleSnackbar({ open: true, message, type }));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    const handleCloseProductModal = useCallback(() => {
+    const deleteBookCallback = useCallback(async (id) => {
+        try {
+            await deleteBook(id);
+            setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+        } catch (error) {
+            toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình xóa thể loại' });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    const toggleModalEdit = useCallback((product) => {
+        setCurrentProduct({ data: product });
+    }, []);
+    const handleCloseModal = useCallback(() => {
         setCurrentProduct(null);
     }, []);
+    const fetchData = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            const res = await getAllBook();
+
+            setRows(res.data);
+            setIsLoading(false);
+        } catch (error) {
+            toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
+            setIsLoading(false);
+        }
+    }, [toast]);
     const columns = [
         { field: 'id', headerName: 'ID', description: 'ID sản phẩm', width: 50 },
         {
@@ -62,12 +82,12 @@ const ProductManagement = () => {
             headerName: 'Thao tác',
             description: 'Thao tác',
             width: 80,
-
+            sortable: false,
             renderCell: (params) => {
                 return (
                     <MenuActionAdmin
                         id={params?.row?.id}
-                        deleteCallback={() => deleteProduct(params?.row?.id)}
+                        deleteCallback={() => deleteBookCallback(params?.row?.id)}
                         editCallback={() => toggleModalEdit(params?.row)}
                     />
                 );
@@ -130,13 +150,14 @@ const ProductManagement = () => {
             quantity: 100
         }
     ];
+
     useEffect(() => {
-        setRows(sampleData);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    useEffect(() => {
-        console.log({ selectionModel, currentProduct });
+        console.log({ selectionModel, currentProduct, rows });
     });
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
+    console.log(process.env.REACT_APP_API_URL);
     return (
         <>
             <MainCard title="Danh sách các sản phẩm" darkTitle>
@@ -149,7 +170,7 @@ const ProductManagement = () => {
                     <SearchAdminSection value={searchContent} setValue={setSearchContent} />
                     <Button
                         variant="contained"
-                        sx={{ width: { xs: '100%', sm: 'fit-content' }, whiteSpace: 'nowrap', boxShadow: 'none' }}
+                        sx={{ width: { xs: '100%', sm: '18rem' }, whiteSpace: 'nowrap', boxShadow: 'none' }}
                         onClick={() => setCurrentProduct({ data: null })}
                     >
                         <Stack sx={{ padding: '5px 10px 5px 2px' }} direction="row" alignItems="center" spacing={0.5}>
@@ -189,7 +210,12 @@ const ProductManagement = () => {
                         selectionModel={selectionModel}
                     />
                 </Box>
-                <ProductAdminModal open={currentProduct !== null} handleClose={handleCloseProductModal} />
+                <BookModal
+                    open={currentProduct !== null}
+                    currentProduct={currentProduct}
+                    handleClose={handleCloseModal}
+                    refetchAfterClose={fetchData}
+                />
             </MainCard>
         </>
     );

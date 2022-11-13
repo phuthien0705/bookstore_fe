@@ -7,7 +7,7 @@ function getAccessToken() {
 }
 
 const requestConfig = {
-    baseURL: process.env.API_BASE_URL || 'https://bookstore-39jw3.ondigitalocean.app/api'
+    baseURL: process.env.REACT_APP_API_URL
 };
 
 export const axiosInstance = axios.create(requestConfig);

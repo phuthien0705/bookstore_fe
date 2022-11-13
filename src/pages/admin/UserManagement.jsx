@@ -9,7 +9,6 @@ import AddIcon from '@mui/icons-material/Add';
 
 import { styled } from '@mui/material/styles';
 import config from 'config';
-import ProductAdminModal from 'components/modals/ProductAdminModal';
 import MenuActionAdmin from 'components/menus/MenuActionAdmin';
 import CustomPagination from 'components/Paginations/CustomPagination';
 import CustomChip from 'components/chip/CustomChip';
@@ -202,7 +201,7 @@ const UserManagement = () => {
                         selectionModel={selectionModel}
                     />
                 </Box>
-                <ProductAdminModal open={currentProduct !== null} handleClose={handleCloseProductModal} />
+                {/* <ProductAdminModal open={currentProduct !== null} handleClose={handleCloseProductModal} /> */}
             </MainCard>
         </>
     );
