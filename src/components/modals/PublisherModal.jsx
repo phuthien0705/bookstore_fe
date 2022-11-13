@@ -20,12 +20,12 @@ import AnimateButton from 'components/extended/AnimateButton';
 import CustomModal from './CustomModal';
 import objectEquals from 'common/objectEquals';
 import ConfirmModal from './ConfirmModal';
-import { createGenre, editGenre } from 'apis/genre.api';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from 'store/snackbarReducer';
 import createRequest from 'common/createRequest';
+import { createPublisher, editPublisher } from 'apis/publisher.api';
 
-const GenreModal = ({ handleClose, open, currentProduct, refetchAfterClose }) => {
+const PublisherModal = ({ handleClose, open, currentProduct, refetchAfterClose }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
 
@@ -37,6 +37,8 @@ const GenreModal = ({ handleClose, open, currentProduct, refetchAfterClose }) =>
     const initialValues = {
         name: data?.name ? data?.name : '',
         description: data?.description ? data?.description : '',
+        address: data?.address ? data?.address : '',
+        phone: data?.phone ? data?.phone : '',
         submit: null
     };
     const handleExit = (currentValues) => {
@@ -55,16 +57,21 @@ const GenreModal = ({ handleClose, open, currentProduct, refetchAfterClose }) =>
             <Formik
                 initialValues={initialValues}
                 validationSchema={Yup.object().shape({
-                    name: Yup.string().max(255, 'Tên thể loại tối đa 255 ký tự').required('Tên thể loại là bắt buộc'),
-                    description: Yup.string().max(255, 'Mô tả thể loại tối đa 255 ký tự')
+                    name: Yup.string().max(255, 'Tên nhà xuất bản tối đa 255 ký tự').required('Tên nhà xuất bản là bắt buộc'),
+                    description: Yup.string().max(255, 'Mô tả nhà xuất bản tối đa 255 ký tự')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
-                        const req = createRequest({ name: values.name, description: values.description });
+                        const req = createRequest({
+                            name: values.name,
+                            description: values.description,
+                            address: values.address,
+                            phone: values.phone
+                        });
                         if (data === null) {
-                            await createGenre(req);
+                            await createPublisher(req);
                         } else {
-                            await editGenre(data?.id, req);
+                            await editPublisher(data?.id, req);
                         }
                         setStatus({ success: true });
                         setSubmitting(false);
@@ -75,7 +82,7 @@ const GenreModal = ({ handleClose, open, currentProduct, refetchAfterClose }) =>
                         }, 1000);
                     } catch (err) {
                         console.error(err);
-                        toast({ type: 'error', message: `Xảy ra lỗi trong quá trình ${data === null ? 'tạo' : 'cập nhật'} thể loại` });
+                        toast({ type: 'error', message: `Xảy ra lỗi trong quá trình ${data === null ? 'tạo' : 'cập nhật'} nhà xuất bản` });
                         setStatus({ success: false });
                         setSubmitting(false);
                     }
@@ -87,11 +94,11 @@ const GenreModal = ({ handleClose, open, currentProduct, refetchAfterClose }) =>
                         handleClose={() => {
                             handleExit(values);
                         }}
-                        title={data === null ? 'Tạo thể loại' : 'Chỉnh sửa thể loại'}
+                        title={data === null ? 'Tạo nhà xuất bản' : 'Chỉnh sửa nhà xuất bản'}
                     >
                         <form noValidate onSubmit={handleSubmit}>
                             <FormControl fullWidth error={Boolean(touched.name && errors.name)} sx={{ ...theme.typography.customInput }}>
-                                <InputLabel htmlFor="outlined-adornment-name">Tên thể loại</InputLabel>
+                                <InputLabel htmlFor="outlined-adornment-name">Tên nhà xuất bản</InputLabel>
                                 <OutlinedInput
                                     id="outlined-adornment-name"
                                     type="text"
@@ -99,7 +106,7 @@ const GenreModal = ({ handleClose, open, currentProduct, refetchAfterClose }) =>
                                     name="name"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
-                                    label="Tên thể loại"
+                                    label="Tên nhà xuất bản"
                                     inputProps={{}}
                                 />
                                 {touched.name && errors.name && (
@@ -113,7 +120,7 @@ const GenreModal = ({ handleClose, open, currentProduct, refetchAfterClose }) =>
                                 error={Boolean(touched.description && errors.description)}
                                 sx={{ ...theme.typography.customInput }}
                             >
-                                <InputLabel htmlFor="outlined-adornment-description">Mô tả thể loại</InputLabel>
+                                <InputLabel htmlFor="outlined-adornment-description">Mô tả nhà xuất bản</InputLabel>
                                 <OutlinedInput
                                     id="outlined-adornment-description"
                                     type="text"
@@ -121,12 +128,52 @@ const GenreModal = ({ handleClose, open, currentProduct, refetchAfterClose }) =>
                                     name="description"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
-                                    label="Mô tả thể loại"
+                                    label="Mô tả nhà xuất bản"
                                     inputProps={{}}
                                 />
                                 {touched.description && errors.description && (
                                     <FormHelperText error id="standard-weight-helper-text-description">
                                         {errors.description}
+                                    </FormHelperText>
+                                )}
+                            </FormControl>
+                            <FormControl
+                                fullWidth
+                                error={Boolean(touched.address && errors.address)}
+                                sx={{ ...theme.typography.customInput }}
+                            >
+                                <InputLabel htmlFor="outlined-adornment-address">Địa chỉ nhà xuất bản</InputLabel>
+                                <OutlinedInput
+                                    id="outlined-adornment-address"
+                                    type="text"
+                                    value={values.address}
+                                    name="address"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    label="Địa chỉ nhà xuất bản"
+                                    inputProps={{}}
+                                />
+                                {touched.address && errors.address && (
+                                    <FormHelperText error id="standard-weight-helper-text-address">
+                                        {errors.address}
+                                    </FormHelperText>
+                                )}
+                            </FormControl>
+                            <FormControl fullWidth error={Boolean(touched.phone && errors.phone)} sx={{ ...theme.typography.customInput }}>
+                                <InputLabel htmlFor="outlined-adornment-phone">Số điện thoại nhà xuất bản</InputLabel>
+                                <OutlinedInput
+                                    id="outlined-adornment-phone"
+                                    type="text"
+                                    value={values.phone}
+                                    name="phone"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    label="Số điện thoại nhà xuất bản"
+                                    inputProps={{}}
+                                />
+                                {touched.phone && errors.phone && (
+                                    <FormHelperText error id="standard-weight-helper-text-phone">
+                                        {errors.phone}
                                     </FormHelperText>
                                 )}
                             </FormControl>
@@ -178,10 +225,10 @@ const GenreModal = ({ handleClose, open, currentProduct, refetchAfterClose }) =>
         </>
     ) : null;
 };
-GenreModal.propTypes = {
+PublisherModal.propTypes = {
     open: PropTypes.bool,
     handleClose: PropTypes.func,
     currentProduct: PropTypes.any,
     refetchAfterClose: PropTypes.func
 };
-export default GenreModal;
+export default PublisherModal;

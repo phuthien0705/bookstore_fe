@@ -32,12 +32,13 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 // project imports
 import MainCard from 'components/cards/MainCard';
 import Transitions from 'components/extended/Transitions';
-import User1 from 'assets/images/users/user-round.svg';
+import User1 from 'assets/images/users/default-avatar.png';
 
 // assets
-import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
+import { IconLogout, IconSearch, IconSettings, IconUser, IconAdjustments } from '@tabler/icons';
 import config from 'config';
 import authService from 'services/authService';
+import checkIsAdminOrManager from 'common/checkIsAdminOrManager';
 
 // ==============================|| PROFILE MENU ||============================== //
 
@@ -202,6 +203,35 @@ const ProfileSection = () => {
                                                 <ListItemButton selected={selectedIndex === 1} onClick={handleClickLogin}>
                                                     <ListItemText primary={<Typography variant="body2">Đăng nhập</Typography>} />
                                                 </ListItemButton>
+                                            ) : checkIsAdminOrManager(authService?.getUser()?.roles) ? (
+                                                <>
+                                                    <ListItemButton
+                                                        selected={selectedIndex === 0}
+                                                        onClick={(event) => handleListItemClick(event, 0, '/admin/product')}
+                                                    >
+                                                        <ListItemIcon>
+                                                            <IconAdjustments stroke={1.5} size="1.3rem" />
+                                                        </ListItemIcon>
+                                                        <ListItemText primary={<Typography variant="body2">Quản lý</Typography>} />
+                                                    </ListItemButton>
+                                                    <ListItemButton
+                                                        selected={selectedIndex === 0}
+                                                        onClick={(event) => handleListItemClick(event, 0, '/profile')}
+                                                    >
+                                                        <ListItemIcon>
+                                                            <IconSettings stroke={1.5} size="1.3rem" />
+                                                        </ListItemIcon>
+                                                        <ListItemText
+                                                            primary={<Typography variant="body2">Cài đặt tài khoản</Typography>}
+                                                        />
+                                                    </ListItemButton>
+                                                    <ListItemButton selected={selectedIndex === 1} onClick={handleLogout}>
+                                                        <ListItemIcon>
+                                                            <IconLogout stroke={1.5} size="1.3rem" />
+                                                        </ListItemIcon>
+                                                        <ListItemText primary={<Typography variant="body2">Đăng xuất</Typography>} />
+                                                    </ListItemButton>
+                                                </>
                                             ) : (
                                                 <>
                                                     <ListItemButton

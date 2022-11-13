@@ -40,15 +40,19 @@ const AuthorManagement = () => {
     const toggleModalEdit = useCallback((product) => {
         setCurrentProduct({ data: product });
     }, []);
-    const handleCloseProductModal = useCallback(() => {
+    const handleCloseModal = useCallback(() => {
         setCurrentProduct(null);
     }, []);
     const fetchData = useCallback(async () => {
+        setIsLoading(true);
+
         try {
             const res = await getAllAuthor();
             setRows(res.authors);
+            setIsLoading(false);
         } catch (error) {
             toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
+            setIsLoading(false);
         }
     }, [toast]);
     const columns = [
@@ -63,7 +67,7 @@ const AuthorManagement = () => {
             headerName: 'Thao tác',
             description: 'Thao tác',
             width: 80,
-
+            sortable: false,
             renderCell: (params) => {
                 return (
                     <MenuActionAdmin
@@ -95,7 +99,7 @@ const AuthorManagement = () => {
                     <SearchAdminSection value={searchContent} setValue={setSearchContent} />
                     <Button
                         variant="contained"
-                        sx={{ width: { xs: '100%', sm: 'fit-content' }, whiteSpace: 'nowrap', boxShadow: 'none' }}
+                        sx={{ width: { xs: '100%', sm: '18rem' }, whiteSpace: 'nowrap', boxShadow: 'none' }}
                         onClick={() => setCurrentProduct({ data: null })}
                     >
                         <Stack sx={{ padding: '5px 10px 5px 2px' }} direction="row" alignItems="center" spacing={0.5}>
@@ -130,7 +134,7 @@ const AuthorManagement = () => {
                 <AuthorModal
                     open={currentProduct !== null}
                     currentProduct={currentProduct}
-                    handleClose={handleCloseProductModal}
+                    handleClose={handleCloseModal}
                     refetchAfterClose={fetchData}
                 />
             </MainCard>
