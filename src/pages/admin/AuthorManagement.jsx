@@ -10,23 +10,28 @@ import config from 'config';
 import MenuActionAdmin from 'components/menus/MenuActionAdmin';
 import CustomPagination from 'components/Paginations/CustomPagination';
 import GenreModal from 'components/modals/GenreModal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleSnackbar } from 'store/snackbarReducer';
 import { deleteAuthor, getAllAuthor } from 'apis/author.api';
 import AuthorModal from 'components/modals/AuthorModal';
+import { setAuthorsGlobal } from 'store/authorReducer';
 
 const AuthorManagement = () => {
     const [searchContent, setSearchContent] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [pageSize, setPageSize] = useState(5);
     const [page, setPage] = useState(0);
-    const [rows, setRows] = useState([]);
+    // const [rows, setRows] = useState([]);
     const [currentProduct, setCurrentProduct] = useState(null);
     const dispatch = useDispatch();
     const toast = useCallback(({ type, message }) => {
         dispatch(toggleSnackbar({ open: true, message, type }));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+    const rows = useSelector((state) => state.authors.data);
+    const setRows = (data) => {
+        dispatch(setAuthorsGlobal(data));
+    };
     const deleteAuthorCallback = useCallback(async (id) => {
         try {
             await deleteAuthor(id);
@@ -98,6 +103,7 @@ const AuthorManagement = () => {
                 >
                     <SearchAdminSection value={searchContent} setValue={setSearchContent} />
                     <Button
+                        disabled={isLoading}
                         variant="contained"
                         sx={{ width: { xs: '100%', sm: '18rem' }, whiteSpace: 'nowrap', boxShadow: 'none' }}
                         onClick={() => setCurrentProduct({ data: null })}

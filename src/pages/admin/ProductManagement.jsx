@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useCallback } from 'react';
 import { Box, Button, Pagination, Stack, Typography } from '@mui/material';
 import MainCard from 'components/cards/MainCard';
@@ -14,6 +15,9 @@ import { deleteBook, getAllBook } from 'apis/product.api';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from 'store/snackbarReducer';
 import BookModal from 'components/modals/BookModal';
+import { getAllPublisher } from 'apis/publisher.api';
+import { getAllGenre } from 'apis/genre.api';
+import { getAllAuthor } from 'apis/author.api';
 const ImageStyle = styled('img')({
     width: '80%',
     borderRadius: 4,
@@ -27,6 +31,25 @@ const ProductManagement = () => {
     const [selectionModel, setSelectionModel] = useState([]);
     const [rows, setRows] = useState([]);
     const [currentProduct, setCurrentProduct] = useState(null);
+    const [publishers, setPublishers] = useState(null);
+    const [genres, setGenres] = useState(null);
+    const [authors, setAuthors] = useState(null);
+
+    const findPublisher = useCallback((id) => {
+        if (publishers !== null) {
+            return publishers.find((publisher) => publisher.id === id);
+        }
+    }, []);
+    const findGenre = useCallback((id) => {
+        if (genres !== null) {
+            return genres.find((genre) => genre.id === id);
+        }
+    }, []);
+    const findAuthor = useCallback((id) => {
+        if (authors !== null) {
+            return authors.find((author) => author.id === id);
+        }
+    }, []);
     const dispatch = useDispatch();
     const toast = useCallback(({ type, message }) => {
         dispatch(toggleSnackbar({ open: true, message, type }));
@@ -49,15 +72,48 @@ const ProductManagement = () => {
     }, []);
     const fetchData = useCallback(async () => {
         setIsLoading(true);
+        if (publishers === null) {
+            try {
+                const res = await getAllPublisher();
+                setPublishers(res?.publishers || null);
+            } catch (error) {
+                console.error(error);
+                toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
+                if (genres !== null && authors === null) setIsLoading(false);
+                return;
+            }
+        }
+        if (genres === null) {
+            try {
+                const res = await getAllGenre();
+                setGenres(res?.genres || null);
+            } catch (error) {
+                console.error(error);
+                toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
+                if (publishers !== null && authors === null) setIsLoading(false);
+                return;
+            }
+        }
+        if (authors === null) {
+            try {
+                const res = await getAllAuthor();
+                setAuthors(res?.authors || null);
+            } catch (error) {
+                console.error(error);
+                toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
+                if (publishers !== null && genres === null) setIsLoading(false);
+                return;
+            }
+        }
         try {
             const res = await getAllBook();
-
             setRows(res.data);
             setIsLoading(false);
         } catch (error) {
             toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
             setIsLoading(false);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [toast]);
     const columns = [
         { field: 'id', headerName: 'ID', description: 'ID sản phẩm', width: 50 },
@@ -67,14 +123,15 @@ const ProductManagement = () => {
             description: 'Hình ảnh sản phẩm',
             width: 100,
             renderCell: (params) => {
-                return <ImageStyle src={params.value} alt={params?.row?.name} />;
+                return <ImageStyle src={`${process.env.REACT_APP_API_URL}/storage/${params?.row?.book_image}`} alt={params?.row?.name} />;
             }
         },
         { field: 'name', headerName: 'Tên sản phẩm', description: 'Tên sản phẩm', width: 200 },
         { field: 'description', headerName: 'Mô tả', description: 'Mô tả sản phẩm', flex: 1 },
         { field: 'price', headerName: 'Giá', description: 'Giá sản phẩm', width: 100, renderCell: (params) => <p>{params?.value}đ</p> },
         { field: 'rating', headerName: 'Đánh giá', description: 'Đánh giá sản phẩm', width: 100 },
-        { field: 'quantity', headerName: 'Số lượng', description: 'Số lượng sản phẩm', width: 100 },
+        { field: 'available_quantity', headerName: 'Số lượng', description: 'Số lượng sản phẩm', width: 100 },
+        { field: 'total_pages', headerName: 'Số trang', description: 'Số trang', width: 100 },
 
         {
             field: 'actions',
@@ -152,7 +209,7 @@ const ProductManagement = () => {
     ];
 
     useEffect(() => {
-        console.log({ selectionModel, currentProduct, rows });
+        console.log({ rows, publishers, genres, authors });
     });
     useEffect(() => {
         fetchData();
@@ -169,6 +226,7 @@ const ProductManagement = () => {
                 >
                     <SearchAdminSection value={searchContent} setValue={setSearchContent} />
                     <Button
+                        disabled={isLoading}
                         variant="contained"
                         sx={{ width: { xs: '100%', sm: '18rem' }, whiteSpace: 'nowrap', boxShadow: 'none' }}
                         onClick={() => setCurrentProduct({ data: null })}
@@ -215,6 +273,12 @@ const ProductManagement = () => {
                     currentProduct={currentProduct}
                     handleClose={handleCloseModal}
                     refetchAfterClose={fetchData}
+                    authors={authors}
+                    genres={genres}
+                    publishers={publishers}
+                    findAuthor={findAuthor}
+                    findGenre={findGenre}
+                    findPublisher={findPublisher}
                 />
             </MainCard>
         </>

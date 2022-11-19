@@ -25,10 +25,20 @@ import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from 'store/snackbarReducer';
 import createRequest from 'common/createRequest';
 
-const BookModal = ({ handleClose, open, currentProduct, refetchAfterClose }) => {
+const BookModal = ({
+    handleClose,
+    open,
+    currentProduct,
+    refetchAfterClose,
+    authors,
+    genres,
+    publishers,
+    findAuthor,
+    findGenre,
+    findPublisher
+}) => {
     const theme = useTheme();
     const dispatch = useDispatch();
-
     const [showAlert, setShowAlert] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
 
@@ -37,6 +47,17 @@ const BookModal = ({ handleClose, open, currentProduct, refetchAfterClose }) => 
     const initialValues = {
         name: data?.name ? data?.name : '',
         description: data?.description ? data?.description : '',
+        available_quantity: data?.available_quantity ? data?.available_quantity : '',
+        isbn: data?.isbn ? data?.isbn : '',
+        language: 'vn',
+        total_pages: data?.total_pages ? data?.total_pages : '',
+        price: data?.price ? data?.price : '',
+        book_image: data?.book_image ? data?.book_image : '',
+        publish_date: data?.publish_date ? data?.publish_date : '',
+        publisher_id: data?.publisher_id ? data?.publisher_id : '',
+        genres: data?.genres ? data?.genres : [],
+        authors: data?.authors ? data?.authors : [],
+
         submit: null
     };
     const handleExit = (currentValues) => {
@@ -55,8 +76,8 @@ const BookModal = ({ handleClose, open, currentProduct, refetchAfterClose }) => 
             <Formik
                 initialValues={initialValues}
                 validationSchema={Yup.object().shape({
-                    name: Yup.string().max(255, 'Tên thể loại tối đa 255 ký tự').required('Tên thể loại là bắt buộc'),
-                    description: Yup.string().max(255, 'Mô tả thể loại tối đa 255 ký tự')
+                    name: Yup.string().max(255, 'Tên sách tối đa 255 ký tự').required('Tên sách là bắt buộc'),
+                    description: Yup.string().max(255, 'Mô tả sách tối đa 255 ký tự').required('Mô tả sách là bắt buộc')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
@@ -91,7 +112,7 @@ const BookModal = ({ handleClose, open, currentProduct, refetchAfterClose }) => 
                     >
                         <form noValidate onSubmit={handleSubmit}>
                             <FormControl fullWidth error={Boolean(touched.name && errors.name)} sx={{ ...theme.typography.customInput }}>
-                                <InputLabel htmlFor="outlined-adornment-name">Tên thể loại</InputLabel>
+                                <InputLabel htmlFor="outlined-adornment-name">Tên sách</InputLabel>
                                 <OutlinedInput
                                     id="outlined-adornment-name"
                                     type="text"
@@ -113,7 +134,7 @@ const BookModal = ({ handleClose, open, currentProduct, refetchAfterClose }) => 
                                 error={Boolean(touched.description && errors.description)}
                                 sx={{ ...theme.typography.customInput }}
                             >
-                                <InputLabel htmlFor="outlined-adornment-description">Mô tả thể loại</InputLabel>
+                                <InputLabel htmlFor="outlined-adornment-description">Mô tả sách</InputLabel>
                                 <OutlinedInput
                                     id="outlined-adornment-description"
                                     type="text"
@@ -127,6 +148,152 @@ const BookModal = ({ handleClose, open, currentProduct, refetchAfterClose }) => 
                                 {touched.description && errors.description && (
                                     <FormHelperText error id="standard-weight-helper-text-description">
                                         {errors.description}
+                                    </FormHelperText>
+                                )}
+                            </FormControl>
+                            <FormControl
+                                fullWidth
+                                error={Boolean(touched.available_quantity && errors.available_quantity)}
+                                sx={{ ...theme.typography.customInput }}
+                            >
+                                <InputLabel htmlFor="outlined-adornment-available_quantity">Số lượng sách còn lại</InputLabel>
+                                <OutlinedInput
+                                    id="outlined-adornment-available_quantity"
+                                    type="text"
+                                    value={values.available_quantity}
+                                    name="available_quantity"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    label="Mô tả thể loại"
+                                    inputProps={{}}
+                                />
+                                {touched.available_quantity && errors.available_quantity && (
+                                    <FormHelperText error id="standard-weight-helper-text-available_quantity">
+                                        {errors.available_quantity}
+                                    </FormHelperText>
+                                )}
+                            </FormControl>
+                            <FormControl fullWidth error={Boolean(touched.isbn && errors.isbn)} sx={{ ...theme.typography.customInput }}>
+                                <InputLabel htmlFor="outlined-adornment-isbn">Mã sách</InputLabel>
+                                <OutlinedInput
+                                    id="outlined-adornment-isbn"
+                                    type="text"
+                                    value={values.isbn}
+                                    name="isbn"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    label="Mô tả thể loại"
+                                    inputProps={{}}
+                                />
+                                {touched.isbn && errors.isbn && (
+                                    <FormHelperText error id="standard-weight-helper-text-isbn">
+                                        {errors.isbn}
+                                    </FormHelperText>
+                                )}
+                            </FormControl>
+                            <FormControl
+                                fullWidth
+                                error={Boolean(touched.total_pages && errors.total_pages)}
+                                sx={{ ...theme.typography.customInput }}
+                            >
+                                <InputLabel htmlFor="outlined-adornment-total_pages">Tổng số trang</InputLabel>
+                                <OutlinedInput
+                                    id="outlined-adornment-total_pages"
+                                    type="text"
+                                    value={values.total_pages}
+                                    name="total_pages"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    label="Mô tả thể loại"
+                                    inputProps={{}}
+                                />
+                                {touched.total_pages && errors.total_pages && (
+                                    <FormHelperText error id="standard-weight-helper-text-total_pages">
+                                        {errors.total_pages}
+                                    </FormHelperText>
+                                )}
+                            </FormControl>
+                            <FormControl fullWidth error={Boolean(touched.price && errors.price)} sx={{ ...theme.typography.customInput }}>
+                                <InputLabel htmlFor="outlined-adornment-price">Giá {'(vnd)'}</InputLabel>
+                                <OutlinedInput
+                                    id="outlined-adornment-price"
+                                    type="text"
+                                    value={values.price}
+                                    name="price"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    label="Mô tả thể loại"
+                                    inputProps={{}}
+                                />
+                                {touched.price && errors.price && (
+                                    <FormHelperText error id="standard-weight-helper-text-price">
+                                        {errors.price}
+                                    </FormHelperText>
+                                )}
+                            </FormControl>
+                            <FormControl
+                                fullWidth
+                                error={Boolean(touched.book_image && errors.book_image)}
+                                sx={{ ...theme.typography.customInput }}
+                            >
+                                <InputLabel htmlFor="outlined-adornment-book_image">Hình ảnh</InputLabel>
+                                <OutlinedInput
+                                    id="outlined-adornment-book_image"
+                                    type="text"
+                                    value={values.book_image}
+                                    name="book_image"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    label="Mô tả thể loại"
+                                    inputProps={{}}
+                                />
+                                {touched.book_image && errors.book_image && (
+                                    <FormHelperText error id="standard-weight-helper-text-book_image">
+                                        {errors.book_image}
+                                    </FormHelperText>
+                                )}
+                            </FormControl>
+                            <FormControl
+                                fullWidth
+                                error={Boolean(touched.publish_date && errors.publish_date)}
+                                sx={{ ...theme.typography.customInput }}
+                            >
+                                <InputLabel htmlFor="outlined-adornment-publish_date">Ngày phát hành</InputLabel>
+                                <OutlinedInput
+                                    id="outlined-adornment-publish_date"
+                                    type="text"
+                                    value={values.publish_date}
+                                    name="publish_date"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    label="Mô tả thể loại"
+                                    inputProps={{}}
+                                />
+                                {touched.publish_date && errors.publish_date && (
+                                    <FormHelperText error id="standard-weight-helper-text-publish_date">
+                                        {errors.publish_date}
+                                    </FormHelperText>
+                                )}
+                            </FormControl>
+                            <FormControl
+                                fullWidth
+                                error={Boolean(touched.publisher_id && errors.publisher_id)}
+                                sx={{ ...theme.typography.customInput }}
+                            >
+                                <InputLabel htmlFor="outlined-adornment-publisher_id">ID tác giả</InputLabel>
+                                <OutlinedInput
+                                    id="outlined-adornment-publisher_id"
+                                    type="text"
+                                    value={values.publisher_id}
+                                    name="publisher_id"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    label="Mô tả thể loại"
+                                    inputProps={{}}
+                                />
+                                {touched.publisher_id && errors.publisher_id && (
+                                    <FormHelperText error id="standard-weight-helper-text-publisher_id">
+                                        {errors.publisher_id}
                                     </FormHelperText>
                                 )}
                             </FormControl>
@@ -182,6 +349,12 @@ BookModal.propTypes = {
     open: PropTypes.bool,
     handleClose: PropTypes.func,
     currentProduct: PropTypes.any,
-    refetchAfterClose: PropTypes.func
+    refetchAfterClose: PropTypes.func,
+    authors: PropTypes.any,
+    genres: PropTypes.any,
+    publishers: PropTypes.any,
+    findAuthor: PropTypes.func,
+    findGenre: PropTypes.func,
+    findPublisher: PropTypes.func
 };
 export default BookModal;

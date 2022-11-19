@@ -7,8 +7,20 @@ const CustomModal = ({ children, handleClose, open, title }) => {
     const matches = useMediaQuery('(min-width:768px)');
     return matches ? (
         <Dialog onClose={() => handleClose()} open={open}>
-            <Stack direction="column" sx={{ padding: 2 }} spacing={2}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Stack direction="column" sx={{ paddingLeft: 2, paddingRight: 2, paddingBottom: 2 }} spacing={2}>
+                <Box
+                    sx={{
+                        paddingTop: 2,
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        position: 'sticky',
+                        top: 0,
+                        backgroundColor: '#fff',
+                        zIndex: 100,
+                        borderBottom: '1px solid #e0e0e0'
+                    }}
+                >
                     <Typography fontWeight="bold" fontSize="20px">
                         {title}
                     </Typography>

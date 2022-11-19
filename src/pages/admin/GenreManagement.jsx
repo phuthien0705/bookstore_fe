@@ -11,21 +11,26 @@ import MenuActionAdmin from 'components/menus/MenuActionAdmin';
 import CustomPagination from 'components/Paginations/CustomPagination';
 import { deleteGenre, getAllGenre } from 'apis/genre.api';
 import GenreModal from 'components/modals/GenreModal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleSnackbar } from 'store/snackbarReducer';
+import { setGenresGlobal } from 'store/genreReducer';
 
 const GenreManagement = () => {
     const [searchContent, setSearchContent] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [pageSize, setPageSize] = useState(5);
     const [page, setPage] = useState(0);
-    const [rows, setRows] = useState([]);
+    // const [rows, setRows] = useState([]);
     const [currentProduct, setCurrentProduct] = useState(null);
     const dispatch = useDispatch();
     const toast = useCallback(({ type, message }) => {
         dispatch(toggleSnackbar({ open: true, message, type }));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+    const rows = useSelector((state) => state.genres.data);
+    const setRows = (data) => {
+        dispatch(setGenresGlobal(data));
+    };
     const deleteGenreCallback = useCallback(async (id) => {
         try {
             await deleteGenre(id);
@@ -95,6 +100,7 @@ const GenreManagement = () => {
                 >
                     <SearchAdminSection value={searchContent} setValue={setSearchContent} />
                     <Button
+                        disabled={isLoading}
                         variant="contained"
                         sx={{ width: { xs: '100%', sm: '18rem' }, whiteSpace: 'nowrap', boxShadow: 'none' }}
                         onClick={() => setCurrentProduct({ data: null })}
