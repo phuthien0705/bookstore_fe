@@ -89,7 +89,7 @@ const PublisherManagement = () => {
         console.log({ currentProduct, rows });
     });
     useEffect(() => {
-        fetchData();
+        rows === null && fetchData();
     }, [fetchData]);
 
     return (
@@ -126,7 +126,7 @@ const PublisherManagement = () => {
                         disableColumnMenu
                         loading={isLoading}
                         columns={columns}
-                        rows={rows}
+                        rows={rows || []}
                         components={{
                             NoRowsOverlay: CustomNoRowsOverlay,
                             LoadingOverlay: LinearProgress,

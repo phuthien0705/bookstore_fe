@@ -4,6 +4,7 @@ import snackbarReducer from './snackbarReducer';
 import genreReducer from './genreReducer';
 import authorReducer from './authorReducer';
 import publisherReducer from './publisherReducer';
+import bookReducer from './bookReducer';
 
 export const store = configureStore({
     reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
         snackbar: snackbarReducer,
         genres: genreReducer,
         authors: authorReducer,
-        publishers: publisherReducer
+        publishers: publisherReducer,
+        books: bookReducer
     }
 });

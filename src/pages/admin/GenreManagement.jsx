@@ -86,7 +86,7 @@ const GenreManagement = () => {
         console.log({ currentProduct, rows });
     });
     useEffect(() => {
-        fetchData();
+        rows === null && fetchData();
     }, [fetchData]);
 
     return (
@@ -123,7 +123,7 @@ const GenreManagement = () => {
                         disableColumnMenu
                         loading={isLoading}
                         columns={columns}
-                        rows={rows}
+                        rows={rows || []}
                         components={{
                             NoRowsOverlay: CustomNoRowsOverlay,
                             LoadingOverlay: LinearProgress,

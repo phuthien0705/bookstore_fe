@@ -12,18 +12,22 @@ import config from 'config';
 import MenuActionAdmin from 'components/menus/MenuActionAdmin';
 import CustomPagination from 'components/Paginations/CustomPagination';
 import { deleteBook, getAllBook } from 'apis/product.api';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleSnackbar } from 'store/snackbarReducer';
 import BookModal from 'components/modals/BookModal';
 import { getAllPublisher } from 'apis/publisher.api';
 import { getAllGenre } from 'apis/genre.api';
 import { getAllAuthor } from 'apis/author.api';
+import { setGenresGlobal } from 'store/genreReducer';
+import { setAuthorsGlobal } from 'store/authorReducer';
+import { setPublishersGlobal } from 'store/publisherReducer';
 const ImageStyle = styled('img')({
     width: '80%',
     borderRadius: 4,
     objectFit: 'cover'
 });
 const ProductManagement = () => {
+    const dispatch = useDispatch();
     const [searchContent, setSearchContent] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [pageSize, setPageSize] = useState(5);
@@ -31,10 +35,21 @@ const ProductManagement = () => {
     const [selectionModel, setSelectionModel] = useState([]);
     const [rows, setRows] = useState([]);
     const [currentProduct, setCurrentProduct] = useState(null);
-    const [publishers, setPublishers] = useState(null);
-    const [genres, setGenres] = useState(null);
-    const [authors, setAuthors] = useState(null);
-
+    // const [publishers, setPublishers] = useState(null);
+    // const [genres, setGenres] = useState(null);
+    // const [authors, setAuthors] = useState(null);
+    const genres = useSelector((state) => state.genres.data);
+    const setGenres = (data) => {
+        dispatch(setGenresGlobal(data));
+    };
+    const authors = useSelector((state) => state.authors.data);
+    const setAuthors = (data) => {
+        dispatch(setAuthorsGlobal(data));
+    };
+    const publishers = useSelector((state) => state.authors.data);
+    const setPublishers = (data) => {
+        dispatch(setPublishersGlobal(data));
+    };
     const findPublisher = useCallback((id) => {
         if (publishers !== null) {
             return publishers.find((publisher) => publisher.id === id);
@@ -50,7 +65,7 @@ const ProductManagement = () => {
             return authors.find((author) => author.id === id);
         }
     }, []);
-    const dispatch = useDispatch();
+
     const toast = useCallback(({ type, message }) => {
         dispatch(toggleSnackbar({ open: true, message, type }));
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -79,7 +94,6 @@ const ProductManagement = () => {
             } catch (error) {
                 console.error(error);
                 toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
-                if (genres !== null && authors === null) setIsLoading(false);
                 return;
             }
         }
@@ -90,7 +104,6 @@ const ProductManagement = () => {
             } catch (error) {
                 console.error(error);
                 toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
-                if (publishers !== null && authors === null) setIsLoading(false);
                 return;
             }
         }
@@ -101,7 +114,6 @@ const ProductManagement = () => {
             } catch (error) {
                 console.error(error);
                 toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
-                if (publishers !== null && genres === null) setIsLoading(false);
                 return;
             }
         }
