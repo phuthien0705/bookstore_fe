@@ -20,7 +20,8 @@ import {
     RadioGroup,
     Radio,
     ButtonGroup,
-    Drawer
+    Drawer,
+    Stack
 } from '@mui/material';
 import MainCard from 'components/cards/MainCard';
 import ProductCard from 'components/cards/products/ProductCard';
@@ -31,6 +32,8 @@ import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRound
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import SearchAdminSection from 'components/Header/SearchSection/SearchAdmin';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 //Style Filter drawer
 const drawerWidth = 450;
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
@@ -50,11 +53,13 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
     })
 }));
 const Product = () => {
+    const matches = useMediaQuery('(min-width:600px)');
+
     const sortOptions = ['Giá: Cao → Thấp', 'Giá: Thấp → Cao', 'Phổ biến', 'Giảm giá', 'Mới nhất'];
     const [openSort, setOpenSort] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(2);
     const theme = useTheme();
-    const [openFilter, setOpenFilter] = useState(false);
+    const [openFilter, setOpenFilter] = useState(true);
     const handleToggleFilter = () => {
         setOpenFilter((prevOpenSort) => !prevOpenSort);
     };
@@ -108,7 +113,7 @@ const Product = () => {
             </Paper>
             <MainCard title="Tất cả sách có sẵn" sx={{ backgroundColor: '#f5f5f5f5' }}>
                 <Box csx={{ display: 'flex' }}>
-                    <Grid item xs={12} display="flex" flexDirection="row" alignItems="center" justifyContent="flex-end" spacing={10}>
+                    <Stack display="flex" flexDirection="row" alignItems="center" justifyContent="flex-end">
                         <Grid p={1}>
                             <SearchAdminSection />
                         </Grid>
@@ -117,7 +122,9 @@ const Product = () => {
                             Lọc
                         </Button>
                         <Typography p={1}>|</Typography>
-                        <Typography variant="h4">Sắp xếp theo: </Typography>
+                        <Typography sx={{ fontSize: { xs: '14px', md: '16px' } }} variant="h4">
+                            Sắp xếp theo:{' '}
+                        </Typography>
                         <Grid>
                             <ButtonGroup ref={anchorRef} aria-label="split button">
                                 <Button
@@ -175,7 +182,7 @@ const Product = () => {
                                 )}
                             </Popper>
                         </Grid>
-                    </Grid>
+                    </Stack>
                     <Box sx={{ display: 'flex' }}>
                         {/* Render Product */}
                         <Main open={openFilter}>
@@ -188,19 +195,21 @@ const Product = () => {
                             </Grid>
                         </Main>
                         <Drawer
-                            variant="persistent"
+                            variant={matches ? 'persistent' : 'temporary'}
                             anchor="right"
                             open={openFilter}
+                            onClose={() => setOpenFilter(false)}
                             sx={{
                                 zIndex: 0,
-                                width: drawerWidth,
+                                width: matches ? drawerWidth : '100%',
                                 '& .MuiDrawer-paper': {
-                                    mt: '25px',
-                                    borderRadius: '8px',
-                                    width: drawerWidth,
-                                    height: drawerWidth,
-                                    position: 'relative',
-                                    display: 'flex'
+                                    mt: matches ? '25px' : '80px',
+                                    borderRadius: matches ? '8px' : '0',
+                                    width: matches ? drawerWidth : '80%',
+                                    height: matches ? drawerWidth : '100%',
+                                    position: matches ? 'relative' : 'inherit',
+                                    display: 'flex',
+                                    wordBreak: 'break-work'
                                 }
                             }}
                         >
@@ -209,7 +218,8 @@ const Product = () => {
                                     rounded
                                     style={{
                                         transform: 'none',
-                                        transition: 'transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms'
+                                        transition: 'transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms',
+                                        width: '100%'
                                     }}
                                 >
                                     <CardContent>
