@@ -33,6 +33,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import SearchAdminSection from 'components/Header/SearchSection/SearchAdmin';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import ProductCardItems from 'components/cards/products/ProductCardItems';
 
 //Style Filter drawer
 const drawerWidth = 450;
@@ -186,13 +187,12 @@ const Product = () => {
                     <Box sx={{ display: 'flex' }}>
                         {/* Render Product */}
                         <Main open={openFilter}>
-                            <Grid container display="flex" flexDirection="row" columnSpacing={2} rowSpacing={2}>
-                                {sampleData.map((data, index) => (
+                            {/* {sampleData.map((data, index) => (
                                     <Grid item xs={12} sm={9} md={6} lg={3}>
                                         <ProductCard key={index} product={data} />
                                     </Grid>
-                                ))}
-                            </Grid>
+                                ))} */}
+                            <ProductCardItems data={sampleData} />
                         </Main>
                         <Drawer
                             variant={matches ? 'persistent' : 'temporary'}
@@ -215,7 +215,7 @@ const Product = () => {
                         >
                             <div style={{ position: 'relative' }}>
                                 <Paper
-                                    rounded
+                                    rounded="true"
                                     style={{
                                         transform: 'none',
                                         transition: 'transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms',

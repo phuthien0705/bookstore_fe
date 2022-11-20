@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -45,14 +45,13 @@ import checkIsAdminOrManager from 'common/checkIsAdminOrManager';
 const ProfileSection = () => {
     const theme = useTheme();
     const navigate = useNavigate();
-
+    const location = useLocation();
     const [sdm, setSdm] = useState(true);
     const [value, setValue] = useState('');
     const [notification, setNotification] = useState(false);
-    const [selectedIndex, setSelectedIndex] = useState(-1);
     const [open, setOpen] = useState(false);
-
     const anchorRef = useRef(null);
+
     const handleLogout = async () => {
         authService.logOut();
         setOpen(false);
@@ -67,8 +66,7 @@ const ProfileSection = () => {
         setOpen(false);
     };
 
-    const handleListItemClick = (event, index, route = '') => {
-        setSelectedIndex(index);
+    const handleListItemClick = (event, route = '') => {
         handleClose(event);
 
         if (route && route !== '') {
@@ -168,11 +166,20 @@ const ProfileSection = () => {
                                     shadow={theme.shadows[16]}
                                 >
                                     {authService.isAuthenticated() && (
-                                        <Box sx={{ p: '1rem 1rem 0 1rem', overflow: 'hidden' }}>
+                                        <Box sx={{ p: '1rem 1rem 0 1rem', overflow: 'hidden', fontSize: '14px' }}>
                                             <Stack>
                                                 <Stack direction="row" spacing={0.5} alignItems="center">
                                                     <Typography variant="h4">Chào,</Typography>
-                                                    <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
+                                                    <Typography
+                                                        sx={{
+                                                            overflow: 'hidden',
+                                                            textOverflow: 'ellipsis',
+                                                            whiteSpace: 'nowrap',
+                                                            fontWeight: 400
+                                                        }}
+                                                        component="span"
+                                                        variant="h4"
+                                                    >
                                                         {authService.getUser()?.name}
                                                     </Typography>
                                                 </Stack>
@@ -200,15 +207,23 @@ const ProfileSection = () => {
                                             }}
                                         >
                                             {!authService.isAuthenticated() ? (
-                                                <ListItemButton selected={selectedIndex === 1} onClick={handleClickLogin}>
+                                                <ListItemButton selected={false} onClick={handleClickLogin}>
                                                     <ListItemText primary={<Typography variant="body2">Đăng nhập</Typography>} />
                                                 </ListItemButton>
                                             ) : checkIsAdminOrManager(authService?.getUser()?.roles) ? (
                                                 <>
-                                                    {' '}
                                                     <ListItemButton
-                                                        selected={selectedIndex === 0}
-                                                        onClick={(event) => handleListItemClick(event, 0, '/profile')}
+                                                        selected={location.pathname.includes('/admin')}
+                                                        onClick={(event) => handleListItemClick(event, '/admin/product')}
+                                                    >
+                                                        <ListItemIcon>
+                                                            <IconAdjustments stroke={1.5} size="1.3rem" />
+                                                        </ListItemIcon>
+                                                        <ListItemText primary={<Typography variant="body2">Quản lý</Typography>} />
+                                                    </ListItemButton>
+                                                    <ListItemButton
+                                                        selected={location.pathname.includes('/profile')}
+                                                        onClick={(event) => handleListItemClick(event, '/profile')}
                                                     >
                                                         <ListItemIcon>
                                                             <IconSettings stroke={1.5} size="1.3rem" />
@@ -217,16 +232,7 @@ const ProfileSection = () => {
                                                             primary={<Typography variant="body2">Cài đặt tài khoản</Typography>}
                                                         />
                                                     </ListItemButton>
-                                                    <ListItemButton
-                                                        selected={selectedIndex === 1}
-                                                        onClick={(event) => handleListItemClick(event, 1, '/admin/product')}
-                                                    >
-                                                        <ListItemIcon>
-                                                            <IconAdjustments stroke={1.5} size="1.3rem" />
-                                                        </ListItemIcon>
-                                                        <ListItemText primary={<Typography variant="body2">Quản lý</Typography>} />
-                                                    </ListItemButton>
-                                                    <ListItemButton selected={selectedIndex === 2} onClick={handleLogout}>
+                                                    <ListItemButton selected={false} onClick={handleLogout}>
                                                         <ListItemIcon>
                                                             <IconLogout stroke={1.5} size="1.3rem" />
                                                         </ListItemIcon>
@@ -236,8 +242,8 @@ const ProfileSection = () => {
                                             ) : (
                                                 <>
                                                     <ListItemButton
-                                                        selected={selectedIndex === 0}
-                                                        onClick={(event) => handleListItemClick(event, 0, '/profile')}
+                                                        selected={location.pathname.includes('/profile')}
+                                                        onClick={(event) => handleListItemClick(event, '/profile')}
                                                     >
                                                         <ListItemIcon>
                                                             <IconSettings stroke={1.5} size="1.3rem" />
@@ -246,7 +252,7 @@ const ProfileSection = () => {
                                                             primary={<Typography variant="body2">Cài đặt tài khoản</Typography>}
                                                         />
                                                     </ListItemButton>
-                                                    <ListItemButton selected={selectedIndex === 1} onClick={handleLogout}>
+                                                    <ListItemButton selected={false} onClick={handleLogout}>
                                                         <ListItemIcon>
                                                             <IconLogout stroke={1.5} size="1.3rem" />
                                                         </ListItemIcon>

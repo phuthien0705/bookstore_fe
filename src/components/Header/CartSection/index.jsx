@@ -7,6 +7,7 @@ const CartSection = () => {
 
     return (
         <Box
+            onClick={() => (window.location.pathname = '/cart')}
             sx={{
                 ml: 2,
                 mr: 2,

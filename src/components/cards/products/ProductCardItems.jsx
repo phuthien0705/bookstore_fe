@@ -1,4 +1,4 @@
-import { Grid, Stack, Typography } from '@mui/material';
+import { Box, Grid, Stack, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import ProductCardItem from './ProductCardItem';
 import { makeStyles } from '@mui/styles';
@@ -33,17 +33,19 @@ const ProductCardItems = ({ data, title, titleIcon, titleBackground = '#fff' }) 
 
     return (
         <section className={classes.container}>
-            <Stack className={classes.title} direction={'row'} spacing={1}>
-                {titleIcon ? titleIcon : null}
-                <Typography fontWeight={'bold'} fontSize={'1rem'} variant={'h5'}>
-                    {title}
-                </Typography>
-            </Stack>
-            <Stack sx={{ p: 1 }}>
-                <Grid container spacing={{ xs: 1, lg: 2 }}>
+            {title && (
+                <Stack className={classes.title} direction={'row'} spacing={1}>
+                    {titleIcon ? titleIcon : null}
+                    <Typography fontWeight={'bold'} fontSize={'1rem'} variant={'h5'}>
+                        {title}
+                    </Typography>
+                </Stack>
+            )}
+            <Box sx={{ p: 1 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', columnGap: '10px' }}>
                     {renderProducts()}
-                </Grid>
-            </Stack>
+                </div>
+            </Box>
         </section>
     );
 };

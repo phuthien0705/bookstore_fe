@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 
 const ProductCardItem = ({ product, index }) => {
     return (
-        <Grid item xs={12 / 5} key={index} sx={{ padding: 0.5 }}>
+        <div key={index} sx={{ padding: 0.5 }}>
             <ProductCard product={product} index={index} />
-        </Grid>
+        </div>
     );
 };
 

@@ -5,6 +5,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { Construction } from '@mui/icons-material';
+import { useRef } from 'react';
 
 const useStyles = makeStyles({
     root: (theme) => ({
@@ -16,6 +17,7 @@ const useStyles = makeStyles({
 });
 
 const ProductCard = ({ product }) => {
+    const imgRef = useRef(null);
     const theme = useTheme();
     const navigate = useNavigate();
 
@@ -27,8 +29,15 @@ const ProductCard = ({ product }) => {
         navigate('cart');
     };
     return (
-        <Card className={classes.root} sx={{ maxWidth: 345 }}>
-            <CardMedia component="img" height="200" image={product?.image} alt={product?.name} onClick={handleClickItem} />
+        <Card className={classes.root}>
+            <CardMedia
+                ref={imgRef}
+                component="img"
+                height={imgRef && imgRef?.current?.offsetWidth ? (imgRef?.current?.offsetWidth * 9) / 16 : '200px'}
+                image={product?.image}
+                alt={product?.name}
+                onClick={handleClickItem}
+            />
             <CardContent sx={{ padding: 2 }}>
                 <Stack spacing={1} direction="column">
                     <Typography gutterBottom variant="h5" component="div" sx={{ margin: 0 }} onClick={handleClickItem}>
