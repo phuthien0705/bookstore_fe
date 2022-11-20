@@ -205,15 +205,7 @@ const ProfileSection = () => {
                                                 </ListItemButton>
                                             ) : checkIsAdminOrManager(authService?.getUser()?.roles) ? (
                                                 <>
-                                                    <ListItemButton
-                                                        selected={selectedIndex === 0}
-                                                        onClick={(event) => handleListItemClick(event, 0, '/admin/product')}
-                                                    >
-                                                        <ListItemIcon>
-                                                            <IconAdjustments stroke={1.5} size="1.3rem" />
-                                                        </ListItemIcon>
-                                                        <ListItemText primary={<Typography variant="body2">Quản lý</Typography>} />
-                                                    </ListItemButton>
+                                                    {' '}
                                                     <ListItemButton
                                                         selected={selectedIndex === 0}
                                                         onClick={(event) => handleListItemClick(event, 0, '/profile')}
@@ -225,7 +217,16 @@ const ProfileSection = () => {
                                                             primary={<Typography variant="body2">Cài đặt tài khoản</Typography>}
                                                         />
                                                     </ListItemButton>
-                                                    <ListItemButton selected={selectedIndex === 1} onClick={handleLogout}>
+                                                    <ListItemButton
+                                                        selected={selectedIndex === 1}
+                                                        onClick={(event) => handleListItemClick(event, 1, '/admin/product')}
+                                                    >
+                                                        <ListItemIcon>
+                                                            <IconAdjustments stroke={1.5} size="1.3rem" />
+                                                        </ListItemIcon>
+                                                        <ListItemText primary={<Typography variant="body2">Quản lý</Typography>} />
+                                                    </ListItemButton>
+                                                    <ListItemButton selected={selectedIndex === 2} onClick={handleLogout}>
                                                         <ListItemIcon>
                                                             <IconLogout stroke={1.5} size="1.3rem" />
                                                         </ListItemIcon>
