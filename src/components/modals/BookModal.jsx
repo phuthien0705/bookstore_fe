@@ -10,7 +10,8 @@ import {
     Stack,
     useTheme,
     Alert,
-    Button
+    Button,
+    Typography
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
@@ -24,7 +25,15 @@ import { createGenre, editGenre } from 'apis/genre.api';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from 'store/snackbarReducer';
 import createRequest from 'common/createRequest';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import { styled } from '@mui/material/styles';
 
+const ImageStyle = styled('img')({
+    height: '100%',
+    width: '100%',
+    borderRadius: 4,
+    objectFit: 'cover'
+});
 const BookModal = ({
     handleClose,
     open,
@@ -102,7 +111,7 @@ const BookModal = ({
                     }
                 }}
             >
-                {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+                {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values, setValues }) => (
                     <CustomModal
                         open={open}
                         handleClose={() => {
@@ -236,17 +245,56 @@ const BookModal = ({
                                 error={Boolean(touched.book_image && errors.book_image)}
                                 sx={{ ...theme.typography.customInput }}
                             >
-                                <InputLabel htmlFor="outlined-adornment-book_image">Hình ảnh</InputLabel>
-                                <OutlinedInput
-                                    id="outlined-adornment-book_image"
-                                    type="text"
-                                    value={values.book_image}
-                                    name="book_image"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    label="Mô tả thể loại"
-                                    inputProps={{}}
-                                />
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        flexDirection: 'column',
+                                        position: 'relative',
+                                        backgroundColor: '#fafafa',
+                                        border: '1px solid rgba(0, 0, 0, 0.23)',
+                                        borderRadius: '8px',
+                                        position: 'relative',
+                                        padding: '0.5rem 1rem',
+                                        '&:hover': {
+                                            border: '1px solid #000'
+                                        }
+                                    }}
+                                >
+                                    <Typography sx={{ color: '#9e9e9e' }}>Hình ảnh</Typography>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            flexDirection: values.book_image ? 'column' : 'row',
+                                            justifyContent: 'space-between',
+                                            columnGap: '0.5rem',
+                                            rowGap: '0.5rem'
+                                        }}
+                                    >
+                                        {values.book_image ? <ImageStyle src={values.book_image} /> : <div>Chưa có hình ảnh</div>}
+                                        <IconButton
+                                            sx={{
+                                                width: 'fit-content',
+                                                height: 'fit-content',
+                                                padding: 0
+                                            }}
+                                            color="primary"
+                                            aria-label="upload picture"
+                                            component="label"
+                                        >
+                                            <input
+                                                id="outlined-adornment-book_image"
+                                                hidden
+                                                accept="image/*"
+                                                type="file"
+                                                onChange={(e) => {
+                                                    setValues((prev) => ({ ...prev, book_image: URL.createObjectURL(e.target.files[0]) }));
+                                                }}
+                                            />
+                                            <PhotoCamera />
+                                        </IconButton>
+                                    </Box>
+                                </Box>
                                 {touched.book_image && errors.book_image && (
                                     <FormHelperText error id="standard-weight-helper-text-book_image">
                                         {errors.book_image}

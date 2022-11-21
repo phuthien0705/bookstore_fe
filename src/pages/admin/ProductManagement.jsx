@@ -18,9 +18,8 @@ import BookModal from 'components/modals/BookModal';
 import { getAllPublisher } from 'apis/publisher.api';
 import { getAllGenre } from 'apis/genre.api';
 import { getAllAuthor } from 'apis/author.api';
-import { setGenresGlobal } from 'store/genreReducer';
-import { setAuthorsGlobal } from 'store/authorReducer';
-import { setPublishersGlobal } from 'store/publisherReducer';
+import { setAuthorsGlobal, setBooksGlobal, setGenresGlobal, setPublishersGlobal } from 'store/adminDataReducer';
+
 const ImageStyle = styled('img')({
     width: '80%',
     borderRadius: 4,
@@ -33,22 +32,23 @@ const ProductManagement = () => {
     const [pageSize, setPageSize] = useState(5);
     const [page, setPage] = useState(0);
     const [selectionModel, setSelectionModel] = useState([]);
-    const [rows, setRows] = useState([]);
     const [currentProduct, setCurrentProduct] = useState(null);
-    // const [publishers, setPublishers] = useState(null);
-    // const [genres, setGenres] = useState(null);
-    // const [authors, setAuthors] = useState(null);
-    const genres = useSelector((state) => state.genres.data);
+
+    const genres = useSelector((state) => state.adminData.genres);
     const setGenres = (data) => {
         dispatch(setGenresGlobal(data));
     };
-    const authors = useSelector((state) => state.authors.data);
+    const authors = useSelector((state) => state.adminData.authors);
     const setAuthors = (data) => {
         dispatch(setAuthorsGlobal(data));
     };
-    const publishers = useSelector((state) => state.authors.data);
+    const publishers = useSelector((state) => state.adminData.publishers);
     const setPublishers = (data) => {
         dispatch(setPublishersGlobal(data));
+    };
+    const books = useSelector((state) => state.adminData.books);
+    const setBooks = (data) => {
+        dispatch(setBooksGlobal(data));
     };
     const findPublisher = useCallback((id) => {
         if (publishers !== null) {
@@ -73,7 +73,7 @@ const ProductManagement = () => {
     const deleteBookCallback = useCallback(async (id) => {
         try {
             await deleteBook(id);
-            setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+            setBooks((prevRows) => prevRows.filter((row) => row.id !== id));
         } catch (error) {
             toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình xóa thể loại' });
         }
@@ -119,7 +119,19 @@ const ProductManagement = () => {
         }
         try {
             const res = await getAllBook();
-            setRows(res.data);
+            setBooks(res.data);
+            setIsLoading(false);
+        } catch (error) {
+            toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
+            setIsLoading(false);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [toast]);
+    const reFetchBooks = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            const res = await getAllBook();
+            setBooks(res.data);
             setIsLoading(false);
         } catch (error) {
             toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
@@ -163,70 +175,13 @@ const ProductManagement = () => {
             }
         }
     ];
-    const sampleData = [
-        {
-            id: 0,
-            name: 'product 1',
-            description: 'Ga osi ovemosoki kon hohon raepi jegjoted no ki waetahe',
-            image: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
-            price: '30000',
-            rating: 4.5,
-            quantity: 100
-        },
-        {
-            id: 1,
-            name: 'product 2',
-            description: 'Ga osi ovemosoki kon hohon raepi jegjoted no ki waetahe',
-            image: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
-            price: '30000',
-            rating: 4.5,
-            quantity: 100
-        },
-        {
-            id: 2,
-            name: 'product 3',
-            description: 'Ga osi ovemosoki kon hohon raepi jegjoted no ki waetahe',
-            image: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
-            price: '30000',
-            rating: 4.5,
-            quantity: 100
-        },
-        {
-            id: 3,
-            name: 'product 4',
-            description: 'Ga osi ovemosoki kon hohon raepi jegjoted no ki waetahe',
-            image: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
-            price: '30000',
-            rating: 4.5,
-            quantity: 100
-        },
-        {
-            id: 4,
-            name: 'product 5',
-            description: 'Ga osi ovemosoki kon hohon raepi jegjoted no ki waetahe',
-            image: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
-            price: '30000',
-            rating: 4.5,
-            quantity: 100
-        },
-        {
-            id: 5,
-            name: 'product 6',
-            description: 'Ga osi ovemosoki kon hohon raepi jegjoted no ki waetahe',
-            image: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
-            price: '30000',
-            rating: 4.5,
-            quantity: 100
-        }
-    ];
 
     useEffect(() => {
-        console.log({ rows, publishers, genres, authors });
+        console.log({ books, publishers, genres, authors });
     });
     useEffect(() => {
         fetchData();
     }, [fetchData]);
-    console.log(process.env.REACT_APP_API_URL);
     return (
         <>
             <MainCard title="Danh sách các sản phẩm" darkTitle>
@@ -262,7 +217,7 @@ const ProductManagement = () => {
                         disableColumnMenu
                         loading={isLoading}
                         columns={columns}
-                        rows={rows}
+                        rows={books || []}
                         components={{
                             NoRowsOverlay: CustomNoRowsOverlay,
                             LoadingOverlay: LinearProgress,
@@ -284,7 +239,7 @@ const ProductManagement = () => {
                     open={currentProduct !== null}
                     currentProduct={currentProduct}
                     handleClose={handleCloseModal}
-                    refetchAfterClose={fetchData}
+                    refetchAfterClose={reFetchBooks}
                     authors={authors}
                     genres={genres}
                     publishers={publishers}

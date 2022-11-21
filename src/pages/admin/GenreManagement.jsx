@@ -13,7 +13,7 @@ import { deleteGenre, getAllGenre } from 'apis/genre.api';
 import GenreModal from 'components/modals/GenreModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleSnackbar } from 'store/snackbarReducer';
-import { setGenresGlobal } from 'store/genreReducer';
+import { setGenresGlobal } from 'store/adminDataReducer';
 
 const GenreManagement = () => {
     const [searchContent, setSearchContent] = useState('');
@@ -27,7 +27,7 @@ const GenreManagement = () => {
         dispatch(toggleSnackbar({ open: true, message, type }));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    const rows = useSelector((state) => state.genres.data);
+    const rows = useSelector((state) => state.adminData.genres);
     const setRows = (data) => {
         dispatch(setGenresGlobal(data));
     };

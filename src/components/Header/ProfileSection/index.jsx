@@ -53,6 +53,9 @@ const ProfileSection = () => {
     const anchorRef = useRef(null);
 
     const handleLogout = async () => {
+        if (window.location.pathname.includes('/admin')) {
+            window.location.pathname = '/';
+        }
         authService.logOut();
         setOpen(false);
     };

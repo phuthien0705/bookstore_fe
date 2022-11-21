@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleSnackbar } from 'store/snackbarReducer';
 import { deleteAuthor, getAllAuthor } from 'apis/author.api';
 import AuthorModal from 'components/modals/AuthorModal';
-import { setAuthorsGlobal } from 'store/authorReducer';
+import { setAuthorsGlobal } from 'store/adminDataReducer';
 
 const AuthorManagement = () => {
     const [searchContent, setSearchContent] = useState('');
@@ -28,7 +28,7 @@ const AuthorManagement = () => {
         dispatch(toggleSnackbar({ open: true, message, type }));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    const rows = useSelector((state) => state.authors.data);
+    const rows = useSelector((state) => state.adminData.authors);
     const setRows = (data) => {
         dispatch(setAuthorsGlobal(data));
     };

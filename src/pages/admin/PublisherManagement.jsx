@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleSnackbar } from 'store/snackbarReducer';
 import PublisherModal from 'components/modals/PublisherModal';
 import { getAllPublisher, deletePublisher } from 'apis/publisher.api';
-import { setPublishersGlobal } from 'store/publisherReducer';
+import { setPublishersGlobal } from 'store/adminDataReducer';
 
 const PublisherManagement = () => {
     const [searchContent, setSearchContent] = useState('');
@@ -28,7 +28,7 @@ const PublisherManagement = () => {
         dispatch(toggleSnackbar({ open: true, message, type }));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    const rows = useSelector((state) => state.publishers.data);
+    const rows = useSelector((state) => state.adminData.publishers);
     const setRows = (data) => {
         dispatch(setPublishersGlobal(data));
     };
