@@ -29,9 +29,12 @@ const AuthorManagement = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const rows = useSelector((state) => state.adminData.authors);
-    const setRows = (data) => {
-        dispatch(setAuthorsGlobal(data));
-    };
+    const setRows = useCallback(
+        (data) => {
+            dispatch(setAuthorsGlobal(data));
+        },
+        [dispatch]
+    );
     const deleteAuthorCallback = useCallback(async (id) => {
         try {
             await deleteAuthor(id);
@@ -59,7 +62,7 @@ const AuthorManagement = () => {
             toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
             setIsLoading(false);
         }
-    }, [toast]);
+    }, [setRows, toast]);
     const columns = [
         { field: 'id', headerName: 'ID', description: 'ID sản phẩm', width: 50 },
         { field: 'name', headerName: 'Tên sản phẩm', description: 'Tên sản phẩm', flex: 1 },
@@ -90,7 +93,7 @@ const AuthorManagement = () => {
     });
     useEffect(() => {
         rows === null && fetchData();
-    }, [fetchData]);
+    }, [fetchData, rows]);
 
     return (
         <>

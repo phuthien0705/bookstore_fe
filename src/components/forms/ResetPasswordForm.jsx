@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import {
     Alert,
@@ -224,5 +225,7 @@ const ResetPasswordForm = ({ params, ...others }) => {
         </>
     );
 };
-
+ResetPasswordForm.propTypes = {
+    params: PropTypes.any
+};
 export default ResetPasswordForm;

@@ -1,4 +1,5 @@
 import { Box, Typography, useTheme } from '@mui/material';
+import PropTypes from 'prop-types';
 
 const CustomChip = ({ content, type = 'default' }) => {
     const theme = useTheme();
@@ -21,6 +22,11 @@ const CustomChip = ({ content, type = 'default' }) => {
             <Typography fontSize="12px">{content}</Typography>
         </Box>
     );
+};
+
+CustomChip.propTypes = {
+    content: PropTypes.any,
+    type: PropTypes.string
 };
 
 export default CustomChip;

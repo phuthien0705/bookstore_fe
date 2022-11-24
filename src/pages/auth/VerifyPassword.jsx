@@ -35,7 +35,7 @@ const VerifyPassword = () => {
             setLoading(false);
             setShowAlert('error');
         }
-    }, []);
+    }, [navigate]);
     useEffect(() => {
         handleVerifyPassword();
     }, [handleVerifyPassword]);

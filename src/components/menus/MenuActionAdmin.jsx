@@ -3,6 +3,7 @@ import { IconButton, MenuItem, Menu, Stack, Typography } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import PropTypes from 'prop-types';
 
 const MenuActionAdmin = ({ id, deleteCallback, editCallback }) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -66,6 +67,12 @@ const MenuActionAdmin = ({ id, deleteCallback, editCallback }) => {
             </Menu>
         </div>
     );
+};
+
+MenuActionAdmin.propTypes = {
+    id: PropTypes.number.isRequired,
+    deleteCallback: PropTypes.func,
+    editCallback: PropTypes.fun
 };
 
 export default MenuActionAdmin;

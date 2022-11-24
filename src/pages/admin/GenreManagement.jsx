@@ -28,9 +28,12 @@ const GenreManagement = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const rows = useSelector((state) => state.adminData.genres);
-    const setRows = (data) => {
-        dispatch(setGenresGlobal(data));
-    };
+    const setRows = useCallback(
+        (data) => {
+            dispatch(setGenresGlobal(data));
+        },
+        [dispatch]
+    );
     const deleteGenreCallback = useCallback(async (id) => {
         try {
             await deleteGenre(id);
@@ -54,7 +57,7 @@ const GenreManagement = () => {
             toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
             setIsLoading(false);
         }
-    }, [toast]);
+    }, [setRows, toast]);
     const handleCloseModal = useCallback(async () => {
         setCurrentProduct(null);
     }, []);
@@ -87,7 +90,7 @@ const GenreManagement = () => {
     });
     useEffect(() => {
         rows === null && fetchData();
-    }, [fetchData]);
+    }, [fetchData, rows]);
 
     return (
         <>

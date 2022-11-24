@@ -29,9 +29,12 @@ const PublisherManagement = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const rows = useSelector((state) => state.adminData.publishers);
-    const setRows = (data) => {
-        dispatch(setPublishersGlobal(data));
-    };
+    const setRows = useCallback(
+        (data) => {
+            dispatch(setPublishersGlobal(data));
+        },
+        [dispatch]
+    );
     const deletePublisherCallback = useCallback(async (id) => {
         try {
             await deletePublisher(id);
@@ -55,7 +58,7 @@ const PublisherManagement = () => {
             toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
             setIsLoading(false);
         }
-    }, [toast]);
+    }, [setRows, toast]);
     const handleCloseModal = useCallback(async () => {
         setCurrentProduct(null);
     }, []);
@@ -90,7 +93,7 @@ const PublisherManagement = () => {
     });
     useEffect(() => {
         rows === null && fetchData();
-    }, [fetchData]);
+    }, [fetchData, rows]);
 
     return (
         <>
