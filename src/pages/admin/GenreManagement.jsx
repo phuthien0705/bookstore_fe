@@ -13,51 +13,40 @@ import { deleteGenre, getAllGenre } from 'apis/genre.api';
 import GenreModal from 'components/modals/GenreModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleSnackbar } from 'store/snackbarReducer';
-import { setGenresGlobal } from 'store/adminDataReducer';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { GENRES } from 'constants/queryKeyName';
+import useGetListGenre from 'hooks/useGetListGenre';
 
 const GenreManagement = () => {
+    const queryClient = useQueryClient();
+    const getListGenreQuery = useGetListGenre();
+    const { data, isLoading, isFetching, refetch } = getListGenreQuery;
     const [searchContent, setSearchContent] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
     const [pageSize, setPageSize] = useState(5);
-    const [page, setPage] = useState(0);
-    // const [rows, setRows] = useState([]);
     const [currentProduct, setCurrentProduct] = useState(null);
     const dispatch = useDispatch();
     const toast = useCallback(({ type, message }) => {
         dispatch(toggleSnackbar({ open: true, message, type }));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    const rows = useSelector((state) => state.adminData.genres);
-    const setRows = useCallback(
-        (data) => {
-            dispatch(setGenresGlobal(data));
+    const { mutate, isLoading: isMutateLoading } = useMutation(deleteGenre, {
+        onSuccess: () => {
+            // Invalidate and refetch
+            queryClient.invalidateQueries(GENRES);
         },
-        [dispatch]
-    );
-    const deleteGenreCallback = useCallback(async (id) => {
-        try {
-            await deleteGenre(id);
-            setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-        } catch (error) {
+        onError: () => {
             toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình xóa thể loại' });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    });
 
     const toggleModalEdit = useCallback((product) => {
         setCurrentProduct({ data: product });
     }, []);
-    const fetchData = useCallback(async () => {
-        setIsLoading(true);
-        try {
-            const res = await getAllGenre();
-            setRows(res.genres);
-            setIsLoading(false);
-        } catch (error) {
-            toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
-            setIsLoading(false);
-        }
-    }, [setRows, toast]);
+
+    const fetchData = useCallback(() => {
+        refetch();
+    }, [refetch]);
+
     const handleCloseModal = useCallback(async () => {
         setCurrentProduct(null);
     }, []);
@@ -77,20 +66,13 @@ const GenreManagement = () => {
                 return (
                     <MenuActionAdmin
                         id={params?.row?.id}
-                        deleteCallback={() => deleteGenreCallback(params?.row?.id)}
+                        deleteCallback={() => mutate(params?.row?.id)}
                         editCallback={() => toggleModalEdit(params?.row)}
                     />
                 );
             }
         }
     ];
-
-    useEffect(() => {
-        console.log({ currentProduct, rows });
-    });
-    useEffect(() => {
-        rows === null && fetchData();
-    }, [fetchData, rows]);
 
     return (
         <>
@@ -103,7 +85,7 @@ const GenreManagement = () => {
                 >
                     <SearchAdminSection value={searchContent} setValue={setSearchContent} />
                     <Button
-                        disabled={isLoading}
+                        disabled={isLoading || isFetching}
                         variant="contained"
                         sx={{ width: { xs: '100%', sm: '18rem' }, whiteSpace: 'nowrap', boxShadow: 'none' }}
                         onClick={() => setCurrentProduct({ data: null })}
@@ -124,9 +106,9 @@ const GenreManagement = () => {
                         disableSelectionOnClick
                         autoHeight
                         disableColumnMenu
-                        loading={isLoading}
+                        loading={isLoading || isFetching || isMutateLoading}
                         columns={columns}
-                        rows={rows || []}
+                        rows={data?.genres || []}
                         components={{
                             NoRowsOverlay: CustomNoRowsOverlay,
                             LoadingOverlay: LinearProgress,

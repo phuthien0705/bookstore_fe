@@ -72,7 +72,7 @@ const MenuActionAdmin = ({ id, deleteCallback, editCallback }) => {
 MenuActionAdmin.propTypes = {
     id: PropTypes.number.isRequired,
     deleteCallback: PropTypes.func,
-    editCallback: PropTypes.fun
+    editCallback: PropTypes.func
 };
 
 export default MenuActionAdmin;

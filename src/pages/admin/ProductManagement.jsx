@@ -19,6 +19,12 @@ import { getAllPublisher } from 'apis/publisher.api';
 import { getAllGenre } from 'apis/genre.api';
 import { getAllAuthor } from 'apis/author.api';
 import { setAuthorsGlobal, setBooksGlobal, setGenresGlobal, setPublishersGlobal } from 'store/adminDataReducer';
+import { useIsMutating, useMutation, useQueries, useQuery, useQueryClient } from 'react-query';
+import { AUTHORS, BOOKS, GENRES, PUBLISHERS } from 'constants/queryKeyName';
+import useGetListBook from 'hooks/useGetListBook';
+import useGetListGenre from 'hooks/useGetListGenre';
+import useGetListAuthor from 'hooks/useGetListAuthor';
+import useGetListPublisher from 'hooks/useGetListPublisher';
 
 const ImageStyle = styled('img')({
     width: '80%',
@@ -26,43 +32,36 @@ const ImageStyle = styled('img')({
     objectFit: 'cover'
 });
 const ProductManagement = () => {
+    const queryClient = useQueryClient();
+    const getListBookQuery = useGetListBook();
+    const getListGenreQuery = useGetListGenre();
+    const getListAuthorQuery = useGetListAuthor();
+    const getListPublisherQuery = useGetListPublisher();
+    const { data: authorData, isLoading: isAuthorLoading, isFetching: isAuthorFetching } = getListAuthorQuery;
+    const { data: publisherData, isLoading: isPublisherLoading, isFetching: isPublisherFetching } = getListPublisherQuery;
+    const { data: genreData, isLoading: isGenreLoading, isFetching: isGenreFetching } = getListGenreQuery;
+    const { data: bookData, isLoading: isBookLoading, isFetching: isBookFetching, refetch } = getListBookQuery;
+
     const dispatch = useDispatch();
     const [searchContent, setSearchContent] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
     const [pageSize, setPageSize] = useState(5);
     const [page, setPage] = useState(0);
     const [selectionModel, setSelectionModel] = useState([]);
     const [currentProduct, setCurrentProduct] = useState(null);
 
-    const genres = useSelector((state) => state.adminData.genres);
-    const setGenres = (data) => {
-        dispatch(setGenresGlobal(data));
-    };
-    const authors = useSelector((state) => state.adminData.authors);
-    const setAuthors = (data) => {
-        dispatch(setAuthorsGlobal(data));
-    };
-    const publishers = useSelector((state) => state.adminData.publishers);
-    const setPublishers = (data) => {
-        dispatch(setPublishersGlobal(data));
-    };
-    const books = useSelector((state) => state.adminData.books);
-    const setBooks = (data) => {
-        dispatch(setBooksGlobal(data));
-    };
     const findPublisher = useCallback((id) => {
-        if (publishers !== null) {
-            return publishers.find((publisher) => publisher.id === id);
+        if (publisherData?.publishers) {
+            return publisherData?.publishers.find((publisher) => publisher.id === id);
         }
     }, []);
     const findGenre = useCallback((id) => {
-        if (genres !== null) {
-            return genres.find((genre) => genre.id === id);
+        if (genreData?.genres) {
+            return genreData?.genres.find((genre) => genre.id === id);
         }
     }, []);
     const findAuthor = useCallback((id) => {
-        if (authors !== null) {
-            return authors.find((author) => author.id === id);
+        if (authorData?.authors) {
+            return authorData?.authors.find((author) => author.id === id);
         }
     }, []);
 
@@ -70,15 +69,15 @@ const ProductManagement = () => {
         dispatch(toggleSnackbar({ open: true, message, type }));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    const deleteBookCallback = useCallback(async (id) => {
-        try {
-            await deleteBook(id);
-            setBooks((prevRows) => prevRows.filter((row) => row.id !== id));
-        } catch (error) {
-            toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình xóa thể loại' });
+    const { mutate, isLoading: isMutateLoading } = useMutation(deleteBook, {
+        onSuccess: () => {
+            refetch();
+        },
+        onError: () => {
+            toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình xóa sản phẩm' });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    });
+
     const toggleModalEdit = useCallback((product) => {
         setCurrentProduct({ data: product });
     }, []);
@@ -86,59 +85,9 @@ const ProductManagement = () => {
         setCurrentProduct(null);
     }, []);
     const fetchData = useCallback(async () => {
-        setIsLoading(true);
-        if (publishers === null) {
-            try {
-                const res = await getAllPublisher();
-                setPublishers(res?.publishers || null);
-            } catch (error) {
-                console.error(error);
-                toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
-                return;
-            }
-        }
-        if (genres === null) {
-            try {
-                const res = await getAllGenre();
-                setGenres(res?.genres || null);
-            } catch (error) {
-                console.error(error);
-                toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
-                return;
-            }
-        }
-        if (authors === null) {
-            try {
-                const res = await getAllAuthor();
-                setAuthors(res?.authors || null);
-            } catch (error) {
-                console.error(error);
-                toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
-                return;
-            }
-        }
-        try {
-            const res = await getAllBook();
-            setBooks(res.data);
-            setIsLoading(false);
-        } catch (error) {
-            toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
-            setIsLoading(false);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [toast]);
-    const reFetchBooks = useCallback(async () => {
-        setIsLoading(true);
-        try {
-            const res = await getAllBook();
-            setBooks(res.data);
-            setIsLoading(false);
-        } catch (error) {
-            toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
-            setIsLoading(false);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [toast]);
+        refetch();
+    }, [refetch]);
+
     const columns = [
         { field: 'id', headerName: 'ID', description: 'ID sản phẩm', width: 50 },
         {
@@ -168,7 +117,7 @@ const ProductManagement = () => {
                 return (
                     <MenuActionAdmin
                         id={params?.row?.id}
-                        deleteCallback={() => deleteBookCallback(params?.row?.id)}
+                        deleteCallback={() => mutate(params?.row?.id)}
                         editCallback={() => toggleModalEdit(params?.row)}
                     />
                 );
@@ -176,12 +125,6 @@ const ProductManagement = () => {
         }
     ];
 
-    useEffect(() => {
-        console.log({ books, publishers, genres, authors });
-    });
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
     return (
         <>
             <MainCard title="Danh sách các sản phẩm" darkTitle>
@@ -193,7 +136,17 @@ const ProductManagement = () => {
                 >
                     <SearchAdminSection value={searchContent} setValue={setSearchContent} />
                     <Button
-                        disabled={isLoading}
+                        disabled={
+                            isAuthorLoading ||
+                            isGenreLoading ||
+                            isPublisherLoading ||
+                            isAuthorFetching ||
+                            isGenreFetching ||
+                            isPublisherFetching ||
+                            isBookFetching ||
+                            isBookLoading ||
+                            isMutateLoading
+                        }
                         variant="contained"
                         sx={{ width: { xs: '100%', sm: '18rem' }, whiteSpace: 'nowrap', boxShadow: 'none' }}
                         onClick={() => setCurrentProduct({ data: null })}
@@ -215,9 +168,19 @@ const ProductManagement = () => {
                         autoHeight
                         checkboxSelection
                         disableColumnMenu
-                        loading={isLoading}
+                        loading={
+                            isAuthorLoading ||
+                            isGenreLoading ||
+                            isPublisherLoading ||
+                            isAuthorFetching ||
+                            isGenreFetching ||
+                            isPublisherFetching ||
+                            isBookFetching ||
+                            isBookLoading ||
+                            isMutateLoading
+                        }
                         columns={columns}
-                        rows={books || []}
+                        rows={bookData?.books || []}
                         components={{
                             NoRowsOverlay: CustomNoRowsOverlay,
                             LoadingOverlay: LinearProgress,
@@ -239,10 +202,10 @@ const ProductManagement = () => {
                     open={currentProduct !== null}
                     currentProduct={currentProduct}
                     handleClose={handleCloseModal}
-                    refetchAfterClose={reFetchBooks}
-                    authors={authors}
-                    genres={genres}
-                    publishers={publishers}
+                    refetchAfterClose={fetchData}
+                    authors={authorData?.authors}
+                    genres={genreData?.genres}
+                    publishers={publisherData?.publishers}
                     findAuthor={findAuthor}
                     findGenre={findGenre}
                     findPublisher={findPublisher}

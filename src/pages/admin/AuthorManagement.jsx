@@ -14,36 +14,31 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleSnackbar } from 'store/snackbarReducer';
 import { deleteAuthor, getAllAuthor } from 'apis/author.api';
 import AuthorModal from 'components/modals/AuthorModal';
-import { setAuthorsGlobal } from 'store/adminDataReducer';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { AUTHORS } from 'constants/queryKeyName';
+import useGetListAuthor from 'hooks/useGetListAuthor';
 
 const AuthorManagement = () => {
+    const queryClient = useQueryClient();
+    const getListAuthorQuery = useGetListAuthor();
+    const { data, isLoading, isFetching, refetch } = getListAuthorQuery;
     const [searchContent, setSearchContent] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
     const [pageSize, setPageSize] = useState(5);
-    const [page, setPage] = useState(0);
-    // const [rows, setRows] = useState([]);
     const [currentProduct, setCurrentProduct] = useState(null);
     const dispatch = useDispatch();
     const toast = useCallback(({ type, message }) => {
         dispatch(toggleSnackbar({ open: true, message, type }));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    const rows = useSelector((state) => state.adminData.authors);
-    const setRows = useCallback(
-        (data) => {
-            dispatch(setAuthorsGlobal(data));
+    const { mutate, isLoading: isMutateLoading } = useMutation(deleteAuthor, {
+        onSuccess: () => {
+            // Invalidate and refetch
+            queryClient.invalidateQueries(AUTHORS);
         },
-        [dispatch]
-    );
-    const deleteAuthorCallback = useCallback(async (id) => {
-        try {
-            await deleteAuthor(id);
-            setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-        } catch (error) {
+        onError: () => {
             toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình xóa tác giả' });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    });
 
     const toggleModalEdit = useCallback((product) => {
         setCurrentProduct({ data: product });
@@ -52,17 +47,8 @@ const AuthorManagement = () => {
         setCurrentProduct(null);
     }, []);
     const fetchData = useCallback(async () => {
-        setIsLoading(true);
-
-        try {
-            const res = await getAllAuthor();
-            setRows(res.authors);
-            setIsLoading(false);
-        } catch (error) {
-            toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
-            setIsLoading(false);
-        }
-    }, [setRows, toast]);
+        refetch();
+    }, [refetch]);
     const columns = [
         { field: 'id', headerName: 'ID', description: 'ID sản phẩm', width: 50 },
         { field: 'name', headerName: 'Tên sản phẩm', description: 'Tên sản phẩm', flex: 1 },
@@ -80,20 +66,13 @@ const AuthorManagement = () => {
                 return (
                     <MenuActionAdmin
                         id={params?.row?.id}
-                        deleteCallback={() => deleteAuthorCallback(params?.row?.id)}
+                        deleteCallback={() => mutate(params?.row?.id)}
                         editCallback={() => toggleModalEdit(params?.row)}
                     />
                 );
             }
         }
     ];
-
-    useEffect(() => {
-        console.log({ currentProduct, rows });
-    });
-    useEffect(() => {
-        rows === null && fetchData();
-    }, [fetchData, rows]);
 
     return (
         <>
@@ -106,7 +85,7 @@ const AuthorManagement = () => {
                 >
                     <SearchAdminSection value={searchContent} setValue={setSearchContent} />
                     <Button
-                        disabled={isLoading}
+                        disabled={isLoading || isFetching}
                         variant="contained"
                         sx={{ width: { xs: '100%', sm: '18rem' }, whiteSpace: 'nowrap', boxShadow: 'none' }}
                         onClick={() => setCurrentProduct({ data: null })}
@@ -127,9 +106,9 @@ const AuthorManagement = () => {
                         disableSelectionOnClick
                         autoHeight
                         disableColumnMenu
-                        loading={isLoading}
+                        loading={isLoading || isFetching || isMutateLoading}
                         columns={columns}
-                        rows={rows || []}
+                        rows={data?.authors || []}
                         components={{
                             NoRowsOverlay: CustomNoRowsOverlay,
                             LoadingOverlay: LinearProgress,

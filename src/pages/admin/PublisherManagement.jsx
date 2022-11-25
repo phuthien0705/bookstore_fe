@@ -14,51 +14,40 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleSnackbar } from 'store/snackbarReducer';
 import PublisherModal from 'components/modals/PublisherModal';
 import { getAllPublisher, deletePublisher } from 'apis/publisher.api';
-import { setPublishersGlobal } from 'store/adminDataReducer';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { PUBLISHERS } from 'constants/queryKeyName';
+import useGetListPublisher from 'hooks/useGetListPublisher';
 
 const PublisherManagement = () => {
+    const queryClient = useQueryClient();
+    const getListPublisherQuery = useGetListPublisher();
+    const { data, isLoading, isFetching, refetch } = getListPublisherQuery;
     const [searchContent, setSearchContent] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
     const [pageSize, setPageSize] = useState(5);
-    const [page, setPage] = useState(0);
-    // const [rows, setRows] = useState([]);
     const [currentProduct, setCurrentProduct] = useState(null);
     const dispatch = useDispatch();
     const toast = useCallback(({ type, message }) => {
         dispatch(toggleSnackbar({ open: true, message, type }));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    const rows = useSelector((state) => state.adminData.publishers);
-    const setRows = useCallback(
-        (data) => {
-            dispatch(setPublishersGlobal(data));
+    const { mutate, isLoading: isMutateLoading } = useMutation(deletePublisher, {
+        onSuccess: () => {
+            // Invalidate and refetch
+            queryClient.invalidateQueries(PUBLISHERS);
         },
-        [dispatch]
-    );
-    const deletePublisherCallback = useCallback(async (id) => {
-        try {
-            await deletePublisher(id);
-            setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-        } catch (error) {
-            toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình xóa thể loại' });
+        onError: () => {
+            toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình xóa nhà xuất bản' });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    });
 
     const toggleModalEdit = useCallback((product) => {
         setCurrentProduct({ data: product });
     }, []);
-    const fetchData = useCallback(async () => {
-        setIsLoading(true);
-        try {
-            const res = await getAllPublisher();
-            setRows(res.publishers);
-            setIsLoading(false);
-        } catch (error) {
-            toast({ type: 'error', message: 'Xảy ra lỗi trong quá trình lấy dữ liệu' });
-            setIsLoading(false);
-        }
-    }, [setRows, toast]);
+
+    const fetchData = useCallback(() => {
+        refetch();
+    }, [refetch]);
+
     const handleCloseModal = useCallback(async () => {
         setCurrentProduct(null);
     }, []);
@@ -80,20 +69,13 @@ const PublisherManagement = () => {
                 return (
                     <MenuActionAdmin
                         id={params?.row?.id}
-                        deleteCallback={() => deletePublisherCallback(params?.row?.id)}
+                        deleteCallback={() => mutate(params?.row?.id)}
                         editCallback={() => toggleModalEdit(params?.row)}
                     />
                 );
             }
         }
     ];
-
-    useEffect(() => {
-        console.log({ currentProduct, rows });
-    });
-    useEffect(() => {
-        rows === null && fetchData();
-    }, [fetchData, rows]);
 
     return (
         <>
@@ -106,7 +88,7 @@ const PublisherManagement = () => {
                 >
                     <SearchAdminSection value={searchContent} setValue={setSearchContent} />
                     <Button
-                        disabled={isLoading}
+                        disabled={isLoading || isFetching}
                         variant="contained"
                         sx={{ width: { xs: '100%', sm: '18rem' }, whiteSpace: 'nowrap', boxShadow: 'none' }}
                         onClick={() => setCurrentProduct({ data: null })}
@@ -127,9 +109,9 @@ const PublisherManagement = () => {
                         disableSelectionOnClick
                         autoHeight
                         disableColumnMenu
-                        loading={isLoading}
+                        loading={isLoading || isFetching || isMutateLoading}
                         columns={columns}
-                        rows={rows || []}
+                        rows={data?.publishers || []}
                         components={{
                             NoRowsOverlay: CustomNoRowsOverlay,
                             LoadingOverlay: LinearProgress,
