@@ -24,7 +24,6 @@ import {
     Stack
 } from '@mui/material';
 import MainCard from 'components/cards/MainCard';
-import ProductCard from 'components/cards/products/ProductCard';
 import { useTheme, styled } from '@mui/material/styles';
 import { useState, useRef, useEffect } from 'react';
 import sampleData from 'components/cards/products/SampleData';
@@ -114,7 +113,7 @@ const Product = () => {
             </Paper>
             <MainCard title="Tất cả sách có sẵn" sx={{ backgroundColor: '#f5f5f5f5' }}>
                 <Box csx={{ display: 'flex' }}>
-                    <Stack display="flex" flexDirection="row" alignItems="center" justifyContent="flex-end">
+                    <Stack display="flex" flexDirection={matches ? 'row' : 'column'} alignItems="center" justifyContent="flex-end">
                         <Grid p={1}>
                             <SearchAdminSection />
                         </Grid>

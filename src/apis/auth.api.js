@@ -18,3 +18,6 @@ export const reSendVerifyEmail = async (data) => {
 export const resetPassword = async (params, data) => {
     return httpRequest.post(`/auth/reset-password${params}`, data);
 };
+export const changePassword = async (params, data) => {
+    return httpRequest.post(`/auth/change-password${params}`, data);
+};

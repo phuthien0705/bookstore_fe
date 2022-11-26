@@ -1,7 +1,9 @@
+import ChangePasswordForm from 'components/forms/ChangePasswordForm';
 const SecurityTab = () => {
     return (
         <>
-            <div>Security Tab</div>
+            <div>Đổi mật khẩu</div>
+            <ChangePasswordForm />
         </>
     );
 };
