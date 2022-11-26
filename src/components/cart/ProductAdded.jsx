@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const ProductAdded = ({ amount }) => {
     return (
-        <Stack direction="row" spacing={1} sx={{ m: 3 }}>
+        <Stack direction="row" spacing={1} sx={{ m: 2 }}>
             <div>
                 <Typography variant="h5">Sản phẩm</Typography>
             </div>

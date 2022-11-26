@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 const OrderSummary = ({ items }) => {
     let subsum = items.reduce((prev, curr) => prev + Number(curr.price) * curr.quantity, 1);
     return (
-        <Paper elevation={2} sx={{ display: 'flex', width: 1720, m: 3 }}>
+        <Paper elevation={2} sx={{ display: 'flex', m: 1.5 }}>
             <TableContainer component={Paper}>
                 <Table sx={{ maxWidth: 1700 }} align="right">
                     <TableHead>

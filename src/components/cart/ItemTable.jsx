@@ -39,11 +39,17 @@ const ItemTable = ({ items }) => {
                             !isDeleted.includes(index) && (
                                 <TableRow key={row.id}>
                                     <TableCell>
-                                        <Grid container direction="row" justifyContent="flex-start" alignItems="center">
-                                            <Grid item xs={2}>
-                                                <img alt={row.name} width="76" height="76" src={row.image} />
+                                        <Grid container spacing={3} direction="row" justifyContent="flex-start" alignItems="center">
+                                            <Grid item xs={2} sx={{ display: 'fixed', minWidth: 79, minHeight: 82 }}>
+                                                <img
+                                                    alt={row.name}
+                                                    src={row.image}
+                                                    width="90%"
+                                                    height="90%"
+                                                    style={{ borderRadius: 4, objectFit: 'cover' }}
+                                                />
                                             </Grid>
-                                            <Grid item xs={2}>
+                                            <Grid item xs={2} sx={{ minWidth: 84, minHeight: 19, display: 'fixed' }}>
                                                 <Typography variant="h6">{row.name}</Typography>
                                             </Grid>
                                         </Grid>

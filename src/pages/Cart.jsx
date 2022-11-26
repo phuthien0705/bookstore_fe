@@ -5,7 +5,7 @@ import CartItems from 'components/cart/CartItems';
 const Cart = () => {
     return (
         <Container maxWidth="1788" sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Paper sx={{ backgroundColor: '#fff', p: 3, m: 2 }}>
+            <Paper sx={{ backgroundColor: '#fff', p: 3, marginBottom: 2 }}>
                 <CartTitle />
             </Paper>
             <Paper sx={{ backgroundColor: '#fff', p: 3 }}>
