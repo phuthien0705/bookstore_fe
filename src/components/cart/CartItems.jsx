@@ -7,6 +7,8 @@ import ItemTable from './ItemTable';
 import OrderSummary from './OrderSummary';
 import SubmitCart from './SubmitCart';
 import EmptyCart from './EmptyCart';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import ItemTableMobile from './ItemTableMobile';
 
 const sampleData = [
     {
@@ -32,31 +34,29 @@ const sampleData = [
 ];
 
 const CartItems = () => {
-    const [value, setValue] = useState(0);
-
+    const matches = useMediaQuery('(min-width:900px)');
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [listItem, setListItem] = useState(sampleData);
     const handleChange = (event, newValue) => {
-        setValue(newValue);
+        setCurrentIndex(newValue);
     };
-
-    const listlength = sampleData.length;
-    console.log(listlength);
 
     return (
         <Grid container>
             <Grid item xs={12}>
-                <Tabs value={value} onChange={handleChange}>
-                    <Tab icon={<ShoppingCart />} label="Giỏ" />
-                    <Tab icon={<Apartment />} label="Thông tin địa chỉ" disabled />
-                    <Tab icon={<Payment />} label="Thanh toán" disabled />
+                <Tabs value={currentIndex} onChange={handleChange} variant="scrollable" scrollButtons allowScrollButtonsMobile>
+                    <Tab icon={<ShoppingCart />} label="Giỏ" disabled={currentIndex !== 0} />
+                    <Tab icon={<Apartment />} label="Thông tin địa chỉ" disabled={currentIndex !== 1} />
+                    <Tab icon={<Payment />} label="Thanh toán" disabled={currentIndex !== 2} />
                 </Tabs>
             </Grid>
-            <Grid item xs={12}>
-                <ProductAdded amount={listlength} />
-            </Grid>
-            {listlength > 0 ? (
+            {listItem?.length > 0 && (
                 <>
                     <Grid item xs={12}>
-                        <ItemTable items={sampleData} />
+                        <ProductAdded amount={sampleData.length} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        {matches ? <ItemTable items={sampleData} /> : <ItemTableMobile items={sampleData} />}
                     </Grid>
                     <Grid item xs={12}>
                         <OrderSummary items={sampleData} />
@@ -65,7 +65,9 @@ const CartItems = () => {
                         <SubmitCart />
                     </Grid>
                 </>
-            ) : (
+            )}
+
+            {listItem?.length === 0 && (
                 <Grid item xs={12} sx={{ p: 30 }}>
                     <EmptyCart />
                 </Grid>

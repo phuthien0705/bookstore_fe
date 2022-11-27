@@ -1,21 +1,21 @@
-import { Grid, Typography, Breadcrumbs, Link } from '@mui/material';
+import { Grid, Typography, Breadcrumbs, Link, Stack, Box } from '@mui/material';
 import { NavigateNext } from '@mui/icons-material';
 
 const CartTitle = () => {
     return (
-        <Grid container direction="row" justifyContent="space-between" alignItems="center">
-            <Grid item xs={1}>
-                <Typography variant="h3">Kiểm tra</Typography>
-            </Grid>
-            <Grid item xs={1.2}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }}>
+            <Box>
+                <Typography variant="h3">Giỏ hàng</Typography>
+            </Box>
+            <Box mt={{ xs: 1, sm: 0 }}>
                 <Breadcrumbs separator={<NavigateNext />} aria-label="breadcrumb">
                     <Link color="text.primary" href="/">
                         Trang chủ
                     </Link>
-                    <Typography color="inherit">Kiểm tra</Typography>
+                    <Typography color="inherit">Giỏ hàng</Typography>
                 </Breadcrumbs>
-            </Grid>
-        </Grid>
+            </Box>
+        </Stack>
     );
 };
 

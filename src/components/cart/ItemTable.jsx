@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Box, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Typography, Paper, Grid, IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 
@@ -6,6 +6,14 @@ import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import QuantityButton from 'components/extended/Quantity';
+import { styled } from '@mui/material/styles';
+
+const ImageStyle = styled('img')({
+    width: '100%',
+    borderRadius: 4,
+    objectFit: 'cover',
+    margin: '5px 0'
+});
 
 const ItemTable = ({ items }) => {
     const [isDeleted, setIsDeleted] = useState([]);
@@ -39,14 +47,14 @@ const ItemTable = ({ items }) => {
                             !isDeleted.includes(index) && (
                                 <TableRow key={row.id}>
                                     <TableCell>
-                                        <Grid container direction="row" justifyContent="flex-start" alignItems="center">
-                                            <Grid item xs={2}>
-                                                <img alt={row.name} width="76" height="76" src={row.image} />
-                                            </Grid>
-                                            <Grid item xs={2}>
+                                        <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>
+                                            <Box>
+                                                <ImageStyle alt={row.name} width="76" height="76" src={row.image} />
+                                            </Box>
+                                            <Box>
                                                 <Typography variant="h6">{row.name}</Typography>
-                                            </Grid>
-                                        </Grid>
+                                            </Box>
+                                        </Stack>
                                     </TableCell>
                                     <TableCell>
                                         <Typography variant="h6">{row.price}</Typography>
