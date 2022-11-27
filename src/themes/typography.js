@@ -68,6 +68,7 @@ export default function themeTypography(theme) {
         customInput: {
             marginTop: 1,
             marginBottom: 1,
+
             '& > label': {
                 top: 23,
                 left: 0,
@@ -79,6 +80,7 @@ export default function themeTypography(theme) {
             '& > div > input': {
                 padding: '30.5px 14px 11.5px !important'
             },
+            '& > div > .MuiSelect-outlined': { padding: '30.5px 14px 11.5px !important' },
             '& legend': {
                 display: 'none'
             },
