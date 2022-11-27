@@ -1,7 +1,7 @@
 import { Grid, ButtonBase, Stack, Paper, InputBase, Button, Box } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 
-const SubmitCart = () => {
+const SubmitCart = ({ setCurrentIndex }) => {
     return (
         <Stack sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', rowGap: 2 }}>
             <Box>
@@ -20,7 +20,13 @@ const SubmitCart = () => {
                     </Paper>
 
                     <div style={{ width: '100%' }}>
-                        <Button variant="contained" fullWidth>
+                        <Button
+                            variant="contained"
+                            fullWidth
+                            onClick={() => {
+                                setCurrentIndex((prev) => prev + 1);
+                            }}
+                        >
                             Tiếp theo
                         </Button>
                     </div>
