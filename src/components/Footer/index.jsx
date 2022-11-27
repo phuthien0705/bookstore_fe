@@ -9,8 +9,8 @@ import { useTheme } from '@mui/material/styles';
 const Footer = () => {
     const theme = useTheme();
     return (
-        <Container maxWidth="800" sx={{ display: 'flex', flexDirection: 'column', backgroundColor: '#e3f2fd' }}>
-            <Paper sx={{ backgroundColor: '#fff', p: 1, mt: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: '#e3f2fd' }}>
+            <Box sx={{ backgroundColor: '#fff', p: 1, mt: 2 }}>
                 <Box textAlign="center" mt={2}>
                     <LogoSection color="inherit" margin={2}></LogoSection>
                     <Stack direction="row" justifyContent="center" spacing={6} color="inherit" mt={3} mb={2}>
@@ -60,8 +60,8 @@ const Footer = () => {
                         &reg; {new Date().getFullYear()} Bản quyền thuộc về Công ty TNHH Bảo Thư.
                     </Typography>
                 </Box>
-            </Paper>
-        </Container>
+            </Box>
+        </Box>
     );
 };
 

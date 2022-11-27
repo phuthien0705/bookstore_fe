@@ -29,7 +29,8 @@ import useGetListPublisher from 'hooks/useGetListPublisher';
 const ImageStyle = styled('img')({
     width: '80%',
     borderRadius: 4,
-    objectFit: 'cover'
+    objectFit: 'cover',
+    margin: '5px 0'
 });
 const ProductManagement = () => {
     const queryClient = useQueryClient();
@@ -94,9 +95,9 @@ const ProductManagement = () => {
             field: 'image',
             headerName: 'Hình ảnh',
             description: 'Hình ảnh sản phẩm',
-            width: 100,
+            width: 150,
             renderCell: (params) => {
-                return <ImageStyle src={`${process.env.REACT_APP_API_URL}/storage/${params?.row?.book_image}`} alt={params?.row?.name} />;
+                return <ImageStyle src={`${params?.row?.book_image}`} alt={params?.row?.name} />;
             }
         },
         { field: 'name', headerName: 'Tên sản phẩm', description: 'Tên sản phẩm', width: 200 },
@@ -124,7 +125,7 @@ const ProductManagement = () => {
             }
         }
     ];
-
+    console.log(bookData?.data);
     return (
         <>
             <MainCard title="Danh sách các sản phẩm" darkTitle>
@@ -167,6 +168,7 @@ const ProductManagement = () => {
                         disableSelectionOnClick
                         autoHeight
                         checkboxSelection
+                        getRowHeight={() => 'auto'}
                         disableColumnMenu
                         loading={
                             isAuthorLoading ||
@@ -180,7 +182,7 @@ const ProductManagement = () => {
                             isMutateLoading
                         }
                         columns={columns}
-                        rows={bookData?.books || []}
+                        rows={bookData?.data || []}
                         components={{
                             NoRowsOverlay: CustomNoRowsOverlay,
                             LoadingOverlay: LinearProgress,

@@ -11,7 +11,9 @@ import {
     useTheme,
     Alert,
     Button,
-    Typography
+    Typography,
+    Select,
+    MenuItem
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
@@ -27,6 +29,8 @@ import { toggleSnackbar } from 'store/snackbarReducer';
 import createRequest from 'common/createRequest';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { styled } from '@mui/material/styles';
+import createFormDataRequest from 'common/createFormDataRequest';
+import { createBook, editBook } from 'apis/product.api';
 
 const ImageStyle = styled('img')({
     height: '100%',
@@ -50,6 +54,7 @@ const BookModal = ({
     const dispatch = useDispatch();
     const [showAlert, setShowAlert] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
+    const [image, setImage] = useState(null);
 
     const data = currentProduct?.data;
 
@@ -62,11 +67,10 @@ const BookModal = ({
         total_pages: data?.total_pages ? data?.total_pages : '',
         price: data?.price ? data?.price : '',
         book_image: data?.book_image ? data?.book_image : '',
-        publish_date: data?.publish_date ? data?.publish_date : '',
+        published_date: data?.published_date ? data?.published_date : '',
         publisher_id: data?.publisher_id ? data?.publisher_id : '',
         genres: data?.genres ? data?.genres : [],
         authors: data?.authors ? data?.authors : [],
-
         submit: null
     };
     const handleExit = (currentValues) => {
@@ -86,15 +90,49 @@ const BookModal = ({
                 initialValues={initialValues}
                 validationSchema={Yup.object().shape({
                     name: Yup.string().max(255, 'Tên sách tối đa 255 ký tự').required('Tên sách là bắt buộc'),
-                    description: Yup.string().max(255, 'Mô tả sách tối đa 255 ký tự').required('Mô tả sách là bắt buộc')
+                    description: Yup.string().max(255, 'Mô tả sách tối đa 255 ký tự'),
+                    available_quantity: Yup.number()
+                        .integer('Số lượng sách phải là số nguyên')
+                        .typeError('Số lượng sách phải là số nguyên'),
+                    isbn: Yup.string().max(20, 'Mã sách tối đa 20 ký tự'),
+                    total_pages: Yup.number().integer('Số trang phải là số nguyên').typeError('Số trang phải là số nguyên'),
+                    price: Yup.number().typeError('Giá sản phẩm phải là số'),
+                    book_image: Yup.string().required('Hình ảnh là bắt buộc')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
-                        const req = createRequest({ name: values.name, description: values.description });
+                        const req = createFormDataRequest({
+                            name: values.name,
+                            description: values.description,
+                            available_quantity: values.available_quantity,
+                            isbn: values.isbn,
+                            language: values.language,
+                            total_pages: values.total_pages,
+                            price: values.price,
+                            book_image: image,
+                            published_date: values.published_date,
+                            publisher_id: values.publisher_id
+                            // genres: values.genres,
+                            // authors: values.authors
+                        });
+                        console.log({
+                            name: values.name,
+                            description: values.description,
+                            available_quantity: values.available_quantity,
+                            isbn: values.isbn,
+                            language: values.language,
+                            total_pages: values.total_pages,
+                            price: values.price,
+                            book_image: image,
+                            published_date: values.published_date,
+                            publisher_id: values.publisher_id,
+                            genres: values.genres,
+                            authors: values.authors
+                        });
                         if (data === null) {
-                            await createGenre(req);
+                            await createBook(req);
                         } else {
-                            await editGenre(data?.id, req);
+                            await editBook(data?.id, req);
                         }
                         setStatus({ success: true });
                         setSubmitting(false);
@@ -105,7 +143,7 @@ const BookModal = ({
                         }, 1000);
                     } catch (err) {
                         console.error(err);
-                        toast({ type: 'error', message: `Xảy ra lỗi trong quá trình ${data === null ? 'tạo' : 'cập nhật'} thể loại` });
+                        toast({ type: 'error', message: `Xảy ra lỗi trong quá trình ${data === null ? 'tạo' : 'cập nhật'} sản phẩm` });
                         setStatus({ success: false });
                         setSubmitting(false);
                     }
@@ -288,6 +326,7 @@ const BookModal = ({
                                                 accept="image/*"
                                                 type="file"
                                                 onChange={(e) => {
+                                                    setImage(e.target.files[0]);
                                                     setValues((prev) => ({ ...prev, book_image: URL.createObjectURL(e.target.files[0]) }));
                                                 }}
                                             />
@@ -303,23 +342,25 @@ const BookModal = ({
                             </FormControl>
                             <FormControl
                                 fullWidth
-                                error={Boolean(touched.publish_date && errors.publish_date)}
+                                error={Boolean(touched.published_date && errors.published_date)}
                                 sx={{ ...theme.typography.customInput }}
                             >
-                                <InputLabel htmlFor="outlined-adornment-publish_date">Ngày phát hành</InputLabel>
+                                <Typography sx={{ color: '#9e9e9e', position: 'absolute', top: '10px', left: '16px', zIndex: 10 }}>
+                                    Ngày phát hành
+                                </Typography>
                                 <OutlinedInput
-                                    id="outlined-adornment-publish_date"
-                                    type="text"
-                                    value={values.publish_date}
-                                    name="publish_date"
+                                    id="outlined-adornment-published_date"
+                                    type="date"
+                                    value={values.published_date}
+                                    name="published_date"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
-                                    label="Mô tả thể loại"
+                                    label="Ngày phát hành"
                                     inputProps={{}}
                                 />
-                                {touched.publish_date && errors.publish_date && (
-                                    <FormHelperText error id="standard-weight-helper-text-publish_date">
-                                        {errors.publish_date}
+                                {touched.published_date && errors.published_date && (
+                                    <FormHelperText error id="standard-weight-helper-text-published_date">
+                                        {errors.published_date}
                                     </FormHelperText>
                                 )}
                             </FormControl>
@@ -328,23 +369,90 @@ const BookModal = ({
                                 error={Boolean(touched.publisher_id && errors.publisher_id)}
                                 sx={{ ...theme.typography.customInput }}
                             >
-                                <InputLabel htmlFor="outlined-adornment-publisher_id">ID tác giả</InputLabel>
-                                <OutlinedInput
-                                    id="outlined-adornment-publisher_id"
-                                    type="text"
+                                <InputLabel htmlFor="select-publisher_id">Nhà xuất bản</InputLabel>
+
+                                <Select
+                                    id="select-publisher_id"
                                     value={values.publisher_id}
-                                    name="publisher_id"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    label="Mô tả thể loại"
-                                    inputProps={{}}
-                                />
+                                    label="Nhà xuất bản"
+                                    onChange={(event) => {
+                                        setValues((prev) => ({ ...prev, publisher_id: event.target.value }));
+                                    }}
+                                >
+                                    {/* render list publisher */}
+                                    {publishers.map((publisher, _index) => (
+                                        <MenuItem key={_index} value={publisher?.id}>
+                                            {publisher?.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
                                 {touched.publisher_id && errors.publisher_id && (
                                     <FormHelperText error id="standard-weight-helper-text-publisher_id">
                                         {errors.publisher_id}
                                     </FormHelperText>
                                 )}
                             </FormControl>
+
+                            <FormControl
+                                fullWidth
+                                error={Boolean(touched.genres && errors.genres)}
+                                sx={{ ...theme.typography.customInput }}
+                            >
+                                <InputLabel htmlFor="select-genres">Thể loại</InputLabel>
+
+                                <Select
+                                    multiple
+                                    id="select-genres"
+                                    value={values.genres}
+                                    label="Thể loại"
+                                    onChange={(event) => {
+                                        setValues((prev) => ({ ...prev, genres: event.target.value }));
+                                    }}
+                                >
+                                    {/* render list genre */}
+                                    {genres.map((genre, _index) => (
+                                        <MenuItem key={_index} value={genre?.id}>
+                                            {genre?.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                                {touched.genres && errors.genres && (
+                                    <FormHelperText error id="standard-weight-helper-text-genres">
+                                        {errors.genres}
+                                    </FormHelperText>
+                                )}
+                            </FormControl>
+
+                            <FormControl
+                                fullWidth
+                                error={Boolean(touched.authors && errors.authors)}
+                                sx={{ ...theme.typography.customInput }}
+                            >
+                                <InputLabel htmlFor="select-authors">Tác giả</InputLabel>
+
+                                <Select
+                                    multiple
+                                    id="select-authors"
+                                    value={values.authors}
+                                    label="Tác giả"
+                                    onChange={(event) => {
+                                        setValues((prev) => ({ ...prev, authors: event.target.value }));
+                                    }}
+                                >
+                                    {/* render list author */}
+                                    {authors.map((author, _index) => (
+                                        <MenuItem key={_index} value={author?.id}>
+                                            {author?.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                                {touched.authors && errors.authors && (
+                                    <FormHelperText error id="standard-weight-helper-text-authors">
+                                        {errors.authors}
+                                    </FormHelperText>
+                                )}
+                            </FormControl>
+
                             {errors.submit && (
                                 <Box sx={{ mt: 3 }}>
                                     <FormHelperText error>{errors.submit}</FormHelperText>
