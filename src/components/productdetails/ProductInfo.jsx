@@ -7,12 +7,18 @@ import QuantityButton from 'components/extended/Quantity';
 const ProductInfo = ({ data }) => {
     return (
         <Grid container>
-            <Grid xs={6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <div>
-                    <img src={data.image} alt={data.name} width="600" height="450" style={{ 'border-radius': '10px' }} />
+                    <img
+                        src={data.image}
+                        alt={data.name}
+                        width="90%"
+                        height="90%"
+                        style={{ 'border-radius': '10px', objectFit: 'cover' }}
+                    />
                 </div>
             </Grid>
-            <Grid xs={6}>
+            <Grid item xs={6}>
                 <Grid container>
                     <Grid item xs={12} sx={{ p: 2.5 }}>
                         <Stack direction="column" spacing={1}>

@@ -5,41 +5,46 @@ import { maxWidth } from '@mui/system';
 import PropTypes from 'prop-types';
 
 const OrderSummary = ({ items }) => {
-    let subsum = items.reduce((prev, curr) => prev + Number(curr.price) * curr.quantity, 1);
+    const subsum = items.reduce((prev, curr) => prev + Number(curr.price) * Number(curr.quantity), 0);
     return (
-        <Paper elevation={2} sx={{ display: 'flex', width: 1720, m: 3 }}>
+        <Paper sx={{ display: 'flex', width: '100%', mt: 2, mb: 2, border: '1px solid rgba(0, 0, 0, 0.15)' }}>
             <TableContainer component={Paper}>
                 <Table sx={{ maxWidth: 1700 }} align="right">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell colSpan={2}>
-                                <Typography variant="h5">Tổng</Typography>
-                            </TableCell>
-                        </TableRow>
-                    </TableHead>
                     <TableBody>
                         <TableRow>
                             <TableCell>
-                                <Typography variant="body1">Tổng tiền</Typography>
+                                <Typography fontSize="14px" fontWeight="bold">
+                                    Tổng tiền
+                                </Typography>
                             </TableCell>
                             <TableCell align="right">
-                                <Typography variant="h5">{subsum}</Typography>
+                                <Typography fontSize="16px" fontWeight="bold">
+                                    {subsum}
+                                </Typography>
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>
-                                <Typography variant="body1">Mã giảm</Typography>
+                                <Typography fontSize="14px" fontWeight="bold">
+                                    Mã giảm
+                                </Typography>
                             </TableCell>
                             <TableCell align="right">
-                                <Typography variant="h5">-</Typography>
+                                <Typography fontSize="16px" fontWeight="bold">
+                                    -
+                                </Typography>
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>
-                                <Typography variant="h5">Còn lại</Typography>
+                                <Typography fontSize="14px" fontWeight="bold">
+                                    Còn lại
+                                </Typography>
                             </TableCell>
                             <TableCell align="right">
-                                <Typography variant="h5">{subsum.toString()}</Typography>
+                                <Typography fontSize="16px" fontWeight="bold">
+                                    {subsum.toString()}
+                                </Typography>
                             </TableCell>
                         </TableRow>
                     </TableBody>

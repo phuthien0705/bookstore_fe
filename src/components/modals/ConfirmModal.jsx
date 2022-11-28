@@ -8,7 +8,15 @@ const useStyles = makeStyles({
     }
 });
 
-const ConfirmModal = ({ open, handleClose, handleConfirm }) => {
+const ConfirmModal = ({
+    open,
+    handleClose,
+    handleConfirm,
+    contentHeader = 'Thay đổi chưa lưu',
+    textContent = 'Thay đổi của bạn chưa được lưu. Bạn vẫn muốn thoát mà không lưu?',
+    confirmContent = 'Thoát',
+    cancelContent = 'Ở lại'
+}) => {
     const classes = useStyles();
 
     return (
@@ -20,19 +28,19 @@ const ConfirmModal = ({ open, handleClose, handleConfirm }) => {
             aria-describedby="alert-dialog-description"
         >
             <DialogTitle sx={{ color: 'rgb(239,68,68)', fontSize: '16px', paddingBottom: 1 }} id="alert-dialog-title">
-                {'Thay đổi chưa lưu'}
+                {contentHeader}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText sx={{ color: 'rgba(0,0,0,0.6)', fontSize: '16px' }} id="alert-dialog-description">
-                    Thay đổi của bạn chưa được lưu. Bạn vẫn muốn thoát mà không lưu?
+                    {textContent}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button sx={{ color: 'rgb(239,68,68)', fontSize: '16px' }} onClick={() => handleConfirm()}>
-                    Thoát
+                    {confirmContent}
                 </Button>
                 <Button sx={{ color: 'black', fontSize: '16px', marginLeft: '0 !important' }} onClick={() => handleClose()}>
-                    Ở lại
+                    {cancelContent}
                 </Button>
             </DialogActions>
         </Dialog>
@@ -41,6 +49,10 @@ const ConfirmModal = ({ open, handleClose, handleConfirm }) => {
 ConfirmModal.propTypes = {
     handleClose: PropTypes.func,
     open: PropTypes.bool,
-    handleConfirm: PropTypes.func
+    handleConfirm: PropTypes.func,
+    textContent: PropTypes.string,
+    confirmContent: PropTypes.string,
+    cancelContent: PropTypes.string,
+    contentHeader: PropTypes.string
 };
 export default ConfirmModal;
