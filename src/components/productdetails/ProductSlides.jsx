@@ -100,19 +100,19 @@ const ProductSlides = () => {
                 {(isBookFetching || isBookLoading) && (
                     <>
                         <SwiperSlide>
-                            <ProductCardSkeleton />
+                            <ProductCardSkeleton slideMode />
                         </SwiperSlide>
                         <SwiperSlide>
-                            <ProductCardSkeleton />
+                            <ProductCardSkeleton slideMode />
                         </SwiperSlide>
                         <SwiperSlide>
-                            <ProductCardSkeleton />
+                            <ProductCardSkeleton slideMode />
                         </SwiperSlide>
                         <SwiperSlide>
-                            <ProductCardSkeleton />
+                            <ProductCardSkeleton slideMode />
                         </SwiperSlide>
                         <SwiperSlide>
-                            <ProductCardSkeleton />
+                            <ProductCardSkeleton slideMode />
                         </SwiperSlide>
                     </>
                 )}

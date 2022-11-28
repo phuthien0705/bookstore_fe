@@ -1,14 +1,15 @@
 import { Box, Skeleton } from '@mui/material';
 
-const ProductCardSkeleton = () => {
+const ProductCardSkeleton = ({ slideMode = false }) => {
     return (
         <Box>
             <Box>
-                <Skeleton variant="rectangular" height={112} />
+                <Skeleton variant="rectangular" height={slideMode ? 112 : 200} />
             </Box>
             <Box sx={{ pt: 0.5 }}>
                 <Skeleton width="60%" />
                 <Skeleton width="40%" />
+                {!slideMode && <Skeleton width="50%" />}
             </Box>
         </Box>
     );

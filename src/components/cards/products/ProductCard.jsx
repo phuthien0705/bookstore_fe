@@ -12,7 +12,7 @@ const useStyles = makeStyles({
         '&:hover': { transform: 'scale3d(1.02, 1.02, 1)' },
         '& .MuiCardMedia-root ': { cursor: 'pointer' },
         '& .MuiTypography-h5': { cursor: 'pointer' },
-        maxHeight: '300px',
+        maxHeight: '350px',
         height: '100%',
         boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)'
     }),
@@ -42,7 +42,7 @@ const ProductCard = ({ product, slideMode = false, isLoading = false }) => {
             <CardMedia
                 ref={imgRef}
                 component="img"
-                height={slideMode ? '150px' : imgRef && imgRef?.current?.offsetWidth ? (imgRef?.current?.offsetWidth * 9) / 16 : '200px'}
+                height={slideMode ? '150px' : '200px'}
                 image={product?.book_image}
                 alt={product?.name}
                 onClick={handleClickItem}
