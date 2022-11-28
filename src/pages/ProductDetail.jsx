@@ -55,7 +55,9 @@ const ProductDetail = () => {
                             <Typography variant="h4">Tác giả</Typography>
                             <Typography variant="h4">NXB</Typography>
                             <Typography variant="h4">Số trang</Typography>
-                            <Typography variant="h4">Trọng lượng (gr)</Typography>
+                            <Typography noWrap variant="h4">
+                                Trọng lượng (gr)
+                            </Typography>
                             <Typography variant="h4">Năm XB</Typography>
                         </Stack>
                         <Stack direction="column" spacing={1}>
