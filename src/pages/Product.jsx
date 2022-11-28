@@ -31,7 +31,7 @@ import sampleData from 'components/cards/products/SampleData';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import SearchAdminSection from 'components/Header/SearchSection/SearchAdmin';
+import SearchProductSection from 'components/Header/SearchSection/SearchProduct';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import ProductCardItems from 'components/cards/products/ProductCardItems';
 
@@ -114,78 +114,84 @@ const Product = () => {
             </Paper>
             <MainCard title="Tất cả sách có sẵn" sx={{ backgroundColor: '#f5f5f5f5' }}>
                 <Box csx={{ display: 'flex' }}>
-                    <Stack display="flex" flexDirection="row" alignItems="center" justifyContent="flex-end">
+                    <Stack display="flex" direction={matches ? 'row' : 'column'} alignItems="center" justifyContent="flex-end">
                         <Grid p={1}>
-                            <SearchAdminSection />
+                            <SearchProductSection />
                         </Grid>
-                        <Typography p={1}>|</Typography>
-                        <Button p={1} startIcon={<FilterAltIcon />} onClick={handleToggleFilter}>
-                            Lọc
-                        </Button>
-                        <Typography p={1}>|</Typography>
-                        <Typography sx={{ fontSize: { xs: '14px', md: '16px' } }} variant="h4">
-                            Sắp xếp theo:{' '}
-                        </Typography>
-                        <Grid>
-                            <ButtonGroup ref={anchorRef} aria-label="split button">
-                                <Button
-                                    variant="text"
-                                    id="composition-button"
-                                    aria-controls={openSort ? 'composition-menu' : undefined}
-                                    aria-expanded={openSort ? 'true' : undefined}
-                                    aria-haspopup="true"
-                                    onClick={handleToggleSort}
-                                    endIcon={<KeyboardArrowDownIcon />}
-                                    color="primary"
-                                >
-                                    {sortOptions[selectedIndex]}
+                        <Stack display="flex" direction="row" alignItems="center" justifyContent="space-between" spacing={matches ? 0 : 3}>
+                            <Typography p={1} display={matches ? 'true' : 'none'}>
+                                |
+                            </Typography>
+                            <Grid>
+                                <Button p={1} startIcon={<FilterAltIcon />} onClick={handleToggleFilter}>
+                                    Lọc
                                 </Button>
-                            </ButtonGroup>
-                            <Popper
-                                sx={{
-                                    zIndex: 2
-                                }}
-                                open={openSort}
-                                anchorEl={anchorRef.current}
-                                role={undefined}
-                                placement="bottom-start"
-                                transition
-                                disablePortal
-                            >
-                                {({ TransitionProps, placement }) => (
-                                    <Grow
-                                        {...TransitionProps}
-                                        style={{
-                                            transformOrigin: placement === 'bottom-start' ? 'left top' : 'left bottom'
-                                        }}
+                            </Grid>
+                            <Typography p={1}>|</Typography>
+                            <Typography sx={{ fontSize: { xs: '14px', md: '16px' } }} variant="h4">
+                                Sắp xếp theo:{' '}
+                            </Typography>
+                            <Grid>
+                                <ButtonGroup ref={anchorRef} aria-label="split button">
+                                    <Button
+                                        variant="text"
+                                        id="composition-button"
+                                        aria-controls={openSort ? 'composition-menu' : undefined}
+                                        aria-expanded={openSort ? 'true' : undefined}
+                                        aria-haspopup="true"
+                                        onClick={handleToggleSort}
+                                        endIcon={<KeyboardArrowDownIcon />}
+                                        color="primary"
                                     >
-                                        <Paper backgroundColor="#fff">
-                                            <ClickAwayListener onClickAway={handleCloseSort}>
-                                                <MenuList
-                                                    autoFocusItem={openSort}
-                                                    id="split-button-menu"
-                                                    aria-labelledby="composition-button"
-                                                    onKeyDown={handleListKeyDownSort}
-                                                >
-                                                    {sortOptions.map((option, index) => (
-                                                        <MenuItem
-                                                            key={option}
-                                                            selected={index === selectedIndex}
-                                                            onClick={(event) => handleSortItemClick(event, index)}
-                                                        >
-                                                            {option}
-                                                        </MenuItem>
-                                                    ))}
-                                                </MenuList>
-                                            </ClickAwayListener>
-                                        </Paper>
-                                    </Grow>
-                                )}
-                            </Popper>
-                        </Grid>
+                                        {sortOptions[selectedIndex]}
+                                    </Button>
+                                </ButtonGroup>
+                                <Popper
+                                    sx={{
+                                        zIndex: 2
+                                    }}
+                                    open={openSort}
+                                    anchorEl={anchorRef.current}
+                                    role={undefined}
+                                    placement="bottom-start"
+                                    transition
+                                    disablePortal
+                                >
+                                    {({ TransitionProps, placement }) => (
+                                        <Grow
+                                            {...TransitionProps}
+                                            style={{
+                                                transformOrigin: placement === 'bottom-start' ? 'left top' : 'left bottom'
+                                            }}
+                                        >
+                                            <Paper backgroundColor="#fff">
+                                                <ClickAwayListener onClickAway={handleCloseSort}>
+                                                    <MenuList
+                                                        autoFocusItem={openSort}
+                                                        id="split-button-menu"
+                                                        aria-labelledby="composition-button"
+                                                        onKeyDown={handleListKeyDownSort}
+                                                    >
+                                                        {sortOptions.map((option, index) => (
+                                                            <MenuItem
+                                                                key={option}
+                                                                selected={index === selectedIndex}
+                                                                onClick={(event) => handleSortItemClick(event, index)}
+                                                            >
+                                                                {option}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </MenuList>
+                                                </ClickAwayListener>
+                                            </Paper>
+                                        </Grow>
+                                    )}
+                                </Popper>
+                            </Grid>
+                        </Stack>
                     </Stack>
                     <Box sx={{ display: 'flex' }}>
-                        {/* Render Product */}
+                        {/* Render Products */}
                         <Main open={openFilter}>
                             {/* {sampleData.map((data, index) => (
                                     <Grid item xs={12} sm={9} md={6} lg={3}>
