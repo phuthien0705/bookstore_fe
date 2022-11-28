@@ -71,6 +71,7 @@ const Home = () => {
         <Container sx={{ display: 'flex', flexDirection: 'column', rowGap: '1rem' }}>
             <CarouselHome />
             <ProductCardItems
+                isLoading={isBookLoading}
                 data={bookData?.data}
                 title="Xu hướng mua sắm"
                 titleIcon={<LocalFireDepartmentIcon color="error" />}

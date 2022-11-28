@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ProductCardItem from './ProductCardItem';
 import { makeStyles } from '@mui/styles';
 import config from 'config';
+import ProductCardSkeleton from './ProductCardSkelection';
 
 const useStyles = makeStyles({
     container: (props) => ({
@@ -19,9 +20,18 @@ const useStyles = makeStyles({
     })
 });
 
-const ProductCardItems = ({ data, title, titleIcon, titleBackground = '#fff' }) => {
+const ProductCardItems = ({ data, title, titleIcon, titleBackground = '#fff', isLoading = false }) => {
     const classes = useStyles({ titleBackground });
     const renderProducts = () => {
+        if (isLoading)
+            return (
+                <>
+                    <ProductCardSkeleton />
+                    <ProductCardSkeleton />
+                    <ProductCardSkeleton />
+                    <ProductCardSkeleton />
+                </>
+            );
         return data?.length > 0 ? (
             data.map((product, index) => {
                 return <ProductCardItem key={index} product={product} />;
@@ -60,6 +70,7 @@ ProductCardItems.propTypes = {
     data: PropTypes.any,
     title: PropTypes.string,
     titleIcon: PropTypes.node,
-    titleBackground: PropTypes.string
+    titleBackground: PropTypes.string,
+    isLoading: PropTypes.bool
 };
 export default ProductCardItems;
