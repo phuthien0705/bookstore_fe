@@ -1,7 +1,7 @@
 import httpRequest from 'services/httpRequest';
 
 export const getAllBook = async () => {
-    return httpRequest.get('/admin/books');
+    return httpRequest.get(`/admin/books?per_page=999`);
 };
 export const getAllBookClient = async () => {
     return httpRequest.get('/books');
