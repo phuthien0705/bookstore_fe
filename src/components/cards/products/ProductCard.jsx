@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles';
 import { useTheme } from '@mui/material/styles';
-import { Button, Card, CardContent, CardMedia, Grid, Rating, Stack, Typography } from '@mui/material';
+import { Button, Card, CardContent, CardMedia, Grid, Hidden, Rating, Stack, Typography } from '@mui/material';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
@@ -40,20 +40,30 @@ const ProductCard = ({ product }) => {
             />
             <CardContent sx={{ padding: 2 }}>
                 <Stack spacing={1} direction="column">
-                    <Typography gutterBottom variant="h5" component="div" sx={{ margin: 0 }} onClick={handleClickItem}>
-                        {product?.name}
-                    </Typography>
+                    <div style={{ width: '240px' }}>
+                        <Typography noWrap gutterBottom variant="h5" component="div" sx={{ margin: 0 }} onClick={handleClickItem}>
+                            {product?.name}
+                        </Typography>
+                    </div>
                     <Stack>
                         <Rating size="small" name="read-only" value={product?.rating} readOnly precision={0.5} />
                     </Stack>
-                    <Stack direction="row" justifyContent="space-between" alignItems="center">
-                        <Typography gutterBottom fontWeight="bold" component="div" color="#000" fontSize="16px">
-                            {product?.price}
-                        </Typography>
-                        <Button variant="contained" sx={{ padding: 0, width: 'fit-content', minWidth: 0 }} onClick={handleClickAddToCart}>
-                            <ShoppingCartOutlinedIcon fontSize="small" sx={{ margin: '5px 10px' }} />
-                        </Button>
-                    </Stack>
+                    <Grid container direction="row" justifyContent="space-between" alignItems="center">
+                        <Grid item xs={12} md={2}>
+                            <Typography gutterBottom fontWeight="bold" component="div" color="#000" fontSize="16px">
+                                {product?.price}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12} md={2}>
+                            <Button
+                                variant="contained"
+                                sx={{ padding: 0, width: 'fit-content', minWidth: 0 }}
+                                onClick={handleClickAddToCart}
+                            >
+                                <ShoppingCartOutlinedIcon fontSize="small" sx={{ margin: '5px 10px' }} />
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </Stack>
             </CardContent>
         </Card>

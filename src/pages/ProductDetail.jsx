@@ -40,16 +40,30 @@ const ProductDetail = () => {
                             <Typography variant="h4">Tác giả</Typography>
                             <Typography variant="h4">NXB</Typography>
                             <Typography variant="h4">Số trang</Typography>
-                            <Typography variant="h4">Trọng lượng (gr)</Typography>
+                            <Typography noWrap variant="h4">
+                                Trọng lượng (gr)
+                            </Typography>
                             <Typography variant="h4">Năm XB</Typography>
                         </div>
                         <div>
-                            <Typography variant="body2">{sampleSpec.provider}</Typography>
-                            <Typography variant="body2">{sampleSpec.author}</Typography>
-                            <Typography variant="body2">{sampleSpec.publisher}</Typography>
-                            <Typography variant="body2">{sampleSpec.totalpages}</Typography>
-                            <Typography variant="body2">{sampleSpec.weight}</Typography>
-                            <Typography variant="body2">{sampleSpec.datepublished}</Typography>
+                            <Typography noWrap variant="body2">
+                                {sampleSpec.provider}
+                            </Typography>
+                            <Typography noWrap variant="body2">
+                                {sampleSpec.author}
+                            </Typography>
+                            <Typography noWrap variant="body2">
+                                {sampleSpec.publisher}
+                            </Typography>
+                            <Typography noWrap variant="body2">
+                                {sampleSpec.totalpages}
+                            </Typography>
+                            <Typography noWrap variant="body2">
+                                {sampleSpec.weight}
+                            </Typography>
+                            <Typography noWrap variant="body2">
+                                {sampleSpec.datepublished}
+                            </Typography>
                         </div>
                     </Stack>
                 </Stack>
