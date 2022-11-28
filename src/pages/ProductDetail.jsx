@@ -2,6 +2,8 @@ import { Container, Paper, Stack, Typography } from '@mui/material';
 import ProductInfo from 'components/productdetails/ProductInfo';
 import ProductSlides from 'components/productdetails/ProductSlides';
 import ProductCard from 'components/cards/products/ProductCard';
+import { useParams } from 'react-router';
+import useGetListBookDetail from 'hooks/client/useGetListBookDetail';
 
 const sampleData = {
     id: 0,
@@ -24,17 +26,20 @@ const sampleSpec = {
 };
 
 const ProductDetail = () => {
+    const { id } = useParams();
+    const { data, isLoading, isFetching, refetch } = useGetListBookDetail(id);
+    console.log(data);
     return (
-        <Container maxWidth="xl" sx={{ display: 'flex', flexDirection: 'column', rowGap: '1rem' }}>
+        <Container disableGutters maxWidth="xl" sx={{ display: 'flex', flexDirection: 'column', rowGap: '1rem' }}>
             <Paper sx={{ backgroundColor: '#fff', display: 'flex', flexDirection: 'column' }}>
                 <Stack direction="row" sx={{ p: 1 }}>
                     <ProductInfo data={sampleData} />
                 </Stack>
                 <Stack sx={{ p: 4 }}>
-                    <Typography variant="h3" sx={{ p: 3 }}>
+                    <Typography variant="h3" sx={{ py: { xs: 1, md: 1 }, px: { xs: 2, md: 0 } }}>
                         Thông tin sản phẩm
                     </Typography>
-                    <Stack direction="row" spacing={9}>
+                    <Stack direction="row" spacing={9} sx={{ py: { xs: 1, md: 1 }, px: { xs: 2, md: 0 } }}>
                         <div>
                             <Typography variant="h4">Nhà Cung Cấp</Typography>
                             <Typography variant="h4">Tác giả</Typography>
@@ -54,8 +59,12 @@ const ProductDetail = () => {
                     </Stack>
                 </Stack>
             </Paper>
-            <h2> Sản phẩm liên quan </h2>
-            <ProductSlides />
+            <Stack direction="column">
+                <Typography variant="h3" sx={{ py: 2 }}>
+                    Sản phẩm liên quan{' '}
+                </Typography>
+                <ProductSlides />
+            </Stack>
         </Container>
     );
 };
