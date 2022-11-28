@@ -9,7 +9,7 @@ const ProductCardSkeleton = ({ slideMode = false }) => {
             <Box sx={{ pt: 0.5 }}>
                 <Skeleton width="60%" />
                 <Skeleton width="40%" />
-                {!slideMode && <Skeleton width="50%" />}
+                <Skeleton width="50%" />
             </Box>
         </Box>
     );

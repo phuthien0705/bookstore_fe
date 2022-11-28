@@ -3,17 +3,11 @@ import { BOOK_DETAIL } from 'constants/queryKeyName';
 import { useQuery } from 'react-query';
 
 const useGetListBookDetail = (id) => {
-    const getListQuery = useQuery(
-        [BOOK_DETAIL, id],
-        async () => {
-            await getBookDetailById(id);
-        },
-        {
-            cacheTime: Infinity,
-            refetchOnWindowFocus: false,
-            staleTime: Infinity
-        }
-    );
+    const getListQuery = useQuery([BOOK_DETAIL, id], () => getBookDetailById(id), {
+        cacheTime: Infinity,
+        refetchOnWindowFocus: false,
+        staleTime: Infinity
+    });
 
     return getListQuery;
 };

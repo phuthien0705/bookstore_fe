@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ProductCardItem from './ProductCardItem';
 import { makeStyles } from '@mui/styles';
 import config from 'config';
-import ProductCardSkeleton from './ProductCardSkelection';
+import ProductCardSkeleton from '../Skeleton/ProductCardSkelection';
 
 const useStyles = makeStyles({
     container: (props) => ({
@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     })
 });
 
-const ProductCardItems = ({ data, title, titleIcon, titleBackground = '#fff', isLoading = false }) => {
+const ProductCardItems = ({ data, title, titleIcon, titleBackground = '#fff', isLoading = false, slideToShow = 4 }) => {
     const classes = useStyles({ titleBackground });
     const renderProducts = () => {
         if (isLoading)
@@ -33,7 +33,7 @@ const ProductCardItems = ({ data, title, titleIcon, titleBackground = '#fff', is
                 </>
             );
         return data?.length > 0 ? (
-            data.map((product, index) => {
+            data.slice(0, slideToShow).map((product, index) => {
                 return <ProductCardItem key={index} product={product} />;
             })
         ) : (
@@ -71,6 +71,7 @@ ProductCardItems.propTypes = {
     title: PropTypes.string,
     titleIcon: PropTypes.node,
     titleBackground: PropTypes.string,
-    isLoading: PropTypes.bool
+    isLoading: PropTypes.bool,
+    slideToShow: PropTypes.number
 };
 export default ProductCardItems;

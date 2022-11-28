@@ -6,18 +6,15 @@ import { useRef } from 'react';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import config from 'config';
-
 import ProductCard from 'components/cards/products/ProductCard';
-import useGetListBook from 'hooks/useGetListBook';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import PropTypes from 'prop-types';
+import ProductCardSkeleton from 'components/cards/Skeleton/ProductCardSkelection';
 
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
-
 import 'swiper/css';
-import ProductCardSkeleton from 'components/cards/products/ProductCardSkelection';
-import useGetListBookClient from 'hooks/client/useGetListBookClient';
 
 const useStyles = makeStyles({
     container: {
@@ -50,16 +47,14 @@ const useStyles = makeStyles({
     }
 });
 
-const ProductSlides = () => {
+const ProductSlides = ({ slideData, isSlideLoading, isSlideFetching }) => {
     const classes = useStyles();
     const matchSm = useMediaQuery('(max-width:600px)');
     const matchMd = useMediaQuery('(max-width:900px)');
 
     const navigationPrevRef = useRef(null);
     const navigationNextRef = useRef(null);
-    const getListBookQuery = useGetListBookClient();
 
-    const { data: bookData, isLoading: isBookLoading, isFetching: isBookFetching, refetch } = getListBookQuery;
     return (
         <div className={classes.container}>
             <IconButton variant="contained" color="secondary" className={classes.prev} ref={navigationPrevRef}>
@@ -91,13 +86,13 @@ const ProductSlides = () => {
                 }}
             >
                 {/* get only 7 item */}
-                {bookData?.data &&
-                    bookData?.data.slice(0, 7).map((data, index) => (
+                {slideData?.data &&
+                    slideData?.data.slice(0, 7).map((data, index) => (
                         <SwiperSlide key={index}>
-                            <ProductCard product={data} slideMode isLoading={isBookFetching || isBookLoading} />
+                            <ProductCard product={data} slideMode isLoading={isSlideFetching || isSlideLoading} />
                         </SwiperSlide>
                     ))}
-                {(isBookFetching || isBookLoading) && (
+                {(isSlideLoading || isSlideFetching) && (
                     <>
                         <SwiperSlide>
                             <ProductCardSkeleton slideMode />
@@ -123,5 +118,9 @@ const ProductSlides = () => {
         </div>
     );
 };
-
+ProductSlides.propTypes = {
+    slideData: PropTypes.any,
+    isSlideLoading: PropTypes.bool,
+    isSlideFetching: PropTypes.bool
+};
 export default ProductSlides;

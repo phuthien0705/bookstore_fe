@@ -4,7 +4,7 @@ import { Box, Button, Card, CardContent, CardMedia, Grid, Rating, Skeleton, Stac
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import PropTypes from 'prop-types';
 import { useRef } from 'react';
-import ProductCardSkeleton from './ProductCardSkelection';
+import ProductCardSkeleton from '../Skeleton/ProductCardSkelection';
 
 const useStyles = makeStyles({
     root: (theme) => ({

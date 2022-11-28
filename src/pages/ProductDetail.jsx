@@ -4,6 +4,8 @@ import ProductSlides from 'components/productdetails/ProductSlides';
 import ProductCard from 'components/cards/products/ProductCard';
 import { useParams } from 'react-router';
 import useGetListBookDetail from 'hooks/client/useGetListBookDetail';
+import useGetListBookClient from 'hooks/client/useGetListBookClient';
+import LoadingScreen from 'components/Loading/LoadingScreen';
 
 const sampleData = {
     id: 0,
@@ -27,35 +29,43 @@ const sampleSpec = {
 
 const ProductDetail = () => {
     const { id } = useParams();
-    const { data, isLoading, isFetching, refetch } = useGetListBookDetail(id);
+    const getListBookDetailQuery = useGetListBookDetail(id);
+    const getListBookQuery = useGetListBookClient();
+    const { data, isLoading, isFetching, refetch } = getListBookDetailQuery;
+    const { data: slideData, isLoading: isSlideLoading, isFetching: isSlideFetching } = getListBookQuery;
+
     console.log(data);
+    if (isLoading || isSlideLoading) {
+        return <LoadingScreen />;
+    }
+
     return (
         <Container disableGutters maxWidth="xl" sx={{ display: 'flex', flexDirection: 'column', rowGap: '1rem' }}>
             <Paper sx={{ backgroundColor: '#fff', display: 'flex', flexDirection: 'column' }}>
                 <Stack direction="row" sx={{ p: 1 }}>
-                    <ProductInfo data={sampleData} />
+                    <ProductInfo data={data?.data} isLoading={isLoading || isFetching} />
                 </Stack>
-                <Stack sx={{ p: 4 }}>
-                    <Typography variant="h3" sx={{ py: { xs: 1, md: 1 }, px: { xs: 2, md: 0 } }}>
+                <Stack sx={{ p: { xs: 2, sm: 4 } }}>
+                    <Typography variant="h3" sx={{ py: { xs: 1, md: 1 }, px: { xs: 1, md: 1 } }}>
                         Thông tin sản phẩm
                     </Typography>
-                    <Stack direction="row" spacing={9} sx={{ py: { xs: 1, md: 1 }, px: { xs: 2, md: 0 } }}>
-                        <div>
+                    <Stack direction="row" spacing={{ xs: 2, sm: 4 }} sx={{ py: { xs: 1, md: 1 }, px: { xs: 1, md: 1 } }}>
+                        <Stack direction="column" spacing={1}>
                             <Typography variant="h4">Nhà Cung Cấp</Typography>
                             <Typography variant="h4">Tác giả</Typography>
                             <Typography variant="h4">NXB</Typography>
                             <Typography variant="h4">Số trang</Typography>
                             <Typography variant="h4">Trọng lượng (gr)</Typography>
                             <Typography variant="h4">Năm XB</Typography>
-                        </div>
-                        <div>
+                        </Stack>
+                        <Stack direction="column" spacing={1}>
                             <Typography variant="body2">{sampleSpec.provider}</Typography>
                             <Typography variant="body2">{sampleSpec.author}</Typography>
                             <Typography variant="body2">{sampleSpec.publisher}</Typography>
                             <Typography variant="body2">{sampleSpec.totalpages}</Typography>
                             <Typography variant="body2">{sampleSpec.weight}</Typography>
                             <Typography variant="body2">{sampleSpec.datepublished}</Typography>
-                        </div>
+                        </Stack>
                     </Stack>
                 </Stack>
             </Paper>
@@ -63,7 +73,7 @@ const ProductDetail = () => {
                 <Typography variant="h3" sx={{ py: 2 }}>
                     Sản phẩm liên quan{' '}
                 </Typography>
-                <ProductSlides />
+                <ProductSlides slideData={slideData} isSlideLoading={isSlideLoading} isSlideFetching={isSlideFetching} />
             </Stack>
         </Container>
     );

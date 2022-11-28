@@ -71,6 +71,7 @@ const Home = () => {
         <Container sx={{ display: 'flex', flexDirection: 'column', rowGap: '1rem' }}>
             <CarouselHome />
             <ProductCardItems
+                slideToShow={4}
                 isLoading={isBookLoading}
                 data={bookData?.data}
                 title="Xu hướng mua sắm"
