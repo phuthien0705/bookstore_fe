@@ -23,18 +23,18 @@ import {
     Drawer,
     Stack
 } from '@mui/material';
-import MainCard from 'components/cards/MainCard';
-import ProductCard from 'components/cards/products/ProductCard';
+import ProductCard from '../../components/cards/products/ProductCard';
 import { useTheme, styled } from '@mui/material/styles';
 import { useState, useRef, useEffect } from 'react';
-import sampleData from 'components/cards/products/SampleData';
+import sampleData from '../../components/cards/products/SampleData';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import SearchAdminSection from 'components/Header/SearchSection/SearchAdmin';
+import SearchAdminSection from '../../components/Header/SearchSection/SearchAdmin';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import ProductCardItems from 'components/cards/products/ProductCardItems';
-import ProductLayout from 'layout/ProductLayot';
+import ProductCardItems from '../../components/cards/products/ProductCardItems';
+import ProductLayout from '../../layout/ProductLayot';
+import MainCard from '../../components/cards/MainCard';
 
 //Style Filter drawer
 const drawerWidth = 450;

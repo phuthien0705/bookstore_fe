@@ -1,4 +1,4 @@
-import AdminLayout from 'layout/AdminLayout';
+import AdminLayout from '../../layout/AdminLayout';
 
 const DiscountManagement = () => {
     return (
