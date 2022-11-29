@@ -15,3 +15,10 @@
 *::-webkit-scrollbar-button {
     display: none;
 }
+
+.swiper-slide {
+    height: unset !important;
+}
+.swiper {
+    padding-bottom: 1rem !important;
+}

@@ -111,9 +111,9 @@ const BookModal = ({
                             price: values.price,
                             book_image: image,
                             published_date: values.published_date,
-                            publisher_id: values.publisher_id
-                            // genres: values.genres,
-                            // authors: values.authors
+                            publisher_id: values.publisher_id,
+                            genres: values.genres,
+                            authors: values.authors
                         });
                         console.log({
                             name: values.name,

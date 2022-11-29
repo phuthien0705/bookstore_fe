@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ProductCardItem from './ProductCardItem';
 import { makeStyles } from '@mui/styles';
 import config from 'config';
+import ProductCardSkeleton from '../Skeleton/ProductCardSkelection';
 
 const useStyles = makeStyles({
     container: (props) => ({
@@ -19,11 +20,20 @@ const useStyles = makeStyles({
     })
 });
 
-const ProductCardItems = ({ data, title, titleIcon, titleBackground = '#fff' }) => {
+const ProductCardItems = ({ data, title, titleIcon, titleBackground = '#fff', isLoading = false, slideToShow = 4 }) => {
     const classes = useStyles({ titleBackground });
     const renderProducts = () => {
+        if (isLoading)
+            return (
+                <>
+                    <ProductCardSkeleton />
+                    <ProductCardSkeleton />
+                    <ProductCardSkeleton />
+                    <ProductCardSkeleton />
+                </>
+            );
         return data?.length > 0 ? (
-            data.map((product, index) => {
+            data.slice(0, slideToShow).map((product, index) => {
                 return <ProductCardItem key={index} product={product} />;
             })
         ) : (
@@ -41,8 +51,15 @@ const ProductCardItems = ({ data, title, titleIcon, titleBackground = '#fff' }) 
                     </Typography>
                 </Stack>
             )}
-            <Box sx={{ p: 1 }}>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', columnGap: '10px' }}>
+            <Box sx={{ p: 2 }}>
+                <div
+                    style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                        columnGap: '15px',
+                        rowGap: '15px'
+                    }}
+                >
                     {renderProducts()}
                 </div>
             </Box>
@@ -50,9 +67,11 @@ const ProductCardItems = ({ data, title, titleIcon, titleBackground = '#fff' }) 
     );
 };
 ProductCardItems.propTypes = {
-    data: PropTypes.any.isRequired,
+    data: PropTypes.any,
     title: PropTypes.string,
     titleIcon: PropTypes.node,
-    titleBackground: PropTypes.string
+    titleBackground: PropTypes.string,
+    isLoading: PropTypes.bool,
+    slideToShow: PropTypes.number
 };
 export default ProductCardItems;
