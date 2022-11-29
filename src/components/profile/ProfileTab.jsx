@@ -91,7 +91,7 @@ const ProfileTab = () => {
                             }}
                         />
                         <Grid container>
-                            <Grid xs="2" item>
+                            <Grid xs={2} item>
                                 <FormControl>
                                     <InputLabel id="gender">Giới tính</InputLabel>
                                     <Select
@@ -108,16 +108,16 @@ const ProfileTab = () => {
                                 </FormControl>
                             </Grid>
 
-                            <Grid xs="4" item>
+                            <Grid xs={4} item>
                                 <TextField id="outlined-birthdate" label="Ngày sinh" defaultValue="Default Value" />
                             </Grid>
-                            <Grid xs="6" item>
+                            <Grid xs={6} item>
                                 <TextField id="outlined-phone" label="Số điện thoại" value={phone} onChange={handleChangePhone} fullWidth />
                             </Grid>
-                            <Grid xs="12" item sx={{ mt: 3 }}>
+                            <Grid xs={12} item sx={{ mt: 3 }}>
                                 <TextField id="outlined-address" label="Địa chỉ" value={addr} onChange={handleChangeAddr} fullWidth />
                             </Grid>
-                            <Grid xs="12" item sx={{ mt: 3 }}>
+                            <Grid xs={12} item sx={{ mt: 3 }}>
                                 <Button variant="contained" component="label" onClick={handleSave}>
                                     Lưu thông tin
                                 </Button>

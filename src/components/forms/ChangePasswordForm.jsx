@@ -28,7 +28,7 @@ import config from 'config';
 import { changePassword, login } from 'apis/auth.api';
 import authService from 'services/authService';
 import { useNavigate } from 'react-router';
-
+import PropTypes from 'prop-types';
 const ChangePasswordForm = ({ params, ...others }) => {
     const theme = useTheme();
     const navigate = useNavigate();
@@ -238,5 +238,7 @@ const ChangePasswordForm = ({ params, ...others }) => {
         </>
     );
 };
-
+ChangePasswordForm.propTypes = {
+    params: PropTypes.any
+};
 export default ChangePasswordForm;

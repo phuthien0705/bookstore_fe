@@ -8,10 +8,7 @@ const Profile = () => {
             <Paper sx={{ backgroundColor: '#fff', p: 3, mt: 2, mb: 2 }}>
                 <Typography variant="h3">Cài Đặt Tài Khoản</Typography>
             </Paper>
-            <MainCard
-                title={authService.isAuthenticated() && <Typography variant="h4"> {authService.getUser()?.name}</Typography>}
-                darkTitle
-            >
+            <MainCard title={authService.isAuthenticated() && <Typography> {authService.getUser()?.name}</Typography>} darkTitle>
                 <AccountTabs />
             </MainCard>
         </Container>
