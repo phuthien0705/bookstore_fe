@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled, useTheme } from '@mui/material/styles';
-import { AppBar, Box, CssBaseline, Snackbar, Toolbar, useMediaQuery } from '@mui/material';
+import { AppBar, Box, CssBaseline, Snackbar, Toolbar, useMediaQuery, Typography } from '@mui/material';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import { setMenu, toggleSidebar } from './../../store/sidebarReducer';
@@ -91,10 +91,8 @@ const AdminLayout = ({ children }) => {
                         <Header handleLeftDrawerToggle={handleLeftDrawerToggle} hideSearch hideCart hideNoti />
                     </Toolbar>
                 </AppBar>
-
                 {/* drawer */}
                 <Sidebar drawerOpen={leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
-
                 {/* main content */}
                 <Main theme={theme} open={leftDrawerOpened}>
                     {children}

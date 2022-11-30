@@ -11,6 +11,8 @@ const CartSection = () => {
             sx={{
                 ml: 2,
                 mr: 2,
+                display: 'flex',
+                alignItems: 'flex-start',
                 [theme.breakpoints.down('md')]: {
                     mr: 2
                 }

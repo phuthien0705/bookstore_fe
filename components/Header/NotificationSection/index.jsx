@@ -92,6 +92,9 @@ const NotificationSection = () => {
         <>
             <Box
                 sx={{
+                    ml: 2,
+                    display: 'flex',
+                    alignItems: 'flex-start',
                     [theme.breakpoints.down('md')]: {
                         mr: 2
                     }

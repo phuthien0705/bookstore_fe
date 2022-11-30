@@ -87,7 +87,7 @@ const ProfileSection = () => {
         <>
             <Chip
                 sx={{
-                    height: '48px',
+                    height: '35px',
                     alignItems: 'center',
                     borderRadius: '27px',
                     transition: 'all .2s ease-in-out',

@@ -28,6 +28,7 @@ const PopperStyle = styled(Popper, { shouldForwardProp })(({ theme }) => ({
 
 const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(({ theme }) => ({
     width: 434,
+    height: 30,
     marginLeft: 16,
     paddingLeft: 16,
     paddingRight: 16,
@@ -50,6 +51,7 @@ const HeaderAvatarStyle = styled(Avatar, { shouldForwardProp })(({ theme }) => (
     ...theme.typography.mediumAvatar,
     background: theme.palette.secondary.light,
     color: theme.palette.secondary.dark,
+    height: '98%',
     '&:hover': {
         background: theme.palette.secondary.dark,
         color: theme.palette.secondary.light
@@ -121,7 +123,7 @@ const SearchSection = () => {
 
     return (
         <>
-            <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+            <Box sx={{ display: { xs: 'block', md: 'none', alignItems: 'flex-start' } }}>
                 <PopupState variant="popper" popupId="demo-popup-popper">
                     {(popupState) => (
                         <>

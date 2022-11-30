@@ -28,7 +28,7 @@ const ProductLayout = ({ children }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [matchDownMd]);
     return (
-        <Box sx={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
+        <Box sx={{ display: 'flex', minHeight: '100vh', flexDirection: 'column', p: 3 }}>
             <CssBaseline />
             <AppBar
                 enableColorOnDark
