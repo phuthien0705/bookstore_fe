@@ -4,6 +4,7 @@ import ProductCardItem from './ProductCardItem';
 import { makeStyles } from '@mui/styles';
 import config from './../../../config';
 import ProductCardSkeleton from '../Skeleton/ProductCardSkelection';
+import CustomNoRowsOverlay from '../../empty/CustomNoRowsOverlay';
 
 const useStyles = makeStyles({
     container: (props) => ({
@@ -32,12 +33,16 @@ const ProductCardItems = ({ data, title, titleIcon, titleBackground = '#fff', is
                     <ProductCardSkeleton />
                 </>
             );
+
         return data?.length > 0 ? (
             data.slice(0, slideToShow).map((product, index) => {
                 return <ProductCardItem key={index} product={product} />;
             })
         ) : (
-            <Typography>Chưa có sản phẩm.</Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <CustomNoRowsOverlay />
+                <Typography sx={{ textAlign: 'center' }}>Chưa có sản phẩm.</Typography>
+            </Box>
         );
     };
 

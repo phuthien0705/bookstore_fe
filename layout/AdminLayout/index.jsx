@@ -7,7 +7,7 @@ import Sidebar from '../../components/Sidebar';
 import { setMenu, toggleSidebar } from './../../store/sidebarReducer';
 import CustomizedSnackbar from './../../components/snackbar/CustomizedSnackbar';
 import authService from './../../services/authService';
-import { drawerWidth } from '../../store/constant';
+import { appDrawerWidth, drawerWidth } from '../../store/constant';
 
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
@@ -20,7 +20,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
             duration: theme.transitions.duration.leavingScreen
         }),
         [theme.breakpoints.up('md')]: {
-            marginLeft: -(appDrawerWidth - 20),
+            marginLeft: -(drawerWidth - 20),
             width: `calc(100% - ${drawerWidth}px)`
         },
         [theme.breakpoints.down('md')]: {

@@ -1,13 +1,13 @@
 import { Container, Paper, Stack, Typography } from '@mui/material';
-import ProductInfo from 'components/productdetails/ProductInfo';
-import ProductSlides from 'components/productdetails/ProductSlides';
-import ProductCard from 'components/cards/products/ProductCard';
-import useGetListBookDetail from 'hooks/client/useGetListBookDetail';
-import useGetListBookClient from 'hooks/client/useGetListBookClient';
-import ProductLayout from 'layout/ProductLayot';
+import ProductInfo from '../../components/productdetails/ProductInfo';
+import ProductSlides from '../../components/productdetails/ProductSlides';
+import ProductCard from '../../components/cards/products/ProductCard';
+import useGetListBookDetail from '../../hooks/client/useGetListBookDetail';
+import useGetListBookClient from '../../hooks/client/useGetListBookClient';
+import ProductLayout from '../../layout/ProductLayot';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import LoadingScreen from 'components/loading/LoadingScreen';
+import LoadingScreen from '../../components/loading/LoadingScreen';
 
 const sampleSpec = {
     id: 0,

@@ -1,23 +1,23 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Box, Button, Stack, Typography } from '@mui/material';
-import MainCard from 'components/cards/MainCard';
-import SearchAdminSection from 'components/Header/SearchSection/SearchAdmin';
+import MainCard from '../../components/cards/MainCard';
+import SearchAdminSection from '../../components/Header/SearchSection/SearchAdmin';
 import { DataGrid } from '@mui/x-data-grid';
 import LinearProgress from '@mui/material/LinearProgress';
-import CustomNoRowsOverlay from 'components/empty/CustomNoRowsOverlay';
+import CustomNoRowsOverlay from '../../components/empty/CustomNoRowsOverlay';
 import AddIcon from '@mui/icons-material/Add';
-import config from 'config';
-import MenuActionAdmin from 'components/menus/MenuActionAdmin';
-import CustomPagination from 'components/Paginations/CustomPagination';
-import GenreModal from 'components/modals/GenreModal';
+import config from '../../config';
+import MenuActionAdmin from '../../components/menus/MenuActionAdmin';
+import CustomPagination from '../../components/Paginations/CustomPagination';
+import GenreModal from '../../components/modals/GenreModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleSnackbar } from 'store/snackbarReducer';
-import { deleteAuthor, getAllAuthor } from 'apis/author.api';
-import AuthorModal from 'components/modals/AuthorModal';
+import { toggleSnackbar } from '../../store/snackbarReducer';
+import { deleteAuthor, getAllAuthor } from '../../apis/author.api';
+import AuthorModal from '../../components/modals/AuthorModal';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { AUTHORS } from 'constants/queryKeyName';
-import useGetListAuthor from 'hooks/useGetListAuthor';
-import AdminLayout from 'layout/AdminLayout';
+import { AUTHORS } from '../../constants/queryKeyName';
+import useGetListAuthor from '../../hooks/useGetListAuthor';
+import AdminLayout from '../../layout/AdminLayout';
 
 const AuthorManagement = () => {
     const queryClient = useQueryClient();

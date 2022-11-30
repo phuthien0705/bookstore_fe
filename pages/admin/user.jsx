@@ -1,18 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Box, Button, Chip, Pagination, Stack, Typography } from '@mui/material';
-import MainCard from 'components/cards/MainCard';
-import SearchAdminSection from 'components/Header/SearchSection/SearchAdmin';
+import MainCard from '../../components/cards/MainCard';
+import SearchAdminSection from '../../components/Header/SearchSection/SearchAdmin';
 import { DataGrid } from '@mui/x-data-grid';
 import LinearProgress from '@mui/material/LinearProgress';
-import CustomNoRowsOverlay from 'components/empty/CustomNoRowsOverlay';
+import CustomNoRowsOverlay from '../../components/empty/CustomNoRowsOverlay';
 import AddIcon from '@mui/icons-material/Add';
-
 import { styled } from '@mui/material/styles';
-import config from 'config';
-import MenuActionAdmin from 'components/menus/MenuActionAdmin';
-import CustomPagination from 'components/Paginations/CustomPagination';
-import CustomChip from 'components/chip/CustomChip';
-import AdminLayout from 'layout/AdminLayout';
+import config from '../../config';
+import MenuActionAdmin from '../../components/menus/MenuActionAdmin';
+import CustomPagination from '../../components/Paginations/CustomPagination';
+import CustomChip from '../../components/chip/CustomChip';
+import AdminLayout from '../../layout/AdminLayout';
 const ImageStyle = styled('img')({
     width: '80%',
     borderRadius: 4,

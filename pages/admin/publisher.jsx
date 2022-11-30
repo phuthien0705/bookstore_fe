@@ -1,23 +1,23 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Box, Button, Stack, Typography } from '@mui/material';
-import MainCard from 'components/cards/MainCard';
-import SearchAdminSection from 'components/Header/SearchSection/SearchAdmin';
+import MainCard from '../../components/cards/MainCard';
+import SearchAdminSection from '../../components/Header/SearchSection/SearchAdmin';
 import { DataGrid } from '@mui/x-data-grid';
 import LinearProgress from '@mui/material/LinearProgress';
-import CustomNoRowsOverlay from 'components/empty/CustomNoRowsOverlay';
+import CustomNoRowsOverlay from '../../components/empty/CustomNoRowsOverlay';
 import AddIcon from '@mui/icons-material/Add';
-import config from 'config';
-import MenuActionAdmin from 'components/menus/MenuActionAdmin';
-import CustomPagination from 'components/Paginations/CustomPagination';
-import GenreModal from 'components/modals/GenreModal';
+import config from '../../config';
+import MenuActionAdmin from '../../components/menus/MenuActionAdmin';
+import CustomPagination from '../../components/Paginations/CustomPagination';
+import GenreModal from '../../components/modals/GenreModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleSnackbar } from 'store/snackbarReducer';
-import PublisherModal from 'components/modals/PublisherModal';
-import { getAllPublisher, deletePublisher } from 'apis/publisher.api';
+import { toggleSnackbar } from '../../store/snackbarReducer';
+import PublisherModal from '../../components/modals/PublisherModal';
+import { getAllPublisher, deletePublisher } from '../../apis/publisher.api';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { PUBLISHERS } from 'constants/queryKeyName';
-import useGetListPublisher from 'hooks/useGetListPublisher';
-import AdminLayout from 'layout/AdminLayout';
+import { PUBLISHERS } from '../../constants/queryKeyName';
+import useGetListPublisher from '../../hooks/useGetListPublisher';
+import AdminLayout from '../../layout/AdminLayout';
 
 const PublisherManagement = () => {
     const queryClient = useQueryClient();

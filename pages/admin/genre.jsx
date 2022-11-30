@@ -1,22 +1,22 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Box, Button, Stack, Typography } from '@mui/material';
-import MainCard from 'components/cards/MainCard';
-import SearchAdminSection from 'components/Header/SearchSection/SearchAdmin';
+import MainCard from '../../components/cards/MainCard';
+import SearchAdminSection from '../../components/Header/SearchSection/SearchAdmin';
 import { DataGrid } from '@mui/x-data-grid';
 import LinearProgress from '@mui/material/LinearProgress';
-import CustomNoRowsOverlay from 'components/empty/CustomNoRowsOverlay';
+import CustomNoRowsOverlay from '../../components/empty/CustomNoRowsOverlay';
 import AddIcon from '@mui/icons-material/Add';
-import config from 'config';
-import MenuActionAdmin from 'components/menus/MenuActionAdmin';
-import CustomPagination from 'components/Paginations/CustomPagination';
-import { deleteGenre, getAllGenre } from 'apis/genre.api';
-import GenreModal from 'components/modals/GenreModal';
+import config from '../../config';
+import MenuActionAdmin from '../../components/menus/MenuActionAdmin';
+import CustomPagination from '../../components/Paginations/CustomPagination';
+import { deleteGenre, getAllGenre } from '../../apis/genre.api';
+import GenreModal from '../../components/modals/GenreModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleSnackbar } from 'store/snackbarReducer';
+import { toggleSnackbar } from '../../store/snackbarReducer';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { GENRES } from 'constants/queryKeyName';
-import useGetListGenre from 'hooks/useGetListGenre';
-import AdminLayout from 'layout/AdminLayout';
+import { GENRES } from '../../constants/queryKeyName';
+import useGetListGenre from '../../hooks/useGetListGenre';
+import AdminLayout from '../../layout/AdminLayout';
 
 const GenreManagement = () => {
     const queryClient = useQueryClient();
