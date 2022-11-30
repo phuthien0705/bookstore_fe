@@ -7,7 +7,7 @@ import {
   Button,
   Box,
 } from '@mui/material';
-import { ArrowBack } from '@mui/icons-material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const SubmitCart = ({ setCurrentIndex }: { setCurrentIndex: Function }) => {
   return (
@@ -28,7 +28,7 @@ const SubmitCart = ({ setCurrentIndex }: { setCurrentIndex: Function }) => {
             borderRadius: '8px',
           }}
         >
-          <ArrowBack />
+          <ArrowBackIcon />
           Tiếp tục mua hàng
         </ButtonBase>
       </Box>

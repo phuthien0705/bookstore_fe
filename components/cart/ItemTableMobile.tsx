@@ -1,6 +1,6 @@
 import { Box, IconButton, Paper, Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Delete } from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import QuantityButton from '../extended/Quantity';
 import { FC } from 'react';
 
@@ -74,7 +74,7 @@ const ItemTableMobile: FC<IItemTableMobile> = ({
             disableRipple
             onClick={() => handleDelete(item?.id)}
           >
-            <Delete />
+            <DeleteIcon />
           </IconButton>
         </Stack>
       ))}

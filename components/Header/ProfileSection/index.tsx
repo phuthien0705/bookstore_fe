@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 import {
   Avatar,
@@ -10,9 +10,7 @@ import {
   MenuList,
   Typography,
 } from '@mui/material';
-import PerfectScrollbar from 'react-perfect-scrollbar';
-import MainCard from '../../cards/MainCard';
-import Transitions from '../../extended/Transitions';
+
 import {
   IconLogout,
   IconSearch,

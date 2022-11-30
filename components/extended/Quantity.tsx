@@ -1,6 +1,7 @@
 import { ButtonGroup, Button } from '@mui/material';
 import { useState, FC } from 'react';
-import { Add, Remove } from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 interface IQuantityButton {
   currentQuantity: number;
@@ -16,11 +17,11 @@ const QuantityButton: FC<IQuantityButton> = ({
   return (
     <ButtonGroup size="small" color="primary">
       <Button sx={{ padding: 0 }} onClick={() => handleDecreaseQuantity()}>
-        <Remove />
+        <RemoveIcon />
       </Button>
       <Button sx={{ padding: 0 }}>{currentQuantity}</Button>
       <Button sx={{ padding: 0 }} onClick={() => handleIncreaseQuantity()}>
-        <Add />
+        <AddIcon />
       </Button>
     </ButtonGroup>
   );

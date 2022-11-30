@@ -9,7 +9,7 @@ import {
   TableRow,
 } from '@mui/material';
 import { Typography, Paper, Grid, IconButton } from '@mui/material';
-import { Delete } from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { styled } from '@mui/material/styles';
 import QuantityButton from '../extended/Quantity';
 import { FC } from 'react';
@@ -100,7 +100,7 @@ const ItemTable: FC<IItemTable> = ({
                   disableRipple
                   onClick={() => handleDelete(row?.id)}
                 >
-                  <Delete />
+                  <DeleteIcon />
                 </IconButton>
               </TableCell>
             </TableRow>

@@ -4,8 +4,6 @@ import {
   Alert,
   Box,
   Button,
-  Checkbox,
-  Divider,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -14,8 +12,6 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  Stack,
-  Typography,
   useMediaQuery,
 } from '@mui/material';
 import * as Yup from 'yup';

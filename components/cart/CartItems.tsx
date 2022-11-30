@@ -1,6 +1,9 @@
 import { Grid, Tabs, Tab } from '@mui/material';
 import { useCallback, useState } from 'react';
-import { ShoppingCart, Apartment, Payment } from '@mui/icons-material';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import PaymentIcon from '@mui/icons-material/Payment';
+
 import ProductAdded from './ProductAdded';
 import ItemTable from './ItemTable';
 import OrderSummary from './OrderSummary';
@@ -92,17 +95,17 @@ const CartItems = () => {
             scrollButtons={false}
           >
             <Tab
-              icon={<ShoppingCart />}
+              icon={<ShoppingCartIcon />}
               label="Giỏ"
               disabled={currentIndex !== 0}
             />
             <Tab
-              icon={<Apartment />}
+              icon={<ApartmentIcon />}
               label="Thông tin địa chỉ"
               disabled={currentIndex !== 1}
             />
             <Tab
-              icon={<Payment />}
+              icon={<PaymentIcon />}
               label="Thanh toán"
               disabled={currentIndex !== 2}
             />
