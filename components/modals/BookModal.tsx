@@ -476,7 +476,7 @@ const BookModal: FC<IBookModal> = ({
                   }}
                 >
                   {/* render list publisher */}
-                  {publishers.map((publisher, _index) => (
+                  {publishers?.map((publisher: any, _index: number) => (
                     <MenuItem key={_index} value={publisher?.id}>
                       {publisher?.name}
                     </MenuItem>
@@ -512,7 +512,7 @@ const BookModal: FC<IBookModal> = ({
                   }}
                 >
                   {/* render list genre */}
-                  {genres.map((genre, _index) => (
+                  {genres?.map((genre: any, _index: number) => (
                     <MenuItem key={_index} value={genre?.id}>
                       {genre?.name}
                     </MenuItem>
@@ -545,7 +545,7 @@ const BookModal: FC<IBookModal> = ({
                   }}
                 >
                   {/* render list author */}
-                  {authors.map((author, _index) => (
+                  {authors?.map((author, _index) => (
                     <MenuItem key={_index} value={author?.id}>
                       {author?.name}
                     </MenuItem>

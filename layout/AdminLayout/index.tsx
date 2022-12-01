@@ -72,11 +72,11 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const handleLeftDrawerToggle = () => {
     dispatch(toggleSidebar());
   };
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!authService.isAuthenticated()) {
       router.push('/login');
     }
-  }, []);
+  }, [router]);
   useEffect(() => {
     dispatch(setMenu(!matchDownMd));
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -22,7 +22,7 @@ const sampleSpec = {
 const ProductDetail = () => {
   const router = useRouter();
   const [id, setId] = useState(null);
-  const getListBookDetailQuery = useGetListBookDetail(null);
+  const getListBookDetailQuery = useGetListBookDetail(id);
   const getListBookQuery = useGetListBookClient();
   const { data, isLoading, isFetching, refetch } = getListBookDetailQuery;
   const {
