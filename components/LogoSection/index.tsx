@@ -1,14 +1,11 @@
-import { ButtonBase } from '@mui/material';
-import config from '../../config';
-import Link from 'next/link';
+import { Box, ButtonBase } from '@mui/material';
+
 import Logo from '../Logo';
 
 const LogoSection = () => (
-  <Link href="/">
-    <ButtonBase>
-      <Logo />
-    </ButtonBase>
-  </Link>
+  <ButtonBase>
+    <Logo />
+  </ButtonBase>
 );
 
 export default LogoSection;

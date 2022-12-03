@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import React from 'react';
 
@@ -35,10 +34,6 @@ const NavMotion = ({ children }: { children: React.ReactNode }) => {
       {children}
     </motion.div>
   );
-};
-
-NavMotion.propTypes = {
-  children: PropTypes.node,
 };
 
 export default NavMotion;

@@ -1,7 +1,6 @@
-import { Container, Paper, Stack, Typography } from '@mui/material';
+import { Box, Container, Paper, Stack, Typography } from '@mui/material';
 import ProductInfo from '../../components/productdetails/ProductInfo';
 import ProductSlides from '../../components/productdetails/ProductSlides';
-import ProductCard from '../../components/cards/products/ProductCard';
 import useGetListBookDetail from '../../hooks/client/useGetListBookDetail';
 import useGetListBookClient from '../../hooks/client/useGetListBookClient';
 import ProductLayout from '../../layout/ProductLayot';
@@ -22,7 +21,7 @@ const sampleSpec = {
 const ProductDetail = () => {
   const router = useRouter();
   const [id, setId] = useState(null);
-  const getListBookDetailQuery = useGetListBookDetail(null);
+  const getListBookDetailQuery = useGetListBookDetail(id);
   const getListBookQuery = useGetListBookClient();
   const { data, isLoading, isFetching, refetch } = getListBookDetailQuery;
   const {
@@ -34,8 +33,9 @@ const ProductDetail = () => {
     console.log(router?.query);
     if (router.isReady) {
       setId(router?.query?.id as any);
+      refetch();
     }
-  }, [router, setId]);
+  }, [refetch, router, setId]);
   console.log(data);
   if (isLoading || isSlideLoading) {
     return <LoadingScreen />;
@@ -43,11 +43,7 @@ const ProductDetail = () => {
 
   return (
     <ProductLayout>
-      <Container
-        disableGutters
-        maxWidth="xl"
-        sx={{ display: 'flex', flexDirection: 'column', rowGap: '1rem' }}
-      >
+      <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: '1rem' }}>
         <Paper
           sx={{
             backgroundColor: '#fff',
@@ -106,7 +102,7 @@ const ProductDetail = () => {
             isSlideFetching={isSlideFetching}
           />
         </Stack>
-      </Container>
+      </Box>
     </ProductLayout>
   );
 };
