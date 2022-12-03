@@ -58,8 +58,8 @@ const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
       <Box>
         <Box
           sx={{
-            width: { xs: '100%' },
-            height: { xs: '100%', md: '500px' },
+            width: { xs: '100%', md: '300px' },
+            height: { xs: '100%', md: '100%' },
             borderRadius: '10px',
             position: 'relative',
             overflow: 'hidden',
@@ -72,7 +72,7 @@ const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
           ) : (
             <Image
               priority
-              layout={'fixed'}
+              layout={'responsive'}
               width={300}
               height={500}
               src={data?.book_image}

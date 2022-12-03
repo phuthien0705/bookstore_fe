@@ -35,7 +35,7 @@ const useStyles = makeStyles({
     '&:hover': { transform: 'scale3d(1.02, 1.02, 1)' },
     '& .MuiCardMedia-root ': { cursor: 'pointer' },
     '& .MuiTypography-h5': { cursor: 'pointer' },
-    height: '220px',
+    height: '252px',
     boxShadow:
       '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
   },
@@ -95,7 +95,7 @@ const ProductCard: React.FunctionComponent<IProductCard> = ({
   return (
     <Card className={slideMode ? classes.slide : classes.root}>
       <CardMedia
-        sx={{ objectFit: 'contain' }}
+        sx={{ objectFit: 'contain', padding: '1rem 0' }}
         ref={imgRef}
         component="img"
         height={slideMode ? '150px' : '200px'}
