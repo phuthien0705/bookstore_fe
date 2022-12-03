@@ -1,5 +1,5 @@
 import { Grid, Tabs, Tab } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import PaymentIcon from '@mui/icons-material/Payment';
@@ -12,78 +12,88 @@ import EmptyCart from './EmptyCart';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import ItemTableMobile from './ItemTableMobile';
 import ConfirmModal from '../modals/ConfirmModal';
-
-const sampleData = [
-  {
-    id: 0,
-    name: 'Gatsby Vĩ Đại',
-    description:
-      'Kiệt tác Gatsby vĩ đại (1925) của văn hào Mỹ F. Scott Fitzgerald (1896-1940) là câu chuyện về chàng trai Jay Gatsby muốn thoát khỏi thân phận nghèo hèn và đặt chân vào tầng lớp cao sang mà hiện thân là một cô gái nhà giầu anh đã yêu và được yêu khi còn khoác trên vai bộ quân phục không phân biệt đẳng cấp giầu nghèo.',
-    image:
-      'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
-    price: '30000',
-    rating: 4.5,
-    quantity: 1,
-  },
-  {
-    id: 1,
-    name: 'Không Gia Đình (Bìa Cứng)',
-    description:
-      'Không gia đình là tiểu thuyết nổi tiếng nhất trong sự nghiệp văn chương của Hector Malot. Hơn một trăm năm nay, tác phẩm giành giải thưởng của Viện Hàn Lâm Văn học Pháp này đã trở thành người bạn thân thiết của thiếu nhi và tất cả những người yêu mến trẻ khắp thế giới.',
-    image:
-      'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
-    price: '130000',
-    rating: 4.5,
-    quantity: 1,
-  },
-];
+import useGetListCart from '@/hooks/client/useGetListCart';
+import { useMutation } from 'react-query';
+import { removeFormCart, updateCart } from '@/apis/cart.api';
+import { useDispatch } from 'react-redux';
+import { toggleSnackbar } from '@/store/snackbarReducer';
 
 const CartItems = () => {
+  const dispatch = useDispatch();
+  const toast = useCallback(
+    ({ type, message }: { type: string; message: string }) => {
+      dispatch(toggleSnackbar({ open: true, message, type }));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [dispatch]
+  );
   const matches = useMediaQuery('(min-width:900px)');
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [listItem, setListItem] = useState(sampleData);
   const [showConfirmModal, setShowConfirmModal] = useState<any>(null);
+  const { data, isloading, isFetching, refetch } = useGetListCart();
+  const { mutate: updateCartFunc, isLoading: isUpdating } = useMutation(
+    (data: { book_id: number; quantity: number }) => updateCart(data),
+    {
+      onSuccess: () => {
+        refetch();
+      },
+      onError: () => {
+        toast({
+          type: 'error',
+          message: 'Xảy ra lỗi trong quá trình cập nhật sản phẩm',
+        });
+      },
+    }
+  );
+  const { mutate: removeFunc, isLoading: isRemoving } = useMutation(
+    (data: { book_id: number }) => removeFormCart(data),
+    {
+      onSuccess: () => {
+        refetch();
+      },
+      onError: () => {
+        toast({
+          type: 'error',
+          message: 'Xảy ra lỗi trong quá trình cập nhật sản phẩm',
+        });
+      },
+    }
+  );
   const handleChange = (event: any, newValue: any) => {
     setCurrentIndex(newValue);
   };
   const handleIncreaseQuantity = useCallback(
-    (id: number | string) => {
-      const newListItem = listItem.map((item) => {
+    (id: number) => {
+      data?.forEach((item: any) => {
         if (item?.id === id) {
-          return { ...item, quantity: item.quantity + 1 };
-        } else {
-          return item;
+          updateCartFunc({ book_id: id, quantity: item.quantity + 1 });
         }
       });
-      setListItem(newListItem);
     },
-    [listItem, setListItem]
+    [data, updateCartFunc]
   );
   const handleDecreaseQuantity = useCallback(
-    (id: string | number) => {
-      const decreaseItem = listItem.find((item) => item.id === id);
+    (id: number) => {
+      const decreaseItem = data.find((item: any) => item.id === id);
       if (decreaseItem?.quantity === 1) {
-        console.log(!decreaseItem.id);
         setShowConfirmModal(decreaseItem && decreaseItem?.id);
       } else {
-        const newListItem = listItem.map((item) => {
+        data.forEach((item: any) => {
           if (item?.id === id) {
-            return { ...item, quantity: item.quantity - 1 };
-          } else {
-            return item;
+            updateCartFunc({ book_id: id, quantity: item.quantity - 1 });
           }
         });
-        setListItem(newListItem);
       }
     },
-    [listItem, setListItem]
+    [data, updateCartFunc]
   );
   const handleDelete = useCallback(
-    (id: string | number) => {
-      setListItem(listItem.filter((item) => item.id !== id));
+    (id: number) => {
+      removeFunc({ book_id: id });
     },
-    [setListItem, listItem]
+    [removeFunc]
   );
+  console.log(data);
   return (
     <>
       <Grid container>
@@ -111,24 +121,22 @@ const CartItems = () => {
             />
           </Tabs>
         </Grid>
-        {listItem?.length > 0 && (
+        {data && data?.length > 0 && (
           <>
             <Grid item xs={12}>
-              <ProductAdded amount={listItem.length} />
+              <ProductAdded amount={data?.length || 0} />
             </Grid>
             <Grid item xs={12}>
               {matches ? (
                 <ItemTable
-                  items={listItem}
-                  setListItem={setListItem}
+                  items={data || []}
                   handleIncreaseQuantity={handleIncreaseQuantity}
                   handleDecreaseQuantity={handleDecreaseQuantity}
                   handleDelete={handleDelete}
                 />
               ) : (
                 <ItemTableMobile
-                  items={listItem}
-                  setListItem={setListItem}
+                  items={data || []}
                   handleIncreaseQuantity={handleIncreaseQuantity}
                   handleDecreaseQuantity={handleDecreaseQuantity}
                   handleDelete={handleDelete}
@@ -136,7 +144,7 @@ const CartItems = () => {
               )}
             </Grid>
             <Grid item xs={12}>
-              <OrderSummary items={listItem} />
+              <OrderSummary items={data} />
             </Grid>
             <Grid item xs={12}>
               <SubmitCart setCurrentIndex={setCurrentIndex} />
@@ -144,7 +152,7 @@ const CartItems = () => {
           </>
         )}
 
-        {listItem?.length === 0 && (
+        {data && data?.length === 0 && (
           <Grid item xs={12} sx={{ p: 30 }}>
             <EmptyCart />
           </Grid>

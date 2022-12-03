@@ -17,12 +17,10 @@ interface IItemTableMobile {
   handleIncreaseQuantity: Function;
   handleDecreaseQuantity: Function;
   handleDelete: Function;
-  setListItem?: Function;
 }
 
 const ItemTableMobile: FC<IItemTableMobile> = ({
   items,
-  setListItem,
   handleIncreaseQuantity,
   handleDecreaseQuantity,
   handleDelete,

@@ -11,10 +11,15 @@ export const addToCart = async (data: {
   return httpRequest.post('/cart/add-to-cart', data);
 };
 
-export const updateCart = async (data: any) => {
+export const updateCart = async (data: {
+  book_id: number;
+  quantity: number;
+}) => {
   return httpRequest.put('/cart/update', data);
 };
-
+export const removeFormCart = async (data: { book_id: number }) => {
+  return httpRequest.put('/cart/remove', data);
+};
 export const addCheckedItem = async (data: any) => {
   return httpRequest.put('/cart/add-checked-item', data);
 };
