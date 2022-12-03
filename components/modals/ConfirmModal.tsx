@@ -1,4 +1,4 @@
-import { IConfirmModal } from '@/interfaces/compontents/modal.interface';
+import { IConfirmModal } from '@/interfaces/modal.interface';
 import {
   Dialog,
   Button,

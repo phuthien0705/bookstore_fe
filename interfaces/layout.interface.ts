@@ -6,5 +6,5 @@ export interface AppPropsWithLayout extends AppProps {
 }
 
 export interface ILayout {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }

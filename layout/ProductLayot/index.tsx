@@ -16,6 +16,7 @@ import { NextPageWithLayout } from '@/pages/page';
 import NavigationScroll from '../NavigationScroll';
 import { ILayout } from '@/interfaces/layout.interface';
 import dynamic from 'next/dynamic';
+import CustomizedSnackbar from '@/components/snackbar/CustomizedSnackbar';
 
 const Footer = dynamic(() => import('../../components/Footer'), { ssr: false });
 
@@ -70,6 +71,7 @@ const ProductLayout: NextPageWithLayout<ILayout> = ({ children }) => {
         </Container>
         <Footer />
       </Box>
+      <CustomizedSnackbar />
     </NavigationScroll>
   );
 };

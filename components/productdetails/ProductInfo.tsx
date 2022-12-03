@@ -10,94 +10,149 @@ import {
   Skeleton,
 } from '@mui/material';
 import { ShoppingCartOutlined } from '@mui/icons-material';
-import PropTypes from 'prop-types';
-import { FC } from 'react';
+import { FC, useCallback } from 'react';
+import { addToCart } from '@/apis/cart.api';
+import { useMutation } from 'react-query';
+import { useDispatch } from 'react-redux';
+import { toggleSnackbar } from '@/store/snackbarReducer';
+import { LoadingButton } from '@mui/lab';
+import Image from 'next/image';
 interface IProductInfo {
   data: any;
   isLoading: boolean;
 }
 const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
+  console.log(data);
+  const dispatch = useDispatch();
+  const toast = useCallback(
+    ({ type, message }: { type: string; message: string }) => {
+      dispatch(toggleSnackbar({ open: true, message, type }));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [dispatch]
+  );
+  const { mutate: addToCartFunc, isLoading: isLoadingAddToCart } = useMutation(
+    () => addToCart({ book_id: data?.id, quantity: 1 }),
+    {
+      onSuccess: () => {
+        toast({
+          type: 'success',
+          message: 'Thêm sản phẩm thành công',
+        });
+      },
+      onError: () => {
+        toast({
+          type: 'error',
+          message: 'Xảy ra lỗi trong quá trình thêm sản phẩm',
+        });
+      },
+    }
+  );
+
   return (
-    <Grid
-      container
+    <Stack
+      direction={{ xs: 'column', md: 'row' }}
       sx={{ pt: { xs: 2, sm: 4 }, pl: { xs: 2, sm: 4 }, pr: { xs: 2, sm: 4 } }}
+      spacing={2}
     >
-      <Grid item xs={12} sm={4} md={6} sx={{}}>
+      <Box>
         <Box
           sx={{
             width: { xs: '100%' },
-            height: { xs: '100%' },
+            height: { xs: '100%', md: '500px' },
             borderRadius: '10px',
+            position: 'relative',
+            overflow: 'hidden',
+            display: 'flex',
+            justifyContent: 'center',
           }}
         >
           {isLoading ? (
             <Skeleton variant="rectangular" height={'100%'} />
           ) : (
-            <img
+            <Image
+              priority
+              layout={'fixed'}
+              width={300}
+              height={500}
               src={data?.book_image}
               alt={data?.name}
-              width="100%"
-              height="100%"
-              style={{ borderRadius: '10px', objectFit: 'contain' }}
+              style={{ borderRadius: '10px' }}
             />
           )}
         </Box>
-      </Grid>
-      <Grid item xs={12} sm={8} md={6}>
+      </Box>
+      <Box>
         <Grid container sx={{ marginLeft: { xs: 0, sm: '1rem', md: '2rem' } }}>
           <Grid
             item
             xs={12}
-            sx={{ px: { xs: 0, md: 2.5 }, py: { xs: 1, md: 2.5 } }}
+            sx={{ px: { xs: 0, md: 1.5 }, py: { xs: 1, md: 1.5 } }}
           >
-            <Stack direction="column" spacing={1}>
-              <Chip
-                variant="outlined"
-                label="In Stock"
-                size="small"
-                color="success"
-                sx={{ width: '10%' }}
-              />
-              <Typography variant="h3">{data?.name}</Typography>
-            </Stack>
+            <Typography variant="h3" fontSize="24px" fontWeight="500">
+              {data?.name}
+            </Typography>
           </Grid>
           <Grid
             item
             xs={12}
-            sx={{ px: { xs: 0, md: 2.5 }, py: { xs: 1, md: 2.5 } }}
+            sx={{ px: { xs: 0, md: 1.5 }, py: { xs: 1, md: 1.5 } }}
           >
             <Typography variant="body1">{data?.description}</Typography>
           </Grid>
           <Grid
             item
             xs={12}
-            sx={{ px: { xs: 0, md: 2.5 }, py: { xs: 1, md: 2.5 } }}
+            sx={{ px: { xs: 0, md: 1.5 }, py: { xs: 1, md: 1.5 } }}
           >
             <Stack direction="row" spacing={1}>
               <Rating value={data?.rating} precision={0.5} readOnly />
               <Typography variant="body1">(69+)</Typography>
             </Stack>
           </Grid>
-
           <Grid
             item
             xs={12}
-            sx={{ px: { xs: 0, md: 2.5 }, py: { xs: 1, md: 2.5 } }}
+            sx={{ px: { xs: 0, md: 1.5 }, py: { xs: 1, md: 1.5 } }}
+          >
+            <Typography
+              sx={{ fontSize: '32px', color: '#000', fontWeight: 500 }}
+            >
+              {data?.price} đ
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sx={{ px: { xs: 0, md: 1.5 }, py: { xs: 1, md: 1.5 } }}
           >
             <Stack
               direction={{ xs: 'column', sm: 'row' }}
               sx={{ display: 'flex', columnGap: 2, rowGap: 2 }}
             >
-              <Button variant="contained" color="secondary" sx={{}}>
+              <LoadingButton
+                onClick={() => {
+                  addToCartFunc();
+                }}
+                loading={isLoadingAddToCart}
+                variant="contained"
+                color="secondary"
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  columnGap: '8px',
+                }}
+              >
                 <ShoppingCartOutlined />
                 Thêm vào giỏ hàng
-              </Button>
+              </LoadingButton>
               <Button variant="contained">Mua ngay</Button>
             </Stack>
           </Grid>
         </Grid>
-      </Grid>
-    </Grid>
+      </Box>
+    </Stack>
   );
 };
 

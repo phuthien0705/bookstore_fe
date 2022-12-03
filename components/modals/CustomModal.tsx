@@ -11,7 +11,7 @@ import {
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CloseIcon from '@mui/icons-material/Close';
 import { FC } from 'react';
-import { ICustomModal } from '@/interfaces/compontents/modal.interface';
+import { ICustomModal } from '@/interfaces/modal.interface';
 
 const CustomModal: FC<ICustomModal> = ({
   children,

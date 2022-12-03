@@ -22,9 +22,9 @@ import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '../../store/snackbarReducer';
 import createRequest from '../../common/createRequest';
 import { createPublisher, editPublisher } from '../../apis/publisher.api';
-import { IPublisherModal } from '@/interfaces/compontents/modal.interface';
+import { IModal } from '@/interfaces/modal.interface';
 
-const PublisherModal: FC<IPublisherModal> = ({
+const PublisherModal: FC<IModal> = ({
   handleClose,
   open,
   currentProduct,
