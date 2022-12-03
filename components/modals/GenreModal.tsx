@@ -22,12 +22,7 @@ import { createGenre, editGenre } from '../../apis/genre.api';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '../../store/snackbarReducer';
 import createRequest from '../../common/createRequest';
-interface IGenreModal {
-  handleClose: Function;
-  open: boolean;
-  currentProduct: any;
-  refetchAfterClose: Function;
-}
+import { IGenreModal } from '@/interfaces/compontents/modal.interface';
 const GenreModal: FC<IGenreModal> = ({
   handleClose,
   open,

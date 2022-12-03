@@ -22,12 +22,8 @@ import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '../../store/snackbarReducer';
 import createRequest from '../../common/createRequest';
 import { createPublisher, editPublisher } from '../../apis/publisher.api';
-interface IPublisherModal {
-  handleClose: Function;
-  open: boolean;
-  currentProduct: any;
-  refetchAfterClose: Function;
-}
+import { IPublisherModal } from '@/interfaces/compontents/modal.interface';
+
 const PublisherModal: FC<IPublisherModal> = ({
   handleClose,
   open,

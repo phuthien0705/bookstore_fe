@@ -29,6 +29,7 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { styled } from '@mui/material/styles';
 import createFormDataRequest from '../../common/createFormDataRequest';
 import { createBook, editBook } from '../../apis/product.api';
+import { IBookModal } from '@/interfaces/compontents/modal.interface';
 
 const ImageStyle = styled('img')({
   height: '100%',
@@ -36,18 +37,6 @@ const ImageStyle = styled('img')({
   borderRadius: 4,
   objectFit: 'cover',
 });
-interface IBookModal {
-  handleClose: Function;
-  open: boolean;
-  currentProduct: any;
-  refetchAfterClose: Function;
-  authors: any[];
-  genres: any[];
-  publishers: any[];
-  findAuthor: Function;
-  findGenre: Function;
-  findPublisher: Function;
-}
 
 const BookModal: FC<IBookModal> = ({
   handleClose,

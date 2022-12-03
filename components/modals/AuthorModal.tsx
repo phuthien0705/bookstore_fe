@@ -23,12 +23,8 @@ import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '../../store/snackbarReducer';
 import { createAuthor, editAuthor } from '../../apis/author.api';
 import createRequest from '../../common/createRequest';
-interface IAuthorModal {
-  handleClose: Function;
-  open: boolean;
-  currentProduct: any;
-  refetchAfterClose: Function;
-}
+import { IAuthorModal } from '@/interfaces/compontents/modal.interface';
+
 const AuthorModal: FC<IAuthorModal> = ({
   handleClose,
   open,
