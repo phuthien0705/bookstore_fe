@@ -26,9 +26,9 @@ const ProductDetail = () => {
     }
   }, [router, setId]);
   console.log(data);
-  // if (isLoading) {
-  //   return <LoadingScreen />;
-  // }
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <ProductLayout>

@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import PaymentIcon from '@mui/icons-material/Payment';
-
 import ProductAdded from './ProductAdded';
 import ItemTable from './ItemTable';
 import OrderSummary from './OrderSummary';
