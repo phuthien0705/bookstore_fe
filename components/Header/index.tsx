@@ -1,6 +1,15 @@
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Box, ButtonBase, Container, Typography, Stack, Divider, Link } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  ButtonBase,
+  Container,
+  Typography,
+  Stack,
+  Divider,
+  Link,
+} from '@mui/material';
 import LogoSection from '../LogoSection';
 import SearchSection from './SearchSection';
 import ProfileSection from './ProfileSection';
@@ -78,7 +87,7 @@ const Header: FC<IHeader> = ({
           {!hideNoti && <NotificationSection />}
           {!hideCart && <CartSection />}
           <ProfileSection />
-        </Container> 
+        </Container>
         <BelowSection />
       </Stack>
       <Box sx={{ flexGrow: 1 }} />
