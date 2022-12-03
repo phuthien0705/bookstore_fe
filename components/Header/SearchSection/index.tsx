@@ -29,6 +29,7 @@ const PopperStyle = styled(Popper, { shouldForwardProp })(({ theme }) => ({
 const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(
   ({ theme }) => ({
     width: 434,
+    height: 33,
     marginLeft: 16,
     paddingLeft: 16,
     paddingRight: 16,
@@ -53,6 +54,7 @@ const HeaderAvatarStyle = styled(Avatar, { shouldForwardProp })(
     ...theme.typography.mediumAvatar,
     background: theme.palette.secondary.light,
     color: theme.palette.secondary.dark,
+    height: '100%',
     '&:hover': {
       background: theme.palette.secondary.dark,
       color: theme.palette.secondary.light,

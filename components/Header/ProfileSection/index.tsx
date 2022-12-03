@@ -66,7 +66,7 @@ const ProfileSection = () => {
         id="basic-chip"
         onClick={handleClick}
         sx={{
-          height: '48px',
+          height: '35px',
           alignItems: 'center',
           borderRadius: '27px',
           transition: 'all .2s ease-in-out',
@@ -91,6 +91,8 @@ const ProfileSection = () => {
               ...theme.typography.mediumAvatar,
               margin: '8px 0 8px 8px !important',
               cursor: 'pointer',
+              height: '90%',
+              width: '40%'
             }}
             aria-controls={open ? 'menu-list-grow' : undefined}
             aria-haspopup="true"
