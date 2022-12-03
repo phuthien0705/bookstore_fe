@@ -1,13 +1,9 @@
 import {
   Box,
   FormControl,
-  FormControlLabel,
   FormHelperText,
-  IconButton,
-  InputAdornment,
   InputLabel,
   OutlinedInput,
-  Stack,
   useTheme,
   Alert,
   Button,
@@ -19,18 +15,13 @@ import AnimateButton from '../extended/AnimateButton';
 import CustomModal from './CustomModal';
 import objectEquals from '../../common/objectEquals';
 import ConfirmModal from './ConfirmModal';
-import { createGenre, editGenre } from '../../apis/genre.api';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '../../store/snackbarReducer';
 import { createAuthor, editAuthor } from '../../apis/author.api';
 import createRequest from '../../common/createRequest';
-interface IAuthorModal {
-  handleClose: Function;
-  open: boolean;
-  currentProduct: any;
-  refetchAfterClose: Function;
-}
-const AuthorModal: FC<IAuthorModal> = ({
+import { IModal } from '@/interfaces/modal.interface';
+
+const AuthorModal: FC<IModal> = ({
   handleClose,
   open,
   currentProduct,

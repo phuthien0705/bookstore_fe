@@ -25,8 +25,6 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import MainCard from '../../cards/MainCard';
 import Transitions from '../../extended/Transitions';
 import NotificationList from './NotificationList';
-
-// assets
 import { IconBell } from '@tabler/icons';
 import Link from 'next/link';
 const status = [
