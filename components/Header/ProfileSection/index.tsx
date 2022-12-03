@@ -92,7 +92,7 @@ const ProfileSection = () => {
               margin: '8px 0 8px 8px !important',
               cursor: 'pointer',
               height: '90%',
-              width: '40%'
+              width: '40%',
             }}
             aria-controls={open ? 'menu-list-grow' : undefined}
             aria-haspopup="true"
