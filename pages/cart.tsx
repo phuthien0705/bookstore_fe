@@ -3,8 +3,11 @@ import ProductLayout from '../layout/ProductLayot';
 import CartTitle from '../components/cart/CartTitle';
 import CartItems from '../components/cart/CartItems';
 import dynamic from 'next/dynamic';
+import useGetListCart from '@/hooks/client/useGetListCart';
 
 const Cart = () => {
+  const { data, isloading, isFetching } = useGetListCart();
+  console.log(data);
   return (
     <ProductLayout>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>

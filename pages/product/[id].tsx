@@ -8,16 +8,6 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import LoadingScreen from '../../components/loading/LoadingScreen';
 
-const sampleSpec = {
-  id: 0,
-  provider: 'Cty Sách Hương Giang',
-  author: 'F Scott Fitzgerald',
-  publisher: 'Thế Giới',
-  totalpages: 200,
-  weight: 550,
-  datepublished: '06/2015',
-};
-
 const ProductDetail = () => {
   const router = useRouter();
   const [id, setId] = useState(null);
@@ -33,13 +23,12 @@ const ProductDetail = () => {
     console.log(router?.query);
     if (router.isReady) {
       setId(router?.query?.id as any);
-      refetch();
     }
-  }, [refetch, router, setId]);
+  }, [router, setId]);
   console.log(data);
-  if (isLoading || isSlideLoading) {
-    return <LoadingScreen />;
-  }
+  // if (isLoading) {
+  //   return <LoadingScreen />;
+  // }
 
   return (
     <ProductLayout>
@@ -52,10 +41,7 @@ const ProductDetail = () => {
           }}
         >
           <Stack direction="row" sx={{ p: 1 }}>
-            <ProductInfo
-              data={data?.data}
-              isLoading={isLoading || isFetching}
-            />
+            <ProductInfo data={data} isLoading={isLoading || isFetching} />
           </Stack>
           <Stack sx={{ p: { xs: 2, sm: 4 } }}>
             <Typography
@@ -70,7 +56,6 @@ const ProductDetail = () => {
               sx={{ py: { xs: 1, md: 1 }, px: { xs: 1, md: 1 } }}
             >
               <Stack direction="column" spacing={1}>
-                <Typography variant="h4">Nhà Cung Cấp</Typography>
                 <Typography variant="h4">Tác giả</Typography>
                 <Typography variant="h4">NXB</Typography>
                 <Typography variant="h4">Số trang</Typography>
@@ -80,14 +65,17 @@ const ProductDetail = () => {
                 <Typography variant="h4">Năm XB</Typography>
               </Stack>
               <Stack direction="column" spacing={1}>
-                <Typography variant="body2">{sampleSpec.provider}</Typography>
-                <Typography variant="body2">{sampleSpec.author}</Typography>
-                <Typography variant="body2">{sampleSpec.publisher}</Typography>
-                <Typography variant="body2">{sampleSpec.totalpages}</Typography>
-                <Typography variant="body2">{sampleSpec.weight}</Typography>
-                <Typography variant="body2">
-                  {sampleSpec.datepublished}
-                </Typography>
+                {/* render authors */}
+                {/* {data?.authors.map((author: any, _index: number) => (
+                  <Typography key={_index} variant="body2">
+                    {author?.name}
+                  </Typography>
+                ))} */}
+                {/* <Typography variant="body2">{data?.publisher}</Typography>
+                <Typography variant="body2">{data?.publisher}</Typography>
+                <Typography variant="body2">{data?.totalpages}</Typography>
+                <Typography variant="body2">{data?.weight}</Typography>
+                <Typography variant="body2">{data?.datepublished}</Typography> */}
               </Stack>
             </Stack>
           </Stack>

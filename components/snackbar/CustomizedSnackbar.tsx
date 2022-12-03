@@ -30,7 +30,7 @@ const CustomizedSnackbar = () => {
           dispatch(closeSnackbar());
         }}
         severity={typeSnackbar || 'success'}
-        sx={{ width: '100%' }}
+        sx={{ width: '100%', color: '#fff' }}
       >
         {messageSnackbar}
       </Alert>

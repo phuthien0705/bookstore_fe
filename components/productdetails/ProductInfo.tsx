@@ -10,13 +10,44 @@ import {
   Skeleton,
 } from '@mui/material';
 import { ShoppingCartOutlined } from '@mui/icons-material';
-import PropTypes from 'prop-types';
-import { FC } from 'react';
+import { FC, useCallback } from 'react';
+import { addToCart } from '@/apis/cart.api';
+import { useMutation } from 'react-query';
+import { useDispatch } from 'react-redux';
+import { toggleSnackbar } from '@/store/snackbarReducer';
+import { LoadingButton } from '@mui/lab';
 interface IProductInfo {
   data: any;
   isLoading: boolean;
 }
 const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
+  console.log(data);
+  const dispatch = useDispatch();
+  const toast = useCallback(
+    ({ type, message }: { type: string; message: string }) => {
+      dispatch(toggleSnackbar({ open: true, message, type }));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [dispatch]
+  );
+  const { mutate: addToCartFunc, isLoading: isLoadingAddToCart } = useMutation(
+    () => addToCart({ book_id: data?.id, quantity: 1 }),
+    {
+      onSuccess: () => {
+        toast({
+          type: 'success',
+          message: 'Thêm sản phẩm thành công',
+        });
+      },
+      onError: () => {
+        toast({
+          type: 'error',
+          message: 'Xảy ra lỗi trong quá trình thêm sản phẩm',
+        });
+      },
+    }
+  );
+
   return (
     <Grid
       container
@@ -88,10 +119,23 @@ const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
               direction={{ xs: 'column', sm: 'row' }}
               sx={{ display: 'flex', columnGap: 2, rowGap: 2 }}
             >
-              <Button variant="contained" color="secondary" sx={{}}>
+              <LoadingButton
+                onClick={() => {
+                  addToCartFunc();
+                }}
+                loading={isLoadingAddToCart}
+                variant="contained"
+                color="secondary"
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  columnGap: '8px',
+                }}
+              >
                 <ShoppingCartOutlined />
                 Thêm vào giỏ hàng
-              </Button>
+              </LoadingButton>
               <Button variant="contained">Mua ngay</Button>
             </Stack>
           </Grid>
