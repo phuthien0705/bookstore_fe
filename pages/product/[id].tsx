@@ -56,26 +56,39 @@ const ProductDetail = () => {
               sx={{ py: { xs: 1, md: 1 }, px: { xs: 1, md: 1 } }}
             >
               <Stack direction="column" spacing={1}>
+                {' '}
+                <Typography variant="h4">Mã sách</Typography>
                 <Typography variant="h4">Tác giả</Typography>
-                <Typography variant="h4">NXB</Typography>
+                <Typography variant="h4">Nhà xuất bản</Typography>
                 <Typography variant="h4">Số trang</Typography>
                 <Typography noWrap variant="h4">
-                  Trọng lượng (gr)
+                  Thể loại
                 </Typography>
-                <Typography variant="h4">Năm XB</Typography>
+                <Typography variant="h4">Số lượng còn lại</Typography>
               </Stack>
               <Stack direction="column" spacing={1}>
+                <Typography variant="body2">{data?.isbn}</Typography>{' '}
                 {/* render authors */}
-                {/* {data?.authors.map((author: any, _index: number) => (
-                  <Typography key={_index} variant="body2">
-                    {author?.name}
-                  </Typography>
-                ))} */}
-                {/* <Typography variant="body2">{data?.publisher}</Typography>
-                <Typography variant="body2">{data?.publisher}</Typography>
-                <Typography variant="body2">{data?.totalpages}</Typography>
-                <Typography variant="body2">{data?.weight}</Typography>
-                <Typography variant="body2">{data?.datepublished}</Typography> */}
+                <Typography variant="body2">
+                  {data?.authors.map((author: any, _index: number) => {
+                    if (_index === data?.authors.length - 1)
+                      return <span key={_index}>{author?.name}</span>;
+                    return <span key={_index}>{author?.name}, </span>;
+                  })}
+                </Typography>
+                <Typography variant="body2">{data?.publisher?.name}</Typography>{' '}
+                <Typography variant="body2">{data?.total_pages}</Typography>
+                {/* render genres */}
+                <Typography variant="body2">
+                  {data?.genres.map((genre: any, _index: number) => {
+                    if (_index === data?.genres.length - 1)
+                      return <span key={_index}>{genre?.name}</span>;
+                    return <span key={_index}>{genre?.name}, </span>;
+                  })}{' '}
+                </Typography>
+                <Typography variant="body2">
+                  {data?.available_quantity}
+                </Typography>
               </Stack>
             </Stack>
           </Stack>
