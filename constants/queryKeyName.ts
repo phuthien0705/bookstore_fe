@@ -9,3 +9,4 @@ export const AUTHORS_CLIENT = 'authors_client';
 export const DISCOUNTS = 'discounts';
 export const DISCOUNTS_CLIENT = 'discounts_client';
 export const BOOK_DETAIL = 'book-detail';
+export const CART_CLIENT = 'cart-client';

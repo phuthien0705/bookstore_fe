@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
 import MainCard from '../cards/MainCard';
+import { IAuthCardWrapper } from '@/interfaces/compontents/auth.interface';
 
-const AuthCardWrapper = ({
+const AuthCardWrapper: React.FunctionComponent<IAuthCardWrapper> = ({
   children,
   ...other
-}: {
-  children?: any;
-  other?: any;
 }) => (
   <MainCard
     sx={{

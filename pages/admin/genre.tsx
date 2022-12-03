@@ -92,7 +92,6 @@ const GenreManagement = () => {
       },
     },
   ];
-
   return (
     <AdminLayout>
       <>
@@ -140,7 +139,7 @@ const GenreManagement = () => {
               disableColumnMenu
               loading={isLoading || isFetching || isMutateLoading}
               columns={columns}
-              rows={data?.genres || []}
+              rows={data?.data || []}
               components={{
                 NoRowsOverlay: CustomNoRowsOverlay,
                 LoadingOverlay: LinearProgress,

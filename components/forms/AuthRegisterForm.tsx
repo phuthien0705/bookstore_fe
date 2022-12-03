@@ -22,7 +22,6 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import useScriptRef from '../../hooks/useScriptRef';
 import Google from './../../assets/images/icons/social-google.svg';
-import AnimateButton from '../extended/AnimateButton';
 import {
   strengthColor,
   strengthIndicator,
@@ -75,30 +74,28 @@ const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
     <>
       <Grid container direction="column" justifyContent="center" spacing={2}>
         <Grid item xs={12}>
-          <AnimateButton>
-            <Button
-              variant="outlined"
-              fullWidth
-              onClick={googleHandler}
-              size="large"
-              sx={{
-                color: 'grey.700',
-                backgroundColor: theme.palette.grey[50],
-                borderColor: theme.palette.grey[100],
-              }}
-            >
-              <Box sx={{ mr: { xs: 1, sm: 2, width: 20 }, height: '20px' }}>
-                <Image
-                  src={Google}
-                  alt="google"
-                  width={16}
-                  height={16}
-                  style={{ marginRight: matchDownSM ? 8 : 16 }}
-                />
-              </Box>
-              Đăng ký với Google
-            </Button>
-          </AnimateButton>
+          <Button
+            variant="outlined"
+            fullWidth
+            onClick={googleHandler}
+            size="large"
+            sx={{
+              color: 'grey.700',
+              backgroundColor: theme.palette.grey[50],
+              borderColor: theme.palette.grey[100],
+            }}
+          >
+            <Box sx={{ mr: { xs: 1, sm: 2, width: 20 }, height: '20px' }}>
+              <Image
+                src={Google}
+                alt="google"
+                width={16}
+                height={16}
+                style={{ marginRight: matchDownSM ? 8 : 16 }}
+              />
+            </Box>
+            Đăng ký với Google
+          </Button>
         </Grid>
         <Grid item xs={12}>
           <Box sx={{ alignItems: 'center', display: 'flex' }}>
@@ -346,19 +343,17 @@ const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
             )}
 
             <Box sx={{ mt: 2 }}>
-              <AnimateButton>
-                <Button
-                  disableElevation
-                  disabled={isSubmitting}
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                  color="secondary"
-                >
-                  Đăng ký
-                </Button>
-              </AnimateButton>
+              <Button
+                disableElevation
+                disabled={isSubmitting}
+                fullWidth
+                size="large"
+                type="submit"
+                variant="contained"
+                color="secondary"
+              >
+                Đăng ký
+              </Button>
               {!!showAlertCheckMail && (
                 <Alert
                   sx={{ marginTop: 2 }}

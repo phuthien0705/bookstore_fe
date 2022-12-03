@@ -23,14 +23,12 @@ const ImageStyle = styled('img')({
 });
 interface IItemTable {
   items: any;
-  setListItem: Function;
   handleIncreaseQuantity: Function;
   handleDecreaseQuantity: Function;
   handleDelete: Function;
 }
 const ItemTable: FC<IItemTable> = ({
   items,
-  setListItem,
   handleIncreaseQuantity,
   handleDecreaseQuantity,
   handleDelete,
@@ -69,7 +67,7 @@ const ItemTable: FC<IItemTable> = ({
                       alt={row.name}
                       width="76"
                       height="76"
-                      src={row.image}
+                      src={row?.book?.book_image}
                     />
                   </Box>
                   <Box>

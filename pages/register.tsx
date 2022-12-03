@@ -6,6 +6,7 @@ import AuthCardWrapper from '../components/auth/AuthCardWrapper';
 import AuthRegisterForm from '../components/forms/AuthRegisterForm';
 import AuthWrapper from '../components/auth/AuthWrapper';
 import AuthLayout from '../layout/AuthLayout/index';
+import LogoSection from '@/components/LogoSection';
 
 const RegisterPage = () => {
   const theme = useTheme();
@@ -34,10 +35,8 @@ const RegisterPage = () => {
                     alignItems="center"
                     justifyContent="center"
                   >
-                    <Grid item sx={{ mb: 3 }}>
-                      <Link href="/">
-                        <Logo />
-                      </Link>
+                    <Grid item sx={{ mb: 1 }}>
+                      <LogoSection />
                     </Grid>
                     <Grid item xs={12}>
                       <Grid

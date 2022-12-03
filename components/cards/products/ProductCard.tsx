@@ -1,5 +1,4 @@
 import { makeStyles } from '@mui/styles';
-import { useTheme } from '@mui/material/styles';
 import {
   Button,
   Card,
@@ -12,8 +11,9 @@ import {
   Typography,
 } from '@mui/material';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { useRef, FC } from 'react';
+import { useRef } from 'react';
 import ProductCardSkeleton from '../Skeleton/ProductCardSkelection';
+import { IProductCard } from '@/interfaces/compontents/card.interface';
 
 const useStyles = makeStyles({
   root: {
@@ -37,21 +37,13 @@ const useStyles = makeStyles({
   },
 });
 
-interface IProductCard {
-  product: any;
-  slideMode?: boolean;
-  isLoading?: boolean;
-  index: number;
-}
-
-const ProductCard: FC<IProductCard> = ({
+const ProductCard: React.FunctionComponent<IProductCard> = ({
   product,
   slideMode = false,
   isLoading = false,
 }) => {
   const imgRef = useRef(null);
-  const theme = useTheme();
-  const classes = useStyles(theme);
+  const classes = useStyles();
   const handleClickItem = () => {
     window.location.pathname = `product/${product?.id}`;
   };
@@ -70,13 +62,18 @@ const ProductCard: FC<IProductCard> = ({
         onClick={handleClickItem}
       />
       <CardContent sx={{ padding: 2, height: '100%' }}>
-        <Stack spacing={1} direction="column">
+        <Stack spacing={1} direction="column" alignItems={'space-between'}>
           <Typography
             gutterBottom
             variant="h5"
             sx={{
+              display: 'inline-block',
               margin: 0,
               fontSize: { xs: slideMode ? '12px' : '14px', sm: '14px' },
+              height: '50px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
             }}
             onClick={handleClickItem}
           >
@@ -85,15 +82,14 @@ const ProductCard: FC<IProductCard> = ({
 
           {!slideMode && (
             <>
-              <Stack>
-                <Rating
-                  size="small"
-                  name="read-only"
-                  value={product?.rating}
-                  readOnly
-                  precision={0.5}
-                />
-              </Stack>
+              <Rating
+                size="small"
+                name="read-only"
+                value={product?.rating}
+                readOnly
+                precision={0.5}
+              />
+
               <Stack
                 direction="row"
                 justifyContent="space-between"

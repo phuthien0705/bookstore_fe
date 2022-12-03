@@ -15,7 +15,6 @@ import {
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { useState, FC } from 'react';
-import AnimateButton from '../extended/AnimateButton';
 import CustomModal from './CustomModal';
 import objectEquals from '../../common/objectEquals';
 import ConfirmModal from './ConfirmModal';
@@ -234,19 +233,17 @@ const PublisherModal: FC<IModal> = ({
               )}
 
               <Box sx={{ mt: 2 }}>
-                <AnimateButton>
-                  <Button
-                    disableElevation
-                    disabled={isSubmitting}
-                    fullWidth
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                  >
-                    {data === null ? 'Tạo' : 'Lưu'}
-                  </Button>
-                </AnimateButton>
+                <Button
+                  disableElevation
+                  disabled={isSubmitting}
+                  fullWidth
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                >
+                  {data === null ? 'Tạo' : 'Lưu'}
+                </Button>
                 {!!showAlert && (
                   <Alert
                     sx={{ marginTop: 2 }}
