@@ -16,7 +16,6 @@ import {
 } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import AnimateButton from '../extended/AnimateButton';
 import { forgotPassword } from '../../apis/auth.api';
 import { useRouter } from 'next/router';
 
@@ -100,19 +99,18 @@ const ForgotPasswordForm = ({ ...others }: { [others: string]: unknown }) => {
             )}
 
             <Box sx={{ mt: 2 }}>
-              <AnimateButton>
-                <Button
-                  disableElevation
-                  disabled={isSubmitting}
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                  color="secondary"
-                >
-                  Gửi email
-                </Button>
-              </AnimateButton>
+              <Button
+                disableElevation
+                disabled={isSubmitting}
+                fullWidth
+                size="large"
+                type="submit"
+                variant="contained"
+                color="secondary"
+              >
+                Gửi email
+              </Button>
+
               {showAlert && (
                 <Alert
                   sx={{ marginTop: 2 }}

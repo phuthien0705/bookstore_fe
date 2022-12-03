@@ -6,20 +6,9 @@ import {
   Divider,
   Typography,
 } from '@mui/material';
-import { FC } from 'react';
+import { ISubCard } from '@/interfaces/compontents/card.interface';
 
-interface ISubCard {
-  children: React.ReactNode;
-  content: boolean;
-  contentClass?: string;
-  darkTitle?: boolean;
-  secondary: any;
-  sx?: any;
-  contentSX?: any;
-  title: any;
-}
-
-const SubCard: FC<ISubCard> = ({
+const SubCard: React.FunctionComponent<ISubCard> = ({
   children,
   content = true,
   contentClass,

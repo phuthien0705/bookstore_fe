@@ -1,8 +1,8 @@
+import { ILayout } from '@/interfaces/layout.interface';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, Fragment } from 'react';
 
-const NavigationScroll = ({ children }: { children: React.ReactNode }) => {
+const NavigationScroll: React.FunctionComponent<ILayout> = ({ children }) => {
   const router = useRouter();
   useEffect(() => {
     window.scrollTo({
@@ -11,12 +11,7 @@ const NavigationScroll = ({ children }: { children: React.ReactNode }) => {
       behavior: 'smooth',
     });
   }, [router.pathname]);
-
-  return children || null;
-};
-
-NavigationScroll.propTypes = {
-  children: PropTypes.node,
+  return <Fragment>{children}</Fragment> || null;
 };
 
 export default NavigationScroll;
