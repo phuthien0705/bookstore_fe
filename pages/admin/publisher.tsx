@@ -157,7 +157,7 @@ const PublisherManagement = () => {
               disableColumnMenu
               loading={isLoading || isFetching || isMutateLoading}
               columns={columns}
-              rows={(data && data?.publishers) || []}
+              rows={(data && data?.data) || []}
               components={{
                 NoRowsOverlay: CustomNoRowsOverlay,
                 LoadingOverlay: LinearProgress,
