@@ -1,12 +1,10 @@
+import { ICustomChip } from '@/interfaces/compontents/chip.interface';
 import { Box, Typography, useTheme } from '@mui/material';
 import React from 'react';
 
-const CustomChip = ({
+const CustomChip: React.FunctionComponent<ICustomChip> = ({
   content,
   type = 'default',
-}: {
-  content: any;
-  type: string;
 }) => {
   const theme: any = useTheme();
   return (

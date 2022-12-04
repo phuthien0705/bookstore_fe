@@ -1,4 +1,4 @@
-import { Box, ButtonBase } from '@mui/material';
+import { ButtonBase } from '@mui/material';
 
 import Logo from '../Logo';
 

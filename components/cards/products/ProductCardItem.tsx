@@ -1,12 +1,10 @@
 import ProductCard from './ProductCard';
-import { Grid, Box } from '@mui/material';
+import { Box } from '@mui/material';
+import { IProductCardItem } from '@/interfaces/compontents/card.interface';
 
-const ProductCardItem = ({
+const ProductCardItem: React.FunctionComponent<IProductCardItem> = ({
   product,
   index,
-}: {
-  product: any;
-  index: number;
 }) => {
   return (
     <Box key={index} sx={{ padding: 0.5 }}>

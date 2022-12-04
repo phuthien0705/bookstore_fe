@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { Container, Button, Stack } from '@mui/material';
+import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import useGetListBookClient from '../hooks/client/useGetListBookClient';
 import useGetListGenreClient from '../hooks/client/useGetListGenreClient';
 import useGetListAuthorClient from '../hooks/client/useGetListAuthorClient';
 import useGetListPublisherClient from '../hooks/client/useGetListPublisherClient';
-import ProductLayout from '../layout/ProductLayot';
 import CarouselHome from '../components/carousel/CarouselHome';
 import ProductCardItems from '../components/cards/products/ProductCardItems';
+import HomeLayout from '@/layout/HomeLayout';
 
 const Home = () => {
   const theme = useTheme();
@@ -39,11 +39,9 @@ const Home = () => {
   } = getListBookQuery;
   console.log(bookData?.data);
   return (
-    <ProductLayout>
+    <HomeLayout>
       {' '}
-      <Container
-        sx={{ display: 'flex', flexDirection: 'column', rowGap: '1rem' }}
-      >
+      <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: '1rem' }}>
         <CarouselHome />
         <ProductCardItems
           slideToShow={4}
@@ -58,8 +56,8 @@ const Home = () => {
        <ProductCardItems data={sampleData} title="Sách văn học" titleBackground={theme.palette.secondary.light} />
        <ProductCardItems data={sampleData} title="Sách tâm lỹ kỹ năng" titleBackground={theme.palette.secondary.light} />
        <ProductCardItems data={sampleData} title="Sách kinh tế" titleBackground={theme.palette.secondary.light} /> */}
-      </Container>
-    </ProductLayout>
+      </Box>
+    </HomeLayout>
   );
 };
 

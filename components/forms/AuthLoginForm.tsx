@@ -20,7 +20,6 @@ import {
 } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import AnimateButton from '../extended/AnimateButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Google from '../../assets/images/icons/social-google.svg';
@@ -30,13 +29,11 @@ import authService from '../../services/authService';
 import checkIsAdminOrManager from '../../common/checkIsAdminOrManager';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import useScriptRef from '../../hooks/useScriptRef';
 
 const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
   const theme: any = useTheme();
   const router = useRouter();
 
-  const scriptedRef = useScriptRef();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -59,31 +56,29 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
     <>
       <Grid container direction="column" justifyContent="center" spacing={2}>
         <Grid item xs={12}>
-          <AnimateButton>
-            <Button
-              disableElevation
-              fullWidth
-              onClick={googleHandler}
-              size="large"
-              variant="outlined"
-              sx={{
-                color: 'grey.700',
-                backgroundColor: theme.palette.grey[50],
-                borderColor: theme.palette.grey[100],
-              }}
-            >
-              <Box sx={{ mr: { xs: 1, sm: 2, width: 20 }, height: '20px' }}>
-                <Image
-                  src={Google}
-                  alt="google"
-                  width={16}
-                  height={16}
-                  style={{ marginRight: matchDownSM ? 8 : 16 }}
-                />
-              </Box>
-              Đăng nhập với google
-            </Button>
-          </AnimateButton>
+          <Button
+            disableElevation
+            fullWidth
+            onClick={googleHandler}
+            size="large"
+            variant="outlined"
+            sx={{
+              color: 'grey.700',
+              backgroundColor: theme.palette.grey[50],
+              borderColor: theme.palette.grey[100],
+            }}
+          >
+            <Box sx={{ mr: { xs: 1, sm: 2, width: 20 }, height: '20px' }}>
+              <Image
+                src={Google}
+                alt="google"
+                width={16}
+                height={16}
+                style={{ marginRight: matchDownSM ? 8 : 16 }}
+              />
+            </Box>
+            Đăng nhập với google
+          </Button>
         </Grid>
         <Grid item xs={12}>
           <Box
@@ -299,19 +294,18 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
             )}
 
             <Box sx={{ mt: 2 }}>
-              <AnimateButton>
-                <Button
-                  disableElevation
-                  disabled={isSubmitting}
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                  color="secondary"
-                >
-                  Đăng nhập
-                </Button>
-              </AnimateButton>
+              <Button
+                disableElevation
+                disabled={isSubmitting}
+                fullWidth
+                size="large"
+                type="submit"
+                variant="contained"
+                color="secondary"
+              >
+                Đăng nhập
+              </Button>
+
               {!!showAlert && (
                 <Alert
                   sx={{ marginTop: 2 }}

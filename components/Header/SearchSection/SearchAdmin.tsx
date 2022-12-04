@@ -1,10 +1,10 @@
-import { useState, FC } from 'react';
+import { FC } from 'react';
 import { useTheme, styled } from '@mui/material/styles';
 import { Box, InputAdornment, OutlinedInput } from '@mui/material';
-import { IconAdjustmentsHorizontal, IconSearch, IconX } from '@tabler/icons';
 import { shouldForwardProp } from '@mui/system';
 import React from 'react';
-
+import Image from 'next/image';
+import SearchIcon from '@/assets/images/icons/search.svg';
 const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(
   ({ theme }) => ({
     width: 250,
@@ -42,10 +42,12 @@ const SearchAdminSection: FC<ISearchAdminSection> = ({ value, setValue }) => {
         placeholder="Tìm kiếm"
         startAdornment={
           <InputAdornment position="start">
-            <IconSearch
-              stroke={1.5}
-              size="1rem"
-              color={theme.palette.grey[500]}
+            <Image
+              src={SearchIcon}
+              alt="search"
+              width={20}
+              height={20}
+              style={{ opacity: 0.8 }}
             />
           </InputAdornment>
         }

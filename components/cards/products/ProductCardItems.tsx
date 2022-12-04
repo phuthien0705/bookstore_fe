@@ -5,6 +5,7 @@ import { makeStyles } from '@mui/styles';
 import config from '../../../config';
 import ProductCardSkeleton from '../Skeleton/ProductCardSkelection';
 import CustomNoRowsOverlay from '../../empty/CustomNoRowsOverlay';
+import { IProductCardItems } from '@/interfaces/compontents/card.interface';
 
 const useStyles = makeStyles({
   container: {
@@ -15,21 +16,17 @@ const useStyles = makeStyles({
     backgroundColor: '#fff',
     overflow: 'hidden',
   },
-  title: (props: any) => ({
-    backgroundColor: props?.titleBackground,
-    padding: '1rem',
-  }),
 });
 
-const ProductCardItems = ({
+const ProductCardItems: React.FunctionComponent<IProductCardItems> = ({
   data,
   title,
   titleIcon,
   titleBackground = '#fff',
   isLoading = false,
   slideToShow = 4,
-}: any) => {
-  const classes = useStyles({ titleBackground });
+}) => {
+  const classes = useStyles();
   const renderProducts = () => {
     if (isLoading)
       return (
@@ -62,7 +59,11 @@ const ProductCardItems = ({
   return (
     <section className={classes.container}>
       {title && (
-        <Stack className={classes.title} direction={'row'} spacing={1}>
+        <Stack
+          sx={{ padding: '1rem', backgroundColor: titleBackground }}
+          direction={'row'}
+          spacing={1}
+        >
           {titleIcon ? titleIcon : null}
           <Typography fontWeight={'bold'} fontSize={'1rem'} variant={'h5'}>
             {title}
@@ -73,7 +74,7 @@ const ProductCardItems = ({
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
             columnGap: '15px',
             rowGap: '15px',
           }}

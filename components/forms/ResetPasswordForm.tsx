@@ -15,7 +15,6 @@ import {
 } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import AnimateButton from '../extended/AnimateButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Google from './../../assets/images/icons/social-google.svg';
@@ -239,19 +238,18 @@ const ResetPasswordForm = ({
             )}
 
             <Box sx={{ mt: 2 }}>
-              <AnimateButton>
-                <Button
-                  disableElevation
-                  disabled={isSubmitting}
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                  color="secondary"
-                >
-                  Gửi email
-                </Button>
-              </AnimateButton>
+              <Button
+                disableElevation
+                disabled={isSubmitting}
+                fullWidth
+                size="large"
+                type="submit"
+                variant="contained"
+                color="secondary"
+              >
+                Gửi email
+              </Button>
+
               {!!showAlert && (
                 <Alert
                   sx={{ marginTop: 2 }}

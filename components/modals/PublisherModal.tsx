@@ -15,7 +15,6 @@ import {
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { useState, FC } from 'react';
-import AnimateButton from '../extended/AnimateButton';
 import CustomModal from './CustomModal';
 import objectEquals from '../../common/objectEquals';
 import ConfirmModal from './ConfirmModal';
@@ -23,13 +22,9 @@ import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '../../store/snackbarReducer';
 import createRequest from '../../common/createRequest';
 import { createPublisher, editPublisher } from '../../apis/publisher.api';
-interface IPublisherModal {
-  handleClose: Function;
-  open: boolean;
-  currentProduct: any;
-  refetchAfterClose: Function;
-}
-const PublisherModal: FC<IPublisherModal> = ({
+import { IModal } from '@/interfaces/compontents/modal.interface';
+
+const PublisherModal: FC<IModal> = ({
   handleClose,
   open,
   currentProduct,
@@ -238,19 +233,17 @@ const PublisherModal: FC<IPublisherModal> = ({
               )}
 
               <Box sx={{ mt: 2 }}>
-                <AnimateButton>
-                  <Button
-                    disableElevation
-                    disabled={isSubmitting}
-                    fullWidth
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                  >
-                    {data === null ? 'Tạo' : 'Lưu'}
-                  </Button>
-                </AnimateButton>
+                <Button
+                  disableElevation
+                  disabled={isSubmitting}
+                  fullWidth
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                >
+                  {data === null ? 'Tạo' : 'Lưu'}
+                </Button>
                 {!!showAlert && (
                   <Alert
                     sx={{ marginTop: 2 }}

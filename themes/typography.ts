@@ -93,12 +93,23 @@ export default function themeTypography(theme: any) {
     mainContent: {
       backgroundColor: theme.background,
       width: '100%',
-      minHeight: 'calc(100vh - 88px)',
+      minHeight: 'calc(100vh - 130px)',
       flexGrow: 1,
       padding: '20px',
-      marginTop: '88px',
-      marginRight: '20px',
+      marginTop: '130px',
+      marginRight: '0',
       borderRadius: `${theme?.customization?.borderRadius}px`,
+    },
+    mainContent2: {
+      backgroundColor: theme.background,
+      width: '100%',
+      minHeight: 'calc(100vh - 68px)',
+      flexGrow: 1,
+      padding: '20px',
+      marginTop: '68px',
+      marginRight: '0',
+      borderRadius: `${theme?.customization?.borderRadius}px`,
+      overflow: 'hidden',
     },
     menuCaption: {
       fontSize: '0.875rem',
@@ -113,25 +124,6 @@ export default function themeTypography(theme: any) {
       fontWeight: 500,
       color: theme.darkTextSecondary,
       textTransform: 'capitalize',
-    },
-    commonAvatar: {
-      cursor: 'pointer',
-      borderRadius: '8px',
-    },
-    smallAvatar: {
-      width: '22px',
-      height: '22px',
-      fontSize: '1rem',
-    },
-    mediumAvatar: {
-      width: '34px',
-      height: '34px',
-      fontSize: '1.2rem',
-    },
-    largeAvatar: {
-      width: '44px',
-      height: '44px',
-      fontSize: '1.5rem',
     },
   };
 }

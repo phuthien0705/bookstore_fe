@@ -1,8 +1,8 @@
-import { FC, useCallback } from 'react';
+import { useCallback } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/router';
 
-const Logo: FC = () => {
+const Logo: React.FunctionComponent = () => {
   const router = useRouter();
   const theme: any = useTheme();
   const redirectToHome = useCallback(() => {

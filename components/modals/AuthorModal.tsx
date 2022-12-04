@@ -1,13 +1,9 @@
 import {
   Box,
   FormControl,
-  FormControlLabel,
   FormHelperText,
-  IconButton,
-  InputAdornment,
   InputLabel,
   OutlinedInput,
-  Stack,
   useTheme,
   Alert,
   Button,
@@ -15,22 +11,16 @@ import {
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { useState, FC } from 'react';
-import AnimateButton from '../extended/AnimateButton';
 import CustomModal from './CustomModal';
 import objectEquals from '../../common/objectEquals';
 import ConfirmModal from './ConfirmModal';
-import { createGenre, editGenre } from '../../apis/genre.api';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '../../store/snackbarReducer';
 import { createAuthor, editAuthor } from '../../apis/author.api';
 import createRequest from '../../common/createRequest';
-interface IAuthorModal {
-  handleClose: Function;
-  open: boolean;
-  currentProduct: any;
-  refetchAfterClose: Function;
-}
-const AuthorModal: FC<IAuthorModal> = ({
+import { IModal } from '@/interfaces/compontents/modal.interface';
+
+const AuthorModal: FC<IModal> = ({
   handleClose,
   open,
   currentProduct,
@@ -266,19 +256,17 @@ const AuthorModal: FC<IAuthorModal> = ({
               )}
 
               <Box sx={{ mt: 2 }}>
-                <AnimateButton>
-                  <Button
-                    disableElevation
-                    disabled={isSubmitting}
-                    fullWidth
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                  >
-                    {data === null ? 'Tạo' : 'Lưu'}
-                  </Button>
-                </AnimateButton>
+                <Button
+                  disableElevation
+                  disabled={isSubmitting}
+                  fullWidth
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                >
+                  {data === null ? 'Tạo' : 'Lưu'}
+                </Button>
                 {!!showAlert && (
                   <Alert
                     sx={{ marginTop: 2 }}
