@@ -27,7 +27,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     marginRight: 0,
-    marginTop: '100px',
+    marginTop: '120px',
   })
 );
 
@@ -46,7 +46,12 @@ const ProductLayout: NextPageWithLayout<ILayout> = ({ children }) => {
   return (
     <NavigationScroll>
       <Box
-        sx={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}
+        sx={{
+          display: 'flex',
+          minHeight: '100vh',
+          flexDirection: 'column',
+          backgroundColor: theme.palette.primary.light,
+        }}
       >
         <CssBaseline />
         <AppBar
@@ -55,7 +60,7 @@ const ProductLayout: NextPageWithLayout<ILayout> = ({ children }) => {
           color="inherit"
           elevation={0}
           sx={{
-            bgcolor: theme.palette.background.default,
+            backgroundColor: theme.palette.background.default,
             transition: leftDrawerOpened
               ? theme.transitions.create('width')
               : 'none',
@@ -68,7 +73,7 @@ const ProductLayout: NextPageWithLayout<ILayout> = ({ children }) => {
             />
           </Toolbar>
         </AppBar>
-        <Container maxWidth="xl" disableGutters>
+        <Container maxWidth="lg" disableGutters>
           <Main theme={theme}>{children}</Main>
         </Container>
         <Footer />
