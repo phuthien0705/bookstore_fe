@@ -30,7 +30,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   })
 );
 
-const ProductLayout: NextPageWithLayout<ILayout> = ({ children }) => {
+const HomeLayout: NextPageWithLayout<ILayout> = ({ children }) => {
   const dispatch = useDispatch();
   const theme: any = useTheme();
   const matchDownMd = useMediaQuery(theme.breakpoints.down('lg'));
@@ -69,7 +69,6 @@ const ProductLayout: NextPageWithLayout<ILayout> = ({ children }) => {
             <Header
               handleLeftDrawerToggle={handleLeftDrawerToggle}
               hideSidebarIcon
-              hideBelowSection
             />
           </Toolbar>
         </AppBar>
@@ -83,4 +82,4 @@ const ProductLayout: NextPageWithLayout<ILayout> = ({ children }) => {
   );
 };
 
-export default ProductLayout;
+export default HomeLayout;
