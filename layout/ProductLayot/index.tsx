@@ -27,6 +27,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     marginRight: 0,
+    marginTop: '100px',
   })
 );
 
@@ -60,7 +61,7 @@ const ProductLayout: NextPageWithLayout<ILayout> = ({ children }) => {
               : 'none',
           }}
         >
-          <Toolbar>
+          <Toolbar sx={{ paddingTop: 0, paddingBottom: '8px' }}>
             <Header
               handleLeftDrawerToggle={handleLeftDrawerToggle}
               hideSidebarIcon

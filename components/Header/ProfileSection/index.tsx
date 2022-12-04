@@ -65,12 +65,13 @@ const ProfileSection: React.FunctionComponent = () => {
         id="basic-chip"
         onClick={handleClick}
         sx={{
-          height: '48px',
+          height: '40px',
           alignItems: 'center',
           borderRadius: '27px',
           transition: 'all .2s ease-in-out',
           borderColor: theme.palette.primary.light,
           backgroundColor: theme.palette.primary.light,
+
           '&[aria-controls="menu-list-grow"], &:hover': {
             borderColor: theme.palette.primary.main,
             background: `${theme.palette.primary.main}!important`,
@@ -87,9 +88,10 @@ const ProfileSection: React.FunctionComponent = () => {
           <Avatar
             src={authService.isAuthenticated() ? '' : ''}
             sx={{
-              ...theme.typography.mediumAvatar,
               margin: '8px 0 8px 8px !important',
               cursor: 'pointer',
+              height: '80%',
+              width: '38%',
             }}
             aria-controls={open ? 'menu-list-grow' : undefined}
             aria-haspopup="true"
