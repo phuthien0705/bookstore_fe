@@ -27,7 +27,6 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     marginRight: 0,
-    marginTop: '120px',
   })
 );
 
