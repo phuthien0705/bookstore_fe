@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Container, Button, Stack } from '@mui/material';
+import { Container, Button, Stack, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import useGetListBookClient from '../hooks/client/useGetListBookClient';
@@ -41,9 +41,7 @@ const Home = () => {
   return (
     <ProductLayout>
       {' '}
-      <Container
-        sx={{ display: 'flex', flexDirection: 'column', rowGap: '1rem' }}
-      >
+      <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: '1rem' }}>
         <CarouselHome />
         <ProductCardItems
           slideToShow={4}
@@ -58,7 +56,7 @@ const Home = () => {
        <ProductCardItems data={sampleData} title="Sách văn học" titleBackground={theme.palette.secondary.light} />
        <ProductCardItems data={sampleData} title="Sách tâm lỹ kỹ năng" titleBackground={theme.palette.secondary.light} />
        <ProductCardItems data={sampleData} title="Sách kinh tế" titleBackground={theme.palette.secondary.light} /> */}
-      </Container>
+      </Box>
     </ProductLayout>
   );
 };
