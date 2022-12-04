@@ -17,6 +17,7 @@ import NavigationScroll from '../NavigationScroll';
 import { ILayout } from '@/interfaces/layout.interface';
 import dynamic from 'next/dynamic';
 import CustomizedSnackbar from '@/components/snackbar/CustomizedSnackbar';
+import useGetListCart from '@/hooks/client/useGetListCart';
 
 const Footer = dynamic(() => import('../../components/Footer'), { ssr: false });
 
@@ -26,6 +27,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     marginRight: 0,
+    marginTop: '100px',
   })
 );
 
@@ -59,7 +61,7 @@ const ProductLayout: NextPageWithLayout<ILayout> = ({ children }) => {
               : 'none',
           }}
         >
-          <Toolbar>
+          <Toolbar sx={{ paddingTop: 0, paddingBottom: '8px' }}>
             <Header
               handleLeftDrawerToggle={handleLeftDrawerToggle}
               hideSidebarIcon

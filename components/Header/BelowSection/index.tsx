@@ -1,8 +1,16 @@
-import { Container, Stack, Divider, Link, Box } from '@mui/material';
+import {
+  Container,
+  Stack,
+  Divider,
+  Link,
+  Box,
+  Typography,
+  useTheme,
+  Button,
+} from '@mui/material';
 import { FC } from 'react';
 
-let GenreList: Array<string>;
-GenreList = [
+const GenreList: Array<string> = [
   'Best Seller',
   'Văn Học',
   'Sách Giáo Khoa',
@@ -15,26 +23,62 @@ interface IBelow {
 }
 
 const BelowSection: FC<IBelow> = ({ List = GenreList }) => {
+  const theme: any = useTheme();
+
   return (
     <Container
-      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}
+      disableGutters
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: '',
+      }}
     >
-      {List.map((item, index) => (
-        <div key={index}>
-          <Link key={index} href="#" underline="hover">
-            {item}
-          </Link>
-          <Divider style={{ width: '1%', borderColor: 'white' }} />
-        </div>
-      ))}
-      <Box sx={{ flexGrow: 0.7 }} />
-      <Link href="#" underline="none" color="secondary">
-        Giới Thiệu
-      </Link>
-      <Divider style={{ width: '1%' }} />
-      <Link href="#" underline="none" color="secondary">
-        Tải Ứng Dụng
-      </Link>
+      <Box sx={{ display: 'flex', columnGap: '10px' }}>
+        {List.map((item: string, index: number) => (
+          <div key={index}>
+            <Link underline="none" href="#">
+              <Button
+                sx={{
+                  padding: '5px 10px',
+                  borderRadius: '8px',
+                }}
+              >
+                {item}
+              </Button>
+            </Link>
+            <Divider style={{ width: '1%', borderColor: 'white' }} />
+          </div>
+        ))}
+      </Box>
+      <Box sx={{ display: 'flex', columnGap: '5px' }}>
+        {' '}
+        <Link href="#" underline="none" color="secondary">
+          <Button
+            color="secondary"
+            sx={{
+              whiteSpace: 'nowrap',
+              padding: '5px 10px',
+              borderRadius: '8px',
+            }}
+          >
+            Giới Thiệu
+          </Button>
+        </Link>
+        <Divider style={{ width: '1%' }} />
+        <Link href="#" underline="none" color="secondary">
+          <Button
+            color="secondary"
+            sx={{
+              whiteSpace: 'nowrap',
+              padding: '5px 10px',
+              borderRadius: '8px',
+            }}
+          >
+            Tải Ứng Dụng
+          </Button>
+        </Link>
+      </Box>
     </Container>
   );
 };

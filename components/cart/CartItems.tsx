@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import PaymentIcon from '@mui/icons-material/Payment';
-
 import ProductAdded from './ProductAdded';
 import ItemTable from './ItemTable';
 import OrderSummary from './OrderSummary';
@@ -19,6 +18,7 @@ import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 
 const CartItems = () => {
+  const matches = useMediaQuery('(min-width:900px)');
   const dispatch = useDispatch();
   const toast = useCallback(
     ({ type, message }: { type: string; message: string }) => {
@@ -27,7 +27,6 @@ const CartItems = () => {
     },
     [dispatch]
   );
-  const matches = useMediaQuery('(min-width:900px)');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showConfirmModal, setShowConfirmModal] = useState<any>(null);
   const { data, isloading, isFetching, refetch } = useGetListCart();
@@ -63,24 +62,24 @@ const CartItems = () => {
     setCurrentIndex(newValue);
   };
   const handleIncreaseQuantity = useCallback(
-    (id: number) => {
+    (book_id: number) => {
       data?.forEach((item: any) => {
-        if (item?.id === id) {
-          updateCartFunc({ book_id: id, quantity: item.quantity + 1 });
+        if (item?.book_id === book_id) {
+          updateCartFunc({ book_id: book_id, quantity: item.quantity + 1 });
         }
       });
     },
     [data, updateCartFunc]
   );
   const handleDecreaseQuantity = useCallback(
-    (id: number) => {
-      const decreaseItem = data.find((item: any) => item.id === id);
+    (book_id: number) => {
+      const decreaseItem = data.find((item: any) => item.book_id === book_id);
       if (decreaseItem?.quantity === 1) {
-        setShowConfirmModal(decreaseItem && decreaseItem?.id);
+        setShowConfirmModal(decreaseItem && decreaseItem?.book_id);
       } else {
         data.forEach((item: any) => {
-          if (item?.id === id) {
-            updateCartFunc({ book_id: id, quantity: item.quantity - 1 });
+          if (item?.book_id === book_id) {
+            updateCartFunc({ book_id: book_id, quantity: item.quantity - 1 });
           }
         });
       }
@@ -88,8 +87,8 @@ const CartItems = () => {
     [data, updateCartFunc]
   );
   const handleDelete = useCallback(
-    (id: number) => {
-      removeFunc({ book_id: id });
+    (book_id: number) => {
+      removeFunc({ book_id: book_id });
     },
     [removeFunc]
   );

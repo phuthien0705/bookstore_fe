@@ -11,7 +11,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const CustomizedSnackbar = () => {
+const CustomizedSnackbar: React.FunctionComponent = () => {
   const dispatch = useDispatch();
   const openSnackbar = useSelector((state: any) => state.snackbar.open);
   const messageSnackbar = useSelector((state: any) => state.snackbar.message);

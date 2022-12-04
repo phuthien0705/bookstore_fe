@@ -1,4 +1,4 @@
-import { Box, Paper } from '@mui/material';
+import { Box, Paper, Container } from '@mui/material';
 import ProductLayout from '../layout/ProductLayot';
 import CartTitle from '../components/cart/CartTitle';
 import CartItems from '../components/cart/CartItems';
@@ -7,14 +7,16 @@ import dynamic from 'next/dynamic';
 const Cart = () => {
   return (
     <ProductLayout>
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Paper sx={{ backgroundColor: '#fff', p: { xs: 2, md: 3 }, mb: 2 }}>
-          <CartTitle />
-        </Paper>
-        <Paper sx={{ backgroundColor: '#fff', p: { xs: 2, md: 3 } }}>
-          <CartItems />
-        </Paper>
-      </Box>
+      <Container maxWidth="md" disableGutters>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Paper sx={{ backgroundColor: '#fff', p: { xs: 2, md: 3 }, mb: 2 }}>
+            <CartTitle />
+          </Paper>
+          <Paper sx={{ backgroundColor: '#fff', p: { xs: 2, md: 3 } }}>
+            <CartItems />
+          </Paper>
+        </Box>
+      </Container>
     </ProductLayout>
   );
 };

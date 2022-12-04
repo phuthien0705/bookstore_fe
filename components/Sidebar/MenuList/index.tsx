@@ -10,40 +10,44 @@ import {
   IconCategory,
   IconBuilding,
 } from '@tabler/icons';
+import { useMemo } from 'react';
 
 const MenuList = () => {
-  const listItem = [
-    {
-      title: 'Sản phẩm',
-      url: '/admin/product',
-      icon: IconBook2,
-    },
-    {
-      title: 'Nhà xuất bản',
-      url: '/admin/publisher',
-      icon: IconBuilding,
-    },
-    {
-      title: 'Thể loại',
-      url: '/admin/genre',
-      icon: IconCategory,
-    },
-    {
-      title: 'Tác giả',
-      url: '/admin/author',
-      icon: IconUser,
-    },
-    {
-      title: 'Mã giảm giá',
-      url: '/admin/discount',
-      icon: IconShoppingCartDiscount,
-    },
-    {
-      title: 'Người dùng',
-      url: '/admin/user',
-      icon: IconUsers,
-    },
-  ];
+  const listItem = useMemo(
+    () => [
+      {
+        title: 'Sản phẩm',
+        url: '/admin/product',
+        icon: IconBook2,
+      },
+      {
+        title: 'Nhà xuất bản',
+        url: '/admin/publisher',
+        icon: IconBuilding,
+      },
+      {
+        title: 'Thể loại',
+        url: '/admin/genre',
+        icon: IconCategory,
+      },
+      {
+        title: 'Tác giả',
+        url: '/admin/author',
+        icon: IconUser,
+      },
+      {
+        title: 'Mã giảm giá',
+        url: '/admin/discount',
+        icon: IconShoppingCartDiscount,
+      },
+      {
+        title: 'Người dùng',
+        url: '/admin/user',
+        icon: IconUsers,
+      },
+    ],
+    []
+  );
   const theme: any = useTheme();
 
   return (

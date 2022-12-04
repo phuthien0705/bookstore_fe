@@ -15,6 +15,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
 import 'swiper/css';
+import { IProductSlides } from '@/interfaces/compontents/product.interface';
 
 const useStyles = makeStyles({
   container: {
@@ -46,12 +47,6 @@ const useStyles = makeStyles({
     translate: '-50% -50%',
   },
 });
-
-interface IProductSlides {
-  slideData: any;
-  isSlideLoading: boolean;
-  isSlideFetching: boolean;
-}
 
 const ProductSlides: FC<IProductSlides> = ({
   slideData,

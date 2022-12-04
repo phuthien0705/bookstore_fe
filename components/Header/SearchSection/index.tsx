@@ -50,11 +50,13 @@ const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(
 
 const HeaderAvatarStyle = styled(Avatar, { shouldForwardProp })(
   ({ theme }: { theme: any }) => ({
-    ...theme.typography.commonAvatar,
-    ...theme.typography.mediumAvatar,
+    cursor: 'pointer',
+    borderRadius: '8px',
+    width: '34px',
+    height: '34px',
+    fontSize: '1.2rem',
     background: theme.palette.secondary.light,
     color: theme.palette.secondary.dark,
-    height: '100%',
     '&:hover': {
       background: theme.palette.secondary.dark,
       color: theme.palette.secondary.light,
@@ -92,8 +94,11 @@ const MobileSearch = ({ value, setValue, popupState }: any) => {
               <Avatar
                 variant="rounded"
                 sx={{
-                  ...theme.typography.commonAvatar,
-                  ...theme.typography.mediumAvatar,
+                  cursor: 'pointer',
+                  borderRadius: '8px',
+                  width: '34px',
+                  height: '34px',
+                  fontSize: '1.2rem',
                   background: theme.palette.orange.light,
                   color: theme.palette.orange.dark,
                   '&:hover': {
@@ -120,8 +125,6 @@ MobileSearch.propTypes = {
   setValue: PropTypes.func,
   popupState: PopupState,
 };
-
-// ==============================|| SEARCH INPUT ||============================== //
 
 const SearchSection = () => {
   const theme = useTheme();
