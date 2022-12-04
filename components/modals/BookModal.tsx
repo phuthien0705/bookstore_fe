@@ -89,7 +89,7 @@ const BookModal: FC<IBookModal> = ({
           name: Yup.string()
             .max(255, 'Tên sách tối đa 255 ký tự')
             .required('Tên sách là bắt buộc'),
-          description: Yup.string().max(255, 'Mô tả sách tối đa 255 ký tự'),
+          description: Yup.string(),
           available_quantity: Yup.number()
             .integer('Số lượng sách phải là số nguyên')
             .typeError('Số lượng sách phải là số nguyên'),
