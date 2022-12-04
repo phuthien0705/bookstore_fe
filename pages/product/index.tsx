@@ -46,7 +46,7 @@ import useGetListPublisherClient from '@/hooks/client/useGetListPublisherClient'
 //Drawer style
 const drawerWidth = 450;
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }: any) => ({
+  ({ theme, open }: { theme: any; open: boolean }) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
     transition: theme.transitions.create('margin', {
@@ -64,6 +64,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   })
 );
 const Product = () => {
+  const theme: any = useTheme();
   //Fetch Data
   const getListBookQuery = useGetListBookClient();
   const getListGenreQuery = useGetListGenreClient();
@@ -254,7 +255,7 @@ const Product = () => {
         </Stack>
         <Box sx={{ display: 'flex' }}>
           {/* Render Products */}
-          <Main open={openFilter as any}>
+          <Main open={openFilter} theme={theme}>
             <ProductCardItems
               slideToShow={4}
               isLoading={isBookLoading}
