@@ -6,7 +6,7 @@ import {
   useGridSelector,
 } from '@mui/x-data-grid';
 
-const CustomPagination = () => {
+const CustomPagination: React.FunctionComponent = () => {
   const apiRef = useGridApiContext();
   const page = useGridSelector(apiRef, gridPageSelector);
   const pageCount = useGridSelector(apiRef, gridPageCountSelector);

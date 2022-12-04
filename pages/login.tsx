@@ -6,6 +6,7 @@ import Logo from '../components/Logo';
 import AuthLayout from '../layout/AuthLayout/index';
 import AuthWrapper from '../components/auth/AuthWrapper';
 import AuthLoginForm from '../components/forms/AuthLoginForm';
+import LogoSection from '@/components/LogoSection';
 
 const LoginPage = () => {
   const theme = useTheme();
@@ -35,10 +36,8 @@ const LoginPage = () => {
                     alignItems="center"
                     justifyContent="center"
                   >
-                    <Grid item sx={{ mb: 3 }}>
-                      <Link href="/">
-                        <Logo />
-                      </Link>
+                    <Grid item sx={{ mb: 1 }}>
+                      <LogoSection />
                     </Grid>
                     <Grid item xs={12}>
                       <Grid

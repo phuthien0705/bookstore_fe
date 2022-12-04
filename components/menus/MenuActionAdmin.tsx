@@ -1,13 +1,10 @@
-import { useState, FC, MouseEventHandler } from 'react';
+import { useState, FC } from 'react';
 import { IconButton, MenuItem, Menu, Stack, Typography } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-interface IMenuActionAdmin {
-  id: number | string;
-  deleteCallback: Function;
-  editCallback: Function;
-}
+import { IMenuActionAdmin } from '@/interfaces/compontents/menu.interface';
+
 const MenuActionAdmin: FC<IMenuActionAdmin> = ({
   id,
   deleteCallback,

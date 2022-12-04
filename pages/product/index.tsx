@@ -102,7 +102,6 @@ const Product = () => {
   ];
   const [openSort, setOpenSort] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(2);
-  const theme = useTheme();
   const [openFilter, setOpenFilter] = useState<boolean>(true);
   const handleToggleFilter = () => {
     setOpenFilter((prevOpenSort) => !prevOpenSort);

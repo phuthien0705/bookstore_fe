@@ -6,6 +6,7 @@ export const getAllBook = async () => {
 export const getAllBookClient = async () => {
   return httpRequest.get('/books');
 };
+
 export const getBookDetailById = async (
   id: string | number | null | undefined
 ) => {

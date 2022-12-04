@@ -1,13 +1,10 @@
 import {
   Box,
   FormControl,
-  FormControlLabel,
   FormHelperText,
   IconButton,
-  InputAdornment,
   InputLabel,
   OutlinedInput,
-  Stack,
   useTheme,
   Alert,
   Button,
@@ -18,18 +15,16 @@ import {
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { useState, FC } from 'react';
-import AnimateButton from '../extended/AnimateButton';
 import CustomModal from './CustomModal';
 import objectEquals from '../../common/objectEquals';
 import ConfirmModal from './ConfirmModal';
-import { createGenre, editGenre } from '../../apis/genre.api';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '../../store/snackbarReducer';
-import createRequest from '../../common/createRequest';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { styled } from '@mui/material/styles';
 import createFormDataRequest from '../../common/createFormDataRequest';
 import { createBook, editBook } from '../../apis/product.api';
+import { IBookModal } from '@/interfaces/compontents/modal.interface';
 
 const ImageStyle = styled('img')({
   height: '100%',
@@ -37,18 +32,6 @@ const ImageStyle = styled('img')({
   borderRadius: 4,
   objectFit: 'cover',
 });
-interface IBookModal {
-  handleClose: Function;
-  open: boolean;
-  currentProduct: any;
-  refetchAfterClose: Function;
-  authors: any[];
-  genres: any[];
-  publishers: any[];
-  findAuthor: Function;
-  findGenre: Function;
-  findPublisher: Function;
-}
 
 const BookModal: FC<IBookModal> = ({
   handleClose,
@@ -106,7 +89,7 @@ const BookModal: FC<IBookModal> = ({
           name: Yup.string()
             .max(255, 'Tên sách tối đa 255 ký tự')
             .required('Tên sách là bắt buộc'),
-          description: Yup.string().max(255, 'Mô tả sách tối đa 255 ký tự'),
+          description: Yup.string(),
           available_quantity: Yup.number()
             .integer('Số lượng sách phải là số nguyên')
             .typeError('Số lượng sách phải là số nguyên'),
@@ -476,7 +459,7 @@ const BookModal: FC<IBookModal> = ({
                   }}
                 >
                   {/* render list publisher */}
-                  {publishers.map((publisher, _index) => (
+                  {publishers?.map((publisher: any, _index: number) => (
                     <MenuItem key={_index} value={publisher?.id}>
                       {publisher?.name}
                     </MenuItem>
@@ -512,7 +495,7 @@ const BookModal: FC<IBookModal> = ({
                   }}
                 >
                   {/* render list genre */}
-                  {genres.map((genre, _index) => (
+                  {genres?.map((genre: any, _index: number) => (
                     <MenuItem key={_index} value={genre?.id}>
                       {genre?.name}
                     </MenuItem>
@@ -545,7 +528,7 @@ const BookModal: FC<IBookModal> = ({
                   }}
                 >
                   {/* render list author */}
-                  {authors.map((author, _index) => (
+                  {authors?.map((author, _index) => (
                     <MenuItem key={_index} value={author?.id}>
                       {author?.name}
                     </MenuItem>
@@ -568,19 +551,17 @@ const BookModal: FC<IBookModal> = ({
               )}
 
               <Box sx={{ mt: 2 }}>
-                <AnimateButton>
-                  <Button
-                    disableElevation
-                    disabled={isSubmitting}
-                    fullWidth
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                  >
-                    {data === null ? 'Tạo' : 'Lưu'}
-                  </Button>
-                </AnimateButton>
+                <Button
+                  disableElevation
+                  disabled={isSubmitting}
+                  fullWidth
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                >
+                  {data === null ? 'Tạo' : 'Lưu'}
+                </Button>
                 {!!showAlert && (
                   <Alert
                     sx={{ marginTop: 2 }}

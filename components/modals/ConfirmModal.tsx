@@ -1,3 +1,4 @@
+import { IConfirmModal } from '@/interfaces/compontents/modal.interface';
 import {
   Dialog,
   Button,
@@ -14,16 +15,6 @@ const useStyles = makeStyles({
     '& .MuiPaper-root': { maxWidth: '320px', borderRadius: '14px' },
   },
 });
-
-interface IConfirmModal {
-  open: boolean;
-  handleClose: Function;
-  handleConfirm: Function;
-  contentHeader?: string;
-  textContent?: string;
-  confirmContent?: string;
-  cancelContent?: string;
-}
 
 const ConfirmModal: FC<IConfirmModal> = ({
   open,

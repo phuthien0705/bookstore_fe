@@ -1,11 +1,10 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled, useTheme } from '@mui/material/styles';
 import {
   AppBar,
   Box,
   CssBaseline,
-  Snackbar,
   Toolbar,
   useMediaQuery,
 } from '@mui/material';
@@ -14,8 +13,10 @@ import Sidebar from '../../components/Sidebar';
 import { setMenu, toggleSidebar } from '../../store/sidebarReducer';
 import CustomizedSnackbar from '../../components/snackbar/CustomizedSnackbar';
 import authService from '../../services/authService';
-import { appDrawerWidth, drawerWidth } from '../../store/constant';
+import { drawerWidth } from '../../store/constant';
 import { useRouter } from 'next/router';
+import { ILayout } from '@/interfaces/layout.interface';
+import { NextPageWithLayout } from '@/pages/page';
 
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -63,7 +64,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   })
 );
 
-const AdminLayout = ({ children }: { children: React.ReactNode }) => {
+const AdminLayout: NextPageWithLayout<ILayout> = ({ children }) => {
   const router = useRouter();
   const theme = useTheme();
   const matchDownMd = useMediaQuery(theme.breakpoints.down('lg'));
@@ -72,11 +73,11 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const handleLeftDrawerToggle = () => {
     dispatch(toggleSidebar());
   };
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!authService.isAuthenticated()) {
       router.push('/login');
     }
-  }, []);
+  }, [router]);
   useEffect(() => {
     dispatch(setMenu(!matchDownMd));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,7 +85,6 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      {' '}
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         {/* header */}

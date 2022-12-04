@@ -7,26 +7,12 @@ import {
   Divider,
   Typography,
 } from '@mui/material';
+import { IMainCard } from '@/interfaces/compontents/card.interface';
 const headerSX = {
   '& .MuiCardHeader-action': { mr: 0 },
 };
 
-interface IMainCard {
-  border?: boolean;
-  boxShadow?: boolean;
-  children: any;
-  content?: boolean;
-  contentClass?: string;
-  contentSX?: any;
-  darkTitle?: boolean;
-  secondary?: any;
-  shadow?: string;
-  sx?: any;
-  title?: any;
-  others?: any;
-  elevation?: number;
-}
-const MainCard: FC<IMainCard> = ({
+const MainCard: React.FunctionComponent<IMainCard> = ({
   border = true,
   boxShadow,
   children,

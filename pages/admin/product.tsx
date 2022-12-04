@@ -72,20 +72,18 @@ const ProductManagement = () => {
   );
 
   const findPublisher = useCallback((id: any) => {
-    if (publisherData?.publishers) {
-      return publisherData?.publishers.find(
-        (publisher: any) => publisher.id === id
-      );
+    if (publisherData?.data) {
+      return publisherData?.data.find((publisher: any) => publisher.id === id);
     }
   }, []);
   const findGenre = useCallback((id: any) => {
-    if (genreData?.genres) {
-      return genreData?.genres.find((genre: any) => genre.id === id);
+    if (genreData?.data) {
+      return genreData?.data.find((genre: any) => genre.id === id);
     }
   }, []);
   const findAuthor = useCallback((id: any) => {
-    if (authorData?.authors) {
-      return authorData?.authors.find((author: any) => author.id === id);
+    if (authorData?.data) {
+      return authorData?.data.find((author: any) => author.id === id);
     }
   }, []);
 
@@ -284,9 +282,9 @@ const ProductManagement = () => {
             currentProduct={currentProduct}
             handleClose={handleCloseModal}
             refetchAfterClose={fetchData}
-            authors={authorData?.authors}
-            genres={genreData?.genres}
-            publishers={publisherData?.publishers}
+            authors={authorData?.data}
+            genres={genreData?.data}
+            publishers={publisherData?.data}
             findAuthor={findAuthor}
             findGenre={findGenre}
             findPublisher={findPublisher}

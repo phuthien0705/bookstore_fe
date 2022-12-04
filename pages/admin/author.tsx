@@ -151,7 +151,7 @@ const AuthorManagement = () => {
               disableColumnMenu
               loading={isLoading || isFetching || isMutateLoading}
               columns={columns}
-              rows={data?.authors || []}
+              rows={data?.data || []}
               components={{
                 NoRowsOverlay: CustomNoRowsOverlay,
                 LoadingOverlay: LinearProgress,

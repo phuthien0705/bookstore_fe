@@ -40,30 +40,6 @@ const OrderSummary = ({ items }: { items: any }) => {
                 </Typography>
               </TableCell>
             </TableRow>
-            <TableRow>
-              <TableCell>
-                <Typography fontSize="14px" fontWeight="bold">
-                  Mã giảm
-                </Typography>
-              </TableCell>
-              <TableCell align="right">
-                <Typography fontSize="16px" fontWeight="bold">
-                  -
-                </Typography>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <Typography fontSize="14px" fontWeight="bold">
-                  Còn lại
-                </Typography>
-              </TableCell>
-              <TableCell align="right">
-                <Typography fontSize="16px" fontWeight="bold">
-                  {subsum.toString()}
-                </Typography>
-              </TableCell>
-            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>

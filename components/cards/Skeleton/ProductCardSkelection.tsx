@@ -1,6 +1,9 @@
+import { IProductCardSkeleton } from '@/interfaces/compontents/card.interface';
 import { Box, Skeleton } from '@mui/material';
 
-const ProductCardSkeleton = ({ slideMode = false }) => {
+const ProductCardSkeleton: React.FunctionComponent<IProductCardSkeleton> = ({
+  slideMode = false,
+}) => {
   return (
     <Box>
       <Box>
