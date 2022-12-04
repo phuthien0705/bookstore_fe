@@ -23,7 +23,7 @@ import authService from '../../../services/authService';
 import checkIsAdminOrManager from '../../../common/checkIsAdminOrManager';
 import { useRouter } from 'next/router';
 
-const ProfileSection = () => {
+const ProfileSection: React.FunctionComponent = () => {
   const theme: any = useTheme();
   const router = useRouter();
   const [sdm, setSdm] = useState(true);

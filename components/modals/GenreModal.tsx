@@ -22,7 +22,7 @@ import { createGenre, editGenre } from '../../apis/genre.api';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '../../store/snackbarReducer';
 import createRequest from '../../common/createRequest';
-import { IModal } from '@/interfaces/modal.interface';
+import { IModal } from '@/interfaces/compontents/modal.interface';
 
 const GenreModal: FC<IModal> = ({
   handleClose,

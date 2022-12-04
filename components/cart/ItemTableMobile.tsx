@@ -56,10 +56,10 @@ const ItemTableMobile: FC<IItemTableMobile> = ({
                 <QuantityButton
                   currentQuantity={item?.quantity}
                   handleIncreaseQuantity={() =>
-                    handleIncreaseQuantity(item?.id)
+                    handleIncreaseQuantity(item?.book_id)
                   }
                   handleDecreaseQuantity={() =>
-                    handleDecreaseQuantity(item?.id)
+                    handleDecreaseQuantity(item?.book_id)
                   }
                 />
               </Stack>
@@ -70,7 +70,7 @@ const ItemTableMobile: FC<IItemTableMobile> = ({
             size="small"
             disableFocusRipple
             disableRipple
-            onClick={() => handleDelete(item?.id)}
+            onClick={() => handleDelete(item?.book_id)}
           >
             <DeleteIcon />
           </IconButton>

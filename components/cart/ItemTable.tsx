@@ -83,8 +83,12 @@ const ItemTable: FC<IItemTable> = ({
               <TableCell>
                 <QuantityButton
                   currentQuantity={row?.quantity}
-                  handleIncreaseQuantity={() => handleIncreaseQuantity(row?.id)}
-                  handleDecreaseQuantity={() => handleDecreaseQuantity(row?.id)}
+                  handleIncreaseQuantity={() =>
+                    handleIncreaseQuantity(row?.book_id)
+                  }
+                  handleDecreaseQuantity={() =>
+                    handleDecreaseQuantity(row?.book_id)
+                  }
                 />
               </TableCell>
               <TableCell>
@@ -96,7 +100,7 @@ const ItemTable: FC<IItemTable> = ({
                 <IconButton
                   disableFocusRipple
                   disableRipple
-                  onClick={() => handleDelete(row?.id)}
+                  onClick={() => handleDelete(row?.book_id)}
                 >
                   <DeleteIcon />
                 </IconButton>

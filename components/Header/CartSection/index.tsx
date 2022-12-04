@@ -1,13 +1,22 @@
 import { Avatar, Box, ButtonBase } from '@mui/material';
 import { IconShoppingCart } from '@tabler/icons';
 import { useTheme } from '@mui/material/styles';
+import { useRouter } from 'next/router';
+import { useCallback } from 'react';
 
-const CartSection = () => {
+const CartSection: React.FunctionComponent = () => {
   const theme: any = useTheme();
+  const router = useRouter();
+
+  const handleClickCart = useCallback(() => {
+    if (!router.pathname.includes('/cart')) {
+      router.push('/cart');
+    }
+  }, [router]);
 
   return (
     <Box
-      onClick={() => (window.location.pathname = '/cart')}
+      onClick={() => handleClickCart()}
       sx={{
         ml: 2,
         mr: 2,

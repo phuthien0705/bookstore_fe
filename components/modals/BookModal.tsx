@@ -24,7 +24,7 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { styled } from '@mui/material/styles';
 import createFormDataRequest from '../../common/createFormDataRequest';
 import { createBook, editBook } from '../../apis/product.api';
-import { IBookModal } from '@/interfaces/modal.interface';
+import { IBookModal } from '@/interfaces/compontents/modal.interface';
 
 const ImageStyle = styled('img')({
   height: '100%',

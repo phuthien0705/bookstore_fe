@@ -18,7 +18,7 @@ import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '../../store/snackbarReducer';
 import { createAuthor, editAuthor } from '../../apis/author.api';
 import createRequest from '../../common/createRequest';
-import { IModal } from '@/interfaces/modal.interface';
+import { IModal } from '@/interfaces/compontents/modal.interface';
 
 const AuthorModal: FC<IModal> = ({
   handleClose,

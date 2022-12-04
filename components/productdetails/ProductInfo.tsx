@@ -17,10 +17,8 @@ import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 import { LoadingButton } from '@mui/lab';
 import Image from 'next/image';
-interface IProductInfo {
-  data: any;
-  isLoading: boolean;
-}
+import { IProductInfo } from '@/interfaces/compontents/product.interface';
+
 const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
   console.log(data);
   const dispatch = useDispatch();

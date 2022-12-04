@@ -4,18 +4,10 @@ import { Avatar, Box, ButtonBase } from '@mui/material';
 import LogoSection from '../LogoSection';
 import SearchSection from './SearchSection';
 import ProfileSection from './ProfileSection';
-import NotificationSection from './NotificationSection';
 import { IconMenu2 } from '@tabler/icons';
 import CartSection from './CartSection';
 import { FC } from 'react';
-
-interface IHeader {
-  handleLeftDrawerToggle: Function;
-  hideSidebarIcon?: boolean;
-  hideSearch?: boolean;
-  hideCart?: boolean;
-  hideNoti?: boolean;
-}
+import { IHeader } from '@/interfaces/compontents/header.interface';
 
 const Header: FC<IHeader> = ({
   handleLeftDrawerToggle,
@@ -73,7 +65,7 @@ const Header: FC<IHeader> = ({
       <Box sx={{ flexGrow: 1 }} />
 
       {/* notification & profile & cart */}
-      {!hideNoti && <NotificationSection />}
+
       {!hideCart && <CartSection />}
       <ProfileSection />
     </>

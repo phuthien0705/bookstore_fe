@@ -62,24 +62,24 @@ const CartItems = () => {
     setCurrentIndex(newValue);
   };
   const handleIncreaseQuantity = useCallback(
-    (id: number) => {
+    (book_id: number) => {
       data?.forEach((item: any) => {
-        if (item?.id === id) {
-          updateCartFunc({ book_id: id, quantity: item.quantity + 1 });
+        if (item?.book_id === book_id) {
+          updateCartFunc({ book_id: book_id, quantity: item.quantity + 1 });
         }
       });
     },
     [data, updateCartFunc]
   );
   const handleDecreaseQuantity = useCallback(
-    (id: number) => {
-      const decreaseItem = data.find((item: any) => item.id === id);
+    (book_id: number) => {
+      const decreaseItem = data.find((item: any) => item.book_id === book_id);
       if (decreaseItem?.quantity === 1) {
-        setShowConfirmModal(decreaseItem && decreaseItem?.id);
+        setShowConfirmModal(decreaseItem && decreaseItem?.book_id);
       } else {
         data.forEach((item: any) => {
-          if (item?.id === id) {
-            updateCartFunc({ book_id: id, quantity: item.quantity - 1 });
+          if (item?.book_id === book_id) {
+            updateCartFunc({ book_id: book_id, quantity: item.quantity - 1 });
           }
         });
       }
@@ -87,8 +87,8 @@ const CartItems = () => {
     [data, updateCartFunc]
   );
   const handleDelete = useCallback(
-    (id: number) => {
-      removeFunc({ book_id: id });
+    (book_id: number) => {
+      removeFunc({ book_id: book_id });
     },
     [removeFunc]
   );
