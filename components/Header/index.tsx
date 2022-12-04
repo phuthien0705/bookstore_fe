@@ -40,7 +40,7 @@ const Header: FC<IHeader> = ({
     <>
       <Box sx={{ flexGrow: 1 }} />
       <Stack direction="column" sx={{ display: 'flex', width: '90%' }}>
-        <Container sx={{ display: 'flex', justifyContent: 'flex-start' }}>
+        <Container sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
           <Box
             sx={{
               width: 'auto',

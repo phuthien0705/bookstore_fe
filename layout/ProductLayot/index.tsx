@@ -59,7 +59,7 @@ const ProductLayout: NextPageWithLayout<ILayout> = ({ children }) => {
               : 'none',
           }}
         >
-          <Toolbar>
+          <Toolbar sx={{ height: '90px' }}>
             <Header
               handleLeftDrawerToggle={handleLeftDrawerToggle}
               hideSidebarIcon

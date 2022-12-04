@@ -20,18 +20,18 @@ const BelowSection: FC<IBelow> = ({ List = GenreList }) => {
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}
     >
       {List.map((item, index) => (
-        <div key={index}>
+        <>
           <Link key={index} href="#" underline="hover">
             {item}
           </Link>
           <Divider style={{ width: '1%', borderColor: 'white' }} />
-        </div>
+        </>
       ))}
       <Box sx={{ flexGrow: 0.7 }} />
       <Link href="#" underline="none" color="secondary">
         Giới Thiệu
       </Link>
-      <Divider style={{ width: '1%' }} />
+      <Divider style={{ width: '1%', borderColor: 'white' }} />
       <Link href="#" underline="none" color="secondary">
         Tải Ứng Dụng
       </Link>
