@@ -61,8 +61,11 @@ const MenuCard = () => {
               <Avatar
                 variant="rounded"
                 sx={{
-                  ...theme.typography.commonAvatar,
-                  ...theme.typography.largeAvatar,
+                  cursor: 'pointer',
+                  borderRadius: '8px',
+                  width: '44px',
+                  height: '44px',
+                  fontSize: '1.5rem',
                   color: theme.palette.primary.main,
                   border: 'none',
                   borderColor: theme.palette.primary.main,

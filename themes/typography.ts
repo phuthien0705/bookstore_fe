@@ -114,24 +114,5 @@ export default function themeTypography(theme: any) {
       color: theme.darkTextSecondary,
       textTransform: 'capitalize',
     },
-    commonAvatar: {
-      cursor: 'pointer',
-      borderRadius: '8px',
-    },
-    smallAvatar: {
-      width: '22px',
-      height: '22px',
-      fontSize: '1rem',
-    },
-    mediumAvatar: {
-      width: '34px',
-      height: '34px',
-      fontSize: '1.2rem',
-    },
-    largeAvatar: {
-      width: '44px',
-      height: '44px',
-      fontSize: '1.5rem',
-    },
   };
 }

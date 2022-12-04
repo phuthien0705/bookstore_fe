@@ -28,7 +28,6 @@ const ProfileSection: React.FunctionComponent = () => {
   const router = useRouter();
   const [sdm, setSdm] = useState(true);
   const [value, setValue] = useState('');
-  const [notification, setNotification] = useState(false);
   const [userInfo, setUserInfo] = useState<any>({ name: '', roles: ['user'] });
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -42,7 +41,7 @@ const ProfileSection: React.FunctionComponent = () => {
     authService.logOut();
   };
   const handleClickLogin = () => {
-    router.push('login');
+    router && router.push('login');
   };
   const handleClose = () => {
     setAnchorEl(null);

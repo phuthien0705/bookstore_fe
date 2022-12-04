@@ -17,6 +17,7 @@ import NavigationScroll from '../NavigationScroll';
 import { ILayout } from '@/interfaces/layout.interface';
 import dynamic from 'next/dynamic';
 import CustomizedSnackbar from '@/components/snackbar/CustomizedSnackbar';
+import useGetListCart from '@/hooks/client/useGetListCart';
 
 const Footer = dynamic(() => import('../../components/Footer'), { ssr: false });
 

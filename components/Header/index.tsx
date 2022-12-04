@@ -8,6 +8,7 @@ import { IconMenu2 } from '@tabler/icons';
 import CartSection from './CartSection';
 import { FC } from 'react';
 import { IHeader } from '@/interfaces/compontents/header.interface';
+import useGetListCart from '@/hooks/client/useGetListCart';
 
 const Header: FC<IHeader> = ({
   handleLeftDrawerToggle,
@@ -17,6 +18,7 @@ const Header: FC<IHeader> = ({
   hideNoti = false,
 }) => {
   const theme: any = useTheme();
+  const { data, isLoading, isFetching, refetch } = useGetListCart();
 
   return (
     <>
@@ -40,8 +42,11 @@ const Header: FC<IHeader> = ({
             <Avatar
               variant="rounded"
               sx={{
-                ...theme.typography.commonAvatar,
-                ...theme.typography.mediumAvatar,
+                cursor: 'pointer',
+                borderRadius: '8px',
+                width: '34px',
+                height: '34px',
+                fontSize: '1.2rem',
                 transition: 'all .2s ease-in-out',
                 background: theme.palette.secondary.light,
                 color: theme.palette.secondary.dark,
@@ -65,8 +70,14 @@ const Header: FC<IHeader> = ({
       <Box sx={{ flexGrow: 1 }} />
 
       {/* notification & profile & cart */}
-
-      {!hideCart && <CartSection />}
+      {!hideCart && (
+        <CartSection
+          data={data}
+          isLoading={isLoading}
+          isFetching={isFetching}
+          refetch={refetch}
+        />
+      )}
       <ProfileSection />
     </>
   );

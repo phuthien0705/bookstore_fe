@@ -12,15 +12,17 @@ import {
 import { ShoppingCartOutlined } from '@mui/icons-material';
 import { FC, useCallback } from 'react';
 import { addToCart } from '@/apis/cart.api';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 import { LoadingButton } from '@mui/lab';
 import Image from 'next/image';
 import { IProductInfo } from '@/interfaces/compontents/product.interface';
+import { CART_CLIENT } from '@/constants/queryKeyName';
 
 const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
-  console.log(data);
+  const queryClient = useQueryClient();
+
   const dispatch = useDispatch();
   const toast = useCallback(
     ({ type, message }: { type: string; message: string }) => {
@@ -33,6 +35,8 @@ const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
     () => addToCart({ book_id: data?.id, quantity: 1 }),
     {
       onSuccess: () => {
+        // Invalidate and refetch
+        queryClient.invalidateQueries(CART_CLIENT);
         toast({
           type: 'success',
           message: 'Thêm sản phẩm thành công',

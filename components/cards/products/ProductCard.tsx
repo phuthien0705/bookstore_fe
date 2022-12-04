@@ -13,11 +13,12 @@ import ProductCardSkeleton from '../Skeleton/ProductCardSkelection';
 import { IProductCard } from '@/interfaces/compontents/card.interface';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '@/store/snackbarReducer';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { addToCart } from '@/apis/cart.api';
 import LoadingButton from '@mui/lab/LoadingButton';
 import authService from '@/services/authService';
 import { useRouter } from 'next/router';
+import { CART_CLIENT } from '@/constants/queryKeyName';
 
 const useStyles = makeStyles({
   root: {
@@ -52,6 +53,7 @@ const ProductCard: React.FunctionComponent<IProductCard> = ({
   const handleClickItem = () => {
     window.location.pathname = `product/${product?.id}`;
   };
+  const queryClient = useQueryClient();
 
   const dispatch = useDispatch();
   const toast = useCallback(
@@ -65,6 +67,8 @@ const ProductCard: React.FunctionComponent<IProductCard> = ({
     () => addToCart({ book_id: product?.id, quantity: 1 }),
     {
       onSuccess: () => {
+        // Invalidate and refetch
+        queryClient.invalidateQueries(CART_CLIENT);
         toast({
           type: 'success',
           message: 'Thêm sản phẩm thành công',

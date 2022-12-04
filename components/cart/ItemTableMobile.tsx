@@ -9,7 +9,7 @@ const ImageStyle = styled('img')({
   objectFit: 'contain',
   margin: '5px 0',
   width: '100px',
-  height: 'auto',
+  height: '100px',
 });
 
 interface IItemTableMobile {
@@ -25,6 +25,7 @@ const ItemTableMobile: FC<IItemTableMobile> = ({
   handleDecreaseQuantity,
   handleDelete,
 }) => {
+  console.log(items);
   return (
     <Paper sx={{ margin: 2 }}>
       {items.map((item: any, _index: number) => (
@@ -41,14 +42,14 @@ const ItemTableMobile: FC<IItemTableMobile> = ({
             alignItems={'center'}
             spacing={{ xs: 2, md: 4 }}
           >
-            <ImageStyle alt={item.name} src={item.image} />
+            <ImageStyle alt={item?.book?.name} src={item?.book?.book_image} />
 
             <Stack
               direction="column"
               justifyContent="space-between"
               spacing={2}
             >
-              <Typography fontSize="14px">{item.name}</Typography>
+              <Typography fontSize="16px">{item?.book?.name}</Typography>
               <Stack direction="column" spacing={1}>
                 <Typography fontSize="14px" fontWeight="bold">
                   {item.price} đ

@@ -18,6 +18,7 @@ import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 
 const CartItems = () => {
+  const matches = useMediaQuery('(min-width:900px)');
   const dispatch = useDispatch();
   const toast = useCallback(
     ({ type, message }: { type: string; message: string }) => {
@@ -26,7 +27,6 @@ const CartItems = () => {
     },
     [dispatch]
   );
-  const matches = useMediaQuery('(min-width:900px)');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showConfirmModal, setShowConfirmModal] = useState<any>(null);
   const { data, isloading, isFetching, refetch } = useGetListCart();
