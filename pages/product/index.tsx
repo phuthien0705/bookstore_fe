@@ -44,7 +44,7 @@ import useGetListGenreClient from '@/hooks/client/useGetListGenreClient';
 import useGetListAuthorClient from '@/hooks/client/useGetListAuthorClient';
 import useGetListPublisherClient from '@/hooks/client/useGetListPublisherClient';
 //Drawer style
-const drawerWidth = 450;
+const drawerWidth = 400;
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }: { theme: any; open: boolean }) => ({
     flexGrow: 1,
@@ -92,7 +92,7 @@ const Product = () => {
     refetch,
   } = getListBookQuery;
   //End fetch
-  const matches = useMediaQuery('(min-width:600px)');
+  const matches = useMediaQuery('(min-width:700px)');
   const [searchValue, setSearchValue] = useState<string>('');
   const sortOptions = [
     'Giá: Cao → Thấp',
@@ -170,29 +170,37 @@ const Product = () => {
       >
         <Stack
           display="flex"
-          flexDirection="row"
+          direction={matches ? 'row' : 'column'}
           alignItems="center"
           justifyContent="flex-end"
         >
           <Grid p={1}>
             <SearchAdminSection value={searchValue} setValue={setSearchValue} />
           </Grid>
-          <Typography p={1}>|</Typography>
-          <Button
-            startIcon={<FilterAltIcon />}
-            onClick={() => handleToggleFilter()}
-            sx={{ p: 1 }}
+          <Grid
+            display="flex"
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="center"
           >
-            Lọc
-          </Button>
-          <Typography p={1}>|</Typography>
-          <Typography
-            sx={{ fontSize: { xs: '14px', md: '16px' } }}
-            variant="h4"
-          >
-            Sắp xếp theo:{' '}
-          </Typography>
-          <Grid>
+            {' '}
+            <Typography p={1} display={matches ? 'true' : 'none'}>
+              |
+            </Typography>
+            <Button
+              startIcon={<FilterAltIcon />}
+              onClick={() => handleToggleFilter()}
+              sx={{ p: 1 }}
+            >
+              Lọc
+            </Button>
+            <Typography p={1}>|</Typography>
+            <Typography
+              sx={{ fontSize: { xs: '14px', md: '16px' } }}
+              variant="h4"
+            >
+              Sắp xếp theo:{' '}
+            </Typography>
             <ButtonGroup ref={anchorRef} aria-label="split button">
               <Button
                 variant="text"
@@ -269,12 +277,12 @@ const Product = () => {
             onClose={() => setOpenFilter(false)}
             sx={{
               zIndex: 0,
-              width: matches ? drawerWidth : '100%',
+
               '& .MuiDrawer-paper': {
                 mt: matches ? '25px' : '80px',
                 borderRadius: matches ? '8px' : '0',
                 width: matches ? drawerWidth : '80%',
-                height: matches ? drawerWidth : '100%',
+                height: matches ? 'auto' : '100%',
                 position: matches ? 'relative' : 'inherit',
                 display: 'flex',
                 wordBreak: 'break-work',
