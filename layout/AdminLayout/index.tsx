@@ -21,10 +21,9 @@ import { NextPageWithLayout } from '@/pages/page';
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }: { theme: any; open: boolean }) => ({
-    ...theme.typography.mainContent,
+    ...theme.typography.mainContent2,
+
     ...(!open && {
-      borderBottomLeftRadius: 0,
-      borderBottomRightRadius: 0,
       transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
@@ -51,8 +50,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
         duration: theme.transitions.duration.enteringScreen,
       }),
       marginLeft: 0,
-      borderBottomLeftRadius: 0,
-      borderBottomRightRadius: 0,
+
       width: `calc(100% - ${drawerWidth}px)`,
       [theme.breakpoints.down('md')]: {
         marginLeft: '20px',
@@ -100,12 +98,13 @@ const AdminLayout: NextPageWithLayout<ILayout> = ({ children }) => {
               : 'none',
           }}
         >
-          <Toolbar>
+          <Toolbar sx={{ padding: 0 }}>
             <Header
               handleLeftDrawerToggle={handleLeftDrawerToggle}
               hideSearch
               hideCart
-              hideNoti
+              maxWidth="xl"
+              hideBelowSection
             />
           </Toolbar>
         </AppBar>
