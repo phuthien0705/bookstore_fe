@@ -36,7 +36,7 @@ const OrderSummary = ({ items }: { items: any }) => {
               </TableCell>
               <TableCell align="right">
                 <Typography fontSize="16px" fontWeight="bold">
-                  {subsum}
+                  {subsum}đ
                 </Typography>
               </TableCell>
             </TableRow>

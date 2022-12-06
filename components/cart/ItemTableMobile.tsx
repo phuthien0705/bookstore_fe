@@ -17,6 +17,9 @@ interface IItemTableMobile {
   handleIncreaseQuantity: Function;
   handleDecreaseQuantity: Function;
   handleDelete: Function;
+  checkItem: Function;
+  checkAllItem: Function;
+  clearCart: Function;
 }
 
 const ItemTableMobile: FC<IItemTableMobile> = ({
@@ -24,6 +27,9 @@ const ItemTableMobile: FC<IItemTableMobile> = ({
   handleIncreaseQuantity,
   handleDecreaseQuantity,
   handleDelete,
+  checkItem,
+  checkAllItem,
+  clearCart,
 }) => {
   console.log(items);
   return (

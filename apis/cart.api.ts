@@ -17,12 +17,15 @@ export const updateCart = async (data: {
 }) => {
   return httpRequest.put('/cart/update', data);
 };
+export const clearCart = async () => {
+  return httpRequest.put('/cart/clear', null);
+};
 export const removeFormCart = async (data: { book_id: number }) => {
   return httpRequest.put('/cart/remove', data);
 };
 export const addCheckedItem = async (data: {
   book_id: number;
-  is_checked: 0 | 1;
+  is_checked: boolean;
 }) => {
   return httpRequest.put('/cart/add-checked-item', data);
 };

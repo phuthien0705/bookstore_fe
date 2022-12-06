@@ -14,6 +14,9 @@ import { styled } from '@mui/material/styles';
 import QuantityButton from '../extended/Quantity';
 import { FC } from 'react';
 import Checkbox from '@mui/material/Checkbox';
+import { addCheckedItem } from '@/apis/cart.api';
+import { CART_CLIENT } from '@/constants/queryKeyName';
+import { useMutation, useQueryClient } from 'react-query';
 
 const ImageStyle = styled('img')({
   borderRadius: 4,
@@ -27,38 +30,86 @@ interface IItemTable {
   handleIncreaseQuantity: Function;
   handleDecreaseQuantity: Function;
   handleDelete: Function;
+  checkItem: Function;
+  checkAllItem: Function;
+  clearCart: Function;
 }
 const ItemTable: FC<IItemTable> = ({
   items,
   handleIncreaseQuantity,
   handleDecreaseQuantity,
   handleDelete,
+  checkItem,
+  checkAllItem,
+  clearCart,
 }) => {
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ maxWidth: 1762 }}>
+      <Table sx={{ maxWidth: 1762, marginTop: 2 }}>
         <TableHead>
           <TableRow>
             <TableCell>
-              <Typography variant="h5">Sản phẩm</Typography>
+              <Typography variant="h5">
+                <Checkbox
+                  sx={{ height: 'fit-content' }}
+                  checked={
+                    items?.every((item: any) => item?.is_checked == true) ||
+                    false
+                  }
+                  onChange={() => {
+                    checkAllItem({
+                      is_checked: !items?.every(
+                        (item: any) => item?.is_checked == true
+                      ),
+                    });
+                  }}
+                />{' '}
+                Chọn tất cả ({items?.length || 0} sản phẩm){' '}
+                <Typography
+                  onClick={() => clearCart()}
+                  component={'span'}
+                  sx={{
+                    color: 'red',
+                    cursor: 'pointer',
+                    display: items?.every(
+                      (item: any) => item?.is_checked == true
+                    )
+                      ? 'inline-block'
+                      : 'none',
+                  }}
+                >
+                  (Xóa)
+                </Typography>
+              </Typography>
             </TableCell>
-            {/* <TableCell>
-              <Typography variant="h5">Giá</Typography>
-            </TableCell> */}
+
             <TableCell>
-              <Typography variant="h5">Số lượng</Typography>
+              <Typography textAlign="center" variant="h5">
+                Số lượng
+              </Typography>
             </TableCell>
             <TableCell colSpan={2}>
-              <Typography variant="h5">Thành tiền</Typography>
+              <Typography ml={2} variant="h5">
+                Thành tiền
+              </Typography>
             </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {items.map((row: any, _index: number) => (
+          {items.map((row: any) => (
             <TableRow key={row.id}>
-              <TableCell>
+              <TableCell sx={{ maxWidth: '350px' }}>
                 <Stack direction="row" justifyContent="flex-start" spacing={2}>
-                  <Checkbox />
+                  <Checkbox
+                    sx={{ height: 'fit-content' }}
+                    checked={row?.is_checked || false}
+                    onChange={() => {
+                      checkItem({
+                        book_id: row?.book?.id,
+                        is_checked: !row?.is_checked,
+                      });
+                    }}
+                  />
                   <Box>
                     <ImageStyle
                       alt={row?.book?.name}
@@ -69,15 +120,15 @@ const ItemTable: FC<IItemTable> = ({
                   </Box>
                   <Box>
                     <Stack
-                      sx={{ height: '100%', padding: '10px 0' }}
+                      sx={{ width: '100%', height: '100%', padding: '10px 0' }}
                       direction="column"
                       justifyContent="space-between"
                     >
-                      <Typography fontSize="18px" fontWeight="500">
+                      <Typography fontSize="16px" fontWeight="500">
                         {row?.book?.name}
                       </Typography>
                       <Typography fontSize="14px" fontWeight="600">
-                        {row?.price}
+                        {row?.price}đ
                       </Typography>
                     </Stack>
                   </Box>
@@ -96,8 +147,12 @@ const ItemTable: FC<IItemTable> = ({
                 />
               </TableCell>
               <TableCell>
-                <Typography fontSize="16px" fontWeight="bold">
-                  {row.price * row?.quantity}
+                <Typography
+                  fontSize="16px"
+                  fontWeight="bold"
+                  textAlign={'center'}
+                >
+                  {row.price * row?.quantity}đ
                 </Typography>
               </TableCell>
               <TableCell sx={{ maxWidth: 40, minWidth: 40 }}>
