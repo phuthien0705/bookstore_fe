@@ -1,4 +1,11 @@
-import { Box, IconButton, Paper, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Checkbox,
+  IconButton,
+  Paper,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import QuantityButton from '../extended/Quantity';
@@ -17,6 +24,9 @@ interface IItemTableMobile {
   handleIncreaseQuantity: Function;
   handleDecreaseQuantity: Function;
   handleDelete: Function;
+  checkItem: Function;
+  checkAllItem: Function;
+  clearCart: Function;
 }
 
 const ItemTableMobile: FC<IItemTableMobile> = ({
@@ -24,10 +34,42 @@ const ItemTableMobile: FC<IItemTableMobile> = ({
   handleIncreaseQuantity,
   handleDecreaseQuantity,
   handleDelete,
+  checkItem,
+  checkAllItem,
+  clearCart,
 }) => {
-  console.log(items);
   return (
-    <Paper sx={{ margin: 2 }}>
+    <Paper sx={{ margin: '16px 16px 16px 0' }}>
+      {' '}
+      <Typography variant="h5">
+        <Checkbox
+          sx={{ height: 'fit-content' }}
+          checked={
+            items?.every((item: any) => item?.is_checked == true) || false
+          }
+          onChange={() => {
+            checkAllItem({
+              is_checked: !items?.every(
+                (item: any) => item?.is_checked == true
+              ),
+            });
+          }}
+        />{' '}
+        Chọn tất cả ({items?.length || 0} sản phẩm){' '}
+        <Typography
+          onClick={() => clearCart()}
+          component={'span'}
+          sx={{
+            color: 'red',
+            cursor: 'pointer',
+            display: items?.every((item: any) => item?.is_checked == true)
+              ? 'inline-block'
+              : 'none',
+          }}
+        >
+          (Xóa)
+        </Typography>
+      </Typography>
       {items.map((item: any, _index: number) => (
         <Stack
           key={_index}
@@ -37,11 +79,17 @@ const ItemTableMobile: FC<IItemTableMobile> = ({
           mt={2}
           mb={2}
         >
-          <Stack
-            direction="row"
-            alignItems={'center'}
-            spacing={{ xs: 2, md: 4 }}
-          >
+          <Stack direction="row" alignItems={'center'}>
+            <Checkbox
+              sx={{ height: 'fit-content' }}
+              checked={item?.is_checked || false}
+              onChange={() => {
+                checkItem({
+                  book_id: item?.book?.id,
+                  is_checked: !item?.is_checked,
+                });
+              }}
+            />
             <ImageStyle alt={item?.book?.name} src={item?.book?.book_image} />
 
             <Stack

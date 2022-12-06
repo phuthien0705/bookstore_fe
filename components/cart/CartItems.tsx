@@ -12,12 +12,18 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import ItemTableMobile from './ItemTableMobile';
 import ConfirmModal from '../modals/ConfirmModal';
 import useGetListCart from '@/hooks/client/useGetListCart';
-import { useMutation } from 'react-query';
-import { removeFormCart, updateCart } from '@/apis/cart.api';
+import { useMutation, useQueryClient } from 'react-query';
+import {
+  addAllCheckedItem,
+  addCheckedItem,
+  clearCart,
+  removeFormCart,
+  updateCart,
+} from '@/apis/cart.api';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 
-const CartItems = () => {
+const CartItems: React.FunctionComponent = () => {
   const matches = useMediaQuery('(min-width:900px)');
   const dispatch = useDispatch();
   const toast = useCallback(
@@ -27,8 +33,11 @@ const CartItems = () => {
     },
     [dispatch]
   );
+  const queryClient = useQueryClient();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showConfirmModal, setShowConfirmModal] = useState<any>(null);
+  const [showConfirmClearCart, setShowConfirmClearCart] =
+    useState<boolean>(false);
   const { data, isloading, isFetching, refetch } = useGetListCart();
   const { mutate: updateCartFunc, isLoading: isUpdating } = useMutation(
     (data: { book_id: number; quantity: number }) => updateCart(data),
@@ -58,6 +67,48 @@ const CartItems = () => {
       },
     }
   );
+
+  const { mutate: checkItemFunc, isLoading } = useMutation(
+    ({ book_id, is_checked }: { book_id: number; is_checked: boolean }) =>
+      addCheckedItem({ book_id, is_checked }),
+    {
+      onSuccess: () => {
+        refetch();
+      },
+      onError: () => {
+        toast({
+          type: 'error',
+          message: 'Máy chủ đang bận xin vui lòng thử lại sau',
+        });
+      },
+    }
+  );
+  const { mutate: checkAllItemFunc } = useMutation(
+    ({ is_checked }: { is_checked: boolean }) =>
+      addAllCheckedItem({ is_checked }),
+    {
+      onSuccess: () => {
+        refetch();
+      },
+      onError: () => {
+        toast({
+          type: 'error',
+          message: 'Máy chủ đang bận xin vui lòng thử lại sau',
+        });
+      },
+    }
+  );
+  const { mutate: clearCartFunc } = useMutation(clearCart, {
+    onSuccess: () => {
+      refetch();
+    },
+    onError: () => {
+      toast({
+        type: 'error',
+        message: 'Máy chủ đang bận xin vui lòng thử lại sau',
+      });
+    },
+  });
   const handleChange = (event: any, newValue: any) => {
     setCurrentIndex(newValue);
   };
@@ -123,15 +174,15 @@ const CartItems = () => {
         {data && data?.length > 0 && (
           <>
             <Grid item xs={12}>
-              <ProductAdded amount={data?.length || 0} />
-            </Grid>
-            <Grid item xs={12}>
               {matches ? (
                 <ItemTable
                   items={data || []}
                   handleIncreaseQuantity={handleIncreaseQuantity}
                   handleDecreaseQuantity={handleDecreaseQuantity}
                   handleDelete={handleDelete}
+                  checkItem={checkItemFunc}
+                  checkAllItem={checkAllItemFunc}
+                  clearCart={() => setShowConfirmClearCart(true)}
                 />
               ) : (
                 <ItemTableMobile
@@ -139,6 +190,9 @@ const CartItems = () => {
                   handleIncreaseQuantity={handleIncreaseQuantity}
                   handleDecreaseQuantity={handleDecreaseQuantity}
                   handleDelete={handleDelete}
+                  checkItem={checkItemFunc}
+                  checkAllItem={checkAllItemFunc}
+                  clearCart={() => setShowConfirmClearCart(true)}
                 />
               )}
             </Grid>
@@ -167,6 +221,18 @@ const CartItems = () => {
         handleConfirm={() => {
           handleDelete(showConfirmModal);
           setShowConfirmModal(null);
+        }}
+      />
+      <ConfirmModal
+        open={showConfirmClearCart}
+        contentHeader="Xóa tất cả sản phẩm"
+        textContent="Bạn có muốn xóa tất cả sản phẩm đang chọn?"
+        confirmContent="Xác nhận"
+        cancelContent="Hủy"
+        handleClose={() => setShowConfirmClearCart(false)}
+        handleConfirm={() => {
+          clearCartFunc();
+          setShowConfirmClearCart(false);
         }}
       />
     </>

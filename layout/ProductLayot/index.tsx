@@ -23,7 +23,7 @@ const Footer = dynamic(() => import('../../components/Footer'), { ssr: false });
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme }: { theme: any }) => ({
-    ...theme?.typography?.mainContent,
+    ...theme?.typography?.mainContent2,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     marginRight: 0,
