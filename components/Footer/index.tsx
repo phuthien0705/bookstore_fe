@@ -83,8 +83,8 @@ const Footer = () => {
         </Box>
         <Box textAlign="center" pt={{ xs: 1, sm: 2 }} pb={{ xs: 2, sm: 0 }}>
           <Typography color={theme.palette.info}>
-            &reg; {new Date().getFullYear()} Bản quyền thuộc về Công ty TNHH Bảo
-            Thư.
+            &reg; {new Date().getFullYear()} Bản quyền thuộc về Công ty TNHH
+            BOXO
           </Typography>
         </Box>
       </Box>

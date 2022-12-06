@@ -50,12 +50,12 @@ const ProductCard: React.FunctionComponent<IProductCard> = ({
   const router = useRouter();
   const imgRef = useRef(null);
   const classes = useStyles();
-  const handleClickItem = () => {
-    window.location.pathname = `product/${product?.id}`;
-  };
+  const dispatch = useDispatch();
+  const handleClickItem = useCallback(() => {
+    router.push(`product/${product?.id}`);
+  }, [product, router]);
   const queryClient = useQueryClient();
 
-  const dispatch = useDispatch();
   const toast = useCallback(
     ({ type, message }: { type: string; message: string }) => {
       dispatch(toggleSnackbar({ open: true, message, type }));

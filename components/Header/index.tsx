@@ -57,7 +57,6 @@ const Header: FC<IHeader> = ({
           <Box
             component="span"
             sx={{
-              display: { xs: 'none', md: 'block' },
               flexGrow: 1,
               marginRight: 4,
             }}
