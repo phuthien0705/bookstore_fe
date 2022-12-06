@@ -235,7 +235,7 @@ const ProductManagement = () => {
               </Stack>
             </Button>
           </Stack>
-          <Box mt={2} sx={{ height: 400, width: '100%' }}>
+          <Box mt={2} sx={{ height: 610, width: '100%' }}>
             <DataGrid
               sx={{
                 border: 1,

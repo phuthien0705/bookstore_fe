@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 import {
   Avatar,
-  Chip,
+  ButtonBase,
   ListItemButton,
   ListItemIcon,
   ListItemText,
@@ -22,6 +22,7 @@ import config from '../../../config';
 import authService from '../../../services/authService';
 import checkIsAdminOrManager from '../../../common/checkIsAdminOrManager';
 import { useRouter } from 'next/router';
+import Badge from '@mui/material/Badge';
 
 const ProfileSection: React.FunctionComponent = () => {
   const theme: any = useTheme();
@@ -61,64 +62,39 @@ const ProfileSection: React.FunctionComponent = () => {
 
   return (
     <div>
-      <Chip
-        id="basic-chip"
+      <ButtonBase
+        id="basic-base-button"
         onClick={handleClick}
-        sx={{
-          height: '40px',
-          alignItems: 'center',
-          borderRadius: '27px',
-          transition: 'all .2s ease-in-out',
-          borderColor: theme.palette.primary.light,
-          backgroundColor: theme.palette.primary.light,
-
-          '&[aria-controls="menu-list-grow"], &:hover': {
-            borderColor: theme.palette.primary.main,
-            background: `${theme.palette.primary.main}!important`,
-            color: theme.palette.primary.light,
-            '& svg': {
-              stroke: theme.palette.primary.light,
+        sx={{ borderRadius: '12px' }}
+      >
+        <Avatar
+          variant="rounded"
+          sx={{
+            cursor: 'pointer',
+            borderRadius: '8px',
+            width: '34px',
+            height: '34px',
+            fontSize: '1.2rem',
+            transition: 'all .2s ease-in-out',
+            background: theme.palette.primary.light,
+            color: theme.palette.primary.dark,
+            '&[aria-controls="menu-list-grow"],&:hover': {
+              background: theme.palette.primary.dark,
+              color: theme.palette.primary.light,
             },
-          },
-          '& .MuiChip-label': {
-            lineHeight: 0,
-          },
-        }}
-        icon={
-          <Avatar
-            src={authService.isAuthenticated() ? '' : ''}
-            sx={{
-              margin: '8px 0 8px 8px !important',
-              cursor: 'pointer',
-              height: '80%',
-              width: '38%',
-            }}
-            aria-controls={open ? 'menu-list-grow' : undefined}
-            aria-haspopup="true"
-            color="inherit"
-          />
-        }
-        label={
-          <IconSettings
-            stroke={1.5}
-            size="1.5rem"
-            color={theme.palette.primary.main}
-          />
-        }
-        variant="outlined"
-        aria-controls={open ? 'menu-profile' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        color="primary"
-      />
-
+          }}
+          color="inherit"
+        >
+          <IconSettings stroke={1.5} size="1.3rem" />
+        </Avatar>
+      </ButtonBase>
       <Menu
         id="menu-profile"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
         MenuListProps={{
-          'aria-labelledby': 'basic-chip',
+          'aria-labelledby': 'basic-base-button',
         }}
       >
         {!authService.isAuthenticated() ? (
@@ -128,7 +104,7 @@ const ProfileSection: React.FunctionComponent = () => {
             />
           </ListItemButton>
         ) : checkIsAdminOrManager(userInfo?.roles) ? (
-          <MenuList>
+          <MenuList sx={{ padding: 0 }}>
             <ListItemButton
               selected={router.pathname.includes('/admin')}
               onClick={(event) => handleListItemClick(event, '/admin/product')}
