@@ -29,10 +29,10 @@ import AdminLayout from '../../layout/AdminLayout';
 import MainCard from '../../components/cards/MainCard';
 
 const ImageStyle = styled('img')({
-  width: '80%',
   borderRadius: 4,
   objectFit: 'cover',
-  margin: '5px 0',
+  padding: '5px 0',
+  height: '100px',
 });
 const ProductManagement = () => {
   const queryClient = useQueryClient();
@@ -235,29 +235,22 @@ const ProductManagement = () => {
               </Stack>
             </Button>
           </Stack>
-          <Box mt={2}>
+          <Box mt={2} sx={{ height: 610, width: '100%' }}>
             <DataGrid
               sx={{
                 border: 1,
                 borderColor: 'rgba(0, 0, 0, 0.23)',
                 borderRadius: `${config.borderRadius}px`,
+                '.MuiDataGrid-cellContent': {
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                },
               }}
               disableSelectionOnClick
-              autoHeight
-              checkboxSelection
-              getRowHeight={() => 'auto'}
+              rowHeight={100}
               disableColumnMenu
-              loading={
-                isAuthorLoading ||
-                isGenreLoading ||
-                isPublisherLoading ||
-                isAuthorFetching ||
-                isGenreFetching ||
-                isPublisherFetching ||
-                isBookFetching ||
-                isBookLoading ||
-                isMutateLoading
-              }
+              loading={isBookFetching || isBookLoading || isMutateLoading}
               columns={columns}
               rows={bookData?.data || []}
               components={{
@@ -271,10 +264,10 @@ const ProductManagement = () => {
               // onPageChange={(newPage) => setPage(newPage)}
 
               pagination
-              onSelectionModelChange={(newSelectionModel) => {
-                setSelectionModel(newSelectionModel as any);
-              }}
-              selectionModel={selectionModel}
+              // onSelectionModelChange={(newSelectionModel) => {
+              //   setSelectionModel(newSelectionModel as any);
+              // }}
+              // selectionModel={selectionModel}
             />
           </Box>
           <BookModal

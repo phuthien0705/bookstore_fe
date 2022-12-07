@@ -1,24 +1,22 @@
-import { Grid, Tabs, Tab } from '@mui/material';
+import { Grid, Tabs, Tab, Box } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import PaymentIcon from '@mui/icons-material/Payment';
-import ProductAdded from './ProductAdded';
-import ItemTable from './ItemTable';
-import OrderSummary from './OrderSummary';
 import SubmitCart from './SubmitCart';
 import EmptyCart from './EmptyCart';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import ItemTableMobile from './ItemTableMobile';
-import ConfirmModal from '../modals/ConfirmModal';
 import useGetListCart from '@/hooks/client/useGetListCart';
-import { useMutation } from 'react-query';
-import { removeFormCart, updateCart } from '@/apis/cart.api';
+import { useMutation, useQueryClient } from 'react-query';
+
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '@/store/snackbarReducer';
+import useGetListAddress from '@/hooks/client/useGetListAddress';
+import ItemTab from './tabs/ItemTab';
+import PaymentTab from './tabs/PaymentTab';
+import LinearProgress from '@mui/material/LinearProgress';
 
-const CartItems = () => {
-  const matches = useMediaQuery('(min-width:900px)');
+const CartItems: React.FunctionComponent = () => {
+  const queryClient = useQueryClient();
   const dispatch = useDispatch();
   const toast = useCallback(
     ({ type, message }: { type: string; message: string }) => {
@@ -28,74 +26,16 @@ const CartItems = () => {
     [dispatch]
   );
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [showConfirmModal, setShowConfirmModal] = useState<any>(null);
-  const { data, isloading, isFetching, refetch } = useGetListCart();
-  const { mutate: updateCartFunc, isLoading: isUpdating } = useMutation(
-    (data: { book_id: number; quantity: number }) => updateCart(data),
-    {
-      onSuccess: () => {
-        refetch();
-      },
-      onError: () => {
-        toast({
-          type: 'error',
-          message: 'Xảy ra lỗi trong quá trình cập nhật sản phẩm',
-        });
-      },
-    }
-  );
-  const { mutate: removeFunc, isLoading: isRemoving } = useMutation(
-    (data: { book_id: number }) => removeFormCart(data),
-    {
-      onSuccess: () => {
-        refetch();
-      },
-      onError: () => {
-        toast({
-          type: 'error',
-          message: 'Xảy ra lỗi trong quá trình cập nhật sản phẩm',
-        });
-      },
-    }
-  );
+
+  const { data, isLoading, isFetching, refetch } = useGetListCart();
+
   const handleChange = (event: any, newValue: any) => {
     setCurrentIndex(newValue);
   };
-  const handleIncreaseQuantity = useCallback(
-    (book_id: number) => {
-      data?.forEach((item: any) => {
-        if (item?.book_id === book_id) {
-          updateCartFunc({ book_id: book_id, quantity: item.quantity + 1 });
-        }
-      });
-    },
-    [data, updateCartFunc]
-  );
-  const handleDecreaseQuantity = useCallback(
-    (book_id: number) => {
-      const decreaseItem = data.find((item: any) => item.book_id === book_id);
-      if (decreaseItem?.quantity === 1) {
-        setShowConfirmModal(decreaseItem && decreaseItem?.book_id);
-      } else {
-        data.forEach((item: any) => {
-          if (item?.book_id === book_id) {
-            updateCartFunc({ book_id: book_id, quantity: item.quantity - 1 });
-          }
-        });
-      }
-    },
-    [data, updateCartFunc]
-  );
-  const handleDelete = useCallback(
-    (book_id: number) => {
-      removeFunc({ book_id: book_id });
-    },
-    [removeFunc]
-  );
-  console.log(data);
+  console.log('%test', isLoading || isFetching);
   return (
     <>
-      <Grid container>
+      <Grid container sx={{ paddingBottom: '60px', position: 'relative' }}>
         <Grid item xs={12}>
           <Tabs
             value={currentIndex}
@@ -108,67 +48,45 @@ const CartItems = () => {
               label="Giỏ"
               disabled={currentIndex !== 0}
             />
-            <Tab
-              icon={<ApartmentIcon />}
-              label="Thông tin địa chỉ"
-              disabled={currentIndex !== 1}
-            />
+
             <Tab
               icon={<PaymentIcon />}
               label="Thanh toán"
-              disabled={currentIndex !== 2}
+              disabled={currentIndex !== 1}
             />
           </Tabs>
         </Grid>
-        {data && data?.length > 0 && (
-          <>
-            <Grid item xs={12}>
-              <ProductAdded amount={data?.length || 0} />
-            </Grid>
-            <Grid item xs={12}>
-              {matches ? (
-                <ItemTable
-                  items={data || []}
-                  handleIncreaseQuantity={handleIncreaseQuantity}
-                  handleDecreaseQuantity={handleDecreaseQuantity}
-                  handleDelete={handleDelete}
-                />
-              ) : (
-                <ItemTableMobile
-                  items={data || []}
-                  handleIncreaseQuantity={handleIncreaseQuantity}
-                  handleDecreaseQuantity={handleDecreaseQuantity}
-                  handleDelete={handleDelete}
-                />
-              )}
-            </Grid>
-            <Grid item xs={12}>
-              <OrderSummary items={data} />
-            </Grid>
-            <Grid item xs={12}>
-              <SubmitCart setCurrentIndex={setCurrentIndex} />
-            </Grid>
-          </>
+        {/* {(isLoading || isFetching) && (
+          <Box sx={{ width: '100%' }}>
+            <LinearProgress />
+          </Box>
+        )} */}
+        {/* tab 1 */}
+        {currentIndex === 0 && (
+          <ItemTab
+            data={data}
+            refetch={refetch}
+            isLoading={isLoading}
+            isFetching={isFetching}
+          />
         )}
+        {/* tab 2 */}
+        {currentIndex === 1 && <PaymentTab data={data} />}
 
+        {/* empty screen */}
         {data && data?.length === 0 && (
           <Grid item xs={12} sx={{ p: 30 }}>
             <EmptyCart />
           </Grid>
         )}
+        {data && data?.length !== 0 && (
+          <SubmitCart
+            items={data || []}
+            setCurrentIndex={setCurrentIndex}
+            currentIndex={currentIndex}
+          />
+        )}
       </Grid>
-      <ConfirmModal
-        open={showConfirmModal !== null}
-        contentHeader="Xóa sản phẩm"
-        textContent="Bạn có muốn xóa sản phẩm đang chọn?"
-        confirmContent="Xác nhận"
-        cancelContent="Hủy"
-        handleClose={() => setShowConfirmModal(null)}
-        handleConfirm={() => {
-          handleDelete(showConfirmModal);
-          setShowConfirmModal(null);
-        }}
-      />
     </>
   );
 };

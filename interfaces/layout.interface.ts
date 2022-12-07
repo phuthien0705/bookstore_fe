@@ -7,4 +7,5 @@ export interface AppPropsWithLayout extends AppProps {
 
 export interface ILayout {
   children?: React.ReactNode;
+  hideFooter?: boolean;
 }

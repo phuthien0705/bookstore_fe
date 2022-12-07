@@ -1,6 +1,9 @@
 import { useCallback } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/router';
+// import Image from 'next/image';
+
+// import logoIcon from '@assets/images/logo.png';
 
 const Logo: React.FunctionComponent = () => {
   const router = useRouter();
@@ -18,6 +21,7 @@ const Logo: React.FunctionComponent = () => {
     >
       BOXO
     </h1>
+    // <Image src={logoIcon} alt="logo" width={50} height={50} />
   );
 };
 
