@@ -1,7 +1,7 @@
 import { Grid, Typography, Breadcrumbs, Link, Stack, Box } from '@mui/material';
 import { NavigateNext } from '@mui/icons-material';
 
-const CartTitle = () => {
+const CartTitle: React.FunctionComponent = () => {
   return (
     <Stack
       direction={{ xs: 'column', sm: 'row' }}
