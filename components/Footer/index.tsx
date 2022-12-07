@@ -53,17 +53,35 @@ const Footer = () => {
               direction={matches ? 'row' : 'column'}
               spacing={matches ? 5 : 1}
             >
-              <Link href="#" variant="h4" color="inherit" underline="none">
+              <Link
+                href="/policy"
+                variant="h4"
+                color="inherit"
+                underline="none"
+              >
                 Chính Sách
               </Link>
-              <Link href="#" variant="h4" color="inherit" underline="none">
+              <Link
+                href="/contact-us"
+                variant="h4"
+                color="inherit"
+                underline="none"
+              >
                 Liên Hệ
               </Link>
             </Stack>
             <Stack
               direction={matches ? 'row' : 'column'}
-              justifyItems="flex-start"
+              spacing={matches ? 5 : 1}
             >
+              <Link
+                href="/about-us"
+                variant="h4"
+                color="inherit"
+                underline="none"
+              >
+                Giới thiệu
+              </Link>
               <Link
                 href="/profile"
                 variant="h4"
