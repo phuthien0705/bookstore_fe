@@ -13,3 +13,4 @@ export const CART_CLIENT = 'cart-client';
 export const LIST_ADDRESS = 'list-address';
 export const LIST_CITY = 'list-city';
 export const LIST_DISTRICT = 'list-district';
+export const USER_PROFILE = 'user-profile';

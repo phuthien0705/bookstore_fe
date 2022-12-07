@@ -4,12 +4,16 @@ import MainCard from '../components/cards/MainCard';
 import authService from '../services/authService';
 import AccountTabs from '../components/profile/AccountTabs';
 import { useState, useEffect } from 'react';
+import useGetUserProfile from '@/hooks/client/useGetUserProfile';
 
 const Profile = () => {
+  // const { data, isLoading, isFetching } = useGetUserProfile();
+  // console.log('profile', data);
   const [userInfo, setUserInfo] = useState<any>(null);
   useEffect(() => {
     setUserInfo(authService?.getUser() || null);
   }, []);
+
   return (
     <ProductLayout>
       <Container sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -18,13 +22,11 @@ const Profile = () => {
         </Paper>
         <MainCard
           title={
-            authService.isAuthenticated() && (
-              <Typography variant="h4"> {userInfo?.name}</Typography>
-            )
+            <Typography variant="h4">{userInfo && userInfo?.name}</Typography>
           }
           darkTitle
         >
-          <AccountTabs />
+          <AccountTabs userInfo={userInfo} setUserInfo={setUserInfo} />
         </MainCard>
       </Container>
     </ProductLayout>

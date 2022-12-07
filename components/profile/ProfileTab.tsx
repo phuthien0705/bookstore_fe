@@ -16,8 +16,15 @@ import { useEffect, useState } from 'react';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import authService from '../../services/authService';
 
-const ProfileTab = () => {
-  const [userInfo, setUserInfo] = useState<any>(null);
+interface IProfileTab {
+  userInfo: any;
+  setUserInfo: Function;
+}
+
+const ProfileTab: React.FunctionComponent<IProfileTab> = ({
+  userInfo,
+  setUserInfo,
+}) => {
   const defaultAvatar =
     '../../static/media/user-round.27fe79b102ea6aad2f60e66cff82818d.svg';
   const defaultGen = 'Nam';
@@ -61,7 +68,7 @@ const ProfileTab = () => {
   };
   useEffect(() => {
     setUserInfo(authService.getUser());
-  }, []);
+  }, [setUserInfo]);
   return (
     <Grid container spacing={2}>
       <Grid item xs={4}>

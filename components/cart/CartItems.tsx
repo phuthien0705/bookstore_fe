@@ -1,4 +1,4 @@
-import { Grid, Tabs, Tab, Box } from '@mui/material';
+import { Grid, Tabs, Tab } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ApartmentIcon from '@mui/icons-material/Apartment';
@@ -6,14 +6,13 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import SubmitCart from './SubmitCart';
 import EmptyCart from './EmptyCart';
 import useGetListCart from '@/hooks/client/useGetListCart';
-import { useMutation, useQueryClient } from 'react-query';
+import { useQueryClient } from 'react-query';
 
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 import useGetListAddress from '@/hooks/client/useGetListAddress';
 import ItemTab from './tabs/ItemTab';
 import PaymentTab from './tabs/PaymentTab';
-import LinearProgress from '@mui/material/LinearProgress';
 
 const CartItems: React.FunctionComponent = () => {
   const queryClient = useQueryClient();
@@ -32,7 +31,6 @@ const CartItems: React.FunctionComponent = () => {
   const handleChange = (event: any, newValue: any) => {
     setCurrentIndex(newValue);
   };
-  console.log('%test', isLoading || isFetching);
   return (
     <>
       <Grid container sx={{ paddingBottom: '60px', position: 'relative' }}>
@@ -56,12 +54,8 @@ const CartItems: React.FunctionComponent = () => {
             />
           </Tabs>
         </Grid>
-        {/* {(isLoading || isFetching) && (
-          <Box sx={{ width: '100%' }}>
-            <LinearProgress />
-          </Box>
-        )} */}
-        {/* tab 1 */}
+
+        {/* tab items in cart */}
         {currentIndex === 0 && (
           <ItemTab
             data={data}
@@ -70,7 +64,7 @@ const CartItems: React.FunctionComponent = () => {
             isFetching={isFetching}
           />
         )}
-        {/* tab 2 */}
+        {/* tab payment */}
         {currentIndex === 1 && <PaymentTab data={data} />}
 
         {/* empty screen */}
@@ -79,6 +73,7 @@ const CartItems: React.FunctionComponent = () => {
             <EmptyCart />
           </Grid>
         )}
+
         {data && data?.length !== 0 && (
           <SubmitCart
             items={data || []}
