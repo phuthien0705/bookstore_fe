@@ -7,18 +7,21 @@ import {
 } from '@/apis/cart.api';
 import ConfirmModal from '@/components/modals/ConfirmModal';
 import { toggleSnackbar } from '@/store/snackbarReducer';
-import { Grid } from '@mui/material';
+import { Grid, Box } from '@mui/material';
 import { useCallback, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
 import ItemTable from '../ItemTable';
 import ItemTableMobile from '../ItemTableMobile';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import LinearProgress from '@mui/material/LinearProgress';
 
 const ItemTab: React.FunctionComponent<{
   data: any;
   refetch: () => void;
-}> = ({ data, refetch }) => {
+  isLoading: boolean;
+  isFetching: boolean;
+}> = ({ data, refetch, isLoading, isFetching }) => {
   const matches = useMediaQuery('(min-width:900px)');
 
   const [showConfirmModal, setShowConfirmModal] = useState<any>(null);
@@ -61,7 +64,7 @@ const ItemTab: React.FunctionComponent<{
     }
   );
 
-  const { mutate: checkItemFunc, isLoading } = useMutation(
+  const { mutate: checkItemFunc, isLoading: isCheckingItem } = useMutation(
     ({ book_id, is_checked }: { book_id: number; is_checked: boolean }) =>
       addCheckedItem({ book_id, is_checked }),
     {
@@ -133,6 +136,13 @@ const ItemTab: React.FunctionComponent<{
     },
     [removeFunc]
   );
+  if (isLoading || isFetching) {
+    return (
+      <Box sx={{ width: '100%' }}>
+        <LinearProgress />
+      </Box>
+    );
+  }
   return (
     <>
       <Grid item xs={12}>

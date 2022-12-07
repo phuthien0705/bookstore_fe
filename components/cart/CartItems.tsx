@@ -1,4 +1,4 @@
-import { Grid, Tabs, Tab } from '@mui/material';
+import { Grid, Tabs, Tab, Box } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ApartmentIcon from '@mui/icons-material/Apartment';
@@ -12,7 +12,8 @@ import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 import useGetListAddress from '@/hooks/client/useGetListAddress';
 import ItemTab from './tabs/ItemTab';
-import AddressTab from './tabs/AddressTab';
+import PaymentTab from './tabs/PaymentTab';
+import LinearProgress from '@mui/material/LinearProgress';
 
 const CartItems: React.FunctionComponent = () => {
   const queryClient = useQueryClient();
@@ -26,18 +27,12 @@ const CartItems: React.FunctionComponent = () => {
   );
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const { data, isloading, isFetching, refetch } = useGetListCart();
-  const {
-    data: listAddress,
-    isLoading: isListAddressLoading,
-    isFetching: isListAddressFetching,
-  } = useGetListAddress();
-  console.log(listAddress);
+  const { data, isLoading, isFetching, refetch } = useGetListCart();
 
   const handleChange = (event: any, newValue: any) => {
     setCurrentIndex(newValue);
   };
-
+  console.log('%test', isLoading || isFetching);
   return (
     <>
       <Grid container sx={{ paddingBottom: '60px', position: 'relative' }}>
@@ -53,24 +48,30 @@ const CartItems: React.FunctionComponent = () => {
               label="Giỏ"
               disabled={currentIndex !== 0}
             />
-            <Tab
-              icon={<ApartmentIcon />}
-              label="Thông tin địa chỉ"
-              disabled={currentIndex !== 1}
-            />
+
             <Tab
               icon={<PaymentIcon />}
               label="Thanh toán"
-              disabled={currentIndex !== 2}
+              disabled={currentIndex !== 1}
             />
           </Tabs>
         </Grid>
+        {/* {(isLoading || isFetching) && (
+          <Box sx={{ width: '100%' }}>
+            <LinearProgress />
+          </Box>
+        )} */}
         {/* tab 1 */}
-        {data && data?.length > 0 && currentIndex === 0 && (
-          <ItemTab data={data} refetch={refetch} />
+        {currentIndex === 0 && (
+          <ItemTab
+            data={data}
+            refetch={refetch}
+            isLoading={isLoading}
+            isFetching={isFetching}
+          />
         )}
         {/* tab 2 */}
-        {currentIndex === 1 && <AddressTab />}
+        {currentIndex === 1 && <PaymentTab data={data} />}
 
         {/* empty screen */}
         {data && data?.length === 0 && (
@@ -79,7 +80,11 @@ const CartItems: React.FunctionComponent = () => {
           </Grid>
         )}
         {data && data?.length !== 0 && (
-          <SubmitCart items={data || []} setCurrentIndex={setCurrentIndex} />
+          <SubmitCart
+            items={data || []}
+            setCurrentIndex={setCurrentIndex}
+            currentIndex={currentIndex}
+          />
         )}
       </Grid>
     </>

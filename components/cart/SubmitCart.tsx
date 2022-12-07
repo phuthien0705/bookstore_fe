@@ -2,6 +2,7 @@ import { ISubmitCart } from '@/interfaces/compontents/cart.interface';
 import { Stack, Button, Container, Box, Typography } from '@mui/material';
 
 const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
+  currentIndex,
   setCurrentIndex,
   items,
 }) => {
@@ -53,17 +54,31 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
               đ
             </Typography>
           </Stack>
-          <Button
-            disabled={items?.every((item: any) => item?.is_checked == false)}
-            sx={{ width: 'fit-content' }}
-            variant="contained"
-            fullWidth
-            onClick={() => {
-              setCurrentIndex((prev: any) => prev + 1);
-            }}
-          >
-            Tiếp theo
-          </Button>
+          <Stack direction={'row'} spacing={1}>
+            <Button
+              sx={{ display: currentIndex === 0 ? 'none' : 'block' }}
+              onClick={() => {
+                setCurrentIndex((prev: any) => prev - 1);
+              }}
+            >
+              Quay lại
+            </Button>
+            <Button
+              disabled={items?.every((item: any) => item?.is_checked == false)}
+              sx={{ width: 'fit-content' }}
+              variant="contained"
+              fullWidth
+              onClick={() => {
+                if (currentIndex === 0) {
+                  setCurrentIndex((prev: any) => prev + 1);
+                } else {
+                  alert('ban da thanh toan');
+                }
+              }}
+            >
+              {currentIndex === 0 ? 'Tiếp theo' : 'Thanh toán'}
+            </Button>
+          </Stack>
         </Stack>
       </Container>
     </Box>

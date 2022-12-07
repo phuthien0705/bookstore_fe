@@ -6,22 +6,24 @@ export interface ICartSection {
 }
 export interface IItemTable {
   items: any;
-  handleIncreaseQuantity: Function;
-  handleDecreaseQuantity: Function;
-  handleDelete: Function;
-  checkItem: Function;
-  checkAllItem: Function;
-  clearCart: Function;
+  handleIncreaseQuantity?: Function;
+  handleDecreaseQuantity?: Function;
+  handleDelete?: Function;
+  checkItem?: Function;
+  checkAllItem?: Function;
+  clearCart?: Function;
+  addressMode?: boolean;
 }
 
 export interface IItemTableMobile {
   items: any;
-  handleIncreaseQuantity: Function;
-  handleDecreaseQuantity: Function;
-  handleDelete: Function;
-  checkItem: Function;
-  checkAllItem: Function;
-  clearCart: Function;
+  handleIncreaseQuantity?: Function;
+  handleDecreaseQuantity?: Function;
+  handleDelete?: Function;
+  checkItem?: Function;
+  checkAllItem?: Function;
+  clearCart?: Function;
+  addressMode?: boolean;
 }
 export interface IOrderSummary {
   items: any;
@@ -30,6 +32,10 @@ export interface IProductAdded {
   amount: string | number;
 }
 export interface ISubmitCart {
+  currentIndex: number;
   setCurrentIndex: Function;
   items: any;
+}
+export interface IPaymentTab {
+  data: any;
 }
