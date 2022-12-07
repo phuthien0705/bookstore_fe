@@ -1,6 +1,6 @@
 import { Grid, Typography } from '@mui/material';
 
-const EmptyCart = () => {
+const EmptyCart: React.FunctionComponent = () => {
   return (
     <Grid container>
       <Grid item xs={12}>

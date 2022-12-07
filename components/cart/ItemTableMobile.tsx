@@ -10,6 +10,7 @@ import { styled } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import QuantityButton from '../extended/Quantity';
 import { FC } from 'react';
+import { IItemTableMobile } from '@/interfaces/compontents/cart.interface';
 
 const ImageStyle = styled('img')({
   borderRadius: 4,
@@ -18,16 +19,6 @@ const ImageStyle = styled('img')({
   width: '100px',
   height: '100px',
 });
-
-interface IItemTableMobile {
-  items: any;
-  handleIncreaseQuantity: Function;
-  handleDecreaseQuantity: Function;
-  handleDelete: Function;
-  checkItem: Function;
-  checkAllItem: Function;
-  clearCart: Function;
-}
 
 const ItemTableMobile: FC<IItemTableMobile> = ({
   items,
@@ -99,7 +90,7 @@ const ItemTableMobile: FC<IItemTableMobile> = ({
             >
               <Typography fontSize="16px">{item?.book?.name}</Typography>
               <Stack direction="column" spacing={1}>
-                <Typography fontSize="14px" fontWeight="bold">
+                <Typography fontSize="14px" fontWeight="bold" color="#ee4d2d">
                   {item.price} đ
                 </Typography>
                 <QuantityButton

@@ -12,11 +12,8 @@ import { Typography, Paper, Grid, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { styled } from '@mui/material/styles';
 import QuantityButton from '../extended/Quantity';
-import { FC } from 'react';
 import Checkbox from '@mui/material/Checkbox';
-import { addCheckedItem } from '@/apis/cart.api';
-import { CART_CLIENT } from '@/constants/queryKeyName';
-import { useMutation, useQueryClient } from 'react-query';
+import { IItemTable } from '@/interfaces/compontents/cart.interface';
 
 const ImageStyle = styled('img')({
   borderRadius: 4,
@@ -25,16 +22,7 @@ const ImageStyle = styled('img')({
   width: '100px',
   height: 'auto',
 });
-interface IItemTable {
-  items: any;
-  handleIncreaseQuantity: Function;
-  handleDecreaseQuantity: Function;
-  handleDelete: Function;
-  checkItem: Function;
-  checkAllItem: Function;
-  clearCart: Function;
-}
-const ItemTable: FC<IItemTable> = ({
+const ItemTable: React.FunctionComponent<IItemTable> = ({
   items,
   handleIncreaseQuantity,
   handleDecreaseQuantity,
@@ -127,7 +115,11 @@ const ItemTable: FC<IItemTable> = ({
                       <Typography fontSize="16px" fontWeight="500">
                         {row?.book?.name}
                       </Typography>
-                      <Typography fontSize="14px" fontWeight="600">
+                      <Typography
+                        fontSize="14px"
+                        fontWeight="600"
+                        color="#ee4d2d"
+                      >
                         {row?.price}đ
                       </Typography>
                     </Stack>
