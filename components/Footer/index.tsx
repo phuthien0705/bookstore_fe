@@ -13,8 +13,10 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import LogoSection from '../LogoSection';
 import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const Footer = () => {
+  const matches = useMediaQuery('(min-width:600px)');
   const theme: any = useTheme();
   return (
     <Box
@@ -29,33 +31,57 @@ const Footer = () => {
           <LogoSection />
           <Stack
             direction="row"
+            alignItems="center"
             justifyContent="center"
-            spacing={6}
+            spacing={matches ? 5 : 8}
             color="inherit"
             mt={3}
             mb={2}
           >
-            <Box>
+            <Stack
+              direction={matches ? 'row' : 'column'}
+              spacing={matches ? 5 : 1}
+            >
               <Link href="#" variant="h4" color="inherit" underline="none">
                 Dịch Vụ
               </Link>
-            </Box>
-            <Box>
               <Link href="#" variant="h4" color="inherit" underline="none">
                 Hỗ Trợ
               </Link>
-            </Box>
-            <Box>
-              <Link href="#" variant="h4" color="inherit" underline="none">
+            </Stack>
+            <Stack
+              direction={matches ? 'row' : 'column'}
+              spacing={matches ? 5 : 1}
+            >
+              <Link
+                href="/policy"
+                variant="h4"
+                color="inherit"
+                underline="none"
+              >
                 Chính Sách
               </Link>
-            </Box>
-            <Box>
-              <Link href="#" variant="h4" color="inherit" underline="none">
+              <Link
+                href="/contact-us"
+                variant="h4"
+                color="inherit"
+                underline="none"
+              >
                 Liên Hệ
               </Link>
-            </Box>
-            <Box>
+            </Stack>
+            <Stack
+              direction={matches ? 'row' : 'column'}
+              spacing={matches ? 5 : 1}
+            >
+              <Link
+                href="/about-us"
+                variant="h4"
+                color="inherit"
+                underline="none"
+              >
+                Giới thiệu
+              </Link>
               <Link
                 href="/profile"
                 variant="h4"
@@ -64,7 +90,7 @@ const Footer = () => {
               >
                 Tài Khoản
               </Link>
-            </Box>
+            </Stack>
           </Stack>
           <Stack direction="row" justifyContent="center" spacing={4} margin={1}>
             <IconButton>
