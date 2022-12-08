@@ -1,4 +1,5 @@
 @import 'loadingScreen.css';
+@import 'table.css';
 
 *::-webkit-scrollbar {
   background-color: #fff;

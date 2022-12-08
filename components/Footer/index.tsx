@@ -32,23 +32,61 @@ const Footer = () => {
             justifyContent="center"
             spacing={6}
             color="inherit"
-            mt={3}
-            mb={2}
+            mt={1}
+            mb={1}
           >
             <Box>
-              <Link href="#" variant="h4" color="inherit" underline="none">
-                Dịch Vụ
-              </Link>
+              <Stack direction="column" spacing={1}>
+                <Link variant="h4" color="inherit" underline="none">
+                  Dịch Vụ
+                </Link>
+                <Link
+                  href='use-term'
+                  justifyContent="center"
+                  underline='none'
+                  sx={{
+                    display: 'flex',
+                    '&:hover': {
+                      color: theme.palette.secondary.dark
+                    }
+                  }}
+                >
+                  Điều khoản sử dụng
+                </Link>
+                <Link
+                  href='pay-term'
+                  underline='none'
+                  justifyContent="center"
+                  sx={{
+                    display: 'flex',
+                    '&:hover': {
+                      color: theme.palette.secondary.dark
+                    }
+                  }}
+                >
+                  Chính sách bảo mật thanh toán
+                </Link>
+              </Stack>
             </Box>
             <Box>
-              <Link href="#" variant="h4" color="inherit" underline="none">
-                Hỗ Trợ
-              </Link>
-            </Box>
-            <Box>
-              <Link href="#" variant="h4" color="inherit" underline="none">
-                Chính Sách
-              </Link>
+              <Stack direction="column" spacing={1}>
+                <Link variant="h4" color="inherit" underline="none">
+                  Hỗ Trợ
+                </Link>
+                <Link
+                  href='trans-term'
+                  underline='none'
+                  justifyContent="center"
+                  sx={{
+                    display: 'flex',
+                    '&:hover': {
+                      color: theme.palette.secondary.dark
+                    }
+                  }}
+                >
+                  Chính sách vận chuyển
+                </Link>
+              </Stack>
             </Box>
             <Box>
               <Link href="#" variant="h4" color="inherit" underline="none">
