@@ -80,7 +80,7 @@ const Footer = () => {
                 color="inherit"
                 underline="none"
               >
-                Giới thiệu
+                Giới Thiệu
               </Link>
               <Link
                 href="/profile"
