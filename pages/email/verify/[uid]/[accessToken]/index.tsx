@@ -12,11 +12,11 @@ import {
 import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import AuthLayout from '../layout/AuthLayout/index';
-import AuthWrapper from '../components/auth/AuthWrapper';
-import { verifyEmail } from '../apis/auth.api';
-import Logo from '../components/Logo';
-import AuthCardWrapper from '../components/auth/AuthCardWrapper';
+import AuthLayout from '../../../../../layout/AuthLayout/index';
+import AuthWrapper from '../../../../../components/auth/AuthWrapper';
+import { verifyEmail } from '../../../../../apis/auth.api';
+import Logo from '../../../../../components/Logo';
+import AuthCardWrapper from '../../../../../components/auth/AuthCardWrapper';
 
 const VerifyPassword = () => {
   const theme = useTheme();

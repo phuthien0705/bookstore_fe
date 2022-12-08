@@ -1,30 +1,22 @@
 import { useEffect, useState } from 'react';
 import { Grid, Typography, Box, Stack, Button } from '@mui/material';
-import useGetListCity from '@/hooks/client/useGetListCity';
-import useGetListAddress from '@/hooks/client/useGetListAddress';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import ItemTable from '../ItemTable';
 import ItemTableMobile from '../ItemTableMobile';
 import BusinessIcon from '@mui/icons-material/Business';
-import Chip from '@mui/material/Chip';
 import { IPaymentTab } from '@/interfaces/compontents/cart.interface';
 import AddressModal from '@/components/modals/AddressModal';
 import LinearProgress from '@mui/material/LinearProgress';
 
-const PaymentTab: React.FunctionComponent<IPaymentTab> = ({ data }) => {
+const PaymentTab: React.FunctionComponent<IPaymentTab> = ({
+  data,
+  listAddress,
+  refetchAddress,
+}) => {
   const matches = useMediaQuery('(min-width:900px)');
   const [openAddressModal, setOpenAddressModal] = useState<boolean>(false);
   const [currentAddress, setCurrentAddress] = useState<any>(null);
-  //   const { data, isLoading, isFetching } = useGetListCity();
-  //   console.log(data);
-  const {
-    data: listAddress,
-    isLoading: isListAddressLoading,
-    isFetching: isListAddressFetching,
-    refetch: refetchAddress,
-  } = useGetListAddress();
-  console.log(listAddress?.data);
-  console.log('current address', currentAddress);
+
   useEffect(() => {
     const defaultAddress = (listAddress?.data || []).find(
       (item: any) => item?.is_default === 1
@@ -32,7 +24,23 @@ const PaymentTab: React.FunctionComponent<IPaymentTab> = ({ data }) => {
     setCurrentAddress(defaultAddress);
   }, [listAddress]);
   const renderDefaultAddress = () => {
-    if (!currentAddress) return <div>Chưa có địa chỉ</div>;
+    if (!currentAddress)
+      return (
+        <div>
+          Chưa có địa chỉ{' '}
+          <Typography
+            color="primary"
+            sx={{
+              display: 'inline-block',
+              cursor: 'pointer',
+              ':hover': { textDecoration: 'underline' },
+            }}
+            onClick={() => setOpenAddressModal(true)}
+          >
+            Thêm địa chỉ tại đây
+          </Typography>
+        </div>
+      );
     return (
       <Stack
         direction={'row'}
@@ -104,6 +112,7 @@ const PaymentTab: React.FunctionComponent<IPaymentTab> = ({ data }) => {
         listAddress={listAddress?.data}
         currentAddress={currentAddress}
         setCurrentAddress={setCurrentAddress}
+        refetchAddress={refetchAddress}
       />
     </>
   );

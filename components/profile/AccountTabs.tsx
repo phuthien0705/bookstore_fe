@@ -1,13 +1,10 @@
 import ProfileTab from './ProfileTab';
-import AddressTabProfile from './AddressTabProfile';
 import SecurityTab from './SecurityTab';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Tab } from '@mui/material';
 import { SyntheticEvent, useState } from 'react';
-interface IAccountTabs {
-  userInfo: any;
-  setUserInfo: Function;
-}
+import { IAccountTabs } from '@/interfaces/compontents/profile.interface';
+
 const AccountTabs: React.FunctionComponent<IAccountTabs> = ({
   userInfo,
   setUserInfo,
@@ -32,10 +29,8 @@ const AccountTabs: React.FunctionComponent<IAccountTabs> = ({
       <TabPanel value="1">
         <ProfileTab userInfo={userInfo} setUserInfo={setUserInfo} />
       </TabPanel>
+
       <TabPanel value="2">
-        <AddressTabProfile />
-      </TabPanel>
-      <TabPanel value="3">
         <SecurityTab />
       </TabPanel>
     </TabContext>

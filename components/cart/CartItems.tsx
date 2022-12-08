@@ -27,10 +27,16 @@ const CartItems: React.FunctionComponent = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const { data, isLoading, isFetching, refetch } = useGetListCart();
-
+  const {
+    data: listAddress,
+    isLoading: isListAddressLoading,
+    isFetching: isListAddressFetching,
+    refetch: refetchAddress,
+  } = useGetListAddress();
   const handleChange = (event: any, newValue: any) => {
     setCurrentIndex(newValue);
   };
+  console.log('list address', listAddress);
   return (
     <>
       <Grid container sx={{ paddingBottom: '60px', position: 'relative' }}>
@@ -65,7 +71,13 @@ const CartItems: React.FunctionComponent = () => {
           />
         )}
         {/* tab payment */}
-        {currentIndex === 1 && <PaymentTab data={data} />}
+        {currentIndex === 1 && (
+          <PaymentTab
+            data={data}
+            listAddress={listAddress}
+            refetchAddress={refetchAddress}
+          />
+        )}
 
         {/* empty screen */}
         {data && data?.length === 0 && (
@@ -79,6 +91,7 @@ const CartItems: React.FunctionComponent = () => {
             items={data || []}
             setCurrentIndex={setCurrentIndex}
             currentIndex={currentIndex}
+            listAddress={listAddress?.data}
           />
         )}
       </Grid>

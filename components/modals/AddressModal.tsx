@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, Dispatch } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {
   Box,
   Button,
@@ -20,14 +20,7 @@ import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 import LoadingButton from '@mui/lab/LoadingButton';
 import AddressForm from '../forms/AddressForm';
-
-interface IAddressModal {
-  open: boolean;
-  handleClose: () => void;
-  listAddress: any;
-  currentAddress: any;
-  setCurrentAddress: Dispatch<any>;
-}
+import { IAddressModal } from '@/interfaces/compontents/modal.interface';
 
 const AddressModal: React.FunctionComponent<IAddressModal> = ({
   open,
@@ -35,6 +28,7 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
   listAddress,
   currentAddress,
   setCurrentAddress,
+  refetchAddress,
 }) => {
   console.log(listAddress);
   const dispatch = useDispatch();
@@ -52,7 +46,7 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
   };
 
   const renderListAddress = () => {
-    if (listAddress) {
+    if (listAddress && listAddress?.length > 0) {
       return (
         <FormControl>
           <RadioGroup
@@ -124,6 +118,14 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
         </FormControl>
       );
     }
+    if (listAddress && listAddress?.length === 0) {
+      return (
+        <Typography sx={{ paddingBottom: 2 }}>
+          Hình như bạn vẫn chưa tạo địa chỉ giao hàng. Bấm vào nút bên dưới để
+          tạo địa chỉ.
+        </Typography>
+      );
+    }
     return null;
   };
   const handleSubmit = () => {
@@ -143,7 +145,7 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
   }, [currentAddress, open]);
 
   return (
-    <Dialog onClose={() => handleClose()} open={open}>
+    <Dialog onClose={() => handleClose()} open={open} fullWidth maxWidth="sm">
       <Stack
         direction="column"
         sx={{ paddingLeft: 2, paddingRight: 2, paddingBottom: 0 }}
@@ -174,7 +176,11 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
           </IconButton>
         </Box>
         {editMode ? (
-          <AddressForm setEditMode={setEditMode} currentAddress={editMode} />
+          <AddressForm
+            setEditMode={setEditMode}
+            currentAddress={editMode}
+            refetchAddress={refetchAddress}
+          />
         ) : (
           <>
             <Stack sx={{ marginBottom: 2 }} direction="column">

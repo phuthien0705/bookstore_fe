@@ -531,11 +531,15 @@ const PolicyPage = () => {
               style={{ fontSize: matches ? 16 : 18, lineHeight: 1.5 }}
             >
               1&#41;. Lỗi kỹ thuật của sản phẩm - do nhà cung cấp &#40;sách
-              thiếu trang, sút gáy, trùng nội dung,..&#41; <br /><br />
+              thiếu trang, sút gáy, trùng nội dung,..&#41; <br />
+              <br />
               2&#41;. Giao nhầm/ giao thiếu &#40;thiếu sản phẩm đã đặt, thiếu
-              phụ kiện, thiếu quà tặng kèm theo&#41; <br /><br />
-              3&#41;. Chất lượng hàng hóa kém, hư hại do vận chuyển. <br /><br />
-              4&#41;. Hình thức sản phẩm không giống mô tả ban đầu. <br /><br />
+              phụ kiện, thiếu quà tặng kèm theo&#41; <br />
+              <br />
+              3&#41;. Chất lượng hàng hóa kém, hư hại do vận chuyển. <br />
+              <br />
+              4&#41;. Hình thức sản phẩm không giống mô tả ban đầu. <br />
+              <br />
               5&#41;. Quý khách đặt nhầm/ không còn nhu cầu &#40;*&#41;
               <br />
               <br />
@@ -544,10 +548,12 @@ const PolicyPage = () => {
               <br />
               Quý khách có thể trả lại sản phẩm đã mua tại BOXO trong vòng 30
               ngày kể từ khi nhận hàng với đa số sản phẩm khi thỏa mãn các điều
-              kiện sau: <br /><br />
+              kiện sau: <br />
+              <br />
               Sản phẩm không có dấu hiệu đã qua sử dụng, còn nguyên tem, mác hay
               niêm phong của nhà sản xuất.
-              <br /><br />
+              <br />
+              <br />
               Sản phẩm còn đầy đủ phụ kiện hoặc phiếu bảo hành cùng quà tặng kèm
               theo &#40;nếu có&#41;.
             </Typography>
@@ -568,11 +574,15 @@ const PolicyPage = () => {
               style={{ fontSize: matches ? 16 : 18, lineHeight: 1.5 }}
             >
               <strong>BOXO</strong> hỗ trợ đổi/ trả sản phẩm cho quý khách nếu:
-              <br /><br />
-              &emsp;Sản phẩm còn nguyên bao bì như hiện trạng ban đầu. <br /><br />
+              <br />
+              <br />
+              &emsp;Sản phẩm còn nguyên bao bì như hiện trạng ban đầu. <br />
+              <br />
               &emsp;Sản phầm còn đầy đủ phụ kiện, quà tặng khuyến mãi kèm theo.{' '}
-              <br /><br />
-              &emsp;Hóa đơn GTGT (nếu có). <br /><br />
+              <br />
+              <br />
+              &emsp;Hóa đơn GTGT (nếu có). <br />
+              <br />
               &emsp;Cung cấp đầy đủ thông tin đối chứng theo yêu cầu (điều 4).
             </Typography>
           </ol>{' '}
@@ -594,17 +604,23 @@ const PolicyPage = () => {
               Quý khách vui lòng thông tin đơn hàng cần hỗ trợ đổi trả theo
               Hotline 1900000000 hoặc email về địa chỉ: cskh@boxo.com với tiêu
               đề &quot;Đổi Trả Đơn Hàng - Mã đơn hàng&quot;.
-              <br /><br />
+              <br />
+              <br />
               Quý khách cần cung cấp đính kèm thêm các bằng chứng để đối chiếu/
-              khiếu nại sau: <br /><br />
+              khiếu nại sau: <br />
+              <br />
               &emsp;+ Video clip mở kiện hàng từ lúc bắt đầu khui ngoại quan đến
-              kiểm tra sản phẩm bên trong thùng hàng. <br /><br />
-              &emsp;+ Hình chụp tem kiện hàng có thể hiện mã đơn hàng. <br /><br />
+              kiểm tra sản phẩm bên trong thùng hàng. <br />
+              <br />
+              &emsp;+ Hình chụp tem kiện hàng có thể hiện mã đơn hàng. <br />
+              <br />
               &emsp;+ Hình chụp tình trạng ngoại quan &#40;băng keo, seal, hình
               dạng thùng hàng, bao bì&#41;, đặc biệt các vị trí nghi ngờ có tác
-              động đến sản phẩm &#40;móp méo, &emsp;ướt, rách...&#41; <br /><br />
+              động đến sản phẩm &#40;móp méo, &emsp;ướt, rách...&#41; <br />
+              <br />
               &emsp;+ Hình chụp tình trạng sản phẩm bên trong, nêu rõ lỗi kỹ
-              thuật nếu có. <br /><br />
+              thuật nếu có. <br />
+              <br />
               Để đảm bảo quyền lợi khách hàng và để BOXO có cơ sở làm việc với
               các bộ phận liên quan, tất cả yêu cầu đổi/ trả/ bảo hành quý khách
               cần cung cấp hình ảnh/ clip sản phẩm lỗi. Quá thời gian đổi/ trả

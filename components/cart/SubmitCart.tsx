@@ -1,11 +1,39 @@
+import { checkoutProduct } from '@/apis/checkout.api';
 import { ISubmitCart } from '@/interfaces/compontents/cart.interface';
 import { Stack, Button, Container, Box, Typography } from '@mui/material';
+import { useMutation } from 'react-query';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { useCallback } from 'react';
+import { toggleSnackbar } from '@/store/snackbarReducer';
 
 const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
   currentIndex,
   setCurrentIndex,
   items,
+  listAddress,
 }) => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const toast = useCallback(
+    ({ type, message }: { type: string; message: string }) => {
+      dispatch(toggleSnackbar({ open: true, message, type }));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [dispatch]
+  );
+  const { mutate: checkoutFunc } = useMutation(() => checkoutProduct(), {
+    onSuccess: () => {
+      toast({ type: 'success', message: 'Mua hàng thành công' });
+      router.reload();
+    },
+    onError: () => {
+      toast({
+        type: 'error',
+        message: 'Xãy ra lỗi trong quá tình mua hàng',
+      });
+    },
+  });
   return (
     <Box
       sx={{
@@ -37,12 +65,12 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
         >
           <Stack direction="row" spacing={2}>
             <Typography
-              sx={{ fontWeight: 600, fontSize: '20px', color: '#ee4d2d' }}
+              sx={{ fontWeight: 600, fontSize: '20px', color: '#000' }}
             >
               Tổng tiền:
             </Typography>
             <Typography
-              sx={{ fontWeight: 500, fontSize: '20px', color: '#ee4d2d' }}
+              sx={{ fontWeight: 500, fontSize: '20px', color: '#000' }}
             >
               {items.reduce(
                 (prev: number, curr: any) =>
@@ -64,7 +92,10 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
               Quay lại
             </Button>
             <Button
-              disabled={items?.every((item: any) => item?.is_checked == false)}
+              disabled={
+                items?.every((item: any) => item?.is_checked == false) ||
+                (listAddress?.length === 0 && currentIndex === 1)
+              }
               sx={{ width: 'fit-content' }}
               variant="contained"
               fullWidth
@@ -72,7 +103,7 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
                 if (currentIndex === 0) {
                   setCurrentIndex((prev: any) => prev + 1);
                 } else {
-                  alert('ban da thanh toan');
+                  checkoutFunc();
                 }
               }}
             >

@@ -35,7 +35,10 @@ export interface ISubmitCart {
   currentIndex: number;
   setCurrentIndex: Function;
   items: any;
+  listAddress: any;
 }
 export interface IPaymentTab {
   data: any;
+  listAddress: any;
+  refetchAddress: () => void;
 }

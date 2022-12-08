@@ -6,6 +6,7 @@ import {
   FormControlLabel,
   FormHelperText,
   InputLabel,
+  MenuItem,
   OutlinedInput,
   Select,
   Stack,
@@ -17,21 +18,60 @@ import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 import useGetListAddress from '@/hooks/client/useGetListAddress';
+import useGetListCity from '@/hooks/client/useGetListCity';
+import Grid from '@mui/material/Grid';
+import { useState } from 'react';
+import { useMutation } from 'react-query';
+import { getListDistrict } from '@/apis/city.api';
+import { addAddress } from '@/apis/address.api';
 
-const AddressForm = ({ currentAddress, setEditMode }: any) => {
-  const { data: listCity } = useGetListAddress();
+const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
+  const theme: any = useTheme();
   const dispatch = useDispatch();
+  const data = currentAddress?.data;
+  const { data: listCity } = useGetListCity();
+  const [listDistrict, setListDistrict] = useState<any[]>([]);
   const toast = ({ type, message }: { type: string; message: string }) => {
     dispatch(toggleSnackbar({ open: true, message, type }));
   };
-  const theme: any = useTheme();
-  const data = currentAddress?.data;
-
+  const { mutate: getListDistrictFunc } = useMutation(
+    (id: string | number) => getListDistrict(id),
+    {
+      onSuccess: (data: any) => {
+        setListDistrict(data?.city);
+      },
+      onError: () => {
+        toast({
+          type: 'error',
+          message: 'Xảy ra lỗi trong quá trình lấy danh sách quận huyện',
+        });
+      },
+    }
+  );
+  const { mutate: createOrUpdateFunc } = useMutation(
+    (data: any) => addAddress(data),
+    {
+      onSuccess: () => {
+        refetchAddress();
+        toast({
+          type: 'success',
+          message: `${data === null ? 'Tạo' : 'Cập nhật'} thành công`,
+        });
+      },
+      onError: () => {
+        toast({
+          type: 'error',
+          message: 'Xảy ra lỗi trong quá trình tạo địa chỉ',
+        });
+      },
+    }
+  );
   const initialValues = {
     name: data?.name ? data?.name : '',
     description: data?.description ? data?.description : '',
     phone: data?.phone ? data?.phone : '',
-    city_id: data?.city_id ? data?.city_id : '',
+    district_id: data?.city_id ? data?.city_id : '',
+    city_id: '',
     submit: null,
   };
   return (
@@ -42,6 +82,8 @@ const AddressForm = ({ currentAddress, setEditMode }: any) => {
           .max(255, 'Họ và tên tối đa 255 ký tự')
           .required('Họ và tên là bắt buộc'),
         description: Yup.string().required('Địa chỉ cụ thể là bắt buộc'),
+        city_id: Yup.string().required('Tỉnh/Thành phố là bắt buộc'),
+        district_id: Yup.string().required('Quận/Huyện là bắt buộc'),
         phone: Yup.number()
           .required('Số điện thoại là bắt buộc')
           .integer('Số điện thoại phải là số nguyên')
@@ -49,21 +91,16 @@ const AddressForm = ({ currentAddress, setEditMode }: any) => {
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
-          //   const req = createRequest({
-          //     name: values.name,
-          //     description: values.description,
-          //   });
-          //   if (data === null) {
-          //     await createGenre(req);
-          //   } else {
-          //     await editGenre(data?.id, req);
-          //   }
+          const req = {
+            name: values.name,
+            description: values.description,
+            phone: values.phone,
+            city_id: values.district_id,
+          };
+          createOrUpdateFunc(req);
+
           setStatus({ success: true });
           setSubmitting(false);
-          toast({
-            type: 'success',
-            message: `${data === null ? 'Tạo' : 'Cập nhật'} thành công`,
-          });
 
           setTimeout(() => {
             setEditMode(false);
@@ -89,85 +126,133 @@ const AddressForm = ({ currentAddress, setEditMode }: any) => {
         isSubmitting,
         touched,
         values,
+        setValues,
       }) => (
         <form noValidate onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <FormControl
+                fullWidth
+                error={Boolean(touched.name && errors.name)}
+                sx={{ ...theme.typography.customInput }}
+              >
+                <InputLabel htmlFor="outlined-adornment-name">
+                  Họ và tên
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-name"
+                  type="text"
+                  value={values.name}
+                  name="name"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  label="Tên thể loại"
+                  inputProps={{}}
+                />
+                {touched.name && errors.name && (
+                  <FormHelperText error id="standard-weight-helper-text-name">
+                    {errors.name as any}
+                  </FormHelperText>
+                )}
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl
+                fullWidth
+                error={Boolean(touched.phone && errors.phone)}
+                sx={{ ...theme.typography.customInput }}
+              >
+                <InputLabel htmlFor="outlined-adornment-phone">
+                  Số điện thoại
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-phone"
+                  type="text"
+                  value={values.phone}
+                  name="phone"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  label="Mô tả thể loại"
+                  inputProps={{}}
+                />
+                {touched.phone && errors.phone && (
+                  <FormHelperText error id="standard-weight-helper-text-phone">
+                    {errors.phone as any}
+                  </FormHelperText>
+                )}
+              </FormControl>
+            </Grid>
+          </Grid>
+          {/* city */}
           <FormControl
-            fullWidth
-            error={Boolean(touched.name && errors.name)}
-            sx={{ ...theme.typography.customInput }}
-          >
-            <InputLabel htmlFor="outlined-adornment-name">Họ và tên</InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-name"
-              type="text"
-              value={values.name}
-              name="name"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              label="Tên thể loại"
-              inputProps={{}}
-            />
-            {touched.name && errors.name && (
-              <FormHelperText error id="standard-weight-helper-text-name">
-                {errors.name as any}
-              </FormHelperText>
-            )}
-          </FormControl>
-          <FormControl
-            fullWidth
-            error={Boolean(touched.phone && errors.phone)}
-            sx={{ ...theme.typography.customInput }}
-          >
-            <InputLabel htmlFor="outlined-adornment-phone">
-              Số điện thoại
-            </InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-phone"
-              type="text"
-              value={values.phone}
-              name="phone"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              label="Mô tả thể loại"
-              inputProps={{}}
-            />
-            {touched.phone && errors.phone && (
-              <FormHelperText error id="standard-weight-helper-text-phone">
-                {errors.phone as any}
-              </FormHelperText>
-            )}
-          </FormControl>
-          {/* <FormControl
             fullWidth
             error={Boolean(touched.city_id && errors.city_id)}
             sx={{ ...theme.typography.customInput }}
           >
-            <InputLabel htmlFor="select-city_id">Tác giả</InputLabel>
+            <InputLabel htmlFor="select-city">Tỉnh/Thành phố</InputLabel>
 
             <Select
-              id="select-city_id"
+              id="select-city"
               value={values.city_id}
               label="Tác giả"
               onChange={(event) => {
+                getListDistrictFunc(event.target.value);
                 setValues((prev) => ({
                   ...prev,
                   city_id: event.target.value,
                 }));
               }}
             >
-              {/* render list author */}
-          {/* {city_id?.map((author, _index) => (
-                <MenuItem key={_index} value={author?.id}>
-                  {author?.name}
-                </MenuItem>
-              ))}
+              {(listCity?.provinces || [])?.map(
+                (province: any, _index: number) => (
+                  <MenuItem key={_index} value={province?.id}>
+                    {province?.name}
+                  </MenuItem>
+                )
+              )}
             </Select>
             {touched.city_id && errors.city_id && (
               <FormHelperText error id="standard-weight-helper-text-city_id">
                 {errors.city_id as any}
               </FormHelperText>
             )}
-          </FormControl> */}
+          </FormControl>
+          {/* distric  */}
+          <FormControl
+            disabled={!values?.city_id}
+            fullWidth
+            error={Boolean(touched.district_id && errors.district_id)}
+            sx={{ ...theme.typography.customInput }}
+          >
+            <InputLabel htmlFor="select-district">Quận/Huyện</InputLabel>
+
+            <Select
+              id="select-district"
+              value={values.district_id}
+              label="Quận/Huyện"
+              onChange={(event) => {
+                setValues((prev) => ({
+                  ...prev,
+                  district_id: event.target.value,
+                }));
+              }}
+            >
+              {(listDistrict || [])?.map((district: any, _index: number) => (
+                <MenuItem key={_index} value={district?.id}>
+                  {district?.name}
+                </MenuItem>
+              ))}
+            </Select>
+            {touched.district_id && errors.district_id && (
+              <FormHelperText
+                error
+                id="standard-weight-helper-text-district_id"
+              >
+                {errors.district_id as any}
+              </FormHelperText>
+            )}
+          </FormControl>
+
           <FormControl
             fullWidth
             error={Boolean(touched.description && errors.description)}
