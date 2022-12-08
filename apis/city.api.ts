@@ -1,10 +1,8 @@
 import httpRequest from '@/services/httpRequest';
 
 export const getListCity = async () => {
-  return httpRequest.get('/cities/admin-cities');
+  return httpRequest.get('/cities/province');
 };
-export const getListDistrict = async (admin_name: number | string) => {
-  return httpRequest.get(
-    `/cities/admin-cities/cities-list?admin_name=${admin_name}`
-  );
+export const getListDistrict = async (province: number | string) => {
+  return httpRequest.get(`/cities/province/${province}`);
 };

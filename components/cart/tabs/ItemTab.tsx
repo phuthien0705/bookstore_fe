@@ -136,7 +136,7 @@ const ItemTab: React.FunctionComponent<{
     },
     [removeFunc]
   );
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return (
       <Box sx={{ width: '100%' }}>
         <LinearProgress />

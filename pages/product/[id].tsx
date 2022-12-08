@@ -11,14 +11,17 @@ import LoadingScreen from '../../components/loading/LoadingScreen';
 const ProductDetail = () => {
   const router = useRouter();
   const [id, setId] = useState(null);
-  const getListBookDetailQuery = useGetListBookDetail(id);
-  const getListBookQuery = useGetListBookClient();
-  const { data, isLoading, isFetching, refetch } = getListBookDetailQuery;
+
+  const { data, isLoading, isFetching, refetch } = useGetListBookDetail(
+    id,
+    !!id
+  );
+
   const {
     data: slideData,
     isLoading: isSlideLoading,
     isFetching: isSlideFetching,
-  } = getListBookQuery;
+  } = useGetListBookClient();
   useEffect(() => {
     console.log(router?.query);
     if (router.isReady) {
@@ -26,6 +29,7 @@ const ProductDetail = () => {
     }
   }, [router, setId]);
   console.log(data);
+
   if (isLoading) {
     return <LoadingScreen />;
   }
@@ -71,26 +75,28 @@ const ProductDetail = () => {
                   <Typography variant="body2">{data?.isbn}</Typography>{' '}
                   {/* render authors */}
                   <Typography variant="body2">
-                    {data?.authors.map((author: any, _index: number) => {
-                      if (_index === data?.authors.length - 1)
-                        return <span key={_index}>{author?.name}</span>;
-                      return <span key={_index}>{author?.name}, </span>;
-                    })}
+                    {data &&
+                      data?.authors.map((author: any, _index: number) => {
+                        if (_index === data?.authors.length - 1)
+                          return <span key={_index}>{author?.name}</span>;
+                        return <span key={_index}>{author?.name}, </span>;
+                      })}
                   </Typography>
                   <Typography variant="body2">
-                    {data?.publisher?.name}
+                    {data && data?.publisher?.name}
                   </Typography>{' '}
                   <Typography variant="body2">{data?.total_pages}</Typography>
                   {/* render genres */}
                   <Typography variant="body2">
-                    {data?.genres.map((genre: any, _index: number) => {
-                      if (_index === data?.genres.length - 1)
-                        return <span key={_index}>{genre?.name}</span>;
-                      return <span key={_index}>{genre?.name}, </span>;
-                    })}{' '}
+                    {data &&
+                      data?.genres.map((genre: any, _index: number) => {
+                        if (_index === data?.genres.length - 1)
+                          return <span key={_index}>{genre?.name}</span>;
+                        return <span key={_index}>{genre?.name}, </span>;
+                      })}{' '}
                   </Typography>
                   <Typography variant="body2">
-                    {data?.available_quantity}
+                    {data && data?.available_quantity}
                   </Typography>
                 </Stack>
               </Stack>
