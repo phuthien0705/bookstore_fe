@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -27,7 +27,6 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
   open,
   handleClose,
   listAddress,
-
   refetchAddress,
 }) => {
   const defaultAddress = (listAddress || []).find(
