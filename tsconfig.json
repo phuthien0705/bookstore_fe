@@ -25,7 +25,7 @@
     "**/*.ts",
     "**/*.tsx",
     "pages/contact-us.jsx",
-    "pages/contact-us.js"
+    "pages/contact-us.tsx"
   ],
   "exclude": ["node_modules"]
 }
