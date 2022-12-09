@@ -5,7 +5,6 @@ import NavItem from './NavItem';
 import {
   IconUsers,
   IconBook2,
-  IconShoppingCartDiscount,
   IconUser,
   IconCategory,
   IconBuilding,
@@ -35,11 +34,7 @@ const MenuList = () => {
         url: '/admin/author',
         icon: IconUser,
       },
-      {
-        title: 'Mã giảm giá',
-        url: '/admin/discount',
-        icon: IconShoppingCartDiscount,
-      },
+
       {
         title: 'Người dùng',
         url: '/admin/user',

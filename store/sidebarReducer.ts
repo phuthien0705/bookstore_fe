@@ -15,12 +15,9 @@ export const sidebarSlice = createSlice({
     setMenu: (state, action) => {
       state.open = action.payload;
     },
-    menuOpen: (state, action: any) => {
-      state.isOpen = action && [action?.payload];
-    },
   },
 });
 
-export const { toggleSidebar, setMenu, menuOpen } = sidebarSlice.actions;
+export const { toggleSidebar, setMenu } = sidebarSlice.actions;
 
 export default sidebarSlice.reducer;
