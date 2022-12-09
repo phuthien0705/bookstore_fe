@@ -41,27 +41,27 @@ const Footer = () => {
                   Dịch Vụ
                 </Link>
                 <Link
-                  href='use-term'
+                  href="use-term"
                   justifyContent="center"
-                  underline='none'
+                  underline="none"
                   sx={{
                     display: 'flex',
                     '&:hover': {
-                      color: theme.palette.secondary.dark
-                    }
+                      color: theme.palette.secondary.dark,
+                    },
                   }}
                 >
                   Điều khoản sử dụng
                 </Link>
                 <Link
-                  href='pay-term'
-                  underline='none'
+                  href="pay-term"
+                  underline="none"
                   justifyContent="center"
                   sx={{
                     display: 'flex',
                     '&:hover': {
-                      color: theme.palette.secondary.dark
-                    }
+                      color: theme.palette.secondary.dark,
+                    },
                   }}
                 >
                   Chính sách bảo mật thanh toán
@@ -74,14 +74,14 @@ const Footer = () => {
                   Hỗ Trợ
                 </Link>
                 <Link
-                  href='trans-term'
-                  underline='none'
+                  href="trans-term"
+                  underline="none"
                   justifyContent="center"
                   sx={{
                     display: 'flex',
                     '&:hover': {
-                      color: theme.palette.secondary.dark
-                    }
+                      color: theme.palette.secondary.dark,
+                    },
                   }}
                 >
                   Chính sách vận chuyển

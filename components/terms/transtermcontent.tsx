@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 
 const TransTermContent = () => {
     return (
@@ -18,52 +18,53 @@ const TransTermContent = () => {
             <Typography variant="h4" sx={{ paddingLeft: 2 }}>
                 Bảng thời gian dự kiến như sau:
             </Typography>
-            <table className="transport-table">
+            <table className="transport-table border">
                 <thead>
                     <tr>
-                        <th>Tuyến</th>
-                        <th>Khu vực</th> 
-                        <th>Thời gian dự tính</th>
+                        <th className="border cell-padding">Tuyến</th>
+                        <th className="border cell-padding">Khu vực</th> 
+                        <th className="border cell-padding">Thời gian dự tính</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>
+                        <td className="border cell-padding">
                             <Typography>Hồ Chí Minh - Hồ Chí Minh</Typography>
                             <Typography>Hà Nội - Hà Nội</Typography>
                         </td>
-                        <td>
+                        <td className="border cell-padding">
                             <Typography>Nội Thành</Typography>
                             <Typography>Ngoại Thành</Typography>
                         </td>
-                        <td> 1 - 2 ngày </td>
+                        <td className="border cell-padding"> 1 - 2 ngày </td>
                     </tr>
-                    <tr>
-                        <td rowSpan={2}>
+                    <tr className="border">
+                        <td rowSpan={2} className="border cell-padding">
                             <Typography>Hồ Chí Minh - Miền Nam</Typography>
                             <Typography>Hà Nội - Miền Bắc</Typography>
                         </td>
-                        <td>Trung tâm Tỉnh, Thành phố, Thị xã</td>
-                        <td>2 ngày</td>
+                        <td className="border cell-padding">Trung tâm Tỉnh, Thành phố, Thị xã</td>
+                        <td className="border cell-padding">2 ngày</td>
                     </tr>
                     <tr>
-                        <td>Huyện, xã</td>
-                        <td>2 - 3 ngày</td>
+                        <td className="border cell-padding">Huyện, xã</td>
+                        <td className="border cell-padding">2 - 3 ngày</td>
                     </tr>
                     <tr>
-                        <td rowSpan={2}>
+                        <td rowSpan={2} className="border cell-padding">
                             <Typography>Hồ Chí Minh - Miền Bắc</Typography>
                             <Typography>Hà Nội - Miền Nam</Typography>
                         </td>
-                        <td>Trung tâm Tỉnh, Thành phố, Thị xã</td>
-                        <td>4 ngày</td>
+                        <td className="border cell-padding">Trung tâm Tỉnh, Thành phố, Thị xã</td>
+                        <td className="border cell-padding">4 ngày</td>
                     </tr>
                     <tr>
-                        <td>Huyện, xã</td>
-                        <td>4 - 5 ngày</td>
+                        <td className="border cell-padding">Huyện, xã</td>
+                        <td className="border cell-padding">4 - 5 ngày</td>
                     </tr>
                 </tbody>
             </table>
+            <Box sx={{ height: '10px' }} />
         </>
     );
 };

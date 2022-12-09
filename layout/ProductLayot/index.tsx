@@ -1,4 +1,4 @@
-import { Theme, useTheme } from '@emotion/react';
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import {
   AppBar,
@@ -30,7 +30,10 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   })
 );
 
-const ProductLayout: NextPageWithLayout<ILayout> = ({ children }) => {
+const ProductLayout: NextPageWithLayout<ILayout> = ({
+  children,
+  hideFooter = false,
+}) => {
   const dispatch = useDispatch();
   const theme: any = useTheme();
   const matchDownMd = useMediaQuery(theme.breakpoints.down('lg'));
@@ -76,7 +79,7 @@ const ProductLayout: NextPageWithLayout<ILayout> = ({ children }) => {
         <Container maxWidth="lg" disableGutters>
           <Main theme={theme}>{children}</Main>
         </Container>
-        <Footer />
+        {!hideFooter && <Footer />}
       </Box>
       <CustomizedSnackbar />
     </NavigationScroll>
