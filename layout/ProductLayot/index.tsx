@@ -9,7 +9,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import Header from '../../components/Header';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMenu, toggleSidebar } from '../../store/sidebarReducer';
 import { NextPageWithLayout } from '@/pages/page';
@@ -18,6 +18,8 @@ import { ILayout } from '@/interfaces/layout.interface';
 import dynamic from 'next/dynamic';
 import CustomizedSnackbar from '@/components/snackbar/CustomizedSnackbar';
 import useGetListCart from '@/hooks/client/useGetListCart';
+import { Router } from 'next/router';
+import LoadingScreen from '@/components/loading/LoadingScreen';
 
 const Footer = dynamic(() => import('../../components/Footer'), { ssr: false });
 
@@ -38,7 +40,17 @@ const ProductLayout: NextPageWithLayout<ILayout> = ({
   const theme: any = useTheme();
   const matchDownMd = useMediaQuery(theme.breakpoints.down('lg'));
   const leftDrawerOpened = useSelector((state: any) => state.sidebar.open);
-
+  const [loading, setLoading] = useState(false); //show loading when navigating/loading components
+  useEffect(() => {
+    Router.events.on('routeChangeStart', () => setLoading(true));
+    Router.events.on('routeChangeComplete', () => setLoading(false));
+    Router.events.on('routeChangeError', () => setLoading(false));
+    return () => {
+      Router.events.off('routeChangeStart', () => setLoading(true));
+      Router.events.off('routeChangeComplete', () => setLoading(false));
+      Router.events.off('routeChangeError', () => setLoading(false));
+    };
+  }, []);
   const handleLeftDrawerToggle = () => {
     dispatch(toggleSidebar());
   };
@@ -77,7 +89,7 @@ const ProductLayout: NextPageWithLayout<ILayout> = ({
           </Toolbar>
         </AppBar>
         <Container maxWidth="lg" disableGutters>
-          <Main theme={theme}>{children}</Main>
+          {loading ? <LoadingScreen /> : <Main theme={theme}>{children}</Main>}
         </Container>
         {!hideFooter && <Footer />}
       </Box>

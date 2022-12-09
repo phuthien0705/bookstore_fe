@@ -9,7 +9,7 @@ export const addAddress = async (data: any) => {
 export const deleteAddress = async (id: number) => {
   return httpRequest.delete(`/addresses/${id}`);
 };
-export const setDefaultAddress = async (id: number) => {
+export const setDefaultAddress = async (id: string | number) => {
   return httpRequest.put(`/addresses/${id}`, null);
 };
 export const getDetailAddress = async (id: number) => {

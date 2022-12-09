@@ -36,61 +36,65 @@ const ItemTable: React.FunctionComponent<IItemTable> = ({
     <TableContainer component={Paper}>
       <Table sx={{ maxWidth: 1762, marginTop: addressMode ? 0 : 2 }}>
         <TableHead>
-          <TableRow>
-            <TableCell>
-              <Typography variant="h5">
-                {!addressMode && (
-                  <>
-                    <Checkbox
-                      sx={{ height: 'fit-content' }}
-                      checked={
-                        !!items?.every((item: any) => item?.is_checked == true)
-                      }
-                      onChange={() => {
-                        checkAllItem &&
-                          checkAllItem({
-                            is_checked: !items?.every(
-                              (item: any) => item?.is_checked == true
-                            ),
-                          });
-                      }}
-                    />{' '}
-                  </>
-                )}
-                {addressMode
-                  ? 'Sản phẩm'
-                  : `Chọn tất cả (${items?.length || 0} sản phẩm)`}
-                <Typography
-                  onClick={() => clearCart && clearCart()}
-                  component={'span'}
-                  sx={{
-                    color: 'red',
-                    cursor: 'pointer',
-                    display: items?.every(
-                      (item: any) => item?.is_checked == true
-                    )
-                      ? 'inline-block'
-                      : 'none',
-                  }}
-                >
-                  (Xóa)
-                </Typography>
-              </Typography>
-            </TableCell>
-
-            {!addressMode && (
+          {items?.length !== 0 && (
+            <TableRow>
               <TableCell>
-                <Typography textAlign="center" variant="h5">
-                  Số lượng
+                <Typography variant="h5">
+                  {!addressMode && (
+                    <>
+                      <Checkbox
+                        sx={{ height: 'fit-content' }}
+                        checked={
+                          !!items?.every(
+                            (item: any) => item?.is_checked == true
+                          )
+                        }
+                        onChange={() => {
+                          checkAllItem &&
+                            checkAllItem({
+                              is_checked: !items?.every(
+                                (item: any) => item?.is_checked == true
+                              ),
+                            });
+                        }}
+                      />{' '}
+                    </>
+                  )}
+                  {addressMode
+                    ? 'Sản phẩm'
+                    : `Chọn tất cả (${items?.length || 0} sản phẩm)`}
+                  <Typography
+                    onClick={() => clearCart && clearCart()}
+                    component={'span'}
+                    sx={{
+                      color: 'red',
+                      cursor: 'pointer',
+                      display: items?.every(
+                        (item: any) => item?.is_checked == true
+                      )
+                        ? 'inline-block'
+                        : 'none',
+                    }}
+                  >
+                    (Xóa)
+                  </Typography>
                 </Typography>
               </TableCell>
-            )}
-            <TableCell colSpan={addressMode ? 1 : 2}>
-              <Typography ml={addressMode ? 0 : 2} variant="h5">
-                Thành tiền
-              </Typography>
-            </TableCell>
-          </TableRow>
+
+              {!addressMode && (
+                <TableCell>
+                  <Typography textAlign="center" variant="h5">
+                    Số lượng
+                  </Typography>
+                </TableCell>
+              )}
+              <TableCell colSpan={addressMode ? 1 : 2}>
+                <Typography ml={addressMode ? 0 : 2} variant="h5">
+                  Thành tiền
+                </Typography>
+              </TableCell>
+            </TableRow>
+          )}
         </TableHead>
         <TableBody>
           {items.map((row: any) => (

@@ -9,7 +9,7 @@ import {
   Box,
   Skeleton,
 } from '@mui/material';
-import { ShoppingCartOutlined } from '@mui/icons-material';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { FC, useCallback } from 'react';
 import { addToCart } from '@/apis/cart.api';
 import { useMutation, useQueryClient } from 'react-query';
@@ -73,11 +73,10 @@ const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
             <Skeleton variant="rectangular" height={'100%'} />
           ) : (
             <Image
-              priority
               layout={'responsive'}
               width={300}
               height={500}
-              src={data?.book_image}
+              src={data?.book_image || ''}
               alt={data?.name}
               style={{ borderRadius: '10px' }}
             />
@@ -146,7 +145,7 @@ const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
                   columnGap: '8px',
                 }}
               >
-                <ShoppingCartOutlined />
+                <ShoppingCartOutlinedIcon />
                 Thêm vào giỏ hàng
               </LoadingButton>
               <Button variant="contained">Mua ngay</Button>

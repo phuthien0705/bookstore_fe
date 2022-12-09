@@ -13,10 +13,8 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import LogoSection from '../LogoSection';
 import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 
 const Footer = () => {
-  const matches = useMediaQuery('(min-width:600px)');
   const theme: any = useTheme();
   return (
     <Box
@@ -31,57 +29,71 @@ const Footer = () => {
           <LogoSection />
           <Stack
             direction="row"
-            alignItems="center"
             justifyContent="center"
-            spacing={matches ? 5 : 8}
+            spacing={6}
             color="inherit"
-            mt={3}
-            mb={2}
+            mt={1}
+            mb={1}
           >
-            <Stack
-              direction={matches ? 'row' : 'column'}
-              spacing={matches ? 5 : 1}
-            >
+            <Box>
+              <Stack direction="column" spacing={1}>
+                <Link variant="h4" color="inherit" underline="none">
+                  Dịch Vụ
+                </Link>
+                <Link
+                  href="use-term"
+                  justifyContent="center"
+                  underline="none"
+                  sx={{
+                    display: 'flex',
+                    '&:hover': {
+                      color: theme.palette.secondary.dark,
+                    },
+                  }}
+                >
+                  Điều khoản sử dụng
+                </Link>
+                <Link
+                  href="pay-term"
+                  underline="none"
+                  justifyContent="center"
+                  sx={{
+                    display: 'flex',
+                    '&:hover': {
+                      color: theme.palette.secondary.dark,
+                    },
+                  }}
+                >
+                  Chính sách bảo mật thanh toán
+                </Link>
+              </Stack>
+            </Box>
+            <Box>
+              <Stack direction="column" spacing={1}>
+                <Link variant="h4" color="inherit" underline="none">
+                  Hỗ Trợ
+                </Link>
+                <Link
+                  href="trans-term"
+                  underline="none"
+                  justifyContent="center"
+                  sx={{
+                    display: 'flex',
+                    '&:hover': {
+                      color: theme.palette.secondary.dark,
+                    },
+                  }}
+                >
+                  Chính sách vận chuyển
+                </Link>
+              </Stack>
+            </Box>
+            <Box>
               <Link href="#" variant="h4" color="inherit" underline="none">
-                Dịch Vụ
-              </Link>
-              <Link href="#" variant="h4" color="inherit" underline="none">
-                Hỗ Trợ
-              </Link>
-            </Stack>
-            <Stack
-              direction={matches ? 'row' : 'column'}
-              spacing={matches ? 5 : 1}
-            >
-              <Link
-                href="/policy"
-                variant="h4"
-                color="inherit"
-                underline="none"
-              >
-                Chính Sách
-              </Link>
-              <Link
-                href="/contact-us"
-                variant="h4"
-                color="inherit"
-                underline="none"
-              >
                 Liên Hệ
               </Link>
-            </Stack>
-            <Stack
-              direction={matches ? 'row' : 'column'}
-              spacing={matches ? 5 : 1}
-            >
-              <Link
-                href="/about-us"
-                variant="h4"
-                color="inherit"
-                underline="none"
-              >
-                Giới Thiệu
-              </Link>
+            </Box>
+            <Box>
               <Link
                 href="/profile"
                 variant="h4"
@@ -90,7 +102,7 @@ const Footer = () => {
               >
                 Tài Khoản
               </Link>
-            </Stack>
+            </Box>
           </Stack>
           <Stack direction="row" justifyContent="center" spacing={4} margin={1}>
             <IconButton>

@@ -1,5 +1,5 @@
-import HomeLayout from '@/layout/HomeLayout';
 import MainCard from '@/components/cards/MainCard';
+import ProductLayout from '@/layout/ProductLayot';
 import { Typography, Divider } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -7,7 +7,7 @@ const PolicyPage = () => {
   const matches = useMediaQuery('(min-width:600px)');
   return (
     <>
-      <HomeLayout>
+      <ProductLayout>
         <style jsx>
           {`
             table,
@@ -637,7 +637,7 @@ const PolicyPage = () => {
             liên hệ trực tiếp qua hotline 190000000 để được hỗ trợ nhanh chóng.
           </Typography>
         </MainCard>
-      </HomeLayout>
+      </ProductLayout>
     </>
   );
 };

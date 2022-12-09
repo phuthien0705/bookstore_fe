@@ -36,6 +36,7 @@ export interface ISubmitCart {
   setCurrentIndex: Function;
   items: any;
   listAddress: any;
+  refetchListCart: () => void;
 }
 export interface IPaymentTab {
   data: any;

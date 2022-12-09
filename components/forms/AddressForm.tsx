@@ -20,20 +20,24 @@ import { toggleSnackbar } from '@/store/snackbarReducer';
 import useGetListAddress from '@/hooks/client/useGetListAddress';
 import useGetListCity from '@/hooks/client/useGetListCity';
 import Grid from '@mui/material/Grid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { getListDistrict } from '@/apis/city.api';
 import { addAddress } from '@/apis/address.api';
+import { useToast } from '@/hooks/useToast';
+import { LoadingButton } from '@mui/lab';
 
 const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
   const theme: any = useTheme();
   const dispatch = useDispatch();
   const data = currentAddress?.data;
+  console.log('$123', data);
   const { data: listCity } = useGetListCity();
   const [listDistrict, setListDistrict] = useState<any[]>([]);
-  const toast = ({ type, message }: { type: string; message: string }) => {
-    dispatch(toggleSnackbar({ open: true, message, type }));
-  };
+  // const toast = ({ type, message }: { type: string; message: string }) => {
+  //   dispatch(toggleSnackbar({ open: true, message, type }));
+  // };
+  const toast = useToast(dispatch, toggleSnackbar);
   const { mutate: getListDistrictFunc } = useMutation(
     (id: string | number) => getListDistrict(id),
     {
@@ -48,7 +52,7 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
       },
     }
   );
-  const { mutate: createOrUpdateFunc } = useMutation(
+  const { mutate: createOrUpdateFunc, isLoading } = useMutation(
     (data: any) => addAddress(data),
     {
       onSuccess: () => {
@@ -70,10 +74,16 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
     name: data?.name ? data?.name : '',
     description: data?.description ? data?.description : '',
     phone: data?.phone ? data?.phone : '',
-    district_id: data?.city_id ? data?.city_id : '',
-    city_id: '',
+    district_id: data?.city?.id ? data?.city?.id : '',
+    city_id: data?.city?.province_id ? data?.city?.province_id : '',
     submit: null,
   };
+
+  useEffect(() => {
+    if (data?.city?.province_id) {
+      getListDistrictFunc(data?.city?.province_id);
+    }
+  }, [data, getListDistrictFunc]);
   return (
     <Formik
       initialValues={initialValues}
@@ -268,7 +278,7 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
               name="description"
               onBlur={handleBlur}
               onChange={handleChange}
-              label="Mô tả thể loại"
+              label="Địa chỉ cụ thể"
               inputProps={{}}
             />
             {touched.description && errors.description && (
@@ -300,7 +310,8 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
             >
               Trở lại
             </Button>
-            <Button
+            <LoadingButton
+              loading={isLoading}
               disableElevation
               disabled={isSubmitting}
               fullWidth
@@ -311,7 +322,7 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
               sx={{ width: 'fit-content' }}
             >
               {!data ? 'Tạo' : 'Lưu'}
-            </Button>
+            </LoadingButton>
           </Stack>
         </form>
       )}
