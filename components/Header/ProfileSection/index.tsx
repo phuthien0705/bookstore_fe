@@ -10,19 +10,12 @@ import {
   MenuList,
   Typography,
 } from '@mui/material';
-
-import {
-  IconLogout,
-  IconSearch,
-  IconSettings,
-  IconUser,
-  IconAdjustments,
-} from '@tabler/icons';
-import config from '../../../config';
+import { IconLogout, IconSettings, IconAdjustments } from '@tabler/icons';
 import authService from '../../../services/authService';
 import checkIsAdminOrManager from '../../../common/checkIsAdminOrManager';
 import { useRouter } from 'next/router';
-import Badge from '@mui/material/Badge';
+import { useQueryClient } from 'react-query';
+import { CART_CLIENT } from '@/constants/queryKeyName';
 
 const ProfileSection: React.FunctionComponent = () => {
   const theme: any = useTheme();
@@ -32,6 +25,8 @@ const ProfileSection: React.FunctionComponent = () => {
   const [userInfo, setUserInfo] = useState<any>({ name: '', roles: ['user'] });
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const queryClient = useQueryClient();
+
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
@@ -42,8 +37,11 @@ const ProfileSection: React.FunctionComponent = () => {
     if (router.pathname.includes('/admin')) {
       router && router.push('/');
     }
+
     handleClose();
     authService.logOut();
+
+    queryClient.setQueryData(CART_CLIENT, []);
   };
   const handleClickLogin = () => {
     router && router.push('login');
