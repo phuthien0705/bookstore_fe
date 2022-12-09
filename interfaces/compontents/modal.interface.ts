@@ -33,7 +33,6 @@ export interface IAddressModal {
   open: boolean;
   handleClose: () => void;
   listAddress: any;
-  currentAddress: any;
-  setCurrentAddress: Dispatch<any>;
+
   refetchAddress: () => void;
 }

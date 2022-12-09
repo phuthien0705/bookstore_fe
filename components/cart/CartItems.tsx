@@ -92,6 +92,7 @@ const CartItems: React.FunctionComponent = () => {
             setCurrentIndex={setCurrentIndex}
             currentIndex={currentIndex}
             listAddress={listAddress?.data}
+            refetchListCart={refetch}
           />
         )}
       </Grid>

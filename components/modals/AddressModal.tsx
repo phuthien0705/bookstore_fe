@@ -21,36 +21,48 @@ import { toggleSnackbar } from '@/store/snackbarReducer';
 import LoadingButton from '@mui/lab/LoadingButton';
 import AddressForm from '../forms/AddressForm';
 import { IAddressModal } from '@/interfaces/compontents/modal.interface';
+import { useToast } from '@/hooks/useToast';
 
 const AddressModal: React.FunctionComponent<IAddressModal> = ({
   open,
   handleClose,
   listAddress,
-  currentAddress,
-  setCurrentAddress,
+
   refetchAddress,
 }) => {
-  console.log(listAddress);
-  const dispatch = useDispatch();
-  const toast = useCallback(
-    ({ type, message }: { type: string; message: string }) => {
-      dispatch(toggleSnackbar({ open: true, message, type }));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },
-    [dispatch]
+  const defaultAddress = (listAddress || []).find(
+    (item: any) => item?.is_default === 1
   );
+  const dispatch = useDispatch();
+  const toast = useToast(dispatch, toggleSnackbar);
+
   const [value, setValue] = useState<number | null>(null);
   const [editMode, setEditMode] = useState<boolean | { data: any }>(false);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event?.target as any).value);
   };
+  const { mutate: changeDefaultAddressFunc, isLoading } = useMutation(
+    (id: string | number) => setDefaultAddress(id),
+    {
+      onSuccess: () => {
+        refetchAddress();
+        handleClose();
+      },
+      onError: () => {
+        toast({
+          type: 'error',
+          message: 'Xảy ra lỗi trong quá trình cập nhật địa chỉ nhận hàng',
+        });
+      },
+    }
+  );
 
   const renderListAddress = () => {
     if (listAddress && listAddress?.length > 0) {
       return (
         <FormControl>
           <RadioGroup
-            defaultValue={currentAddress?.id}
+            defaultValue={defaultAddress?.id}
             name="radio-buttons-group"
             value={value}
             onChange={handleChange}
@@ -84,18 +96,6 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
                             </Typography>
                           </Box>
                           <Typography>{item?.description}</Typography>
-                          {item?.is_default === 1 && (
-                            <Typography
-                              sx={{
-                                color: '#ee4d2d',
-                                border: '1px solid #ee4d2d',
-                                width: 'fit-content',
-                                padding: '4px 8px',
-                              }}
-                            >
-                              Mặc định
-                            </Typography>
-                          )}
                         </Stack>
                         <Button
                           onClick={() => setEditMode({ data: item })}
@@ -132,18 +132,22 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
     const newDefaultAddress = listAddress?.find(
       (item: any) => item?.id === Number(value)
     );
-    console.log('new', newDefaultAddress);
-    setCurrentAddress(newDefaultAddress);
-
-    // close after 500ms
-    setTimeout(() => {
+    if (defaultAddress?.id === newDefaultAddress?.id) {
       handleClose();
-    }, 500);
+    } else {
+      changeDefaultAddressFunc(newDefaultAddress?.id);
+    }
+    // close after 500ms
   };
   useEffect(() => {
-    setValue(currentAddress?.id);
-  }, [currentAddress, open]);
-
+    const defaultAddress = (listAddress || []).find(
+      (item: any) => item?.is_default === 1
+    );
+    setValue(defaultAddress?.id);
+  }, [listAddress, open]);
+  useEffect(() => {
+    setEditMode(false);
+  }, [open]);
   return (
     <Dialog onClose={() => handleClose()} open={open} fullWidth maxWidth="sm">
       <Stack
@@ -208,9 +212,13 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
                 borderTop: '1px solid rgba(0,0,0,0.1)',
               }}
             >
-              <Button onClick={() => handleSubmit()} variant="contained">
+              <LoadingButton
+                loading={isLoading}
+                onClick={() => handleSubmit()}
+                variant="contained"
+              >
                 Xác nhận
-              </Button>
+              </LoadingButton>
             </Box>
           </>
         )}

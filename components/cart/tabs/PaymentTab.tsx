@@ -15,16 +15,12 @@ const PaymentTab: React.FunctionComponent<IPaymentTab> = ({
 }) => {
   const matches = useMediaQuery('(min-width:900px)');
   const [openAddressModal, setOpenAddressModal] = useState<boolean>(false);
-  const [currentAddress, setCurrentAddress] = useState<any>(null);
 
-  useEffect(() => {
+  const renderDefaultAddress = () => {
     const defaultAddress = (listAddress?.data || []).find(
       (item: any) => item?.is_default === 1
     );
-    setCurrentAddress(defaultAddress);
-  }, [listAddress]);
-  const renderDefaultAddress = () => {
-    if (!currentAddress)
+    if (!defaultAddress)
       return (
         <div>
           Chưa có địa chỉ{' '}
@@ -43,34 +39,24 @@ const PaymentTab: React.FunctionComponent<IPaymentTab> = ({
       );
     return (
       <Stack
+        sx={{ width: '100%' }}
         direction={'row'}
         spacing={1}
         justifyContent="space-between"
         alignItems="center"
       >
-        <Stack direction="column" spacing={1}>
-          <Typography sx={{ fontWeight: 700 }}>
-            {currentAddress?.name}
-          </Typography>
-          <Typography sx={{ fontWeight: 700 }}>
-            {currentAddress?.phone}
-          </Typography>
-        </Stack>
-        <Typography>{currentAddress?.description}</Typography>
-        <Stack direction="row" spacing={1} alignItems="center">
-          {currentAddress?.is_default === 1 && (
-            <Typography
-              sx={{
-                color: '#ee4d2d',
-                border: '1px solid #ee4d2d',
-                width: 'fit-content',
-                padding: '4px 8px',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              Mặc định
+        <Stack direction="row" spacing={2}>
+          <Stack direction="column" spacing={1} sx={{ width: 'fit-content' }}>
+            <Typography sx={{ fontWeight: 700 }}>
+              {defaultAddress?.name}
             </Typography>
-          )}
+            <Typography sx={{ fontWeight: 700 }}>
+              {defaultAddress?.phone}
+            </Typography>
+          </Stack>
+          <Typography>{defaultAddress?.description}</Typography>
+        </Stack>
+        <Stack direction="row" spacing={1} alignItems="center">
           <Button onClick={() => setOpenAddressModal(true)} sx={{ padding: 0 }}>
             Thay đổi
           </Button>
@@ -80,7 +66,7 @@ const PaymentTab: React.FunctionComponent<IPaymentTab> = ({
   };
   return (
     <>
-      <Stack spacing={2} sx={{ padding: 2 }}>
+      <Stack spacing={2} sx={{ padding: 2, width: '100%' }}>
         <Stack direction="row" spacing={1} alignItems={'flex-end'}>
           <BusinessIcon />
           <Typography
@@ -110,8 +96,6 @@ const PaymentTab: React.FunctionComponent<IPaymentTab> = ({
           setOpenAddressModal(false);
         }}
         listAddress={listAddress?.data}
-        currentAddress={currentAddress}
-        setCurrentAddress={setCurrentAddress}
         refetchAddress={refetchAddress}
       />
     </>

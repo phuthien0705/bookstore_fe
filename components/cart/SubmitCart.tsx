@@ -12,7 +12,12 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
   setCurrentIndex,
   items,
   listAddress,
+  refetchListCart,
 }) => {
+  console.log('$123', listAddress);
+  const defaultAddress = (listAddress || []).find(
+    (item: any) => item?.is_default === 1
+  );
   const router = useRouter();
   const dispatch = useDispatch();
   const toast = useCallback(
@@ -25,7 +30,8 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
   const { mutate: checkoutFunc } = useMutation(() => checkoutProduct(), {
     onSuccess: () => {
       toast({ type: 'success', message: 'Mua hàng thành công' });
-      router.reload();
+      setCurrentIndex(0);
+      refetchListCart();
     },
     onError: () => {
       toast({
@@ -63,24 +69,47 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
           justifyContent={'space-between'}
           alignItems={'center'}
         >
-          <Stack direction="row" spacing={2}>
-            <Typography
-              sx={{ fontWeight: 600, fontSize: '20px', color: '#000' }}
-            >
-              Tổng tiền:
-            </Typography>
-            <Typography
-              sx={{ fontWeight: 500, fontSize: '20px', color: '#000' }}
-            >
-              {items.reduce(
-                (prev: number, curr: any) =>
-                  curr.is_checked === 1
-                    ? Number(prev) + Number(curr.price) * Number(curr.quantity)
-                    : Number(prev) + 0,
-                0
-              ) || 0}
-              đ
-            </Typography>
+          <Stack direction="column" spacing={1}>
+            {currentIndex === 1 && (
+              <Stack
+                direction="row"
+                spacing={2}
+                sx={{ transition: 'all 0.5s linear' }}
+              >
+                <Typography
+                  sx={{ fontWeight: 600, fontSize: '16px', color: '#000' }}
+                >
+                  Phí vận chuyển:
+                </Typography>
+                <Typography
+                  sx={{ fontWeight: 500, fontSize: '16px', color: '#000' }}
+                >
+                  {defaultAddress?.value}đ
+                </Typography>
+              </Stack>
+            )}
+            <Stack direction="row" spacing={2}>
+              <Typography
+                sx={{ fontWeight: 600, fontSize: '20px', color: '#000' }}
+              >
+                Tổng tiền:
+              </Typography>
+              <Typography
+                sx={{ fontWeight: 500, fontSize: '20px', color: '#000' }}
+              >
+                {items
+                  ? items.reduce(
+                      (prev: number, curr: any) =>
+                        curr.is_checked === 1
+                          ? Number(prev) +
+                            Number(curr.price) * Number(curr.quantity)
+                          : Number(prev) + 0,
+                      0
+                    ) + ((currentIndex === 1 && defaultAddress?.value) || 0)
+                  : 0}
+                đ
+              </Typography>
+            </Stack>
           </Stack>
           <Stack direction={'row'} spacing={1}>
             <Button

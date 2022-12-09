@@ -1,4 +1,3 @@
-import HomeLayout from '@/layout/HomeLayout';
 import CarouselAboutUs from '@/components/carousel/CarouselAboutUs';
 import MainCard from '@/components/cards/MainCard';
 import {
@@ -17,12 +16,13 @@ import LogosloganDf from '../assets/images/boxo/Logoslogan-df.png';
 import LogosloganMd from '../assets/images/boxo/Logoslogan-md.png';
 import CardMember from '@/components/cards/products/CardMember';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import ProductLayout from '@/layout/ProductLayot';
 
 const aboutUs = () => {
   const matches = useMediaQuery('(min-width:700px)');
   return (
     <>
-      <HomeLayout>
+      <ProductLayout>
         <CarouselAboutUs />
 
         <MainCard title={<Typography variant="h2">Giới thiệu</Typography>}>
@@ -240,7 +240,7 @@ const aboutUs = () => {
             </em>
           </p>
         </MainCard>
-      </HomeLayout>
+      </ProductLayout>
     </>
   );
 };

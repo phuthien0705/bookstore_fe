@@ -8,7 +8,7 @@ import useGetListAuthorClient from '../hooks/client/useGetListAuthorClient';
 import useGetListPublisherClient from '../hooks/client/useGetListPublisherClient';
 import CarouselHome from '../components/carousel/CarouselHome';
 import ProductCardItems from '../components/cards/products/ProductCardItems';
-import HomeLayout from '@/layout/HomeLayout';
+import ProductLayout from '@/layout/ProductLayot';
 
 const Home = () => {
   const theme = useTheme();
@@ -39,7 +39,7 @@ const Home = () => {
   } = getListBookQuery;
   console.log(bookData?.data);
   return (
-    <HomeLayout>
+    <ProductLayout>
       {' '}
       <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: '1rem' }}>
         <CarouselHome />
@@ -57,7 +57,7 @@ const Home = () => {
        <ProductCardItems data={sampleData} title="Sách tâm lỹ kỹ năng" titleBackground={theme.palette.secondary.light} />
        <ProductCardItems data={sampleData} title="Sách kinh tế" titleBackground={theme.palette.secondary.light} /> */}
       </Box>
-    </HomeLayout>
+    </ProductLayout>
   );
 };
 

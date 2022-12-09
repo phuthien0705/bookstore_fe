@@ -1,5 +1,5 @@
-import ProductLayout from '../layout/ProductLayot/index';
 import TransTermContent from '@/components/terms/transtermcontent';
+import ProductLayout from '@/layout/ProductLayot';
 import { Typography, Paper } from '@mui/material';
 
 const TransTerm = () => {
