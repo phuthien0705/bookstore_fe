@@ -9,3 +9,8 @@ export interface ILayout {
   children?: React.ReactNode;
   hideFooter?: boolean;
 }
+export interface ISideBar {
+  drawerOpen: boolean;
+  drawerToggle: Function;
+  window?: any;
+}

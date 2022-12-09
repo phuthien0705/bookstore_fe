@@ -35,11 +35,7 @@ const MenuList = () => {
         url: '/admin/author',
         icon: IconUser,
       },
-      {
-        title: 'Mã giảm giá',
-        url: '/admin/discount',
-        icon: IconShoppingCartDiscount,
-      },
+
       {
         title: 'Người dùng',
         url: '/admin/user',
