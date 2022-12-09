@@ -3,15 +3,12 @@ import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider } from '@mui/material';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import config from '../config';
-import { Router, useRouter } from 'next/router';
 import Head from 'next/head';
-import { useEffect } from 'react';
 import themes from '../themes';
 import { store } from '../store';
 import { Provider } from 'react-redux';
 import '../styles/globals.css';
 import initRequest from '../services/initRequest';
-import LoadingScreen from '../components/loading/LoadingScreen';
 import { AppPropsWithLayout } from '@/interfaces/layout.interface';
 
 initRequest();
@@ -22,8 +19,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     borderRadius: config?.borderRadius,
   };
 
-  const router = useRouter();
-  const getLayout = Component.getLayout || ((page) => page);
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -36,17 +31,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         },
       })
   );
-  const [loading, setLoading] = useState(false); //show loading when navigating/loading components
-  useEffect(() => {
-    Router.events.on('routeChangeStart', () => setLoading(true));
-    Router.events.on('routeChangeComplete', () => setLoading(false));
-    Router.events.on('routeChangeError', () => setLoading(false));
-    return () => {
-      Router.events.off('routeChangeStart', () => setLoading(true));
-      Router.events.off('routeChangeComplete', () => setLoading(false));
-      Router.events.off('routeChangeError', () => setLoading(false));
-    };
-  }, []);
+
   return (
     <>
       <Head>
@@ -65,11 +50,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={themes(customization)}>
-            {loading ? (
-              <LoadingScreen />
-            ) : (
-              <>{getLayout(<Component {...pageProps} />)}</>
-            )}
+            <Component {...pageProps} />
             <ReactQueryDevtools initialIsOpen={false} />
           </ThemeProvider>
         </QueryClientProvider>

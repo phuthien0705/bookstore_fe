@@ -4,7 +4,7 @@ import { Box, InputAdornment, OutlinedInput } from '@mui/material';
 import { shouldForwardProp } from '@mui/system';
 import React from 'react';
 import Image from 'next/image';
-import SearchIcon from '@/assets/images/icons/search.svg';
+import SearchIcon from '@mui/icons-material/Search';
 const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(
   ({ theme }) => ({
     width: 250,
@@ -42,13 +42,7 @@ const SearchAdminSection: FC<ISearchAdminSection> = ({ value, setValue }) => {
         placeholder="Tìm kiếm"
         startAdornment={
           <InputAdornment position="start">
-            <Image
-              src={SearchIcon}
-              alt="search"
-              width={20}
-              height={20}
-              style={{ opacity: 0.8 }}
-            />
+            <SearchIcon />
           </InputAdornment>
         }
         aria-describedby="search-helper-text"

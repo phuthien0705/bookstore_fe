@@ -1,4 +1,3 @@
-import HomeLayout from '@/layout/HomeLayout';
 import emailjs from '@emailjs/browser';
 import {
   Typography,
@@ -20,6 +19,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import React, { useRef } from 'react';
+import ProductLayout from '@/layout/ProductLayot';
 
 const ContactUs = () => {
   const form = useRef();
@@ -47,7 +47,7 @@ const ContactUs = () => {
 
   return (
     <>
-      <HomeLayout>
+      <ProductLayout>
         <Grid>
           <Card
             style={{
@@ -208,7 +208,7 @@ const ContactUs = () => {
             </CardContent>
           </Card>
         </Grid>
-      </HomeLayout>
+      </ProductLayout>
     </>
   );
 };
