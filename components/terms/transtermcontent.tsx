@@ -6,7 +6,7 @@ const TransTermContent = () => {
             <Typography variant="h2" sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
                 CHÍNH SÁCH VẬN CHUYỂN/ĐÓNG GÓI
             </Typography>
-            <Typography variant="h4" sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Typography variant="h4" sx={{ display: 'flex', justifyContent: 'center', alignContent: 'center', paddingLeft: 2, paddingRight: 2 }}>
                 Áp dụng cho toàn bộ đơn hàng của Quý Khách tại Boxo.com
             </Typography>
             <Typography sx={{ p: 2 }}>
