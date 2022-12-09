@@ -13,8 +13,12 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import LogoSection from '../LogoSection';
 import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const Footer = () => {
+  const matches = useMediaQuery('(min-width:750px)');
+  const matches2 = useMediaQuery('(max-width:815px)');
+
   const theme: any = useTheme();
   return (
     <Box
@@ -30,70 +34,125 @@ const Footer = () => {
           <Stack
             direction="row"
             justifyContent="center"
-            spacing={6}
+            alignItems="flex-start"
+            spacing={matches ? 5 : 2}
+            flexWrap={matches ? 'nowrap' : 'wrap'}
             color="inherit"
             mt={1}
             mb={1}
           >
-            <Box>
-              <Stack direction="column" spacing={1}>
-                <Link variant="h4" color="inherit" underline="none">
-                  Dịch Vụ
-                </Link>
-                <Link
-                  href="use-term"
-                  justifyContent="center"
-                  underline="none"
-                  sx={{
-                    display: 'flex',
-                    '&:hover': {
-                      color: theme.palette.secondary.dark,
-                    },
-                  }}
-                >
-                  Điều khoản sử dụng
-                </Link>
-                <Link
-                  href="pay-term"
-                  underline="none"
-                  justifyContent="center"
-                  sx={{
-                    display: 'flex',
-                    '&:hover': {
-                      color: theme.palette.secondary.dark,
-                    },
-                  }}
-                >
-                  Chính sách bảo mật thanh toán
-                </Link>
-              </Stack>
-            </Box>
-            <Box>
-              <Stack direction="column" spacing={1}>
-                <Link variant="h4" color="inherit" underline="none">
-                  Hỗ Trợ
-                </Link>
-                <Link
-                  href="trans-term"
-                  underline="none"
-                  justifyContent="center"
-                  sx={{
-                    display: 'flex',
-                    '&:hover': {
-                      color: theme.palette.secondary.dark,
-                    },
-                  }}
-                >
-                  Chính sách vận chuyển
-                </Link>
-              </Stack>
-            </Box>
-            <Box>
-              <Link href="#" variant="h4" color="inherit" underline="none">
+            <Stack direction="column" spacing={1} justifyContent="flex-start">
+              <Link
+                variant="h4"
+                color="inherit"
+                underline="none"
+                justifyItems="flex-start"
+                display="flex"
+              >
+                Dịch Vụ
+              </Link>
+              <Link
+                href="use-term"
+                justifyContent="flex-start"
+                underline="none"
+                sx={{
+                  display: 'flex',
+                  '&:hover': {
+                    color: theme.palette.secondary.dark,
+                  },
+                }}
+              >
+                Điều khoản sử dụng
+              </Link>
+              <Link
+                href="info-term"
+                justifyContent="flex-start"
+                underline="none"
+                sx={{
+                  display: 'flex',
+                  '&:hover': {
+                    color: theme.palette.secondary.dark,
+                  },
+                }}
+              >
+                Chính sách bảo mật thông tin
+              </Link>
+              <Link
+                href="pay-term"
+                underline="none"
+                justifyContent="flex-start"
+                sx={{
+                  display: 'flex',
+                  '&:hover': {
+                    color: theme.palette.secondary.dark,
+                  },
+                }}
+              >
+                Chính sách bảo mật thanh toán
+              </Link>
+            </Stack>
+            <Stack direction="column" spacing={1} justifyContent="flex-start">
+              <Link
+                variant="h4"
+                color="inherit"
+                underline="none"
+                justifyItems="flex-start"
+                display="flex"
+              >
+                Hỗ Trợ
+              </Link>
+              <Link
+                href="trans-term"
+                underline="none"
+                justifyContent="flex-start"
+                sx={{
+                  display: 'flex',
+                  '&:hover': {
+                    color: theme.palette.secondary.dark,
+                  },
+                }}
+              >
+                Chính sách vận chuyển
+              </Link>
+              <Link
+                href="sendback-term"
+                underline="none"
+                justifyContent="flex-start"
+                sx={{
+                  display: 'flex',
+                  '&:hover': {
+                    color: theme.palette.secondary.dark,
+                  },
+                }}
+              >
+                Chính sách đổi - trả
+              </Link>
+            </Stack>
+            <Stack
+              direction={matches ? 'row' : 'column'}
+              spacing={matches ? 5 : 1}
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              // flexWrap="wrap"
+            >
+              <Link
+                href="about-us"
+                variant="h4"
+                color="inherit"
+                underline="none"
+              >
+                Giới Thiệu
+              </Link>
+
+              <Link
+                href="contact-us"
+                variant="h4"
+                color="inherit"
+                underline="none"
+              >
                 Liên Hệ
               </Link>
-            </Box>
-            <Box>
+
               <Link
                 href="/profile"
                 variant="h4"
@@ -102,7 +161,7 @@ const Footer = () => {
               >
                 Tài Khoản
               </Link>
-            </Box>
+            </Stack>
           </Stack>
           <Stack direction="row" justifyContent="center" spacing={4} margin={1}>
             <IconButton>
