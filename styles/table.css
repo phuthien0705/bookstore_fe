@@ -1,12 +1,15 @@
-table, th, td {
+table,
+th,
+td {
   border: 1px solid black;
   border-collapse: collapse;
 }
-th, td {
-    padding: 15px;
+th,
+td {
+  padding: 15px;
 }
 .transport-table {
-    margin-left: 50px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+  margin-left: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
