@@ -1,5 +1,5 @@
 import { Grid, Typography, Breadcrumbs, Link, Stack, Box } from '@mui/material';
-import { NavigateNext } from '@mui/icons-material';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 const CartTitle: React.FunctionComponent = () => {
   return (
@@ -12,7 +12,7 @@ const CartTitle: React.FunctionComponent = () => {
         <Typography variant="h3">Giỏ hàng</Typography>
       </Box>
       <Box mt={{ xs: 1, sm: 0 }}>
-        <Breadcrumbs separator={<NavigateNext />} aria-label="breadcrumb">
+        <Breadcrumbs separator={<NavigateNextIcon />} aria-label="breadcrumb">
           <Link color="text.primary" href="/">
             Trang chủ
           </Link>

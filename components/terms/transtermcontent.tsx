@@ -11,7 +11,12 @@ const TransTermContent = () => {
       </Typography>
       <Typography
         variant="h4"
-        sx={{ display: 'flex', justifyContent: 'center' }}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          paddingLeft: 2,
+          paddingRight: 2,
+        }}
       >
         Áp dụng cho toàn bộ đơn hàng của Quý Khách tại Boxo.com
       </Typography>
