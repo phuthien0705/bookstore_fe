@@ -19,6 +19,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import authService from '@/services/authService';
 import { useRouter } from 'next/router';
 import { CART_CLIENT } from '@/constants/queryKeyName';
+import { useToast } from '@/hooks/useToast';
 
 const useStyles = makeStyles({
   root: {
@@ -52,17 +53,15 @@ const ProductCard: React.FunctionComponent<IProductCard> = ({
   const classes = useStyles();
   const dispatch = useDispatch();
   const handleClickItem = useCallback(() => {
-    router.push(`product/${product?.id}`);
+    // router.push(`product/${product?.id}`);
+    router.push({
+      pathname: '/product/[pid]',
+      query: { pid: product?.id },
+    });
   }, [product, router]);
   const queryClient = useQueryClient();
 
-  const toast = useCallback(
-    ({ type, message }: { type: string; message: string }) => {
-      dispatch(toggleSnackbar({ open: true, message, type }));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },
-    [dispatch]
-  );
+  const toast = useToast(dispatch, toggleSnackbar);
   const { mutate: addToCartFunc, isLoading: isLoadingAddToCart } = useMutation(
     () => addToCart({ book_id: product?.id, quantity: 1 }),
     {

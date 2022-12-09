@@ -1,17 +1,27 @@
-import { Box, Container, Paper, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Container,
+  Paper,
+  Stack,
+  Typography,
+  Button,
+} from '@mui/material';
 import ProductInfo from '../../components/productdetails/ProductInfo';
 import ProductSlides from '../../components/productdetails/ProductSlides';
 import useGetListBookDetail from '../../hooks/client/useGetListBookDetail';
 import useGetListBookClient from '../../hooks/client/useGetListBookClient';
 import ProductLayout from '../../layout/ProductLayot';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import LoadingScreen from '../../components/loading/LoadingScreen';
 
 const ProductDetail = () => {
   const router = useRouter();
   const [id, setId] = useState(null);
-
+  const desRef = useRef<HTMLDivElement>(null);
+  const [hiddenDescriptionFlag, setHiddenDescriptionFlag] =
+    useState<boolean>(false);
+  const [hiddenDescription, setHiddenDescription] = useState<boolean>(false);
   const { data, isLoading, isFetching, refetch } = useGetListBookDetail(
     id,
     !!id
@@ -22,6 +32,12 @@ const ProductDetail = () => {
     isLoading: isSlideLoading,
     isFetching: isSlideFetching,
   } = useGetListBookClient();
+
+  const numberOfLine = () => {
+    if (desRef?.current) return desRef?.current?.clientHeight / 20;
+    return 0;
+  };
+
   useEffect(() => {
     console.log(router?.query);
     if (router.isReady) {
@@ -29,6 +45,13 @@ const ProductDetail = () => {
     }
   }, [router, setId]);
   console.log(data);
+
+  useEffect(() => {
+    if (numberOfLine() > 3 && !hiddenDescriptionFlag) {
+      setHiddenDescription(true);
+      setHiddenDescriptionFlag(true);
+    }
+  });
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -62,42 +85,75 @@ const ProductDetail = () => {
               >
                 <Stack direction="column" spacing={1}>
                   {' '}
-                  <Typography variant="h4">Mã sách</Typography>
-                  <Typography variant="h4">Tác giả</Typography>
-                  <Typography variant="h4">Nhà xuất bản</Typography>
-                  <Typography variant="h4">Số trang</Typography>
-                  <Typography noWrap variant="h4">
+                  <Typography sx={{ fontWeight: 600, color: '#000' }}>
+                    Mã sách
+                  </Typography>
+                  <Typography sx={{ fontWeight: 600, color: '#000' }}>
+                    Tác giả
+                  </Typography>
+                  <Typography sx={{ fontWeight: 600, color: '#000' }}>
+                    Nhà xuất bản
+                  </Typography>
+                  <Typography sx={{ fontWeight: 600, color: '#000' }}>
+                    Số trang
+                  </Typography>
+                  <Typography noWrap sx={{ fontWeight: 600, color: '#000' }}>
                     Thể loại
                   </Typography>
-                  <Typography variant="h4">Số lượng còn lại</Typography>
+                  <Typography noWrap sx={{ fontWeight: 600, color: '#000' }}>
+                    Số lượng còn lại
+                  </Typography>
+                  <Typography noWrap sx={{ fontWeight: 600, color: '#000' }}>
+                    Mô tả sách
+                  </Typography>
                 </Stack>
                 <Stack direction="column" spacing={1}>
-                  <Typography variant="body2">{data?.isbn}</Typography>{' '}
-                  {/* render authors */}
-                  <Typography variant="body2">
+                  <Box>{data?.isbn}</Box> {/* render authors */}
+                  <Box>
                     {data &&
                       data?.authors.map((author: any, _index: number) => {
                         if (_index === data?.authors.length - 1)
                           return <span key={_index}>{author?.name}</span>;
                         return <span key={_index}>{author?.name}, </span>;
                       })}
-                  </Typography>
-                  <Typography variant="body2">
-                    {data && data?.publisher?.name}
-                  </Typography>{' '}
-                  <Typography variant="body2">{data?.total_pages}</Typography>
+                  </Box>
+                  <Box>{data && data?.publisher?.name}</Box>{' '}
+                  <Box>{data?.total_pages}</Box>
                   {/* render genres */}
-                  <Typography variant="body2">
+                  <Box>
                     {data &&
                       data?.genres.map((genre: any, _index: number) => {
                         if (_index === data?.genres.length - 1)
                           return <span key={_index}>{genre?.name}</span>;
                         return <span key={_index}>{genre?.name}, </span>;
                       })}{' '}
-                  </Typography>
-                  <Typography variant="body2">
-                    {data && data?.available_quantity}
-                  </Typography>
+                  </Box>
+                  <Box>{data && data?.available_quantity}</Box>
+                  <Box
+                    sx={
+                      hiddenDescription
+                        ? {
+                            overflow: 'hidden',
+                            maxHeight: '60px',
+                            lineHeight: '20px',
+                          }
+                        : { lineHeight: '20px' }
+                    }
+                  >
+                    {' '}
+                    <Box ref={desRef} sx={{ wordBreak: 'break-word' }}>
+                      {(data && data?.description) || 'Chưa có mô tả...'}
+                    </Box>
+                  </Box>
+                  {desRef?.current &&
+                    numberOfLine() > 3 &&
+                    data?.description && (
+                      <Button
+                        onClick={() => setHiddenDescription(!hiddenDescription)}
+                      >
+                        {hiddenDescription ? 'Xem thêm' : 'Rút gọn'}
+                      </Button>
+                    )}
                 </Stack>
               </Stack>
             </Stack>

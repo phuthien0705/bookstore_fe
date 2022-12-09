@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -15,7 +15,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Divider from '@mui/material/Divider';
 import AddIcon from '@mui/icons-material/Add';
 import { useMutation } from 'react-query';
-import { setDefaultAddress } from '@/apis/address.api';
+import { deleteAddress, setDefaultAddress } from '@/apis/address.api';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -27,7 +27,6 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
   open,
   handleClose,
   listAddress,
-
   refetchAddress,
 }) => {
   const defaultAddress = (listAddress || []).find(
@@ -56,7 +55,44 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
       },
     }
   );
-
+  const { mutate: deleteAddressFunc } = useMutation(
+    (id: string | number) => deleteAddress(id),
+    {
+      onSuccess: (data, variables) => {
+        if (
+          listAddress &&
+          defaultAddress?.id === variables &&
+          listAddress[0]?.id === variables &&
+          listAddress?.length === 1
+        ) {
+          refetchAddress();
+          handleClose();
+        } else if (
+          listAddress &&
+          defaultAddress?.id === variables &&
+          listAddress[0]?.id === variables &&
+          listAddress?.length !== 1
+        ) {
+          changeDefaultAddressFunc(listAddress[1]?.id);
+        } else if (
+          listAddress &&
+          defaultAddress?.id === variables &&
+          listAddress[0]?.id !== variables
+        ) {
+          changeDefaultAddressFunc(listAddress[0]?.id);
+        } else {
+          refetchAddress();
+          handleClose();
+        }
+      },
+      onError: () => {
+        toast({
+          type: 'error',
+          message: 'Xảy ra lỗi trong quá trình xóa địa chỉ nhận hàng',
+        });
+      },
+    }
+  );
   const renderListAddress = () => {
     if (listAddress && listAddress?.length > 0) {
       return (
@@ -97,16 +133,24 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
                           </Box>
                           <Typography>{item?.description}</Typography>
                         </Stack>
-                        <Button
-                          onClick={() => setEditMode({ data: item })}
-                          sx={{
-                            width: 'fit-content',
-                            whiteSpace: 'nowrap',
-                            height: 'fit-content',
-                          }}
-                        >
-                          Cập nhật
-                        </Button>
+                        <Stack>
+                          <Button
+                            onClick={() => setEditMode({ data: item })}
+                            sx={{
+                              width: 'fit-content',
+                              whiteSpace: 'nowrap',
+                              height: 'fit-content',
+                            }}
+                          >
+                            Cập nhật
+                          </Button>
+                          <Button
+                            color="error"
+                            onClick={() => deleteAddressFunc(item?.id)}
+                          >
+                            Xóa
+                          </Button>
+                        </Stack>
                       </Stack>
                     }
                   />

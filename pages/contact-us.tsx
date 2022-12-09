@@ -22,11 +22,9 @@ import React, { useRef } from 'react';
 import ProductLayout from '@/layout/ProductLayot';
 
 const ContactUs = () => {
-  const form = useRef();
+  const form = useRef<any>();
   const matches = useMediaQuery('(min-width:850px)');
-  const sendEmail = (e) => {
-    e.preventDefault();
-
+  const sendEmail: React.FormEventHandler<HTMLFormElement> = (e) => {
     emailjs
       .sendForm(
         'service_8jips8s',
@@ -42,7 +40,6 @@ const ContactUs = () => {
           console.log(error.text);
         }
       );
-    e.target.reset();
   };
 
   return (

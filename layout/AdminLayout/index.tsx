@@ -17,9 +17,8 @@ import { drawerWidth } from '../../store/constant';
 import { useRouter, Router } from 'next/router';
 import { ILayout } from '@/interfaces/layout.interface';
 import { NextPageWithLayout } from '@/pages/page';
-import LoadingScreen from '@/components/loading/LoadingScreen';
+import LinearProgress from '@mui/material/LinearProgress';
 
-// styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }: { theme: any; open: boolean }) => ({
     ...theme.typography.mainContent2,
@@ -129,7 +128,11 @@ const AdminLayout: NextPageWithLayout<ILayout> = ({ children }) => {
 
         {/* main content */}
         {loading ? (
-          <LoadingScreen />
+          <Main theme={theme} open={leftDrawerOpened}>
+            <Box sx={{ width: '100%' }}>
+              <LinearProgress />
+            </Box>
+          </Main>
         ) : (
           <Main theme={theme} open={leftDrawerOpened}>
             {children}

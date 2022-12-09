@@ -4,9 +4,8 @@ import { getCartItems } from '@/apis/cart.api';
 
 const useGetListCart = () => {
   const getListQuery: any = useQuery(CART_CLIENT, getCartItems, {
-    cacheTime: Infinity,
+    refetchOnMount: true,
     refetchOnWindowFocus: false,
-    staleTime: Infinity,
   });
 
   return getListQuery;

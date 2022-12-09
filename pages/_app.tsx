@@ -19,18 +19,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     borderRadius: config?.borderRadius,
   };
 
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            cacheTime: Infinity,
-            refetchOnWindowFocus: false,
-            staleTime: Infinity,
-          },
-        },
-      })
-  );
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
     <>

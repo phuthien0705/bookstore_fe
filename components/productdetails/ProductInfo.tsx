@@ -1,11 +1,9 @@
 import {
   Grid,
   Stack,
-  ButtonBase,
   Button,
   Typography,
   Rating,
-  Chip,
   Box,
   Skeleton,
 } from '@mui/material';
@@ -19,10 +17,11 @@ import { LoadingButton } from '@mui/lab';
 import Image from 'next/image';
 import { IProductInfo } from '@/interfaces/compontents/product.interface';
 import { CART_CLIENT } from '@/constants/queryKeyName';
+import { useRouter } from 'next/router';
 
 const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
   const queryClient = useQueryClient();
-
+  const router = useRouter();
   const dispatch = useDispatch();
   const toast = useCallback(
     ({ type, message }: { type: string; message: string }) => {
@@ -94,13 +93,7 @@ const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
               {data?.name}
             </Typography>
           </Grid>
-          <Grid
-            item
-            xs={12}
-            sx={{ px: { xs: 0, md: 1.5 }, py: { xs: 1, md: 1.5 } }}
-          >
-            <Typography variant="body1">{data?.description}</Typography>
-          </Grid>
+
           <Grid
             item
             xs={12}
@@ -148,7 +141,14 @@ const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
                 <ShoppingCartOutlinedIcon />
                 Thêm vào giỏ hàng
               </LoadingButton>
-              <Button variant="contained">Mua ngay</Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  router.push({ pathname: '/cart' });
+                }}
+              >
+                Mua ngay
+              </Button>
             </Stack>
           </Grid>
         </Grid>

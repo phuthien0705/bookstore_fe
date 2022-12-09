@@ -6,7 +6,7 @@ export const getListAddress = async () => {
 export const addAddress = async (data: any) => {
   return httpRequest.post('addresses/', data);
 };
-export const deleteAddress = async (id: number) => {
+export const deleteAddress = async (id: number | string) => {
   return httpRequest.delete(`/addresses/${id}`);
 };
 export const setDefaultAddress = async (id: string | number) => {
