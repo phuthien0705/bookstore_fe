@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 
 const Cart = () => {
   return (
-    <ProductLayout>
+    <ProductLayout hideFooter={true}>
       <Container maxWidth="md" disableGutters>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Paper sx={{ backgroundColor: '#fff', p: { xs: 2, md: 3 }, mb: 2 }}>

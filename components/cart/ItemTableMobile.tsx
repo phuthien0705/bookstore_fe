@@ -10,6 +10,7 @@ import { styled } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import QuantityButton from '../extended/Quantity';
 import { FC } from 'react';
+import { IItemTableMobile } from '@/interfaces/compontents/cart.interface';
 
 const ImageStyle = styled('img')({
   borderRadius: 4,
@@ -19,16 +20,6 @@ const ImageStyle = styled('img')({
   height: '100px',
 });
 
-interface IItemTableMobile {
-  items: any;
-  handleIncreaseQuantity: Function;
-  handleDecreaseQuantity: Function;
-  handleDelete: Function;
-  checkItem: Function;
-  checkAllItem: Function;
-  clearCart: Function;
-}
-
 const ItemTableMobile: FC<IItemTableMobile> = ({
   items,
   handleIncreaseQuantity,
@@ -37,27 +28,35 @@ const ItemTableMobile: FC<IItemTableMobile> = ({
   checkItem,
   checkAllItem,
   clearCart,
+  addressMode = false,
 }) => {
   return (
     <Paper sx={{ margin: '16px 16px 16px 0' }}>
       {' '}
       <Typography variant="h5">
-        <Checkbox
-          sx={{ height: 'fit-content' }}
-          checked={
-            items?.every((item: any) => item?.is_checked == true) || false
-          }
-          onChange={() => {
-            checkAllItem({
-              is_checked: !items?.every(
-                (item: any) => item?.is_checked == true
-              ),
-            });
-          }}
-        />{' '}
-        Chọn tất cả ({items?.length || 0} sản phẩm){' '}
+        {!addressMode && (
+          <>
+            <Checkbox
+              sx={{ height: 'fit-content' }}
+              checked={
+                items?.every((item: any) => item?.is_checked == true) || false
+              }
+              onChange={() => {
+                checkAllItem &&
+                  checkAllItem({
+                    is_checked: !items?.every(
+                      (item: any) => item?.is_checked == true
+                    ),
+                  });
+              }}
+            />{' '}
+          </>
+        )}
+        {addressMode
+          ? `Sản phẩm`
+          : `Chọn tất cả (${items?.length || 0} sản phẩm)`}
         <Typography
-          onClick={() => clearCart()}
+          onClick={() => clearCart && clearCart()}
           component={'span'}
           sx={{
             color: 'red',
@@ -80,16 +79,19 @@ const ItemTableMobile: FC<IItemTableMobile> = ({
           mb={2}
         >
           <Stack direction="row" alignItems={'center'}>
-            <Checkbox
-              sx={{ height: 'fit-content' }}
-              checked={item?.is_checked || false}
-              onChange={() => {
-                checkItem({
-                  book_id: item?.book?.id,
-                  is_checked: !item?.is_checked,
-                });
-              }}
-            />
+            {!addressMode && (
+              <Checkbox
+                sx={{ height: 'fit-content' }}
+                checked={item?.is_checked || false}
+                onChange={() => {
+                  checkItem &&
+                    checkItem({
+                      book_id: item?.book?.id,
+                      is_checked: !item?.is_checked,
+                    });
+                }}
+              />
+            )}
             <ImageStyle alt={item?.book?.name} src={item?.book?.book_image} />
 
             <Stack
@@ -99,30 +101,34 @@ const ItemTableMobile: FC<IItemTableMobile> = ({
             >
               <Typography fontSize="16px">{item?.book?.name}</Typography>
               <Stack direction="column" spacing={1}>
-                <Typography fontSize="14px" fontWeight="bold">
+                <Typography fontSize="14px" fontWeight="bold" color="#ee4d2d">
                   {item.price} đ
                 </Typography>
                 <QuantityButton
                   currentQuantity={item?.quantity}
                   handleIncreaseQuantity={() =>
+                    handleIncreaseQuantity &&
                     handleIncreaseQuantity(item?.book_id)
                   }
                   handleDecreaseQuantity={() =>
+                    handleDecreaseQuantity &&
                     handleDecreaseQuantity(item?.book_id)
                   }
                 />
               </Stack>
             </Stack>
           </Stack>
-          <IconButton
-            sx={{ padding: '0 0 2px 0' }}
-            size="small"
-            disableFocusRipple
-            disableRipple
-            onClick={() => handleDelete(item?.book_id)}
-          >
-            <DeleteIcon />
-          </IconButton>
+          {!addressMode && (
+            <IconButton
+              sx={{ padding: '0 0 2px 0' }}
+              size="small"
+              disableFocusRipple
+              disableRipple
+              onClick={() => handleDelete && handleDelete(item?.book_id)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          )}
         </Stack>
       ))}
     </Paper>

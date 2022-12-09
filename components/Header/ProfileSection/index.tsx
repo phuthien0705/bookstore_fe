@@ -35,17 +35,18 @@ const ProfileSection: React.FunctionComponent = () => {
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const handleLogout = async () => {
     if (router.pathname.includes('/admin')) {
       router && router.push('/');
     }
+    handleClose();
     authService.logOut();
   };
   const handleClickLogin = () => {
     router && router.push('login');
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
   };
 
   const handleListItemClick = (event: any, route = '') => {

@@ -1,3 +1,5 @@
+import { Dispatch } from 'react';
+
 export interface IModal {
   handleClose: Function;
   open: boolean;
@@ -26,4 +28,12 @@ export interface IBookModal extends IModal {
   findAuthor: Function;
   findGenre: Function;
   findPublisher: Function;
+}
+export interface IAddressModal {
+  open: boolean;
+  handleClose: () => void;
+  listAddress: any;
+  currentAddress: any;
+  setCurrentAddress: Dispatch<any>;
+  refetchAddress: () => void;
 }

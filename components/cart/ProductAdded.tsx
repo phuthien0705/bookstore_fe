@@ -1,8 +1,7 @@
+import { IProductAdded } from '@/interfaces/compontents/cart.interface';
 import { Typography, Stack } from '@mui/material';
 
-import PropTypes from 'prop-types';
-
-const ProductAdded = ({ amount }: { amount: string | number }) => {
+const ProductAdded: React.FunctionComponent<IProductAdded> = ({ amount }) => {
   return (
     <Stack
       direction="row"
@@ -17,10 +16,6 @@ const ProductAdded = ({ amount }: { amount: string | number }) => {
       </div>
     </Stack>
   );
-};
-
-ProductAdded.propTypes = {
-  amount: PropTypes.number,
 };
 
 export default ProductAdded;

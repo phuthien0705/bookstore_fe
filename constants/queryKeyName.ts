@@ -10,3 +10,7 @@ export const DISCOUNTS = 'discounts';
 export const DISCOUNTS_CLIENT = 'discounts_client';
 export const BOOK_DETAIL = 'book-detail';
 export const CART_CLIENT = 'cart-client';
+export const LIST_ADDRESS = 'list-address';
+export const LIST_CITY = 'list-city';
+export const LIST_DISTRICT = 'list-district';
+export const USER_PROFILE = 'user-profile';

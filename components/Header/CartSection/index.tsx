@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import Badge from '@mui/material/Badge';
 import { ICartSection } from '@/interfaces/compontents/cart.interface';
+import authService from '@/services/authService';
 
 const CartSection: React.FunctionComponent<ICartSection> = ({
   data,
@@ -16,7 +17,9 @@ const CartSection: React.FunctionComponent<ICartSection> = ({
   const router = useRouter();
 
   const handleClickCart = useCallback(() => {
-    if (!router.pathname.includes('/cart')) {
+    if (!authService.isAuthenticated()) {
+      router.push('/login');
+    } else if (!router.pathname.includes('/cart')) {
       router.push('/cart');
     }
   }, [router]);
