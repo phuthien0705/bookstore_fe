@@ -5,7 +5,6 @@ import NavItem from './NavItem';
 import {
   IconUsers,
   IconBook2,
-  IconShoppingCartDiscount,
   IconUser,
   IconCategory,
   IconBuilding,

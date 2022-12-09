@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled, useTheme } from '@mui/material/styles';
 import {
@@ -14,9 +14,10 @@ import { setMenu, toggleSidebar } from '../../store/sidebarReducer';
 import CustomizedSnackbar from '../../components/snackbar/CustomizedSnackbar';
 import authService from '../../services/authService';
 import { drawerWidth } from '../../store/constant';
-import { useRouter } from 'next/router';
+import { useRouter, Router } from 'next/router';
 import { ILayout } from '@/interfaces/layout.interface';
 import { NextPageWithLayout } from '@/pages/page';
+import LoadingScreen from '@/components/loading/LoadingScreen';
 
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -65,12 +66,23 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 const AdminLayout: NextPageWithLayout<ILayout> = ({ children }) => {
   const router = useRouter();
   const theme = useTheme();
-  const matchDownMd = useMediaQuery(theme.breakpoints.down('lg'));
+  const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
   const leftDrawerOpened = useSelector((state: any) => state.sidebar.open);
+  const [loading, setLoading] = useState(false); //show loading when navigating/loading components
   const dispatch = useDispatch();
   const handleLeftDrawerToggle = () => {
     dispatch(toggleSidebar());
   };
+  useEffect(() => {
+    Router.events.on('routeChangeStart', () => setLoading(true));
+    Router.events.on('routeChangeComplete', () => setLoading(false));
+    Router.events.on('routeChangeError', () => setLoading(false));
+    return () => {
+      Router.events.off('routeChangeStart', () => setLoading(true));
+      Router.events.off('routeChangeComplete', () => setLoading(false));
+      Router.events.off('routeChangeError', () => setLoading(false));
+    };
+  }, []);
   useEffect(() => {
     if (!authService.isAuthenticated()) {
       router.push('/login');
@@ -116,9 +128,13 @@ const AdminLayout: NextPageWithLayout<ILayout> = ({ children }) => {
         />
 
         {/* main content */}
-        <Main theme={theme} open={leftDrawerOpened}>
-          {children}
-        </Main>
+        {loading ? (
+          <LoadingScreen />
+        ) : (
+          <Main theme={theme} open={leftDrawerOpened}>
+            {children}
+          </Main>
+        )}
       </Box>
       <CustomizedSnackbar />
     </>
