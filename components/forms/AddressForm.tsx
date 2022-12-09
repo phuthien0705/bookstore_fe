@@ -23,7 +23,7 @@ import Grid from '@mui/material/Grid';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { getListDistrict } from '@/apis/city.api';
-import { addAddress } from '@/apis/address.api';
+import { addAddress, updateAddress } from '@/apis/address.api';
 import { useToast } from '@/hooks/useToast';
 import { LoadingButton } from '@mui/lab';
 
@@ -52,20 +52,44 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
       },
     }
   );
-  const { mutate: createOrUpdateFunc, isLoading } = useMutation(
+  const { mutate: createAddressFunc, isLoading: isCreating } = useMutation(
     (data: any) => addAddress(data),
     {
       onSuccess: () => {
         refetchAddress();
         toast({
           type: 'success',
-          message: `${data === null ? 'Tạo' : 'Cập nhật'} thành công`,
+          message: `Tạo thành công`,
         });
       },
       onError: () => {
         toast({
           type: 'error',
           message: 'Xảy ra lỗi trong quá trình tạo địa chỉ',
+        });
+      },
+    }
+  );
+  const { mutate: updateAddressFunc, isLoading: isUpdating } = useMutation<
+    any,
+    Error,
+    any,
+    { id: string | number; data: any }
+  >(
+    ({ id, data }: { id: string | number; data: any }) =>
+      updateAddress(id, data),
+    {
+      onSuccess: () => {
+        refetchAddress();
+        toast({
+          type: 'success',
+          message: `Cập nhật thành công`,
+        });
+      },
+      onError: () => {
+        toast({
+          type: 'error',
+          message: 'Xảy ra lỗi trong quá trình cập nhật địa chỉ',
         });
       },
     }
@@ -107,7 +131,12 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
             phone: values.phone,
             city_id: values.district_id,
           };
-          createOrUpdateFunc(req);
+
+          if (!data) {
+            createAddressFunc(req);
+          } else {
+            updateAddressFunc({ id: data?.id, data: req });
+          }
 
           setStatus({ success: true });
           setSubmitting(false);
@@ -116,13 +145,6 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
             setEditMode(false);
           }, 1000);
         } catch (err) {
-          console.error(err);
-          toast({
-            type: 'error',
-            message: `Xảy ra lỗi trong quá trình ${
-              data === null ? 'tạo' : 'cập nhật'
-            } địa chỉ`,
-          });
           setStatus({ success: false });
           setSubmitting(false);
         }
@@ -311,7 +333,7 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
               Trở lại
             </Button>
             <LoadingButton
-              loading={isLoading}
+              loading={isCreating || isUpdating}
               disableElevation
               disabled={isSubmitting}
               fullWidth
