@@ -123,7 +123,7 @@ const AuthorModal: FC<IModal> = ({
             handleClose={() => {
               handleExit(values);
             }}
-            title={data === null ? 'Tạo thể loại' : 'Chỉnh sửa thể loại'}
+            title={data === null ? 'Tạo tác giả' : 'Chỉnh sửa tác giả'}
           >
             <form noValidate onSubmit={handleSubmit}>
               <FormControl

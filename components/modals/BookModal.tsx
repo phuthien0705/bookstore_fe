@@ -173,7 +173,7 @@ const BookModal: FC<IBookModal> = ({
             handleClose={() => {
               handleExit(values);
             }}
-            title={data === null ? 'Tạo thể loại' : 'Chỉnh sửa thể loại'}
+            title={data === null ? 'Tạo sản phẩm' : 'Chỉnh sửa sản phẩm'}
           >
             <form noValidate onSubmit={handleSubmit}>
               <FormControl
