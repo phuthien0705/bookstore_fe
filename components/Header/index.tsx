@@ -40,6 +40,7 @@ const Header: FC<IHeader> = ({
     >
       <Box
         sx={{
+          paddingTop: 1,
           display: 'flex',
           justifyContent: 'space-between',
           width: '100%',

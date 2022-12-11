@@ -14,18 +14,7 @@ const Home = () => {
   const theme = useTheme();
   const getListBookQuery = useGetListBookClient();
   const getListGenreQuery = useGetListGenreClient();
-  const getListAuthorQuery = useGetListAuthorClient();
-  const getListPublisherQuery = useGetListPublisherClient();
-  const {
-    data: authorData,
-    isLoading: isAuthorLoading,
-    isFetching: isAuthorFetching,
-  } = getListAuthorQuery;
-  const {
-    data: publisherData,
-    isLoading: isPublisherLoading,
-    isFetching: isPublisherFetching,
-  } = getListPublisherQuery;
+
   const {
     data: genreData,
     isLoading: isGenreLoading,
@@ -37,7 +26,27 @@ const Home = () => {
     isFetching: isBookFetching,
     refetch,
   } = getListBookQuery;
-  console.log(bookData?.data);
+
+  const renderGenres = () => {
+    if (!isGenreLoading) {
+      return (
+        genreData &&
+        genreData?.data?.slice(0, 4)?.map((genre: any, _index: number) => {
+          return (
+            <ProductCardItems
+              key={_index}
+              slideToShow={4}
+              isLoading={isBookLoading}
+              data={bookData?.data}
+              title={genre?.name}
+              titleBackground={theme?.palette?.secondary?.light}
+              genreId={genre?.id}
+            />
+          );
+        })
+      );
+    }
+  };
   return (
     <ProductLayout>
       {' '}
@@ -51,11 +60,7 @@ const Home = () => {
           titleIcon={<LocalFireDepartmentIcon color="error" />}
           titleBackground="#FCDDEF"
         />
-        {/* <ProductCardItems data={sampleData} title="Sách tham khảo" titleBackground={theme.palette.secondary.light} />
-       <ProductCardItems data={sampleData} title="Sách học ngoại ngữ" titleBackground={theme.palette.secondary.light} />
-       <ProductCardItems data={sampleData} title="Sách văn học" titleBackground={theme.palette.secondary.light} />
-       <ProductCardItems data={sampleData} title="Sách tâm lỹ kỹ năng" titleBackground={theme.palette.secondary.light} />
-       <ProductCardItems data={sampleData} title="Sách kinh tế" titleBackground={theme.palette.secondary.light} /> */}
+        {renderGenres()}
       </Box>
     </ProductLayout>
   );
