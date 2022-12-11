@@ -25,6 +25,7 @@ const ContactUs = () => {
   const form = useRef<any>();
   const matches = useMediaQuery('(min-width:850px)');
   const sendEmail: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
     emailjs
       .sendForm(
         'service_8jips8s',
@@ -40,6 +41,7 @@ const ContactUs = () => {
           console.log(error.text);
         }
       );
+    e.currentTarget.reset();
   };
 
   return (
