@@ -46,7 +46,7 @@ const SearchSection = () => {
           id="input-search-header"
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          placeholder="Search"
+          placeholder="Tìm kiếm sản phẩm tại đây"
           startAdornment={
             <InputAdornment position="start">
               <IconSearch
