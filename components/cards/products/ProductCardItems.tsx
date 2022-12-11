@@ -1,5 +1,4 @@
 import { Box, Grid, Stack, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
 import ProductCardItem from './ProductCardItem';
 import { makeStyles } from '@mui/styles';
 import config from '../../../config';
@@ -25,8 +24,20 @@ const ProductCardItems: React.FunctionComponent<IProductCardItems> = ({
   titleBackground = '#fff',
   isLoading = false,
   slideToShow = 4,
+  genreId = null,
 }) => {
   const classes = useStyles();
+  const dataFiltered = !genreId
+    ? data
+    : data
+    ? data?.filter((item: any) => {
+        if (
+          !item?.genres?.every((itemGenre: any) => itemGenre?.id !== genreId)
+        ) {
+          return item;
+        }
+      })
+    : [];
   const renderProducts = () => {
     if (isLoading)
       return (
@@ -38,8 +49,8 @@ const ProductCardItems: React.FunctionComponent<IProductCardItems> = ({
         </>
       );
 
-    return data?.length > 0 ? (
-      data.slice(0, slideToShow).map((product: any, index: number) => {
+    return dataFiltered?.length > 0 ? (
+      dataFiltered.slice(0, slideToShow).map((product: any, index: number) => {
         return <ProductCardItem key={index} product={product} index={index} />;
       })
     ) : (
@@ -70,17 +81,19 @@ const ProductCardItems: React.FunctionComponent<IProductCardItems> = ({
           </Typography>
         </Stack>
       )}
-      <Box sx={{ p: 2 }}>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            columnGap: '15px',
-            rowGap: '15px',
-          }}
-        >
-          {renderProducts()}
-        </div>
+      <Box sx={{ backgroundColor: '#fff' }}>
+        <Box sx={{ p: 2 }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              columnGap: '15px',
+              rowGap: '15px',
+            }}
+          >
+            {renderProducts()}
+          </div>
+        </Box>
       </Box>
     </section>
   );

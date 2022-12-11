@@ -16,7 +16,7 @@ export const editBook = async (
   id: string | number | undefined,
   data: FormData | any
 ) => {
-  return httpRequest.put(`/admin/books/${id}`, data, {
+  return httpRequest.post(`/admin/books/${id}`, data, {
     headers: {
       'content-type': 'multipart/form-data',
     },

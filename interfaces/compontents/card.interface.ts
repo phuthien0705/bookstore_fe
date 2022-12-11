@@ -15,6 +15,7 @@ export interface IProductCardItems {
   titleBackground?: string;
   isLoading?: boolean;
   slideToShow?: number;
+  genreId?: number | null;
 }
 export interface IProductCardSkeleton {
   slideMode?: boolean;
