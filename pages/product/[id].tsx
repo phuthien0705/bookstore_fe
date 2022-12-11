@@ -4,7 +4,7 @@ import {
   Paper,
   Stack,
   Typography,
-  Button,
+  Button
 } from '@mui/material';
 import ProductInfo from '../../components/productdetails/ProductInfo';
 import ProductSlides from '../../components/productdetails/ProductSlides';
@@ -126,7 +126,7 @@ const ProductDetail = () => {
                         if (_index === data?.genres.length - 1)
                           return <span key={_index}>{genre?.name}</span>;
                         return <span key={_index}>{genre?.name}, </span>;
-                      })}{' '}
+                      })}&nbsp;
                   </Box>
                   <Box>{data && data?.available_quantity}</Box>
                   <Box
