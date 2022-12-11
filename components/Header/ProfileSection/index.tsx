@@ -44,7 +44,7 @@ const ProfileSection: React.FunctionComponent = () => {
     queryClient.setQueryData(CART_CLIENT, []);
   };
   const handleClickLogin = () => {
-    router && router.push('login');
+    router && router.push({ pathname: '/login' });
   };
 
   const handleListItemClick = (event: any, route = '') => {

@@ -85,75 +85,112 @@ const ProductDetail = () => {
               >
                 <Stack direction="column" spacing={1}>
                   {' '}
-                  <Typography sx={{ fontWeight: 600, color: '#000' }}>
-                    Mã sách
-                  </Typography>
-                  <Typography sx={{ fontWeight: 600, color: '#000' }}>
-                    Tác giả
-                  </Typography>
-                  <Typography sx={{ fontWeight: 600, color: '#000' }}>
-                    Nhà xuất bản
-                  </Typography>
-                  <Typography sx={{ fontWeight: 600, color: '#000' }}>
-                    Số trang
-                  </Typography>
-                  <Typography noWrap sx={{ fontWeight: 600, color: '#000' }}>
-                    Thể loại
-                  </Typography>
-                  <Typography noWrap sx={{ fontWeight: 600, color: '#000' }}>
-                    Số lượng còn lại
-                  </Typography>
-                  <Typography noWrap sx={{ fontWeight: 600, color: '#000' }}>
-                    Mô tả sách
-                  </Typography>
-                </Stack>
-                <Stack direction="column" spacing={1}>
-                  <Box>{data?.isbn}</Box> {/* render authors */}
-                  <Box>
-                    {data &&
-                      data?.authors.map((author: any, _index: number) => {
-                        if (_index === data?.authors.length - 1)
-                          return <span key={_index}>{author?.name}</span>;
-                        return <span key={_index}>{author?.name}, </span>;
-                      })}
-                  </Box>
-                  <Box>{data && data?.publisher?.name}</Box>{' '}
-                  <Box>{data?.total_pages}</Box>
-                  {/* render genres */}
-                  <Box>
-                    {data &&
-                      data?.genres.map((genre: any, _index: number) => {
-                        if (_index === data?.genres.length - 1)
-                          return <span key={_index}>{genre?.name}</span>;
-                        return <span key={_index}>{genre?.name}, </span>;
-                      })}{' '}
-                  </Box>
-                  <Box>{data && data?.available_quantity}</Box>
-                  <Box
-                    sx={
-                      hiddenDescription
-                        ? {
-                            overflow: 'hidden',
-                            maxHeight: '60px',
-                            lineHeight: '20px',
-                          }
-                        : { lineHeight: '20px' }
-                    }
-                  >
-                    {' '}
-                    <Box ref={desRef} sx={{ wordBreak: 'break-word' }}>
-                      {(data && data?.description) || 'Chưa có mô tả...'}
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
+                    <Typography
+                      sx={{ fontWeight: 600, color: '#000', minWidth: 150 }}
+                    >
+                      Mã sách
+                    </Typography>{' '}
+                    <Box>{data?.isbn}</Box> {/* render authors */}
+                  </Stack>
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
+                    <Typography
+                      sx={{ fontWeight: 600, color: '#000', minWidth: 150 }}
+                    >
+                      Tác giả
+                    </Typography>
+                    <Box>
+                      {data &&
+                        data?.authors.map((author: any, _index: number) => {
+                          if (_index === data?.authors.length - 1)
+                            return <span key={_index}>{author?.name}</span>;
+                          return <span key={_index}>{author?.name}, </span>;
+                        })}
                     </Box>
-                  </Box>
-                  {desRef?.current &&
-                    numberOfLine() > 3 &&
-                    data?.description && (
-                      <Button
-                        onClick={() => setHiddenDescription(!hiddenDescription)}
+                  </Stack>
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
+                    <Typography
+                      sx={{ fontWeight: 600, color: '#000', minWidth: 150 }}
+                    >
+                      Nhà xuất bản
+                    </Typography>
+                    <Box>{data && data?.publisher?.name}</Box>{' '}
+                  </Stack>
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
+                    <Typography
+                      sx={{ fontWeight: 600, color: '#000', minWidth: 150 }}
+                    >
+                      Số trang
+                    </Typography>
+                    <Box>{data?.total_pages}</Box>
+                  </Stack>
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
+                    <Typography
+                      noWrap
+                      sx={{ fontWeight: 600, color: '#000', minWidth: 150 }}
+                    >
+                      Thể loại
+                    </Typography>
+                    {/* render genres */}
+                    <Box>
+                      {data &&
+                        data?.genres.map((genre: any, _index: number) => {
+                          if (_index === data?.genres.length - 1)
+                            return <span key={_index}>{genre?.name}</span>;
+                          return <span key={_index}>{genre?.name}, </span>;
+                        })}{' '}
+                    </Box>
+                  </Stack>
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
+                    <Typography
+                      noWrap
+                      sx={{ fontWeight: 600, color: '#000', minWidth: 150 }}
+                    >
+                      Số lượng còn lại
+                    </Typography>
+                    <Box>{data && data?.available_quantity}</Box>
+                  </Stack>
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
+                    <Typography
+                      noWrap
+                      sx={{ fontWeight: 600, color: '#000', minWidth: 150 }}
+                    >
+                      Mô tả sách
+                    </Typography>
+                    <Stack spacing={1}>
+                      {' '}
+                      <Box
+                        sx={
+                          hiddenDescription
+                            ? {
+                                overflow: 'hidden',
+                                maxHeight: '60px',
+                                lineHeight: '20px',
+                              }
+                            : {
+                                lineHeight: '20px',
+                                overflow: 'hidden',
+                              }
+                        }
                       >
-                        {hiddenDescription ? 'Xem thêm' : 'Rút gọn'}
-                      </Button>
-                    )}
+                        {' '}
+                        <Box ref={desRef}>
+                          {(data && data?.description) || 'Chưa có mô tả'}
+                        </Box>
+                      </Box>
+                      {desRef?.current &&
+                        numberOfLine() > 3 &&
+                        data?.description && (
+                          <Button
+                            onClick={() =>
+                              setHiddenDescription(!hiddenDescription)
+                            }
+                          >
+                            {hiddenDescription ? 'Xem thêm' : 'Rút gọn'}
+                          </Button>
+                        )}
+                    </Stack>
+                  </Stack>
                 </Stack>
               </Stack>
             </Stack>

@@ -14,13 +14,11 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  TextField,
   Typography,
   useMediaQuery,
 } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import useScriptRef from '../../hooks/useScriptRef';
 import Google from './../../assets/images/icons/social-google.svg';
 import {
   strengthColor,
@@ -35,7 +33,6 @@ import Image from 'next/image';
 
 const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
   const theme: any = useTheme();
-  const scriptedRef = useScriptRef();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(true);
@@ -72,7 +69,7 @@ const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
 
   return (
     <>
-      <Grid container direction="column" justifyContent="center" spacing={2}>
+      {/* <Grid container direction="column" justifyContent="center" spacing={2}>
         <Grid item xs={12}>
           <Button
             variant="outlined"
@@ -131,7 +128,7 @@ const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
             <Typography variant="subtitle1">Đăng ký bằng Email</Typography>
           </Box>
         </Grid>
-      </Grid>
+      </Grid> */}
 
       <Formik
         initialValues={{
