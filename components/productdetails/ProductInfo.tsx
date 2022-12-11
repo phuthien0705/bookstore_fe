@@ -100,8 +100,7 @@ const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
             sx={{ px: { xs: 0, md: 1.5 }, py: { xs: 1, md: 1.5 } }}
           >
             <Stack direction="row" spacing={1}>
-              <Rating value={data?.rating} precision={0.5} readOnly />
-              <Typography variant="body1">(69+)</Typography>
+              <Rating value={4.5} precision={0.5} readOnly />
             </Stack>
           </Grid>
           <Grid
