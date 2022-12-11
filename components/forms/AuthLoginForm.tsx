@@ -54,7 +54,7 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
 
   return (
     <>
-      <Grid container direction="column" justifyContent="center" spacing={2}>
+      {/* <Grid container direction="column" justifyContent="center" spacing={2}>
         <Grid item xs={12}>
           <Button
             disableElevation
@@ -122,7 +122,7 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
             <Typography variant="subtitle1">Đăng nhập bằng Email</Typography>
           </Box>
         </Grid>
-      </Grid>
+      </Grid> */}
 
       <Formik
         initialValues={{
@@ -175,7 +175,7 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
             console.error(err);
             setShowAlert({
               type: 'error',
-              content: 'Xảy ra lỗi trong quá trình đăng nhập',
+              content: 'Tài khoản hoặc mặt khẩu không đúng',
             });
             setStatus({ success: false });
 
