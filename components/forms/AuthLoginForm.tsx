@@ -29,6 +29,7 @@ import authService from '../../services/authService';
 import checkIsAdminOrManager from '../../common/checkIsAdminOrManager';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { LoadingButton } from '@mui/lab';
 
 const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
   const theme: any = useTheme();
@@ -294,9 +295,9 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
             )}
 
             <Box sx={{ mt: 2 }}>
-              <Button
+              <LoadingButton
                 disableElevation
-                disabled={isSubmitting}
+                loading={isSubmitting}
                 fullWidth
                 size="large"
                 type="submit"
@@ -304,7 +305,7 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
                 color="secondary"
               >
                 Đăng nhập
-              </Button>
+              </LoadingButton>
 
               {!!showAlert && (
                 <Alert

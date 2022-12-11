@@ -27,9 +27,10 @@ import {
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import config from '../../config';
-import { register } from '../../apis/auth.api';
+import { login, register } from '../../apis/auth.api';
 import authService from '../../services/authService';
 import Image from 'next/image';
+import { LoadingButton } from '@mui/lab';
 
 const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
   const theme: any = useTheme();
@@ -158,12 +159,14 @@ const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
               password: values.password,
             };
             const res: any = await register(req);
+            const req2 = { email: values.email, password: values.password };
+            const res2: any = await login({ req2 });
             authService.login({
-              accessToken: res.access_token,
-              name: res.user.name,
-              id: res.user.id,
-              roles: res.roles,
-              email: res.user.email,
+              accessToken: res2.access_token,
+              name: res2.user.name,
+              id: res2.user.id,
+              roles: res2.roles,
+              email: res2.user.email,
             });
             setShowAlertCheckMail({
               type: 'success',
@@ -340,9 +343,9 @@ const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
             )}
 
             <Box sx={{ mt: 2 }}>
-              <Button
+              <LoadingButton
                 disableElevation
-                disabled={isSubmitting}
+                loading={isSubmitting}
                 fullWidth
                 size="large"
                 type="submit"
@@ -350,7 +353,7 @@ const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
                 color="secondary"
               >
                 Đăng ký
-              </Button>
+              </LoadingButton>
               {!!showAlertCheckMail && (
                 <Alert
                   sx={{ marginTop: 2 }}
