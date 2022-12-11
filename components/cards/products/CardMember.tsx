@@ -18,28 +18,18 @@ const CardMember = () => {
         <Card
           variant="outlined"
           sx={{
-            maxWidth: 320,
+            maxWidth: 300,
             height: 500,
             borderWidth: 1,
             borderColor: '#2196f3',
           }}
         >
-          <CardMedia>
-            <div
-              style={{
-                position: 'relative',
-                width: '100%',
-                height: '50%',
-              }}
-            >
-              <Image
-                width={320}
-                height={300}
-                alt="Ảnh Huỳnh Gia Phú"
-                src={Phu}
-              />
-            </div>
-          </CardMedia>
+          <CardMedia
+            component="img"
+            image="img/giaphu.jpg"
+            height="300"
+            title="Phú"
+          />
           <CardContent>
             <Typography gutterBottom variant="h4">
               Huỳnh Gia Phú - 20521752 &#40;nhóm trưởng&#41;
@@ -56,28 +46,19 @@ const CardMember = () => {
         <Card
           variant="outlined"
           sx={{
-            maxWidth: 320,
+            maxWidth: 300,
             height: 500,
             borderWidth: 1,
             borderColor: '#2196f3',
           }}
         >
-          <CardMedia>
-            <div
-              style={{
-                position: 'relative',
-                width: '100%',
-                height: '50%',
-              }}
-            >
-              <Image
-                width={320}
-                height={300}
-                alt="Ảnh Hứa Phú Thiên"
-                src={Thien}
-              />
-            </div>
-          </CardMedia>
+          <CardMedia
+            component="img"
+            image="img/thien.jpg"
+            height="300"
+            title="Thiên"
+          />
+
           <CardContent>
             <Typography gutterBottom variant="h4">
               Hứa Phú Thiên - 20521946
@@ -97,28 +78,19 @@ const CardMember = () => {
         <Card
           variant="outlined"
           sx={{
-            maxWidth: 320,
+            maxWidth: 300,
             height: 500,
             borderWidth: 1,
             borderColor: '#2196f3',
           }}
         >
-          <CardMedia>
-            <div
-              style={{
-                position: 'relative',
-                width: '100%',
-                height: '50%',
-              }}
-            >
-              <Image
-                width={320}
-                height={300}
-                alt="Ảnh Phạm Đức Khánh"
-                src={Khanh}
-              />
-            </div>
-          </CardMedia>
+          <CardMedia
+            component="img"
+            image="img/khanh.jpg"
+            height="300"
+            title="Khánh"
+          />
+
           <CardContent>
             <Typography gutterBottom variant="h4">
               Phạm Đức Khánh - 20521453
@@ -137,28 +109,18 @@ const CardMember = () => {
         <Card
           variant="outlined"
           sx={{
-            maxWidth: 320,
+            maxWidth: 300,
             height: 500,
             borderWidth: 1,
             borderColor: '#2196f3',
           }}
         >
-          <CardMedia>
-            <div
-              style={{
-                position: 'relative',
-                width: '100%',
-                height: '50%',
-              }}
-            >
-              <Image
-                width={320}
-                height={300}
-                alt="Ảnh Nguyễn Anh Khoa"
-                src={AKhoa}
-              />
-            </div>
-          </CardMedia>
+          <CardMedia
+            component="img"
+            image="img/anhkhoa.jpg"
+            height="300"
+            title="Anh Khoa"
+          />
           <CardContent>
             <Typography gutterBottom variant="h4">
               Nguyễn Anh Khoa - 20520584
@@ -176,28 +138,18 @@ const CardMember = () => {
         <Card
           variant="outlined"
           sx={{
-            maxWidth: 320,
+            maxWidth: 300,
             height: 500,
             borderWidth: 1,
             borderColor: '#2196f3',
           }}
         >
-          <CardMedia>
-            <div
-              style={{
-                position: 'relative',
-                width: '100%',
-                height: '50%',
-              }}
-            >
-              <Image
-                width={320}
-                height={300}
-                alt="Ảnh Nguyễn Đình Khoa"
-                src={DKhoa}
-              />
-            </div>
-          </CardMedia>
+          <CardMedia
+            component="img"
+            image="img/dinhkhoa.jpg"
+            height="300"
+            title="Đình Khoa"
+          />
           <CardContent>
             <Typography gutterBottom variant="h4">
               Nguyễn Đình Khoa - 20520586
@@ -215,28 +167,18 @@ const CardMember = () => {
         <Card
           variant="outlined"
           sx={{
-            maxWidth: 320,
+            maxWidth: 300,
             height: 500,
             borderWidth: 1,
             borderColor: '#2196f3',
           }}
         >
-          <CardMedia>
-            <div
-              style={{
-                position: 'relative',
-                width: '100%',
-                height: '50%',
-              }}
-            >
-              <Image
-                width={320}
-                height={300}
-                alt="Ảnh Châu Nhựt Long"
-                src={Long}
-              />
-            </div>
-          </CardMedia>
+          <CardMedia
+            component="img"
+            image="img/long.jpg"
+            height="300"
+            title="Nhựt Long"
+          />
           <CardContent>
             <Typography gutterBottom variant="h4">
               Châu Nhựt Long - 20520238
@@ -256,23 +198,18 @@ const CardMember = () => {
         <Card
           variant="outlined"
           sx={{
-            maxWidth: 320,
+            maxWidth: 300,
             height: 500,
             borderWidth: 1,
             borderColor: '#2196f3',
           }}
         >
-          <CardMedia>
-            <div
-              style={{
-                position: 'relative',
-                width: '100%',
-                height: '50%',
-              }}
-            >
-              <Image width={320} height={300} alt="Ảnh Lê Tấn Lộc" src={Loc} />
-            </div>
-          </CardMedia>
+          <CardMedia
+            component="img"
+            image="img/loc.jpg"
+            height="300"
+            title="Tấn Lộc"
+          />
           <CardContent>
             <Typography gutterBottom variant="h4">
               Lê Tấn Lộc - 20520235
