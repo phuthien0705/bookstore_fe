@@ -39,7 +39,7 @@ const Home = () => {
               isLoading={isBookLoading}
               data={bookData?.data}
               title={genre?.name}
-              titleBackground={theme?.palette?.secondary?.light}
+              titleBackground={'#e8d5f9'}
               genreId={genre?.id}
             />
           );
