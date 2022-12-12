@@ -1,7 +1,7 @@
 import httpRequest from '../services/httpRequest';
 
 export const getAllAuthor = async () => {
-  return httpRequest.get('/admin/authors');
+  return httpRequest.get('/admin/authors?per_page=999');
 };
 export const getAllAuthorClient = async () => {
   return httpRequest.get('/authors');

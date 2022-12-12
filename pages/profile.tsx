@@ -7,12 +7,7 @@ import { useState, useEffect } from 'react';
 import useGetUserProfile from '@/hooks/client/useGetUserProfile';
 
 const Profile = () => {
-  // const { data, isLoading, isFetching } = useGetUserProfile();
-  // console.log('profile', data);
-  const [userInfo, setUserInfo] = useState<any>(null);
-  useEffect(() => {
-    setUserInfo(authService?.getUser() || null);
-  }, []);
+  const { data } = useGetUserProfile();
 
   return (
     <ProductLayout>
@@ -20,13 +15,8 @@ const Profile = () => {
         <Paper sx={{ backgroundColor: '#fff', p: 3, mt: 2, mb: 2 }}>
           <Typography variant="h3">Cài Đặt Tài Khoản</Typography>
         </Paper>
-        <MainCard
-          title={
-            <Typography variant="h4">{userInfo && userInfo?.name}</Typography>
-          }
-          darkTitle
-        >
-          <AccountTabs userInfo={userInfo} setUserInfo={setUserInfo} />
+        <MainCard title={data && data?.name} darkTitle>
+          <AccountTabs />
         </MainCard>
       </Container>
     </ProductLayout>

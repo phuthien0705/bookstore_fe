@@ -6,77 +6,123 @@ import {
   Typography,
   Button,
   TextField,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
-  SelectChangeEvent,
+  Box,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import authService from '../../services/authService';
+import { IProfileTab } from '@/interfaces/compontents/profile.interface';
+import LinearProgress from '@mui/material/LinearProgress';
+import useGetUserProfile from '@/hooks/client/useGetUserProfile';
+import { LoadingButton } from '@mui/lab';
+import { useMutation } from 'react-query';
+import { updateProfile } from '@/apis/user.api';
+import { useDispatch } from 'react-redux';
+import { useToast } from '@/hooks/useToast';
+import { toggleSnackbar } from '@/store/snackbarReducer';
+import createFormDataRequest from '@/common/createFormDataRequest';
 
-interface IProfileTab {
-  userInfo: any;
-  setUserInfo: Function;
-}
-
-const ProfileTab: React.FunctionComponent<IProfileTab> = ({
-  userInfo,
-  setUserInfo,
-}) => {
+const ProfileTab: React.FunctionComponent = () => {
+  const dispatch = useDispatch();
+  const toast = useToast(dispatch, toggleSnackbar);
+  const [previewAvatar, setPreviewAvatar] = useState('');
+  const { data, isLoading, isFetching } = useGetUserProfile();
   const defaultAvatar =
     '../../static/media/user-round.27fe79b102ea6aad2f60e66cff82818d.svg';
-  const defaultGen = 'Nam';
-  const defaultUserName = authService.isAuthenticated() && userInfo?.name;
-  const defaultPhone = '+84 113 114 115';
-  const defaultAddr = 'No addr';
-  const [avatar, setAvatar] = useState<any>(defaultAvatar);
-  const [gender, setGender] = useState(defaultGen);
-  const [userName, setUserName] = useState(defaultUserName);
-  const [fullName, setFullName] = useState(defaultUserName);
-  const [phone, setPhone] = useState(defaultPhone);
-  const [addr, setAddr] = useState(defaultAddr);
-  useEffect(() => {
-    return () => {
-      avatar && URL.revokeObjectURL(avatar.preview);
-    };
-  }, [avatar]);
+  const [values, setValues] = useState<any>({
+    avatar: null,
+    phone: '',
+    bio: '',
+    address: '',
+  });
+
+  const { mutate: updateUserProfileFunc, isLoading: isUpdating } = useMutation(
+    (data: any) => updateProfile(data),
+    {
+      onError: () => {
+        toast({
+          type: 'error',
+          message: 'Xảy ra lỗi trong quá trình cập nhật thông tin người dùng',
+        });
+      },
+      onSuccess: () => {
+        toast({
+          type: 'success',
+          message: 'Cập nhật thông tin thành công',
+        });
+      },
+    }
+  );
+
   const handleSave = () => {
-    //CALL API
-    console.log({ avatar, gender });
+    const req = createFormDataRequest(
+      values?.avatar
+        ? {
+            address: values?.address,
+            phone: values?.phone,
+            bio: values?.bio,
+            avatar: values?.avatar,
+          }
+        : {
+            address: values?.address,
+            phone: values?.phone,
+            bio: values?.bio,
+          }
+    );
+    updateUserProfileFunc(req);
   };
   const handlePreviewAvatar = (e: any) => {
     const file = e.target.files[0];
-    file.preview = URL.createObjectURL(file);
-    setAvatar(file);
+    setPreviewAvatar(URL.createObjectURL(file));
+    setValues((prevValue: any) => ({
+      ...prevValue,
+      avatar: file,
+    }));
   };
-  const handleSelectGender = (event: SelectChangeEvent<string>) => {
-    setGender(event.target.value);
+
+  const handleChange = (e: any) => {
+    setValues((prevValue: any) => ({
+      ...prevValue,
+      [e.target.name]: e.target.value,
+    }));
   };
-  const handleChangeUserName = (e: any) => {
-    setUserName(e.target.value);
-  };
-  const handleChangeFullName = (e: any) => {
-    setFullName(e.target.value);
-  };
-  const handleChangePhone = (e: any) => {
-    setPhone(e.target.value);
-  };
-  const handleChangeAddr = (e: any) => {
-    setAddr(e.target.value);
-  };
+
   useEffect(() => {
-    setUserInfo(authService.getUser());
-  }, [setUserInfo]);
+    return () => {
+      values?.avatar && URL.revokeObjectURL(values?.avatar?.preview);
+    };
+  }, [values?.avatar]);
+
+  useEffect(() => {
+    setPreviewAvatar(data?.userInfo?.avatar);
+    setValues((prevValue: any) => ({
+      ...prevValue,
+      bio: data?.userInfo?.bio || '',
+      address: data?.userInfo?.address || '',
+      phone: data?.userInfo?.phone || '',
+    }));
+  }, [data]);
+  if (isLoading) {
+    return (
+      <Box sx={{ width: '100%' }}>
+        <LinearProgress />
+      </Box>
+    );
+  }
+
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={4}>
+    <Grid container spacing={2} mt={1}>
+      <Grid item xs={12} md={4}>
         <MainCard title="Ảnh đại diện">
-          <Stack flexDirection="column" alignItems="center" spacing={2}>
+          <Stack
+            flexDirection="column"
+            alignItems="center"
+            spacing={2}
+            sx={{ height: '100%' }}
+          >
             <Avatar
-              alt="Cak"
-              src={avatar.preview || avatar || ''}
+              alt="avatar"
+              src={previewAvatar || defaultAvatar || ''}
               sx={{ width: 150, height: 150 }}
             />
             <Typography>Tải lên/Thay đổi ảnh đại diện.</Typography>
@@ -96,83 +142,36 @@ const ProfileTab: React.FunctionComponent<IProfileTab> = ({
           </Stack>
         </MainCard>
       </Grid>
-      <Grid item xs={8}>
+      <Grid item xs={12} md={8}>
         <MainCard title="Chỉnh sửa thông tin chi tiết">
           <Stack spacing={3}>
+            <TextField disabled label="Email" value={data?.email} />
             <TextField
-              id="outlined-fullname"
-              label="Họ và tên"
-              value={fullName}
-              onChange={handleChangeFullName}
+              name="address"
+              label="Địa chỉ"
+              value={values?.address}
+              onChange={handleChange}
             />
             <TextField
-              id="outlined-username"
-              label="Tên người dùng"
-              helperText="Chỉ có thể đổi tên người dùng 1 lần mỗi 60 ngày."
-              value={userName}
-              onChange={handleChangeUserName}
+              name="bio"
+              label="Mô tả bản thân"
+              value={values?.bio}
+              onChange={handleChange}
             />
             <TextField
-              id="outlined-email"
-              label="Địa chỉ email"
-              defaultValue="Default Value"
-              InputProps={{
-                readOnly: true,
-              }}
+              name="phone"
+              label="Số điện thoại"
+              value={values?.phone}
+              onChange={handleChange}
             />
-            <Grid container>
-              <Grid item xs={2}>
-                <FormControl>
-                  <InputLabel id="gender">Giới tính</InputLabel>
-                  <Select
-                    labelId="gender"
-                    id="gender-select"
-                    value={gender}
-                    label="Giới tính"
-                    onChange={handleSelectGender}
-                  >
-                    <MenuItem value="Nam">Nam</MenuItem>
-                    <MenuItem value="Nữ">Nữ</MenuItem>
-                    <MenuItem value="Khác">Khác</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              <Grid xs={4} item>
-                <TextField
-                  id="outlined-birthdate"
-                  label="Ngày sinh"
-                  defaultValue="Default Value"
-                />
-              </Grid>
-              <Grid xs={6} item>
-                <TextField
-                  id="outlined-phone"
-                  label="Số điện thoại"
-                  value={phone}
-                  onChange={handleChangePhone}
-                  fullWidth
-                />
-              </Grid>
-              <Grid xs={12} item sx={{ mt: 3 }}>
-                <TextField
-                  id="outlined-address"
-                  label="Địa chỉ"
-                  value={addr}
-                  onChange={handleChangeAddr}
-                  fullWidth
-                />
-              </Grid>
-              <Grid xs={12} item sx={{ mt: 3 }}>
-                <Button
-                  variant="contained"
-                  component="label"
-                  onClick={handleSave}
-                >
-                  Lưu thông tin
-                </Button>
-              </Grid>
-            </Grid>
+            <LoadingButton
+              onClick={() => handleSave()}
+              loading={isUpdating}
+              variant="contained"
+              sx={{ width: 'fit-content' }}
+            >
+              Cập nhật
+            </LoadingButton>
           </Stack>
         </MainCard>
       </Grid>
