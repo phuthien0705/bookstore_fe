@@ -10,7 +10,7 @@ import {
   MenuList,
   Typography,
 } from '@mui/material';
-import { IconLogout, IconSettings, IconAdjustments } from '@tabler/icons';
+import { IconLogout, IconSettings, IconAdjustments,IconReceipt } from '@tabler/icons';
 import authService from '../../../services/authService';
 import checkIsAdminOrManager from '../../../common/checkIsAdminOrManager';
 import { useRouter } from 'next/router';
@@ -113,6 +113,19 @@ const ProfileSection: React.FunctionComponent = () => {
               </ListItemIcon>
               <ListItemText
                 primary={<Typography variant="body2">Quản lý</Typography>}
+              />
+            </ListItemButton>
+            <ListItemButton
+              selected={router.pathname.includes('/orders')}
+              onClick={(event) => handleListItemClick(event, '/orders')}
+            >
+              <ListItemIcon>
+                <IconReceipt stroke={1.5} size="1.3rem" />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  <Typography variant="body2">Đơn hàng của tôi</Typography>
+                }
               />
             </ListItemButton>
             <ListItemButton
