@@ -10,7 +10,12 @@ import {
   MenuList,
   Typography,
 } from '@mui/material';
-import { IconLogout, IconSettings, IconAdjustments,IconReceipt } from '@tabler/icons';
+import {
+  IconLogout,
+  IconSettings,
+  IconAdjustments,
+  IconReceipt,
+} from '@tabler/icons';
 import authService from '../../../services/authService';
 import checkIsAdminOrManager from '../../../common/checkIsAdminOrManager';
 import { useRouter } from 'next/router';
