@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider } from '@mui/material';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import config from '../config';

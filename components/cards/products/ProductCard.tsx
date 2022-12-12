@@ -21,6 +21,7 @@ import { useRouter } from 'next/router';
 import { CART_CLIENT } from '@/constants/queryKeyName';
 import { useToast } from '@/hooks/useToast';
 import { moneyFormat } from '@/utils/moneyFormat';
+import Tooltip from '@mui/material/Tooltip';
 
 const useStyles = makeStyles({
   root: {
@@ -109,23 +110,24 @@ const ProductCard: React.FunctionComponent<IProductCard> = ({
       />
       <CardContent sx={{ padding: 2, height: '100%' }}>
         <Stack spacing={1} direction="column" alignItems={'space-between'}>
-          <Typography
-            gutterBottom
-            variant="h5"
-            sx={{
-              display: 'inline-block',
-              margin: 0,
-              fontSize: { xs: slideMode ? '12px' : '14px', sm: '14px' },
-              height: '50px',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            }}
-            onClick={handleClickItem}
-          >
-            {product?.name}
-          </Typography>
-
+          <Tooltip title={product?.name} placement="top">
+            <Typography
+              gutterBottom
+              variant="h5"
+              sx={{
+                display: 'inline-block',
+                margin: 0,
+                fontSize: { xs: slideMode ? '12px' : '14px', sm: '14px' },
+                height: '50px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+              onClick={handleClickItem}
+            >
+              {product?.name}
+            </Typography>
+          </Tooltip>
           {!slideMode && (
             <>
               <Rating

@@ -32,15 +32,18 @@ const GenreSection: React.FunctionComponent = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const handleClick = () => {
-    router.push('/product');
+  const handleRedirectToProduct = () => {
+    router.push({ pathname: '/product' });
+  };
+  const handleClick = (id: any) => {
+    router.push({ pathname: `/product`, query: { genre: id } });
   };
 
   const open = Boolean(anchorEl);
   return (
-    <Box sx={{}}>
+    <Box sx={{ cursor: 'pointer' }}>
       <ButtonBase
+        onClick={handleRedirectToProduct}
         onMouseEnter={handleOpen}
         sx={{
           width: '110%',
@@ -55,10 +58,7 @@ const GenreSection: React.FunctionComponent = () => {
         }}
       >
         <Typography
-          sx={{
-            fontSize: '19px',
-            fontWeight: 600,
-          }}
+          sx={{ cursor: 'pointer', fontSize: '19px', fontWeight: 600 }}
         >
           Sản Phẩm
         </Typography>
@@ -85,7 +85,7 @@ const GenreSection: React.FunctionComponent = () => {
           }}
         >
           {isGenreLoading ? (
-            <ListItemButton onClick={handleClick}>
+            <ListItemButton>
               <ListItemText>
                 {' '}
                 <Box sx={{ display: 'flex' }}>
@@ -96,7 +96,10 @@ const GenreSection: React.FunctionComponent = () => {
           ) : (
             genreData?.data?.map((genre: any, index: number) => {
               return (
-                <ListItemButton onClick={handleClick} key={index}>
+                <ListItemButton
+                  onClick={() => handleClick(genre?.id)}
+                  key={index}
+                >
                   <ListItemText>{genre?.name}</ListItemText>
                 </ListItemButton>
               );

@@ -1,12 +1,6 @@
 import cookie from 'js-cookie';
 
 class AuthService {
-  // handleAuthentication = () => {
-  //   const accessToken = this.getAccessToken();
-  //   if (!accessToken) return;
-  //   cookie.set('accessToken', accessToken, { expires: 1 });
-  // };
-
   login = ({ accessToken, name, roles, id, email }: any) => {
     cookie.set('accessToken', `${accessToken}`, { expires: 7 });
     const userPayload = { name, roles, id, email };

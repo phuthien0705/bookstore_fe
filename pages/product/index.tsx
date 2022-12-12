@@ -21,6 +21,7 @@ import {
   ButtonGroup,
   Drawer,
   Stack,
+  CircularProgress,
 } from '@mui/material';
 import { useTheme, styled } from '@mui/material/styles';
 import { useState, useRef, useEffect } from 'react';
@@ -36,6 +37,14 @@ import useGetListBookClient from '@/hooks/client/useGetListBookClient';
 import useGetListGenreClient from '@/hooks/client/useGetListGenreClient';
 import useGetListAuthorClient from '@/hooks/client/useGetListAuthorClient';
 import useGetListPublisherClient from '@/hooks/client/useGetListPublisherClient';
+import LinearProgress from '@mui/material/LinearProgress';
+import { useRouter } from 'next/router';
+import { filterBook } from '@/apis/product.api';
+import { useMutation } from 'react-query';
+import { useDispatch } from 'react-redux';
+import { toggleSnackbar } from '@/store/snackbarReducer';
+import { useToast } from '@/hooks/useToast';
+
 const drawerWidth = 400;
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }: { theme: any; open: boolean }) => ({
@@ -57,32 +66,35 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 );
 const Product = () => {
   const theme: any = useTheme();
-
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const toast = useToast(dispatch, toggleSnackbar);
   const getListBookQuery = useGetListBookClient();
   const getListGenreQuery = useGetListGenreClient();
-  const getListAuthorQuery = useGetListAuthorClient();
   const getListPublisherQuery = useGetListPublisherClient();
-  const {
-    data: authorData,
-    isLoading: isAuthorLoading,
-    isFetching: isAuthorFetching,
-  } = getListAuthorQuery;
+
   const {
     data: publisherData,
     isLoading: isPublisherLoading,
     isFetching: isPublisherFetching,
   } = getListPublisherQuery;
-  const {
-    data: genreData,
-    isLoading: isGenreLoading,
-    isFetching: isGenreFetching,
-  } = getListGenreQuery;
+  const { data: genreData, isLoading: isGenreLoading } = getListGenreQuery;
   const {
     data: bookData,
     isLoading: isBookLoading,
     isFetching: isBookFetching,
     refetch,
   } = getListBookQuery;
+  const [listBook, setListBook] = useState<any[]>([]);
+  const { mutate: getFilterBook, isLoading: isGetingListFilterBook } =
+    useMutation((data: any) => filterBook(data), {
+      onSuccess: (data: any) => {
+        setListBook(data?.data);
+      },
+      onError: () => {
+        toast({ type: 'error', message: 'Lỗi trong quá trình lấy dữ liệu' });
+      },
+    });
   //End fetch
   const matches = useMediaQuery('(min-width:700px)');
   const [searchValue, setSearchValue] = useState<string>('');
@@ -99,7 +111,7 @@ const Product = () => {
   const handleToggleFilter = () => {
     setOpenFilter((prevOpenSort) => !prevOpenSort);
   };
-
+  const [genreList, setGenreList] = useState<number[]>([]);
   const anchorRef = useRef<any>(null);
   // Handle Clear Filter
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -129,6 +141,21 @@ const Product = () => {
     }
   }
   const prevOpenSort = useRef(openSort);
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    let genreParam = '';
+    genreList.forEach((genre: number) => {
+      genreParam += genre + '_';
+    });
+    genreParam = genreParam.slice(0, -1);
+    getFilterBook({
+      genres: genreParam,
+      publishers: '',
+      price: '',
+      order_by: '',
+    });
+  };
   useEffect(() => {
     if (prevOpenSort.current === true && openSort === false) {
       anchorRef.current.focus();
@@ -136,7 +163,22 @@ const Product = () => {
 
     prevOpenSort.current = openSort;
   }, [openSort]);
-
+  console.log(listBook);
+  useEffect(() => {
+    if (router.isReady) {
+      getFilterBook({
+        genres: router.query?.genre ? router.query?.genre : '',
+        publishers: '',
+        price: '',
+        order_by: '',
+      });
+    }
+  }, [getFilterBook, router]);
+  useEffect(() => {
+    if (router.isReady && router?.query?.genre) {
+      setGenreList([Number(router.query?.genre as any)] || []);
+    }
+  }, [router]);
   return (
     <ProductLayout>
       <Paper sx={{ backgroundColor: '#fff', p: 3, mt: 2, mb: 2 }}>
@@ -160,103 +202,13 @@ const Product = () => {
         title="Tất cả sách có sẵn"
         sx={{ backgroundColor: '#f5f5f5f5' }}
       >
-        <Stack
-          display="flex"
-          direction={matches ? 'row' : 'column'}
-          alignItems="center"
-          justifyContent="flex-end"
-        >
-          <Grid p={1}>
-            <SearchAdminSection value={searchValue} setValue={setSearchValue} />
-          </Grid>
-          <Grid
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="center"
-          >
-            {' '}
-            <Typography p={1} display={matches ? 'true' : 'none'}>
-              |
-            </Typography>
-            <Button
-              startIcon={<FilterAltIcon />}
-              onClick={() => handleToggleFilter()}
-              sx={{ p: 1 }}
-            >
-              Lọc
-            </Button>
-            <Typography p={1}>|</Typography>
-            <Typography
-              sx={{ fontSize: { xs: '14px', md: '16px' } }}
-              variant="h4"
-            >
-              Sắp xếp theo:{' '}
-            </Typography>
-            <ButtonGroup ref={anchorRef} aria-label="split button">
-              <Button
-                variant="text"
-                id="composition-button"
-                aria-controls={openSort ? 'composition-menu' : undefined}
-                aria-expanded={openSort ? 'true' : undefined}
-                aria-haspopup="true"
-                onClick={handleToggleSort}
-                endIcon={<KeyboardArrowDownIcon />}
-                color="primary"
-              >
-                {sortOptions[selectedIndex]}
-              </Button>
-            </ButtonGroup>
-            <Popper
-              sx={{
-                zIndex: 2,
-              }}
-              open={openSort}
-              anchorEl={anchorRef.current}
-              role={undefined}
-              placement="bottom-start"
-              transition
-              disablePortal
-            >
-              {({ TransitionProps, placement }) => (
-                <Grow
-                  {...TransitionProps}
-                  style={{
-                    transformOrigin:
-                      placement === 'bottom-start' ? 'left top' : 'left bottom',
-                  }}
-                >
-                  <Paper sx={{ backgroundColor: '#fff' }}>
-                    <ClickAwayListener onClickAway={handleCloseSort}>
-                      <MenuList
-                        autoFocusItem={openSort}
-                        id="split-button-menu"
-                        aria-labelledby="composition-button"
-                        onKeyDown={handleListKeyDownSort}
-                      >
-                        {sortOptions.map((option, index) => (
-                          <MenuItem
-                            key={option}
-                            selected={index === selectedIndex}
-                            onClick={(event) =>
-                              handleSortItemClick(event, index)
-                            }
-                          >
-                            {option}
-                          </MenuItem>
-                        ))}
-                      </MenuList>
-                    </ClickAwayListener>
-                  </Paper>
-                </Grow>
-              )}
-            </Popper>
-          </Grid>
-        </Stack>
         <Box sx={{ display: 'flex' }}>
           {/* Render Products */}
           <Main open={openFilter} theme={theme}>
-            <ProductCardItems isLoading={isBookLoading} data={bookData?.data} />
+            <ProductCardItems
+              isLoading={isGetingListFilterBook}
+              data={listBook || []}
+            />
           </Main>
           <Drawer
             variant={matches ? 'persistent' : 'temporary'}
@@ -285,106 +237,107 @@ const Product = () => {
                   width: '100%',
                 }}
               >
-                <CardContent>
-                  <Grid container display="flex">
-                    <Grid item xs={12}>
-                      <Typography variant="h4">Danh mục</Typography>
-                      <FormControl>
-                        <Grid display="flex">
-                          <FormControlLabel
-                            label="Sách tiếng Việt"
-                            control={<Checkbox />}
-                          />
-                          <FormControlLabel
-                            label="Sách ngoại văn"
-                            control={<Checkbox />}
-                          />
-                        </Grid>
-                      </FormControl>
-                      <Typography variant="h4">Thể loại</Typography>
-                      <FormControl>
-                        <Grid display="flex" container>
-                          <FormControlLabel
-                            label="Văn học"
-                            control={<Checkbox />}
-                          />
-                          <FormControlLabel
-                            label="Kinh tế"
-                            control={<Checkbox />}
-                          />
-                          <FormControlLabel
-                            label="Tâm lý - Kỹ năng sống"
-                            control={<Checkbox />}
-                          />
-                          <FormControlLabel
-                            label="Sách giáo khoa"
-                            control={<Checkbox />}
-                          />
-                          <FormControlLabel
-                            label="Tham khảo"
-                            control={<Checkbox />}
-                          />
-                          <FormControlLabel
-                            label="Tiểu sử - Hồi ký"
-                            control={<Checkbox />}
-                          />
-                          <FormControlLabel
-                            label="Sách học ngoại ngữ"
-                            control={<Checkbox />}
-                          />
-                          <FormControlLabel
-                            label="Ngôn tình"
-                            control={<Checkbox />}
-                          />
-                          <FormControlLabel
-                            label="Thiếu nhi"
-                            control={<Checkbox />}
-                          />
-                        </Grid>
-                      </FormControl>
-                      <Typography variant="h4">GIÁ</Typography>
-                      <FormControl>
-                        <RadioGroup row name="row-radio-buttons-group">
-                          <FormControlLabel
-                            value="pricelist-1"
-                            control={<Radio />}
-                            label="0 &#x20AB; - 50.000 &#x20AB; "
-                          />
-                          <FormControlLabel
-                            value="pricelist-2"
-                            control={<Radio />}
-                            label="50.000 &#x20AB; - 100.000 &#x20AB; "
-                          />
-                          <FormControlLabel
-                            value="pricelist-3"
-                            control={<Radio />}
-                            label="100.000 &#x20AB; - 200.000 &#x20AB; "
-                          />
-                          <FormControlLabel
-                            value="pricelist-4"
-                            control={<Radio />}
-                            label="Trên 200.000 &#x20AB; "
-                          />
-                        </RadioGroup>
-                      </FormControl>
-                    </Grid>
-                    <Grid
-                      item
-                      xs={12}
-                      display="flex"
-                      flexDirection="row"
-                      justifyContent="center"
-                    >
-                      <Button
-                        color="error"
-                        variant="contained"
-                        onClick={handleClearAllFilter}
+                <form onSubmit={handleSubmit}>
+                  {' '}
+                  <CardContent>
+                    <Grid container display="flex">
+                      <Grid item xs={12}>
+                        <Typography variant="h4">Thể loại</Typography>
+                        <FormControl>
+                          <Grid display="flex" container>
+                            {isGenreLoading ? (
+                              <Grid item xs={12}>
+                                <Box sx={{ display: 'flex', p: 2 }}>
+                                  <CircularProgress size={20} />
+                                </Box>
+                              </Grid>
+                            ) : (
+                              genreData?.data?.map(
+                                (genre: any, _index: number) => (
+                                  <FormControlLabel
+                                    key={_index}
+                                    label={genre?.name}
+                                    checked={
+                                      !!genreList?.find(
+                                        (item: number) => item === genre?.id
+                                      )
+                                    }
+                                    onChange={() => {
+                                      if (
+                                        !!genreList?.find(
+                                          (item: number) => item === genre?.id
+                                        )
+                                      ) {
+                                        const newGenreList = genreList.filter(
+                                          (item) => item !== genre?.id
+                                        );
+                                        setGenreList(newGenreList);
+                                      } else {
+                                        setGenreList((pre: number[]) => [
+                                          ...pre,
+                                          genre?.id,
+                                        ]);
+                                      }
+                                    }}
+                                    control={<Checkbox />}
+                                  />
+                                )
+                              )
+                            )}
+                          </Grid>
+                        </FormControl>
+                        <Typography variant="h4">Giá</Typography>
+                        <FormControl>
+                          <RadioGroup row name="row-radio-buttons-group">
+                            <FormControlLabel
+                              value="pricelist-1"
+                              control={<Radio />}
+                              label="0 &#x20AB; - 50.000 &#x20AB; "
+                            />
+                            <FormControlLabel
+                              value="pricelist-2"
+                              control={<Radio />}
+                              label="50.000 &#x20AB; - 100.000 &#x20AB; "
+                            />
+                            <FormControlLabel
+                              value="pricelist-3"
+                              control={<Radio />}
+                              label="100.000 &#x20AB; - 200.000 &#x20AB; "
+                            />
+                            <FormControlLabel
+                              value="pricelist-4"
+                              control={<Radio />}
+                              label="Trên 200.000 &#x20AB; "
+                            />
+                          </RadioGroup>
+                        </FormControl>
+                      </Grid>
+                      <Grid
+                        item
+                        xs={12}
+                        display="flex"
+                        flexDirection="row"
+                        justifyContent="center"
                       >
-                        Xóa Tất Cả Lọc
-                      </Button>
+                        <Button
+                          type="submit"
+                          color="primary"
+                          variant="contained"
+                          sx={{ marginRight: 1 }}
+                        >
+                          Lọc
+                        </Button>
+                        <Button
+                          color="error"
+                          variant="contained"
+                          onClick={handleClearAllFilter}
+                        >
+                          Xóa Tất Cả Lọc
+                        </Button>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </CardContent>
+                  </CardContent>
+                </form>
               </Paper>
             </div>
           </Drawer>
