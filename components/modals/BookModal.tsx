@@ -65,13 +65,14 @@ const BookModal: FC<IBookModal> = ({
     price: data?.price ? data?.price : '',
     book_image: data?.book_image ? data?.book_image : '',
     published_date: data?.published_date ? data?.published_date : '',
-    publisher_id: data?.publisher_id ? data?.publisher_id : '',
-    genres: data?.genres ? data?.genres : [],
-    authors: data?.authors ? data?.authors : [],
+    publisher_id: data?.publisher?.id ? data?.publisher?.id : '',
+    genres: data?.genres ? data?.genres.map((genre: any) => genre?.id) : [],
+    authors: data?.authors
+      ? data?.authors?.map((author: any) => author?.id)
+      : [],
     submit: null,
   };
   const handleExit = (currentValues: any) => {
-    console.log(currentValues);
     if (objectEquals(initialValues, currentValues)) {
       handleClose();
     } else {
@@ -116,20 +117,7 @@ const BookModal: FC<IBookModal> = ({
               genres: values.genres,
               authors: values.authors,
             });
-            console.log({
-              name: values.name,
-              description: values.description,
-              available_quantity: values.available_quantity,
-              isbn: values.isbn,
-              language: values.language,
-              total_pages: values.total_pages,
-              price: values.price,
-              book_image: image,
-              published_date: values.published_date,
-              publisher_id: values.publisher_id,
-              genres: values.genres,
-              authors: values.authors,
-            });
+
             if (data === null) {
               await createBook(req);
             } else {
