@@ -1,7 +1,7 @@
 import httpRequest from '../services/httpRequest';
 
 export const getAllGenre = async () => {
-  return httpRequest.get('/admin/genres');
+  return httpRequest.get('/admin/genres?per_page=999');
 };
 export const getAllGenreClient = async () => {
   return httpRequest.get('/genres');
