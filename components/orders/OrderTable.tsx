@@ -7,6 +7,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Divider,
+  Card,
 } from '@mui/material';
 import { Typography, Paper, Grid, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -14,7 +16,7 @@ import { styled } from '@mui/material/styles';
 import QuantityButton from '../extended/Quantity';
 import Checkbox from '@mui/material/Checkbox';
 import { IItemTable } from '@/interfaces/compontents/cart.interface';
-
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 const ImageStyle = styled('img')({
   borderRadius: 4,
   objectFit: 'contain',
@@ -26,14 +28,22 @@ const OrderTable: React.FunctionComponent<IItemTable> = ({
   items,
   addressMode = false,
 }) => {
-  return (
-    <TableContainer component={Paper}>
-      <Table sx={{ maxWidth: 1762, marginTop: addressMode ? 0 : 2 }}>
+  return items.map((row: any) => (
+    <TableContainer component={Paper} key={row.id} sx={{ mb: 2 }}>
+      <Table sx={{ maxWidth: 1762, marginTop: 2 }}>
         <TableHead>
           <TableRow>
             <TableCell>
-              <Typography ml={addressMode ? 0 : 2} variant="h5">
-                Sản phẩm
+              <Stack display="flex" direction="row" alignItems="center">
+                <LocalShippingIcon sx={{ color: 'black' }} />
+                <Typography ml={addressMode ? 0 : 2} variant="h4">
+                  Giao thành công
+                </Typography>
+              </Stack>
+            </TableCell>
+            <TableCell>
+              <Typography variant="h5" textAlign="center">
+                Số lượng
               </Typography>
             </TableCell>
             <TableCell colSpan={addressMode ? 1 : 2}>
@@ -42,16 +52,20 @@ const OrderTable: React.FunctionComponent<IItemTable> = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {items.map((row: any) => (
-            <TableRow key={row.id}>
+          {row.product.map((item: any) => (
+            <TableRow key={item.id}>
               <TableCell sx={{ maxWidth: '350px' }}>
-                <Stack direction="row" justifyContent="flex-start" spacing={2}>
+                <Stack
+                  direction="column"
+                  justifyContent="flex-start"
+                  spacing={2}
+                >
                   <Box>
                     <ImageStyle
-                      alt={row.name}
+                      alt={item.name}
                       width="76"
                       height="76"
-                      src={row.book_image}
+                      src={item.book_image}
                     />
                   </Box>
                   <Box>
@@ -66,15 +80,24 @@ const OrderTable: React.FunctionComponent<IItemTable> = ({
                       spacing={40}
                     >
                       <Typography fontSize="16px" fontWeight="500">
-                        {row.name}
+                        {item.name}
                       </Typography>
                     </Stack>
                   </Box>
                 </Stack>
               </TableCell>
               <TableCell>
+                <Typography
+                  fontSize="16px"
+                  fontWeight="bold"
+                  textAlign="center"
+                >
+                  {item.quantity}
+                </Typography>
+              </TableCell>
+              <TableCell>
                 <Typography fontSize="16px" fontWeight="bold" textAlign="left">
-                  {row.price * row?.quantity}đ
+                  {item.price * item.quantity}đ
                 </Typography>
               </TableCell>
             </TableRow>
@@ -89,7 +112,7 @@ const OrderTable: React.FunctionComponent<IItemTable> = ({
         </TableBody>
       </Table>
     </TableContainer>
-  );
+  ));
 };
 
 export default OrderTable;

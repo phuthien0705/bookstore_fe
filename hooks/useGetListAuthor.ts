@@ -1,9 +1,9 @@
+import { getAllAuthor } from '@/apis/author.api';
 import { useQuery } from 'react-query';
-import { getAllAuthorClient } from '../apis/author.api';
 import { AUTHORS } from '../constants/queryKeyName';
 
 const useGetListAuthor = () => {
-  const getListQuery: any = useQuery(AUTHORS, getAllAuthorClient, {
+  const getListQuery: any = useQuery(AUTHORS, getAllAuthor, {
     cacheTime: Infinity,
     refetchOnWindowFocus: false,
     staleTime: Infinity,
