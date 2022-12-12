@@ -36,7 +36,6 @@ import useGetListBookClient from '@/hooks/client/useGetListBookClient';
 import useGetListGenreClient from '@/hooks/client/useGetListGenreClient';
 import useGetListAuthorClient from '@/hooks/client/useGetListAuthorClient';
 import useGetListPublisherClient from '@/hooks/client/useGetListPublisherClient';
-//Drawer style
 const drawerWidth = 400;
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }: { theme: any; open: boolean }) => ({
@@ -58,7 +57,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 );
 const Product = () => {
   const theme: any = useTheme();
-  //Fetch Data
+
   const getListBookQuery = useGetListBookClient();
   const getListGenreQuery = useGetListGenreClient();
   const getListAuthorQuery = useGetListAuthorClient();
@@ -257,11 +256,7 @@ const Product = () => {
         <Box sx={{ display: 'flex' }}>
           {/* Render Products */}
           <Main open={openFilter} theme={theme}>
-            <ProductCardItems
-              slideToShow={4}
-              isLoading={isBookLoading}
-              data={bookData?.data}
-            />
+            <ProductCardItems isLoading={isBookLoading} data={bookData?.data} />
           </Main>
           <Drawer
             variant={matches ? 'persistent' : 'temporary'}
