@@ -35,7 +35,7 @@ const Home = () => {
           return (
             <ProductCardItems
               key={_index}
-              slideToShow={4}
+              slideToShow={5}
               isLoading={isBookLoading}
               data={bookData?.data}
               title={genre?.name}
@@ -53,7 +53,7 @@ const Home = () => {
       <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: '1rem' }}>
         <CarouselCustumized />
         <ProductCardItems
-          slideToShow={4}
+          slideToShow={5}
           isLoading={isBookLoading}
           data={bookData?.data}
           title="Xu hướng mua sắm"
