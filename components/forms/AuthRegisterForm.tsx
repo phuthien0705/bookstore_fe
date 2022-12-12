@@ -160,7 +160,7 @@ const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
             };
             const res: any = await register(req);
             const req2 = { email: values.email, password: values.password };
-            const res2: any = await login({ req2 });
+            const res2: any = await login(req2);
             authService.login({
               accessToken: res2.access_token,
               name: res2.user.name,

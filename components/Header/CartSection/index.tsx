@@ -46,11 +46,11 @@ const CartSection: React.FunctionComponent<ICartSection> = ({
               height: '34px',
               fontSize: '1.2rem',
               transition: 'all .2s ease-in-out',
-              background: theme.palette.secondary.light,
-              color: theme.palette.secondary.dark,
+              background: theme.palette.primary.light,
+              color: theme.palette.primary.dark,
               '&[aria-controls="menu-list-grow"],&:hover': {
-                background: theme.palette.secondary.dark,
-                color: theme.palette.secondary.light,
+                background: theme.palette.primary.dark,
+                color: theme.palette.primary.light,
               },
             }}
             color="inherit"
