@@ -23,7 +23,7 @@ const ProductCardItems: React.FunctionComponent<IProductCardItems> = ({
   titleIcon,
   titleBackground = '#fff',
   isLoading = false,
-  slideToShow = 4,
+  slideToShow = 5,
   genreId = null,
 }) => {
   const classes = useStyles();
@@ -32,7 +32,7 @@ const ProductCardItems: React.FunctionComponent<IProductCardItems> = ({
     : data
     ? data?.filter((item: any) => {
         if (
-          !item?.genres?.every((itemGenre: any) => itemGenre?.id !== genreId)
+          !item?.genres?.every((itemGenre: any) => itemGenre?.id != genreId)
         ) {
           return item;
         }
@@ -42,6 +42,7 @@ const ProductCardItems: React.FunctionComponent<IProductCardItems> = ({
     if (isLoading)
       return (
         <>
+          <ProductCardSkeleton />
           <ProductCardSkeleton />
           <ProductCardSkeleton />
           <ProductCardSkeleton />

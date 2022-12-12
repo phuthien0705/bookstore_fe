@@ -4,8 +4,6 @@ import { useTheme } from '@mui/material/styles';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import useGetListBookClient from '../hooks/client/useGetListBookClient';
 import useGetListGenreClient from '../hooks/client/useGetListGenreClient';
-import useGetListAuthorClient from '../hooks/client/useGetListAuthorClient';
-import useGetListPublisherClient from '../hooks/client/useGetListPublisherClient';
 import ProductCardItems from '../components/cards/products/ProductCardItems';
 import ProductLayout from '@/layout/ProductLayot';
 import CarouselCustumized from '@/components/carousel/CarouselCustumized';
@@ -49,7 +47,6 @@ const Home = () => {
   };
   return (
     <ProductLayout>
-      {' '}
       <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: '1rem' }}>
         <CarouselCustumized />
         <ProductCardItems
