@@ -175,7 +175,7 @@ const ItemTable: React.FunctionComponent<IItemTable> = ({
                       fontWeight="bold"
                       textAlign={addressMode ? 'left' : 'center'}
                     >
-                      {row.price * row?.quantity}đ
+                      {moneyFormat(row.price * row?.quantity)} đ
                     </Typography>
                   </TableCell>
                   {!addressMode && (
