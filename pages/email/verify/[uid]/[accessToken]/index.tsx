@@ -9,7 +9,6 @@ import {
   Stack,
   useMediaQuery,
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import AuthLayout from '../../../../../layout/AuthLayout/index';
@@ -19,9 +18,7 @@ import Logo from '../../../../../components/Logo';
 import AuthCardWrapper from '../../../../../components/auth/AuthCardWrapper';
 
 const VerifyPassword = () => {
-  const theme = useTheme();
   const router = useRouter();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState('');
 
@@ -39,7 +36,7 @@ const VerifyPassword = () => {
       }
 
       setLoading(false);
-      setTimeout(() => router.push('/login'), 3000);
+      setTimeout(() => router.push({ pathname: '/' }), 3000);
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -106,13 +103,13 @@ const VerifyPassword = () => {
                               onClose={() => setShowAlert('')}
                             >
                               Xác thực Email thành công. Bạn sẽ được chuyển đến
-                              trang đăng nhập sau 3 giây.
+                              trang chủ sau 3 giây.
                             </Alert>
                             <Button
                               variant="contained"
                               color="primary"
                               onClick={() => {
-                                router.push('/login');
+                                router.push({ pathname: '/login' });
                               }}
                             >
                               Đi đến đăng nhập
