@@ -8,7 +8,7 @@ const OrderTitle: React.FunctionComponent = () => {
       alignItems={{ xs: 'flex-start', sm: 'center' }}
     >
       <Box>
-        <Typography variant="h3">Đơn hàng của tôi</Typography>
+        <Typography variant="h3">Đơn hàng</Typography>
       </Box>
       <Box mt={{ xs: 1, sm: 0 }}>
         <Breadcrumbs separator={<NavigateNextIcon />} aria-label="breadcrumb">

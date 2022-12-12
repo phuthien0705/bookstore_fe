@@ -10,7 +10,12 @@ import {
   MenuList,
   Typography,
 } from '@mui/material';
-import { IconLogout, IconSettings, IconAdjustments,IconReceipt } from '@tabler/icons';
+import {
+  IconLogout,
+  IconSettings,
+  IconAdjustments,
+  IconReceipt,
+} from '@tabler/icons';
 import authService from '../../../services/authService';
 import checkIsAdminOrManager from '../../../common/checkIsAdminOrManager';
 import { useRouter } from 'next/router';
@@ -123,9 +128,7 @@ const ProfileSection: React.FunctionComponent = () => {
                 <IconReceipt stroke={1.5} size="1.3rem" />
               </ListItemIcon>
               <ListItemText
-                primary={
-                  <Typography variant="body2">Đơn hàng của tôi</Typography>
-                }
+                primary={<Typography variant="body2">Đơn hàng</Typography>}
               />
             </ListItemButton>
             <ListItemButton
