@@ -15,7 +15,7 @@ import { shouldForwardProp } from '@mui/system';
 
 const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(
   ({ theme }) => ({
-    width: 434,
+    width: 300,
     height: 33,
     marginLeft: 16,
     paddingLeft: 16,
@@ -41,7 +41,7 @@ const SearchSection = () => {
 
   return (
     <>
-      <Box sx={{ display: 'block' }}>
+      <Box className='element-to-hide' sx={{ display: 'block' }}>
         <OutlineInputStyle
           id="input-search-header"
           value={value}

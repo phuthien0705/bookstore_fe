@@ -18,6 +18,7 @@ import { FC } from 'react';
 import { IHeader } from '@/interfaces/compontents/header.interface';
 import useGetListCart from '@/hooks/client/useGetListCart';
 import BelowSection from './BelowSection';
+import GenreSection from './GenreSection';
 
 const Header: FC<IHeader> = ({
   handleLeftDrawerToggle,
@@ -26,6 +27,7 @@ const Header: FC<IHeader> = ({
   hideCart = false,
   maxWidth = 'lg',
   hideBelowSection = false,
+  hideGenreSection = false
 }) => {
   const theme: any = useTheme();
   const { data, isLoading, isFetching, refetch } = useGetListCart();
@@ -64,6 +66,7 @@ const Header: FC<IHeader> = ({
           >
             <LogoSection />
           </Box>
+          {!hideGenreSection && <GenreSection />}
           {!hideSidebarIcon && (
             <IconButton
               size="small"
@@ -82,9 +85,9 @@ const Header: FC<IHeader> = ({
             </IconButton>
           )}
         </Box>
+        <Box sx={{ flexGrow: 1 }} />
         {/* header search */}
         {!hideSearch && <SearchSection />}
-        <Box sx={{ flexGrow: 1 }} />
         {/* notification & profile & cart */}
         {!hideCart && (
           <CartSection
