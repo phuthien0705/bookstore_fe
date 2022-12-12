@@ -7,5 +7,5 @@ export interface IHeader {
   hideCart?: boolean;
   maxWidth?: false | Breakpoint | undefined;
   hideBelowSection?: boolean;
-  hideGenreSection?: boolean
+  hideGenreSection?: boolean;
 }

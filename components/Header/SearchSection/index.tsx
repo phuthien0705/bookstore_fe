@@ -41,7 +41,7 @@ const SearchSection = () => {
 
   return (
     <>
-      <Box className='element-to-hide' sx={{ display: 'block' }}>
+      <Box className="element-to-hide" sx={{ display: 'block' }}>
         <OutlineInputStyle
           id="input-search-header"
           value={value}
