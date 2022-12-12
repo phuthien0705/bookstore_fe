@@ -36,7 +36,6 @@ const CartItems: React.FunctionComponent = () => {
   const handleChange = (event: any, newValue: any) => {
     setCurrentIndex(newValue);
   };
-  console.log('list address', listAddress);
   return (
     <>
       <Grid container sx={{ paddingBottom: '60px', position: 'relative' }}>

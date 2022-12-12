@@ -97,89 +97,102 @@ const ItemTable: React.FunctionComponent<IItemTable> = ({
           )}
         </TableHead>
         <TableBody>
-          {items.map((row: any) => (
-            <TableRow key={row.id}>
-              <TableCell sx={{ maxWidth: '350px' }}>
-                <Stack direction="row" justifyContent="flex-start" spacing={2}>
-                  {!addressMode && (
-                    <Checkbox
-                      sx={{ height: 'fit-content' }}
-                      checked={!!row?.is_checked}
-                      onChange={() => {
-                        checkItem &&
-                          checkItem({
-                            book_id: row?.book?.id,
-                            is_checked: !row?.is_checked,
-                          });
-                      }}
-                    />
-                  )}
-                  <Box>
-                    <ImageStyle
-                      alt={row?.book?.name}
-                      width="76"
-                      height="76"
-                      src={row?.book?.book_image}
-                    />
-                  </Box>
-                  <Box>
+          {items.map(
+            (row: any) =>
+              ((addressMode && row?.is_checked === 1) || !addressMode) && (
+                <TableRow key={row.id}>
+                  <TableCell sx={{ maxWidth: '350px' }}>
                     <Stack
-                      sx={{ width: '100%', height: '100%', padding: '10px 0' }}
-                      direction="column"
-                      justifyContent="space-between"
+                      direction="row"
+                      justifyContent="flex-start"
+                      spacing={2}
                     >
-                      <Typography fontSize="16px" fontWeight="500">
-                        {row?.book?.name}
-                      </Typography>
-                      <Typography
-                        fontSize="14px"
-                        fontWeight="600"
-                        color="#ee4d2d"
-                      >
-                        {row?.price}đ
-                      </Typography>
+                      {!addressMode && (
+                        <Checkbox
+                          sx={{ height: 'fit-content' }}
+                          checked={!!row?.is_checked}
+                          onChange={() => {
+                            checkItem &&
+                              checkItem({
+                                book_id: row?.book?.id,
+                                is_checked: !row?.is_checked,
+                              });
+                          }}
+                        />
+                      )}
+                      <Box>
+                        <ImageStyle
+                          alt={row?.book?.name}
+                          width="76"
+                          height="76"
+                          src={row?.book?.book_image}
+                        />
+                      </Box>
+                      <Box>
+                        <Stack
+                          sx={{
+                            width: '100%',
+                            height: '100%',
+                            padding: '10px 0',
+                          }}
+                          direction="column"
+                          justifyContent="space-between"
+                        >
+                          <Typography fontSize="16px" fontWeight="500">
+                            {row?.book?.name}
+                          </Typography>
+                          <Typography
+                            fontSize="14px"
+                            fontWeight="600"
+                            color="#ee4d2d"
+                          >
+                            {row?.price}đ
+                          </Typography>
+                        </Stack>
+                      </Box>
                     </Stack>
-                  </Box>
-                </Stack>
-              </TableCell>
+                  </TableCell>
 
-              {!addressMode && (
-                <TableCell sx={{ maxWidth: 100, minWidth: 100 }}>
-                  <QuantityButton
-                    currentQuantity={row?.quantity}
-                    handleIncreaseQuantity={() =>
-                      handleIncreaseQuantity &&
-                      handleIncreaseQuantity(row?.book_id)
-                    }
-                    handleDecreaseQuantity={() =>
-                      handleDecreaseQuantity &&
-                      handleDecreaseQuantity(row?.book_id)
-                    }
-                  />
-                </TableCell>
-              )}
-              <TableCell>
-                <Typography
-                  fontSize="16px"
-                  fontWeight="bold"
-                  textAlign={addressMode ? 'left' : 'center'}
-                >
-                  {row.price * row?.quantity}đ
-                </Typography>
-              </TableCell>
-              {!addressMode && (
-                <TableCell sx={{ maxWidth: 40, minWidth: 40 }}>
-                  <IconButton
-                    disableFocusRipple
-                    disableRipple
-                    onClick={() => handleDelete && handleDelete(row?.book_id)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
-              )}
-            </TableRow>
-          ))}
+                  {!addressMode && (
+                    <TableCell sx={{ maxWidth: 100, minWidth: 100 }}>
+                      <QuantityButton
+                        currentQuantity={row?.quantity}
+                        handleIncreaseQuantity={() =>
+                          handleIncreaseQuantity &&
+                          handleIncreaseQuantity(row?.book_id)
+                        }
+                        handleDecreaseQuantity={() =>
+                          handleDecreaseQuantity &&
+                          handleDecreaseQuantity(row?.book_id)
+                        }
+                      />
+                    </TableCell>
+                  )}
+                  <TableCell>
+                    <Typography
+                      fontSize="16px"
+                      fontWeight="bold"
+                      textAlign={addressMode ? 'left' : 'center'}
+                    >
+                      {row.price * row?.quantity}đ
+                    </Typography>
+                  </TableCell>
+                  {!addressMode && (
+                    <TableCell sx={{ maxWidth: 40, minWidth: 40 }}>
+                      <IconButton
+                        disableFocusRipple
+                        disableRipple
+                        onClick={() =>
+                          handleDelete && handleDelete(row?.book_id)
+                        }
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  )}
+                </TableRow>
+              )
+          )}
         </TableBody>
       </Table>
     </TableContainer>

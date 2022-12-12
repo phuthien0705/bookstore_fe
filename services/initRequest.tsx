@@ -21,7 +21,6 @@ export default function initRequest() {
     (config) => {
       const accessToken = getAccessToken();
       if (accessToken) {
-        // config.headers.Authorization = `Bearer ${accessToken}`;
         config.headers = {
           Authorization: `Bearer ${accessToken}`,
         };
@@ -36,7 +35,7 @@ export default function initRequest() {
 
   axiosInstance.interceptors.response.use(
     (res) => {
-      return res.data;
+      return res?.data;
     },
     (error) => {
       switch (error.response?.status) {

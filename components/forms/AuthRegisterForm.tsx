@@ -158,7 +158,7 @@ const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
               email: values.email,
               password: values.password,
             };
-            const res: any = await register(req);
+            await register(req);
             const req2 = { email: values.email, password: values.password };
             const res2: any = await login(req2);
             authService.login({
