@@ -3,9 +3,10 @@ import { Navigation, Pagination, Autoplay } from 'swiper';
 import { makeStyles } from '@mui/styles';
 import config from '../../config';
 import Image from 'next/image';
-import Img1 from '/assets/images/boxo/carousel_1.jpg';
-import Img2 from '/assets/images/boxo/carousel_2.jpg';
-import Img3 from '/assets/images/boxo/carousel_3.jpg';
+import Carousel1 from '@/public/img/carousel_1.png';
+import Carousel2 from '@/public/img/carousel_2.png';
+import Carousel3 from '@/public/img/carousel_3.png';
+
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
@@ -77,7 +78,13 @@ const CarouselCustumized: React.FunctionComponent = () => {
           <Image alt={'image1'} src={Img1} />
         </SwiperSlide> */}
         <SwiperSlide className={classes.carouselItem}>
-          <Image alt={'image2'} src={Img2} />
+          <Image alt={'image2'} src={Carousel1} />
+        </SwiperSlide>
+        <SwiperSlide className={classes.carouselItem}>
+          <Image alt={'image2'} src={Carousel2} />
+        </SwiperSlide>
+        <SwiperSlide className={classes.carouselItem}>
+          <Image alt={'image2'} src={Carousel3} />
         </SwiperSlide>
         {/* <SwiperSlide className={classes.carouselItem}>
           <Image alt={'image3'} src={Img3} />
