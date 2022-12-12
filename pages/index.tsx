@@ -6,9 +6,9 @@ import useGetListBookClient from '../hooks/client/useGetListBookClient';
 import useGetListGenreClient from '../hooks/client/useGetListGenreClient';
 import useGetListAuthorClient from '../hooks/client/useGetListAuthorClient';
 import useGetListPublisherClient from '../hooks/client/useGetListPublisherClient';
-import CarouselHome from '../components/carousel/CarouselHome';
 import ProductCardItems from '../components/cards/products/ProductCardItems';
 import ProductLayout from '@/layout/ProductLayot';
+import CarouselCustumized from '@/components/carousel/CarouselCustumized';
 
 const Home = () => {
   const theme = useTheme();
@@ -51,7 +51,7 @@ const Home = () => {
     <ProductLayout>
       {' '}
       <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: '1rem' }}>
-        <CarouselHome />
+        <CarouselCustumized />
         <ProductCardItems
           slideToShow={4}
           isLoading={isBookLoading}

@@ -2,7 +2,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper';
 import { makeStyles } from '@mui/styles';
 import config from '../../config';
-
+import Image from 'next/image';
+import Img1 from '/assets/images/boxo/carousel_1.jpg';
+import Img2 from '/assets/images/boxo/carousel_2.jpg';
+import Img3 from '/assets/images/boxo/carousel_3.jpg';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
@@ -54,13 +57,9 @@ const useStyles = makeStyles({
     translate: '-50% -50%',
   },
 });
-const CarouselHome = () => {
+const CarouselCustumized: React.FunctionComponent = () => {
   const classes = useStyles();
-  const images = [
-    'https://wallpaperaccess.com/full/124378.jpg',
-    'https://image.winudf.com/v2/image/Y29tLkRyZWFtV2FsbHBhcGVycy5Cb29rMDFfc2NyZWVuc2hvdHNfMF9mNzdhNGRiNw/screen-0.jpg?fakeurl=1&type=.webp',
-    'https://images.unsplash.com/photo-1544716278-e513176f20b5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTF8fHxlbnwwfHx8fA%3D%3D&w=1000&q=80',
-  ];
+  const images = ['Img1', 'Img2', 'Img3'];
 
   return (
     <div className={classes.container}>
@@ -74,14 +73,18 @@ const CarouselHome = () => {
         navigation
         slidesPerView={1}
       >
-        {images.map((image, index) => (
-          <SwiperSlide key={index} className={classes.carouselItem}>
-            <img alt={'image' + index} src={image} />
-          </SwiperSlide>
-        ))}
+        {/* <SwiperSlide className={classes.carouselItem}>
+          <Image alt={'image1'} src={Img1} />
+        </SwiperSlide> */}
+        <SwiperSlide className={classes.carouselItem}>
+          <Image alt={'image2'} src={Img2} />
+        </SwiperSlide>
+        {/* <SwiperSlide className={classes.carouselItem}>
+          <Image alt={'image3'} src={Img3} />
+        </SwiperSlide> */}
       </Swiper>{' '}
     </div>
   );
 };
 
-export default CarouselHome;
+export default CarouselCustumized;
