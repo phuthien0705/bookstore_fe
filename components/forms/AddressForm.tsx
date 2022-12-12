@@ -34,9 +34,7 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
   console.log('$123', data);
   const { data: listCity } = useGetListCity();
   const [listDistrict, setListDistrict] = useState<any[]>([]);
-  // const toast = ({ type, message }: { type: string; message: string }) => {
-  //   dispatch(toggleSnackbar({ open: true, message, type }));
-  // };
+
   const toast = useToast(dispatch, toggleSnackbar);
   const { mutate: getListDistrictFunc } = useMutation(
     (id: string | number) => getListDistrict(id),

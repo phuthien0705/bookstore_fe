@@ -36,7 +36,7 @@ const SecurityTab: React.FunctionComponent = () => {
     dispatch(toggleSnackbar({ open: true, message, type }));
   };
   return (
-    <Box sx={{ maxWidth: '500px', margin: 'auto' }}>
+    <Box sx={{ maxWidth: '500px', margin: 'auto', paddingTop: 2 }}>
       <Formik
         initialValues={initValue}
         validationSchema={Yup.object().shape({
