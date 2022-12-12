@@ -1,4 +1,3 @@
-// Import MUI
 import {
   Typography,
   Box,
@@ -23,21 +22,16 @@ import {
   Drawer,
   Stack,
 } from '@mui/material';
-// Import React Hooks
 import { useTheme, styled } from '@mui/material/styles';
 import { useState, useRef, useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
-// Import Icon
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-// Import Components
 import ProductLayout from '../../layout/ProductLayot';
 import MainCard from '../../components/cards/MainCard';
 import SearchAdminSection from '../../components/Header/SearchSection/SearchAdmin';
 import ProductCardItems from '../../components/cards/products/ProductCardItems';
-import sampleData from '@/components/cards/products/SampleData';
-//Import react-query
 import useGetListBookClient from '@/hooks/client/useGetListBookClient';
 import useGetListGenreClient from '@/hooks/client/useGetListGenreClient';
 import useGetListAuthorClient from '@/hooks/client/useGetListAuthorClient';

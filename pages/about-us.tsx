@@ -1,4 +1,4 @@
-import CarouselAboutUs from '@/components/carousel/CarouselAboutUs';
+import CarouselCustumized from '@/components/carousel/CarouselCustumized';
 import MainCard from '@/components/cards/MainCard';
 import {
   Typography,
@@ -23,7 +23,7 @@ const aboutUs = () => {
   return (
     <>
       <ProductLayout>
-        <CarouselAboutUs />
+        <CarouselCustumized />
 
         <MainCard title={<Typography variant="h2">Giới thiệu</Typography>}>
           <Typography variant="h3">Thành lập</Typography>
