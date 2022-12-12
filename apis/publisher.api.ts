@@ -4,7 +4,7 @@ export const getAllPublisher = async () => {
   return httpRequest.get('/admin/publishers?per_page=999');
 };
 export const getAllPublisherClient = async () => {
-  return httpRequest.get('/publishers');
+  return httpRequest.get('/publishers?per_page=999');
 };
 export const editPublisher = async (
   id: string | number | undefined,

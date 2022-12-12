@@ -4,7 +4,7 @@ export const getAllAuthor = async () => {
   return httpRequest.get('/admin/authors?per_page=999');
 };
 export const getAllAuthorClient = async () => {
-  return httpRequest.get('/authors');
+  return httpRequest.get('/authors?per_page=999');
 };
 export const editAuthor = async (
   id: string | number | undefined,
