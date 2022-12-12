@@ -55,6 +55,10 @@ const ProfileTab: React.FunctionComponent = () => {
   );
 
   const handleSave = () => {
+    if (values?.phone?.match(/\d/g).length === 10) {
+      toast({ type: 'info', message: 'Số điện thoại phải đúng định dạng' });
+      return;
+    }
     const req = createFormDataRequest(
       values?.avatar
         ? {
@@ -73,6 +77,13 @@ const ProfileTab: React.FunctionComponent = () => {
   };
   const handlePreviewAvatar = (e: any) => {
     const file = e.target.files[0];
+    if (file?.size / 1024 > 2) {
+      toast({
+        type: 'info',
+        message: 'Dung lượng hình ảnh tối đa là 2Mb, vui lòng chọn ảnh khác',
+      });
+      return;
+    }
     setPreviewAvatar(URL.createObjectURL(file));
     setValues((prevValue: any) => ({
       ...prevValue,
@@ -102,6 +113,7 @@ const ProfileTab: React.FunctionComponent = () => {
       phone: data?.userInfo?.phone || '',
     }));
   }, [data]);
+
   if (isLoading) {
     return (
       <Box sx={{ width: '100%' }}>
