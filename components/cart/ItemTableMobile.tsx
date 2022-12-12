@@ -11,6 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import QuantityButton from '../extended/Quantity';
 import { FC } from 'react';
 import { IItemTableMobile } from '@/interfaces/compontents/cart.interface';
+import { moneyFormat } from '@/utils/moneyFormat';
 
 const ImageStyle = styled('img')({
   borderRadius: 4,
@@ -111,7 +112,7 @@ const ItemTableMobile: FC<IItemTableMobile> = ({
                       fontWeight="bold"
                       color="#ee4d2d"
                     >
-                      {item.price} đ
+                      {moneyFormat(item.price)} đ
                     </Typography>
                     <QuantityButton
                       currentQuantity={item?.quantity}

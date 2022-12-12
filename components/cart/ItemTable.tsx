@@ -14,6 +14,7 @@ import { styled } from '@mui/material/styles';
 import QuantityButton from '../extended/Quantity';
 import Checkbox from '@mui/material/Checkbox';
 import { IItemTable } from '@/interfaces/compontents/cart.interface';
+import { moneyFormat } from '@/utils/moneyFormat';
 
 const ImageStyle = styled('img')({
   borderRadius: 4,
@@ -146,7 +147,7 @@ const ItemTable: React.FunctionComponent<IItemTable> = ({
                             fontWeight="600"
                             color="#ee4d2d"
                           >
-                            {row?.price}đ
+                            {moneyFormat(row?.price)} đ
                           </Typography>
                         </Stack>
                       </Box>

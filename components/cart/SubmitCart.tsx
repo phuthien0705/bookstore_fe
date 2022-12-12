@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { useCallback } from 'react';
 import { toggleSnackbar } from '@/store/snackbarReducer';
+import { moneyFormat } from '@/utils/moneyFormat';
 
 const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
   currentIndex,
@@ -98,14 +99,16 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
                 sx={{ fontWeight: 500, fontSize: '20px', color: '#000' }}
               >
                 {items
-                  ? items.reduce(
-                      (prev: number, curr: any) =>
-                        curr.is_checked === 1
-                          ? Number(prev) +
-                            Number(curr.price) * Number(curr.quantity)
-                          : Number(prev) + 0,
-                      0
-                    ) + ((currentIndex === 1 && defaultAddress?.value) || 0)
+                  ? moneyFormat(
+                      items.reduce(
+                        (prev: number, curr: any) =>
+                          curr.is_checked === 1
+                            ? Number(prev) +
+                              Number(curr.price) * Number(curr.quantity)
+                            : Number(prev) + 0,
+                        0
+                      ) + ((currentIndex === 1 && defaultAddress?.value) || 0)
+                    )
                   : 0}
                 đ
               </Typography>

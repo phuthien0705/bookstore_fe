@@ -20,6 +20,7 @@ import authService from '@/services/authService';
 import { useRouter } from 'next/router';
 import { CART_CLIENT } from '@/constants/queryKeyName';
 import { useToast } from '@/hooks/useToast';
+import { moneyFormat } from '@/utils/moneyFormat';
 
 const useStyles = makeStyles({
   root: {
@@ -147,7 +148,7 @@ const ProductCard: React.FunctionComponent<IProductCard> = ({
                   color="#000"
                   fontSize="16px"
                 >
-                  {product?.price}
+                  {moneyFormat(product?.price)} đ
                 </Typography>
                 <LoadingButton
                   loading={isLoadingAddToCart}
