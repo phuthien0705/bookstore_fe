@@ -76,7 +76,7 @@ const ResetPassword = () => {
                     </Grid>
                     <Grid item xs={12}>
                       <ResetPasswordForm
-                        params={`token=${router?.query?.token}`}
+                        params={`?token=${router?.query?.token}`}
                       />
                     </Grid>
                   </Grid>
