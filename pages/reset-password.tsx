@@ -6,12 +6,12 @@ import AuthLayout from '../layout/AuthLayout/index';
 import AuthCardWrapper from '../components/auth/AuthCardWrapper';
 import Logo from '../components/Logo';
 import AuthWrapper from '../components/auth/AuthWrapper';
+import ResetPasswordForm from '@/components/forms/ResetPasswordForm';
 
 const ResetPassword = () => {
   const router = useRouter();
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-  console.log(router);
   return (
     <AuthLayout>
       {' '}
@@ -75,7 +75,9 @@ const ResetPassword = () => {
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                      {/* <ResetPasswordForm params={location?.search} /> */}
+                      <ResetPasswordForm
+                        params={`token=${router?.query?.token}`}
+                      />
                     </Grid>
                   </Grid>
                 </AuthCardWrapper>
