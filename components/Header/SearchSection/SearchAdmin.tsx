@@ -47,14 +47,15 @@ const SearchAdminSection: FC<ISearchAdminSection> = ({
   };
   useEffect(() => {
     const inputRefCurrent = inputRef?.current;
-    inputRefCurrent.addEventListener('keypress', function (event: any) {
+    const handleKeyPress = function (event: any) {
       if (event.key === 'Enter') {
         handleSearch();
       }
-    });
+    };
+    inputRefCurrent?.addEventListener('keypress', handleKeyPress);
 
     return () => {
-      inputRefCurrent.removeEventListener('keypress');
+      inputRefCurrent?.removeEventListener('keypress', handleKeyPress);
     };
   }, [handleSearch]);
 
