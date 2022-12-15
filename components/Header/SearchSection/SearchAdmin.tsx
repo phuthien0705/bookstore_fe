@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useRef, useEffect, useCallback } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, InputAdornment, OutlinedInput } from '@mui/material';
 import { shouldForwardProp } from '@mui/system';
@@ -28,18 +28,41 @@ const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(
   })
 );
 
-const SearchAdminSection: FC<ISearchAdminSection> = ({ value, setValue }) => {
+const SearchAdminSection: FC<ISearchAdminSection> = ({
+  value,
+  setValue,
+  setPage,
+}) => {
+  const inputRef = useRef<any>(null);
   const [searchContent, setSearchContent] = useState<string>('');
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
+    console.log('click - search');
     setValue(searchContent);
-  };
+    setPage && setPage(1);
+  }, [searchContent, setPage, setValue]);
   const handleClearSearch = () => {
     setValue('');
+    setSearchContent('');
+    setPage && setPage(1);
   };
+  useEffect(() => {
+    const inputRefCurrent = inputRef?.current;
+    const handleKeyPress = function (event: any) {
+      if (event.key === 'Enter') {
+        handleSearch();
+      }
+    };
+    inputRefCurrent?.addEventListener('keypress', handleKeyPress);
+
+    return () => {
+      inputRefCurrent?.removeEventListener('keypress', handleKeyPress);
+    };
+  }, [handleSearch]);
 
   return (
     <Box sx={{ width: '100%' }}>
       <OutlineInputStyle
+        ref={inputRef}
         id="input-search-admin"
         size="small"
         value={searchContent}
@@ -60,7 +83,7 @@ const SearchAdminSection: FC<ISearchAdminSection> = ({ value, setValue }) => {
             onClick={() => handleClearSearch()}
             position="end"
           >
-            {value && <CloseIcon />}
+            {searchContent && <CloseIcon />}
           </InputAdornment>
         }
         aria-describedby="search-helper-text"

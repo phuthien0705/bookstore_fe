@@ -36,8 +36,8 @@ const ImageStyle = styled('img')({
 });
 const ProductManagement = () => {
   const dispatch = useDispatch();
-  const [searchContent, setSearchContent] = useState('');
-  const [pageSize, setPageSize] = useState<number>(10);
+  const [searchContent, setSearchContent] = useState<string>('');
+  const [pageSize, setPageSize] = useState<number>(5);
   const [page, setPage] = useState<number>(1);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [currentProduct, setCurrentProduct] = useState<{ data: any } | null>(
@@ -65,7 +65,7 @@ const ProductManagement = () => {
     isLoading: isBookLoading,
     isFetching: isBookFetching,
     refetch,
-  } = useGetListBook(page, 10, ['name', 'description'] as any, searchContent);
+  } = useGetListBook(page, 5, ['name', 'description'] as any, searchContent);
 
   const findPublisher = useCallback((id: any) => {
     if (publisherData?.data) {
@@ -184,7 +184,9 @@ const ProductManagement = () => {
       },
     },
   ];
-  console.log(bookData?.data);
+  useEffect(() => {
+    refetch();
+  }, [refetch, page, searchContent]);
   return (
     <AdminLayout>
       {' '}
@@ -199,6 +201,7 @@ const ProductManagement = () => {
             <SearchAdminSection
               value={searchContent}
               setValue={setSearchContent}
+              setPage={setPage}
             />
             <Button
               disabled={
@@ -251,13 +254,11 @@ const ProductManagement = () => {
               disableColumnMenu
               loading={isBookLoading || isMutateLoading || isBookFetching}
               columns={columns}
-              rows={bookData?.data || []}
+              rows={isBookLoading || isBookFetching ? [] : bookData?.data}
               components={{
                 NoRowsOverlay: CustomNoRowsOverlay,
                 LoadingOverlay: LinearProgress,
               }}
-              pageSize={pageSize}
-              onPageSizeChange={(newPage) => setPageSize(newPage)}
               hideFooterPagination
             />
           </Box>

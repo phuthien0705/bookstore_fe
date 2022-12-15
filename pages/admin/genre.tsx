@@ -19,7 +19,7 @@ import AdminLayout from '../../layout/AdminLayout';
 
 const GenreManagement = () => {
   const queryClient = useQueryClient();
-  const [searchContent, setSearchContent] = useState('');
+  const [searchContent, setSearchContent] = useState<string>('');
   const [page, setPage] = useState<number>(1);
   const [currentProduct, setCurrentProduct] = useState<{ data: any } | null>(
     null
@@ -95,6 +95,11 @@ const GenreManagement = () => {
       },
     },
   ];
+
+  useEffect(() => {
+    refetch();
+  }, [refetch, page, searchContent]);
+
   return (
     <AdminLayout>
       <>
@@ -108,6 +113,7 @@ const GenreManagement = () => {
             <SearchAdminSection
               value={searchContent}
               setValue={setSearchContent}
+              setPage={setPage}
             />
             <Button
               disabled={isLoading || isFetching}
@@ -145,7 +151,7 @@ const GenreManagement = () => {
               disableColumnMenu
               loading={isLoading || isFetching || isMutateLoading}
               columns={columns}
-              rows={data?.data || []}
+              rows={isLoading || isFetching ? [] : data?.data}
               components={{
                 NoRowsOverlay: CustomNoRowsOverlay,
                 LoadingOverlay: LinearProgress,
