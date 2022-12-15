@@ -5,6 +5,7 @@ import { shouldForwardProp } from '@mui/system';
 import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
+import { ISearchAdminSection } from '@/interfaces/compontents/search.interface';
 
 const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(
   ({ theme }) => ({
@@ -26,10 +27,7 @@ const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(
     },
   })
 );
-interface ISearchAdminSection {
-  value: any;
-  setValue: Function;
-}
+
 const SearchAdminSection: FC<ISearchAdminSection> = ({ value, setValue }) => {
   const [searchContent, setSearchContent] = useState<string>('');
   const handleSearch = () => {
