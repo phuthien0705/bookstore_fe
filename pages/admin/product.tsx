@@ -35,41 +35,37 @@ const ImageStyle = styled('img')({
   height: '100px',
 });
 const ProductManagement = () => {
+  const dispatch = useDispatch();
+  const [searchContent, setSearchContent] = useState('');
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [page, setPage] = useState<number>(1);
+  const [selectionModel, setSelectionModel] = useState<any[]>([]);
+  const [currentProduct, setCurrentProduct] = useState<{ data: any } | null>(
+    null
+  );
   const queryClient = useQueryClient();
-  const getListBookQuery = useGetListBook();
-  const getListGenreQuery = useGetListGenre();
-  const getListAuthorQuery = useGetListAuthor();
-  const getListPublisherQuery = useGetListPublisher();
+
   const {
     data: authorData,
     isLoading: isAuthorLoading,
     isFetching: isAuthorFetching,
-  } = getListAuthorQuery;
+  } = useGetListAuthor(1, 100);
   const {
     data: publisherData,
     isLoading: isPublisherLoading,
     isFetching: isPublisherFetching,
-  } = getListPublisherQuery;
+  } = useGetListPublisher(1, 100);
   const {
     data: genreData,
     isLoading: isGenreLoading,
     isFetching: isGenreFetching,
-  } = getListGenreQuery;
+  } = useGetListGenre(1, 100);
   const {
     data: bookData,
     isLoading: isBookLoading,
     isFetching: isBookFetching,
     refetch,
-  } = getListBookQuery;
-
-  const dispatch = useDispatch();
-  const [searchContent, setSearchContent] = useState('');
-  const [pageSize, setPageSize] = useState(5);
-  const [page, setPage] = useState(0);
-  const [selectionModel, setSelectionModel] = useState<any[]>([]);
-  const [currentProduct, setCurrentProduct] = useState<{ data: any } | null>(
-    null
-  );
+  } = useGetListBook(page, 10, ['name', 'description'] as any, searchContent);
 
   const findPublisher = useCallback((id: any) => {
     if (publisherData?.data) {
@@ -116,7 +112,7 @@ const ProductManagement = () => {
     refetch();
   }, [refetch]);
 
-  const columns = [
+  const columns: any[] = [
     { field: 'id', headerName: 'ID', description: 'ID sản phẩm', width: 50 },
     {
       field: 'image',
@@ -246,28 +242,36 @@ const ProductManagement = () => {
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
                 },
+                '.MuiDataGrid-footerContainer': {
+                  display: 'none',
+                },
               }}
               disableSelectionOnClick
               rowHeight={100}
               disableColumnMenu
-              loading={isBookFetching || isBookLoading || isMutateLoading}
+              loading={isBookLoading || isMutateLoading || isBookFetching}
               columns={columns}
               rows={bookData?.data || []}
               components={{
                 NoRowsOverlay: CustomNoRowsOverlay,
                 LoadingOverlay: LinearProgress,
-                Pagination: CustomPagination,
               }}
               pageSize={pageSize}
               onPageSizeChange={(newPage) => setPageSize(newPage)}
-              // page={page}
-              // onPageChange={(newPage) => setPage(newPage)}
-
-              pagination
-              // onSelectionModelChange={(newSelectionModel) => {
-              //   setSelectionModel(newSelectionModel as any);
-              // }}
-              // selectionModel={selectionModel}
+              hideFooterPagination
+            />
+          </Box>
+          <Box
+            sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 1.5 }}
+          >
+            <Pagination
+              sx={{ marginRight: 2 }}
+              variant="outlined"
+              shape="rounded"
+              color="primary"
+              count={bookData?.meta?.last_page || 0}
+              page={page}
+              onChange={(event, value) => setPage(value)}
             />
           </Box>
           <BookModal

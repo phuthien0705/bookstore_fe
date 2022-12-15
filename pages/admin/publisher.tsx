@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Pagination, Stack, Typography } from '@mui/material';
 import MainCard from '../../components/cards/MainCard';
 import SearchAdminSection from '../../components/Header/SearchSection/SearchAdmin';
 import { DataGrid } from '@mui/x-data-grid';
@@ -21,11 +21,16 @@ import AdminLayout from '../../layout/AdminLayout';
 
 const PublisherManagement = () => {
   const queryClient = useQueryClient();
-  const getListPublisherQuery = useGetListPublisher();
-  const { data, isLoading, isFetching, refetch } = getListPublisherQuery;
   const [searchContent, setSearchContent] = useState('');
-  const [pageSize, setPageSize] = useState(5);
+  const [page, setPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(5);
   const [currentProduct, setCurrentProduct] = useState<any>(null);
+  const { data, isLoading, isFetching, refetch } = useGetListPublisher(
+    page,
+    10,
+    ['name', 'description'] as any,
+    searchContent
+  );
   const dispatch = useDispatch();
   const toast = useCallback(
     ({ type, message }: { type: string; message: string }) => {
@@ -151,6 +156,9 @@ const PublisherManagement = () => {
                 border: 1,
                 borderColor: 'rgba(0, 0, 0, 0.23)',
                 borderRadius: `${config.borderRadius}px`,
+                '.MuiDataGrid-footerContainer': {
+                  display: 'none',
+                },
               }}
               disableSelectionOnClick
               autoHeight
@@ -161,11 +169,20 @@ const PublisherManagement = () => {
               components={{
                 NoRowsOverlay: CustomNoRowsOverlay,
                 LoadingOverlay: LinearProgress,
-                Pagination: CustomPagination,
               }}
-              pageSize={pageSize}
-              onPageSizeChange={(newPage) => setPageSize(newPage)}
-              pagination
+            />
+          </Box>
+          <Box
+            sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 1.5 }}
+          >
+            <Pagination
+              sx={{ marginRight: 2 }}
+              variant="outlined"
+              shape="rounded"
+              color="primary"
+              count={data?.meta?.last_page || 0}
+              page={page}
+              onChange={(event, value) => setPage(value)}
             />
           </Box>
           <PublisherModal

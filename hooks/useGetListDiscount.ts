@@ -4,9 +4,8 @@ import { useQuery } from 'react-query';
 
 const useGetListDiscount = () => {
   const getListQuery: any = useQuery(DISCOUNTS, getAllDiscount, {
-    cacheTime: Infinity,
-    refetchOnWindowFocus: false,
-    staleTime: Infinity,
+    refetchOnMount: true,
+    keepPreviousData: true,
   });
 
   return getListQuery;

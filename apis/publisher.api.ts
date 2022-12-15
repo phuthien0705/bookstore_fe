@@ -1,7 +1,18 @@
+import createSearchParams from '@/common/createSearchParams';
 import httpRequest from '../services/httpRequest';
 
-export const getAllPublisher = async () => {
-  return httpRequest.get('/admin/publishers?per_page=999');
+export const getAllPublisher = async (
+  current_page: number,
+  per_page = 10,
+  searchFields = [],
+  value = ''
+) => {
+  return httpRequest.get(
+    `/admin/publishers?per_page=${per_page}&page=${current_page}${createSearchParams(
+      searchFields,
+      value
+    )}`
+  );
 };
 export const getAllPublisherClient = async () => {
   return httpRequest.get('/publishers?per_page=999');
