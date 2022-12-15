@@ -28,13 +28,21 @@ const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(
   })
 );
 
-const SearchAdminSection: FC<ISearchAdminSection> = ({ value, setValue }) => {
+const SearchAdminSection: FC<ISearchAdminSection> = ({
+  value,
+  setValue,
+  setPage,
+}) => {
   const [searchContent, setSearchContent] = useState<string>('');
   const handleSearch = () => {
+    console.log('click - search');
     setValue(searchContent);
+    setPage && setPage(1);
   };
   const handleClearSearch = () => {
     setValue('');
+    setSearchContent('');
+    setPage && setPage(1);
   };
 
   return (
@@ -60,7 +68,7 @@ const SearchAdminSection: FC<ISearchAdminSection> = ({ value, setValue }) => {
             onClick={() => handleClearSearch()}
             position="end"
           >
-            {value && <CloseIcon />}
+            {searchContent && <CloseIcon />}
           </InputAdornment>
         }
         aria-describedby="search-helper-text"

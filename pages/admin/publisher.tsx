@@ -8,8 +8,6 @@ import CustomNoRowsOverlay from '../../components/empty/CustomNoRowsOverlay';
 import AddIcon from '@mui/icons-material/Add';
 import config from '../../config';
 import MenuActionAdmin from '../../components/menus/MenuActionAdmin';
-import CustomPagination from '../../components/Paginations/CustomPagination';
-import GenreModal from '../../components/modals/GenreModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleSnackbar } from '../../store/snackbarReducer';
 import PublisherModal from '../../components/modals/PublisherModal';
@@ -21,9 +19,8 @@ import AdminLayout from '../../layout/AdminLayout';
 
 const PublisherManagement = () => {
   const queryClient = useQueryClient();
-  const [searchContent, setSearchContent] = useState('');
+  const [searchContent, setSearchContent] = useState<string>('');
   const [page, setPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(5);
   const [currentProduct, setCurrentProduct] = useState<any>(null);
   const { data, isLoading, isFetching, refetch } = useGetListPublisher(
     page,
@@ -37,7 +34,7 @@ const PublisherManagement = () => {
       dispatch(toggleSnackbar({ open: true, message, type }));
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },
-    []
+    [dispatch]
   );
   const { mutate, isLoading: isMutateLoading } = useMutation(deletePublisher, {
     onSuccess: () => {
@@ -113,7 +110,9 @@ const PublisherManagement = () => {
       },
     },
   ];
-
+  useEffect(() => {
+    refetch();
+  }, [refetch, page, searchContent]);
   return (
     <AdminLayout>
       {' '}
@@ -128,6 +127,7 @@ const PublisherManagement = () => {
             <SearchAdminSection
               value={searchContent}
               setValue={setSearchContent}
+              setPage={setPage}
             />
             <Button
               disabled={isLoading || isFetching}
@@ -165,7 +165,7 @@ const PublisherManagement = () => {
               disableColumnMenu
               loading={isLoading || isFetching || isMutateLoading}
               columns={columns}
-              rows={(data && data?.data) || []}
+              rows={isLoading || isFetching ? [] : data?.data}
               components={{
                 NoRowsOverlay: CustomNoRowsOverlay,
                 LoadingOverlay: LinearProgress,

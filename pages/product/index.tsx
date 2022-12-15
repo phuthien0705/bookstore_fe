@@ -31,7 +31,6 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ProductLayout from '../../layout/ProductLayot';
 import MainCard from '../../components/cards/MainCard';
-import SearchAdminSection from '../../components/Header/SearchSection/SearchAdmin';
 import ProductCardItems from '../../components/cards/products/ProductCardItems';
 import useGetListBookClient from '@/hooks/client/useGetListBookClient';
 import useGetListGenreClient from '@/hooks/client/useGetListGenreClient';

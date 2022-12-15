@@ -8,8 +8,6 @@ import CustomNoRowsOverlay from '../../components/empty/CustomNoRowsOverlay';
 import AddIcon from '@mui/icons-material/Add';
 import config from '../../config';
 import MenuActionAdmin from '../../components/menus/MenuActionAdmin';
-import CustomPagination from '../../components/Paginations/CustomPagination';
-import GenreModal from '../../components/modals/GenreModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleSnackbar } from '../../store/snackbarReducer';
 import { deleteAuthor, getAllAuthor } from '../../apis/author.api';
@@ -21,7 +19,7 @@ import AdminLayout from '../../layout/AdminLayout';
 
 const AuthorManagement = () => {
   const [page, setPage] = useState<number>(1);
-  const [searchContent, setSearchContent] = useState('');
+  const [searchContent, setSearchContent] = useState<string>('');
   const queryClient = useQueryClient();
   const { data, isLoading, isFetching, refetch } = useGetListAuthor(
     page,
@@ -39,7 +37,7 @@ const AuthorManagement = () => {
       dispatch(toggleSnackbar({ open: true, message, type }));
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },
-    []
+    [dispatch]
   );
   const { mutate, isLoading: isMutateLoading } = useMutation(deleteAuthor, {
     onSuccess: () => {
@@ -107,7 +105,9 @@ const AuthorManagement = () => {
       },
     },
   ];
-
+  useEffect(() => {
+    refetch();
+  }, [refetch, page, searchContent]);
   return (
     <AdminLayout>
       {' '}
@@ -122,6 +122,7 @@ const AuthorManagement = () => {
             <SearchAdminSection
               value={searchContent}
               setValue={setSearchContent}
+              setPage={setPage}
             />
             <Button
               disabled={isLoading || isFetching}
@@ -159,7 +160,7 @@ const AuthorManagement = () => {
               disableColumnMenu
               loading={isLoading || isFetching || isMutateLoading}
               columns={columns}
-              rows={data?.data || []}
+              rows={isLoading || isFetching ? [] : data?.data}
               components={{
                 NoRowsOverlay: CustomNoRowsOverlay,
                 LoadingOverlay: LinearProgress,
