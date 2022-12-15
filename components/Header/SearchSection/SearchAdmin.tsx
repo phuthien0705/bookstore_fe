@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useRef, useEffect, useCallback } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, InputAdornment, OutlinedInput } from '@mui/material';
 import { shouldForwardProp } from '@mui/system';
@@ -33,21 +33,35 @@ const SearchAdminSection: FC<ISearchAdminSection> = ({
   setValue,
   setPage,
 }) => {
+  const inputRef = useRef<any>(null);
   const [searchContent, setSearchContent] = useState<string>('');
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
     console.log('click - search');
     setValue(searchContent);
     setPage && setPage(1);
-  };
+  }, [searchContent, setPage, setValue]);
   const handleClearSearch = () => {
     setValue('');
     setSearchContent('');
     setPage && setPage(1);
   };
+  useEffect(() => {
+    const inputRefCurrent = inputRef?.current;
+    inputRefCurrent.addEventListener('keypress', function (event: any) {
+      if (event.key === 'Enter') {
+        handleSearch();
+      }
+    });
+
+    return () => {
+      inputRefCurrent.removeEventListener('keypress');
+    };
+  }, [handleSearch]);
 
   return (
     <Box sx={{ width: '100%' }}>
       <OutlineInputStyle
+        ref={inputRef}
         id="input-search-admin"
         size="small"
         value={searchContent}
