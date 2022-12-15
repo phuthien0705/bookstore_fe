@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Pagination, Stack, Typography } from '@mui/material';
 import MainCard from '../../components/cards/MainCard';
 import SearchAdminSection from '../../components/Header/SearchSection/SearchAdmin';
 import { DataGrid } from '@mui/x-data-grid';
@@ -8,7 +8,6 @@ import CustomNoRowsOverlay from '../../components/empty/CustomNoRowsOverlay';
 import AddIcon from '@mui/icons-material/Add';
 import config from '../../config';
 import MenuActionAdmin from '../../components/menus/MenuActionAdmin';
-import CustomPagination from '../../components/Paginations/CustomPagination';
 import { deleteGenre, getAllGenre } from '../../apis/genre.api';
 import GenreModal from '../../components/modals/GenreModal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,12 +19,16 @@ import AdminLayout from '../../layout/AdminLayout';
 
 const GenreManagement = () => {
   const queryClient = useQueryClient();
-  const getListGenreQuery = useGetListGenre();
-  const { data, isLoading, isFetching, refetch } = getListGenreQuery;
   const [searchContent, setSearchContent] = useState('');
-  const [pageSize, setPageSize] = useState(5);
+  const [page, setPage] = useState<number>(1);
   const [currentProduct, setCurrentProduct] = useState<{ data: any } | null>(
     null
+  );
+  const { data, isLoading, isFetching, refetch } = useGetListGenre(
+    page,
+    10,
+    ['name', 'description'] as any,
+    searchContent
   );
   const dispatch = useDispatch();
   const toast = useCallback(
@@ -33,7 +36,7 @@ const GenreManagement = () => {
       dispatch(toggleSnackbar({ open: true, message, type }));
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },
-    []
+    [dispatch]
   );
   const { mutate, isLoading: isMutateLoading } = useMutation(deleteGenre, {
     onSuccess: () => {
@@ -133,6 +136,9 @@ const GenreManagement = () => {
                 border: 1,
                 borderColor: 'rgba(0, 0, 0, 0.23)',
                 borderRadius: `${config.borderRadius}px`,
+                '.MuiDataGrid-footerContainer': {
+                  display: 'none',
+                },
               }}
               disableSelectionOnClick
               autoHeight
@@ -143,11 +149,20 @@ const GenreManagement = () => {
               components={{
                 NoRowsOverlay: CustomNoRowsOverlay,
                 LoadingOverlay: LinearProgress,
-                Pagination: CustomPagination,
               }}
-              pageSize={pageSize}
-              onPageSizeChange={(newPage) => setPageSize(newPage)}
-              pagination
+            />
+          </Box>{' '}
+          <Box
+            sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 1.5 }}
+          >
+            <Pagination
+              sx={{ marginRight: 2 }}
+              variant="outlined"
+              shape="rounded"
+              color="primary"
+              count={data?.meta?.last_page || 0}
+              page={page}
+              onChange={(event, value) => setPage(value)}
             />
           </Box>
           <GenreModal

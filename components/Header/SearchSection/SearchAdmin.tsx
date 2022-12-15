@@ -1,10 +1,12 @@
-import { FC } from 'react';
-import { useTheme, styled } from '@mui/material/styles';
+import { FC, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import { Box, InputAdornment, OutlinedInput } from '@mui/material';
 import { shouldForwardProp } from '@mui/system';
 import React from 'react';
-import Image from 'next/image';
+import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
+import { ISearchAdminSection } from '@/interfaces/compontents/search.interface';
+
 const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(
   ({ theme }) => ({
     width: 250,
@@ -25,24 +27,40 @@ const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(
     },
   })
 );
-interface ISearchAdminSection {
-  value: any;
-  setValue: Function;
-}
+
 const SearchAdminSection: FC<ISearchAdminSection> = ({ value, setValue }) => {
-  const theme = useTheme();
+  const [searchContent, setSearchContent] = useState<string>('');
+  const handleSearch = () => {
+    setValue(searchContent);
+  };
+  const handleClearSearch = () => {
+    setValue('');
+  };
 
   return (
     <Box sx={{ width: '100%' }}>
       <OutlineInputStyle
         id="input-search-admin"
         size="small"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
+        value={searchContent}
+        onChange={(e) => setSearchContent(e.target.value)}
         placeholder="Tìm kiếm"
         startAdornment={
-          <InputAdornment position="start">
+          <InputAdornment
+            sx={{ cursor: 'pointer' }}
+            onClick={() => handleSearch()}
+            position="start"
+          >
             <SearchIcon />
+          </InputAdornment>
+        }
+        endAdornment={
+          <InputAdornment
+            sx={{ cursor: 'pointer' }}
+            onClick={() => handleClearSearch()}
+            position="end"
+          >
+            {value && <CloseIcon />}
           </InputAdornment>
         }
         aria-describedby="search-helper-text"

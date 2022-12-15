@@ -1,7 +1,18 @@
+import createSearchParams from '@/common/createSearchParams';
 import httpRequest from '../services/httpRequest';
 
-export const getAllGenre = async () => {
-  return httpRequest.get('/admin/genres?per_page=999');
+export const getAllGenre = async (
+  current_page: number,
+  per_page = 10,
+  searchFields = [],
+  value = ''
+) => {
+  return httpRequest.get(
+    `/admin/genres?per_page=${per_page}&page=${current_page}${createSearchParams(
+      searchFields,
+      value
+    )}`
+  );
 };
 export const getAllGenreClient = async () => {
   return httpRequest.get('/genres?per_page=999');

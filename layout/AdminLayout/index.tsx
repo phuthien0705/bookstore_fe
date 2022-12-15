@@ -116,6 +116,7 @@ const AdminLayout: NextPageWithLayout<ILayout> = ({ children }) => {
               hideCart
               maxWidth="xl"
               hideBelowSection
+              hideGenreSection
             />
           </Toolbar>
         </AppBar>
