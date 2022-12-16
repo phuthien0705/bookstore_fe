@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import {
   Avatar,
@@ -8,17 +7,20 @@ import {
   Container,
   IconButton,
   Button,
+  Typography,
+  useMediaQuery,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoSection from '../LogoSection';
 import SearchSection from './SearchSection';
 import ProfileSection from './ProfileSection';
 import CartSection from './CartSection';
-import { FC } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { IHeader } from '@/interfaces/compontents/header.interface';
 import useGetListCart from '@/hooks/client/useGetListCart';
 import BelowSection from './BelowSection';
 import GenreSection from './GenreSection';
+import { useRouter } from 'next/router';
 
 const Header: FC<IHeader> = ({
   handleLeftDrawerToggle,
@@ -28,23 +30,53 @@ const Header: FC<IHeader> = ({
   maxWidth = 'lg',
   hideBelowSection = false,
   hideGenreSection = false,
+  hideHomeScript = false,
 }) => {
-  const theme: any = useTheme();
+  const router = useRouter();
+  const [isShadow, setShadow] = useState(false);
   const { data, isLoading, isFetching, refetch } = useGetListCart();
+  const matches = useMediaQuery('(min-width:900px)');
 
+  const onScroll = () => {
+    const y = window.scrollY;
+    if (y === 0) setShadow(false);
+    else setShadow(true);
+  };
+
+  useEffect(function onFirstMount() {
+    window.addEventListener('scroll', onScroll);
+  }, []);
   return (
     <Container
       maxWidth={maxWidth}
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-      }}
+      sx={
+        isShadow
+          ? {
+              display: 'flex',
+              flexDirection: 'column',
+              paddingBottom: 1,
+              '::before': {
+                content: '""',
+                position: 'absolute',
+                bottom: '-1.25rem',
+                left: 0,
+                height: '1.25rem',
+                width: '100%',
+                background: 'linear-gradient(rgba(0,0,0,.06),transparent)',
+              },
+            }
+          : {
+              display: 'flex',
+              flexDirection: 'column',
+              paddingBottom: 1,
+            }
+      }
     >
       <Box
         sx={{
           paddingTop: 1,
           display: 'flex',
-          justifyContent: 'space-between',
+          flexDirection: { xs: 'column', md: 'row' },
           width: '100%',
           alignItems: 'center',
         }}
@@ -58,15 +90,38 @@ const Header: FC<IHeader> = ({
           }}
         >
           <Box
-            component="span"
+            component="div"
             sx={{
-              flexGrow: 1,
-              marginRight: 4,
+              marginRight: { xs: 0, md: 4 },
             }}
           >
             <LogoSection />
           </Box>
-          {!hideGenreSection && <GenreSection />}
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', width: 'fit-content' }}
+          >
+            {' '}
+            {!hideHomeScript && matches && (
+              <Typography
+                onClick={() => {
+                  router?.pathname !== '/' && router.push({ pathname: '/' });
+                }}
+                sx={{
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                  fontWeight: 600,
+                  color: '#000',
+                  marginRight: 1,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Trang chủ
+              </Typography>
+            )}
+            {!hideGenreSection && <GenreSection />}
+          </Box>
           {!hideSidebarIcon && (
             <IconButton
               size="small"
@@ -84,20 +139,19 @@ const Header: FC<IHeader> = ({
               <MenuIcon fontSize="small" />
             </IconButton>
           )}
+          {/* header search */}
+          {!hideSearch && <SearchSection />}
+          {/*  profile & cart */}
+          {!hideCart && (
+            <CartSection
+              data={data}
+              isLoading={isLoading}
+              isFetching={isFetching}
+              refetch={refetch}
+            />
+          )}
+          <ProfileSection />
         </Box>
-        <Box sx={{ flexGrow: 1 }} />
-        {/* header search */}
-        {!hideSearch && <SearchSection />}
-        {/* notification & profile & cart */}
-        {!hideCart && (
-          <CartSection
-            data={data}
-            isLoading={isLoading}
-            isFetching={isFetching}
-            refetch={refetch}
-          />
-        )}
-        <ProfileSection />
       </Box>
       {!hideBelowSection && <BelowSection />}
     </Container>

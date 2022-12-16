@@ -11,7 +11,7 @@ const useStyles = makeStyles({
     display: 'flex',
     rowGap: '0.2rem',
     flexDirection: 'column',
-    borderRadius: config.borderRadius,
+    borderRadius: `${config.borderRadius}px`,
     backgroundColor: '#fff',
     overflow: 'hidden',
   },

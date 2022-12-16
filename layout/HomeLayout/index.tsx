@@ -1,13 +1,6 @@
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import {
-  AppBar,
-  Box,
-  Container,
-  CssBaseline,
-  Toolbar,
-  useMediaQuery,
-} from '@mui/material';
+import { AppBar, Box, CssBaseline, useMediaQuery } from '@mui/material';
 import Header from '../../components/Header';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,7 +10,6 @@ import NavigationScroll from '../NavigationScroll';
 import { ILayout } from '@/interfaces/layout.interface';
 import dynamic from 'next/dynamic';
 import CustomizedSnackbar from '@/components/snackbar/CustomizedSnackbar';
-import useGetListCart from '@/hooks/client/useGetListCart';
 import { Router } from 'next/router';
 import LoadingScreen from '@/components/loading/LoadingScreen';
 
@@ -29,6 +21,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     marginRight: 0,
+    padding: 0,
   })
 );
 
@@ -86,9 +79,9 @@ const ProductLayout: NextPageWithLayout<ILayout> = ({
             hideBelowSection
           />
         </AppBar>
-        <Container maxWidth="lg" disableGutters>
-          {loading ? <LoadingScreen /> : <Main theme={theme}>{children}</Main>}
-        </Container>
+
+        {loading ? <LoadingScreen /> : <Main theme={theme}>{children}</Main>}
+
         {!hideFooter && <Footer />}
       </Box>
       <CustomizedSnackbar />

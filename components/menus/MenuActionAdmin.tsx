@@ -9,6 +9,7 @@ const MenuActionAdmin: FC<IMenuActionAdmin> = ({
   id,
   deleteCallback,
   editCallback,
+  userMode = false,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -57,17 +58,19 @@ const MenuActionAdmin: FC<IMenuActionAdmin> = ({
             <Typography>Xóa</Typography>
           </Stack>
         </MenuItem>
-        <MenuItem
-          onClick={() => {
-            editCallback();
-            handleClose();
-          }}
-        >
-          <Stack direction="row" spacing={1} alignItems="center">
-            <EditIcon fontSize="inherit" />
-            <Typography>Chỉnh sửa</Typography>
-          </Stack>
-        </MenuItem>
+        {!userMode && (
+          <MenuItem
+            onClick={() => {
+              editCallback();
+              handleClose();
+            }}
+          >
+            <Stack direction="row" spacing={1} alignItems="center">
+              <EditIcon fontSize="inherit" />
+              <Typography>Chỉnh sửa</Typography>
+            </Stack>
+          </MenuItem>
+        )}
       </Menu>
     </div>
   );

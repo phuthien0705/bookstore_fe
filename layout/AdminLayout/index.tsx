@@ -117,6 +117,7 @@ const AdminLayout: NextPageWithLayout<ILayout> = ({ children }) => {
               maxWidth="xl"
               hideBelowSection
               hideGenreSection
+              hideHomeScript
             />
           </Toolbar>
         </AppBar>
