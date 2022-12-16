@@ -16,31 +16,25 @@ import AddIcon from '@mui/icons-material/Add';
 import { styled } from '@mui/material/styles';
 import config from '../../config';
 import MenuActionAdmin from '../../components/menus/MenuActionAdmin';
-import CustomPagination from '../../components/Paginations/CustomPagination';
 import CustomChip from '../../components/chip/CustomChip';
 import AdminLayout from '../../layout/AdminLayout';
+import useGetListUser from '@/hooks/useGetListUser';
 const ImageStyle = styled('img')({
   width: '80%',
   borderRadius: 4,
   objectFit: 'cover',
 });
 const UserManagement = () => {
-  const [searchContent, setSearchContent] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [pageSize, setPageSize] = useState(5);
-  const [page, setPage] = useState(0);
-  const [selectionModel, setSelectionModel] = useState<any[]>([]);
-  const [rows, setRows] = useState([]);
-  const [currentProduct, setCurrentProduct] = useState(null);
-
-  const deleteProduct = useCallback(
-    (id: any) => () => {
-      setTimeout(() => {
-        setRows((prevRows) => prevRows.filter((row: any) => row.id !== id));
-      });
-    },
-    []
+  const [currentProduct, setCurrentProduct] = useState<any>(null);
+  const [searchContent, setSearchContent] = useState<string>('');
+  const [page, setPage] = useState<number>(1);
+  const { data, isLoading, isFetching, refetch } = useGetListUser(
+    page,
+    10,
+    ['name', 'description'] as any,
+    searchContent
   );
+  const deleteProduct = useCallback((id: any) => () => {}, []);
   const toggleModalEdit = useCallback((product: any) => {
     setCurrentProduct(product);
   }, []);
@@ -59,33 +53,21 @@ const UserManagement = () => {
       },
     },
     { field: 'name', headerName: 'Họ tên', description: 'Họ tên', flex: 1 },
+    { field: 'bio', headerName: 'Mô tả', description: 'Mô tả', flex: 1 },
+
     { field: 'email', headerName: 'Email', description: 'Email', flex: 1 },
     {
       field: 'role',
+      width: 200,
       headerName: 'Phân quyền',
       description: 'Phân quyền',
-      width: 100,
       renderCell: (params: any) => {
         return (
           <Stack direction="row" spacing={0.5}>
-            {params.row.role.map((i: any, _index: number) => (
+            {params?.row?.roles.map((i: any, _index: number) => (
               <CustomChip key={_index} content={i} type={'default'} />
             ))}
           </Stack>
-        );
-      },
-    },
-    {
-      field: 'active',
-      headerName: 'Trạng thái',
-      description: 'Trạng thái',
-      width: 150,
-      renderCell: (params: any) => {
-        return (
-          <CustomChip
-            content={params.row.active ? 'Hoạt động' : 'Ngừng hoạt động'}
-            type={params.row.active ? 'success' : 'error'}
-          />
         );
       },
     },
@@ -100,6 +82,7 @@ const UserManagement = () => {
       renderCell: (params: any) => {
         return (
           <MenuActionAdmin
+            userMode={true}
             id={params?.row?.id}
             deleteCallback={() => deleteProduct(params?.row?.id)}
             editCallback={() => toggleModalEdit(params?.row)}
@@ -108,121 +91,59 @@ const UserManagement = () => {
       },
     },
   ];
-  const sampleData = [
-    {
-      id: 0,
-      name: 'product 1',
-      avatar:
-        'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
-      email: 'huaphuthienksst@gmail.com',
-      role: ['user', 'admin'],
-      active: false,
-    },
-    {
-      id: 1,
-      name: 'product 2',
-      avatar:
-        'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
-      email: 'huaphuthienksst@gmail.com',
-      role: ['user'],
-      active: true,
-    },
-    {
-      id: 2,
-      name: 'product 3',
-      avatar:
-        'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
-      email: 'huaphuthienksst@gmail.com',
-      role: ['admin'],
-      active: true,
-    },
-    {
-      id: 3,
-      name: 'product 4',
-      avatar:
-        'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
-      email: 'huaphuthienksst@gmail.com',
-      role: ['user', 'admin'],
-      active: false,
-    },
-    {
-      id: 4,
-      name: 'product 5',
-      avatar:
-        'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
-      email: 'huaphuthienksst@gmail.com',
-      role: ['user'],
-      active: true,
-    },
-    {
-      id: 5,
-      name: 'product 6',
-      avatar:
-        'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x2.jpg',
-      email: 'huaphuthienksst@gmail.com',
-      role: ['user', 'admin'],
-      active: true,
-    },
-  ];
-  useEffect(() => {
-    setRows(sampleData as any);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  useEffect(() => {
-    console.log({ selectionModel, currentProduct });
-  });
+
+  console.log('data', data);
   return (
     <AdminLayout>
       <>
         <MainCard title="Danh sách người dùng" darkTitle>
           <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
+            direction={{ xs: 'column-reverse', sm: 'row' }}
+            alignItems={{ xs: 'flex-end', sm: 'center' }}
+            justifyContent={{ xs: 'space-between', sm: 'space-between' }}
+            spacing={1}
           >
             <SearchAdminSection
               value={searchContent}
               setValue={setSearchContent}
+              setPage={setPage}
             />
-            <Button variant="contained" sx={{ padding: '5px 10px 5px 2px' }}>
-              <Stack direction="row" alignItems="center" spacing={0.5}>
-                <AddIcon fontSize="small" />
-                <Typography>Thêm người dùng</Typography>
-              </Stack>
-            </Button>
-          </Stack>{' '}
+          </Stack>
           <Box mt={2}>
             <DataGrid
               sx={{
                 border: 1,
                 borderColor: 'rgba(0, 0, 0, 0.23)',
                 borderRadius: `${config.borderRadius}px`,
+                '.MuiDataGrid-footerContainer': {
+                  display: 'none',
+                },
               }}
               disableSelectionOnClick
               autoHeight
-              checkboxSelection
               disableColumnMenu
-              loading={isLoading}
+              loading={isLoading || isFetching}
               columns={columns}
-              rows={rows}
+              rows={isLoading || isFetching ? [] : data?.data}
               components={{
                 NoRowsOverlay: CustomNoRowsOverlay,
                 LoadingOverlay: LinearProgress,
-                Pagination: CustomPagination,
               }}
-              pageSize={pageSize}
-              onPageSizeChange={(newPage) => setPageSize(newPage)}
-              // page={page}
-              // onPageChange={(newPage) => setPage(newPage)}
-
-              pagination
-              onSelectionModelChange={(newSelectionModel) => {
-                setSelectionModel(newSelectionModel);
-              }}
-              selectionModel={selectionModel}
             />
           </Box>
-          {/* <ProductAdminModal open={currentProduct !== null} handleClose={handleCloseProductModal} /> */}
+          <Box
+            sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 1.5 }}
+          >
+            <Pagination
+              sx={{ marginRight: 2 }}
+              variant="outlined"
+              shape="rounded"
+              color="primary"
+              count={data?.meta?.last_page || 0}
+              page={page}
+              onChange={(event, value) => setPage(value)}
+            />
+          </Box>
         </MainCard>
       </>
     </AdminLayout>
