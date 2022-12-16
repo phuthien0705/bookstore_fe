@@ -6,16 +6,21 @@ import {
   MenuList,
   ListItemButton,
   ListItemText,
+  Avatar,
 } from '@mui/material';
 import { useTheme } from '@emotion/react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import useGetListGenreClient from '@/hooks/client/useGetListGenreClient';
 import CircularProgress from '@mui/material/CircularProgress';
+import WidgetsIcon from '@mui/icons-material/Widgets';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { IconCategory2 } from '@tabler/icons';
 
 const GenreSection: React.FunctionComponent = () => {
   const theme: any = useTheme();
   const router = useRouter();
+  const matches = useMediaQuery('(min-width:900px)');
 
   const getListGenreQuery = useGetListGenreClient();
   const {
@@ -42,32 +47,57 @@ const GenreSection: React.FunctionComponent = () => {
   const open = Boolean(anchorEl);
   return (
     <Box sx={{ cursor: 'pointer' }}>
-      <ButtonBase
-        onClick={handleOpen}
-        sx={{
-          cursor: 'pointer',
-          width: '110%',
-          height: '40px',
-          transition: 'all .2s ease-in-out',
-          background: '#ffffff',
-          color: theme.palette.secondary.dark,
-          '&[aria-controls="menu-list-grow"],&:hover': {
-            background: '#ffffff',
-            color: theme.palette.secondary.dark,
-          },
-        }}
-      >
-        <Typography
+      {matches ? (
+        <ButtonBase
+          onClick={handleOpen}
           sx={{
             cursor: 'pointer',
-            fontSize: '16px',
-            fontWeight: 500,
-            whiteSpace: 'nowrap',
+            width: '110%',
+            height: '40px',
+            transition: 'all .2s ease-in-out',
+            background: '#ffffff',
+            color: theme.palette.secondary.dark,
+            '&[aria-controls="menu-list-grow"],&:hover': {
+              background: '#ffffff',
+              color: theme.palette.secondary.dark,
+            },
           }}
         >
-          Sản Phẩm
-        </Typography>
-      </ButtonBase>
+          <Typography
+            sx={{
+              cursor: 'pointer',
+              fontSize: '16px',
+              fontWeight: 500,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Sản Phẩm
+          </Typography>
+        </ButtonBase>
+      ) : (
+        <Avatar
+          onClick={handleOpen}
+          variant="rounded"
+          sx={{
+            cursor: 'pointer',
+            borderRadius: '8px',
+            width: '34px',
+            height: '34px',
+            fontSize: '1.2rem',
+            transition: 'all .2s ease-in-out',
+            background: theme.palette.primary.light,
+            color: theme.palette.primary.dark,
+            '&[aria-controls="menu-list-grow"],&:hover': {
+              background: theme.palette.primary.dark,
+              color: theme.palette.primary.light,
+            },
+          }}
+          color="inherit"
+        >
+          <IconCategory2 stroke={1.5} size="1.3rem" />
+        </Avatar>
+      )}
+
       <Menu
         id="menu-genre"
         anchorEl={anchorEl}

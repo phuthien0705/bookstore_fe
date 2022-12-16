@@ -103,7 +103,7 @@ const Header: FC<IHeader> = ({
             sx={{ display: 'flex', alignItems: 'center', width: 'fit-content' }}
           >
             {' '}
-            {!hideHomeScript && (
+            {!hideHomeScript && matches && (
               <Typography
                 onClick={() => {
                   router?.pathname !== '/' && router.push({ pathname: '/' });

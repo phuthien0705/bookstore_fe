@@ -1,12 +1,11 @@
-import * as React from 'react';
-import { Box } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import useGetListBookClient from '../hooks/client/useGetListBookClient';
 import useGetListGenreClient from '../hooks/client/useGetListGenreClient';
 import ProductCardItems from '../components/cards/products/ProductCardItems';
-import ProductLayout from '@/layout/ProductLayot';
 import CarouselCustumized from '@/components/carousel/CarouselCustumized';
+import HomeLayout from '@/layout/HomeLayout';
 
 const Home = () => {
   const theme = useTheme();
@@ -46,20 +45,28 @@ const Home = () => {
     }
   };
   return (
-    <ProductLayout>
-      <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: '1rem' }}>
-        <CarouselCustumized />
-        <ProductCardItems
-          slideToShow={5}
-          isLoading={isBookLoading}
-          data={bookData?.data}
-          title="Xu hướng mua sắm"
-          titleIcon={<LocalFireDepartmentIcon color="error" />}
-          titleBackground="#FCDDEF"
-        />
-        {renderGenres()}
-      </Box>
-    </ProductLayout>
+    <HomeLayout>
+      <CarouselCustumized />
+      <Container
+        maxWidth="lg"
+        sx={{
+          paddingRight: { xs: '8px', md: '16px' },
+          paddingLeft: { xs: '8px', md: '16px' },
+        }}
+      >
+        <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: '1rem' }}>
+          <ProductCardItems
+            slideToShow={5}
+            isLoading={isBookLoading}
+            data={bookData?.data}
+            title="Xu hướng mua sắm"
+            titleIcon={<LocalFireDepartmentIcon color="error" />}
+            titleBackground="#FCDDEF"
+          />
+          {renderGenres()}
+        </Box>
+      </Container>
+    </HomeLayout>
   );
 };
 
