@@ -1,5 +1,5 @@
 import { Button, Fab } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 const ScrollToTopButton: React.FunctionComponent<any> = () => {
@@ -18,12 +18,16 @@ const ScrollToTopButton: React.FunctionComponent<any> = () => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
-      /* you can also use 'auto' behaviour
-         in place of 'smooth' */
     });
   };
 
-  window.addEventListener('scroll', toggleVisible);
+  useEffect(() => {
+    window.addEventListener('scroll', toggleVisible);
+    return () => {
+      window.removeEventListener('scroll', toggleVisible);
+    };
+  }, []);
+
   return (
     <Button sx={{ width: 'fit-content', height: 'fit-content' }}>
       <Fab
