@@ -5,7 +5,6 @@ import {
   Box,
   Container,
   CssBaseline,
-  Toolbar,
   useMediaQuery,
 } from '@mui/material';
 import Header from '../../components/Header';
@@ -17,9 +16,9 @@ import NavigationScroll from '../NavigationScroll';
 import { ILayout } from '@/interfaces/layout.interface';
 import dynamic from 'next/dynamic';
 import CustomizedSnackbar from '@/components/snackbar/CustomizedSnackbar';
-import useGetListCart from '@/hooks/client/useGetListCart';
 import { Router } from 'next/router';
 import LoadingScreen from '@/components/loading/LoadingScreen';
+import ScrollToTopButton from '@/components/button/ScrollToTopButton';
 
 const Footer = dynamic(() => import('../../components/Footer'), { ssr: false });
 
@@ -69,6 +68,7 @@ const ProductLayout: NextPageWithLayout<ILayout> = ({
       >
         <CssBaseline />
         <AppBar
+          id="back-to-top-anchor"
           enableColorOnDark
           position="fixed"
           color="inherit"
@@ -92,6 +92,7 @@ const ProductLayout: NextPageWithLayout<ILayout> = ({
         {!hideFooter && <Footer />}
       </Box>
       <CustomizedSnackbar />
+      <ScrollToTopButton />
     </NavigationScroll>
   );
 };

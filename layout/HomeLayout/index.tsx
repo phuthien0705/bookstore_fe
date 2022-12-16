@@ -12,6 +12,7 @@ import dynamic from 'next/dynamic';
 import CustomizedSnackbar from '@/components/snackbar/CustomizedSnackbar';
 import { Router } from 'next/router';
 import LoadingScreen from '@/components/loading/LoadingScreen';
+import ScrollToTopButton from '@/components/button/ScrollToTopButton';
 
 const Footer = dynamic(() => import('../../components/Footer'), { ssr: false });
 
@@ -85,6 +86,7 @@ const ProductLayout: NextPageWithLayout<ILayout> = ({
         {!hideFooter && <Footer />}
       </Box>
       <CustomizedSnackbar />
+      <ScrollToTopButton />
     </NavigationScroll>
   );
 };
