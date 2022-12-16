@@ -9,6 +9,7 @@ import {
   InputAdornment,
   OutlinedInput,
   Popper,
+  useMediaQuery,
 } from '@mui/material';
 import { IconSearch } from '@tabler/icons';
 import { shouldForwardProp } from '@mui/system';
@@ -38,11 +39,21 @@ const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(
 const SearchSection = () => {
   const theme = useTheme();
   const [value, setValue] = useState('');
+  const matches = useMediaQuery('(min-width:900px)');
 
   return (
     <>
-      <Box className="element-to-hide" sx={{ display: 'block' }}>
+      <Box
+        sx={{
+          width: '100%',
+          marginRight: 0.5,
+          marginLeft: 1.5,
+          display: 'flex',
+          justifyContent: 'flex-end',
+        }}
+      >
         <OutlineInputStyle
+          sx={{ width: matches ? '300px' : '100%' }}
           id="input-search-header"
           value={value}
           onChange={(e) => setValue(e.target.value)}

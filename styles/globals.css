@@ -1,6 +1,5 @@
 @import 'loadingScreen.css';
 @import 'table.css';
-@import 'responsive.css';
 
 *::-webkit-scrollbar {
   background-color: #fff;

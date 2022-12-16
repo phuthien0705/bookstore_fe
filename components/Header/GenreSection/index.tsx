@@ -43,9 +43,9 @@ const GenreSection: React.FunctionComponent = () => {
   return (
     <Box sx={{ cursor: 'pointer' }}>
       <ButtonBase
-        onClick={handleRedirectToProduct}
-        onMouseEnter={handleOpen}
+        onClick={handleOpen}
         sx={{
+          cursor: 'pointer',
           width: '110%',
           height: '40px',
           transition: 'all .2s ease-in-out',
@@ -58,7 +58,12 @@ const GenreSection: React.FunctionComponent = () => {
         }}
       >
         <Typography
-          sx={{ cursor: 'pointer', fontSize: '19px', fontWeight: 600 }}
+          sx={{
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: 500,
+            whiteSpace: 'nowrap',
+          }}
         >
           Sản Phẩm
         </Typography>
@@ -94,16 +99,21 @@ const GenreSection: React.FunctionComponent = () => {
               </ListItemText>
             </ListItemButton>
           ) : (
-            genreData?.data?.map((genre: any, index: number) => {
-              return (
-                <ListItemButton
-                  onClick={() => handleClick(genre?.id)}
-                  key={index}
-                >
-                  <ListItemText>{genre?.name}</ListItemText>
-                </ListItemButton>
-              );
-            })
+            <>
+              <ListItemButton onClick={() => handleRedirectToProduct()}>
+                <ListItemText>{'Đến trang sản phẩm'}</ListItemText>
+              </ListItemButton>
+              {genreData?.data?.map((genre: any, index: number) => {
+                return (
+                  <ListItemButton
+                    onClick={() => handleClick(genre?.id)}
+                    key={index}
+                  >
+                    <ListItemText>{genre?.name}</ListItemText>
+                  </ListItemButton>
+                );
+              })}
+            </>
           )}
         </MenuList>
       </Menu>

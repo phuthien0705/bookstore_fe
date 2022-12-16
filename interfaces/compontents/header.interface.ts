@@ -8,4 +8,5 @@ export interface IHeader {
   maxWidth?: false | Breakpoint | undefined;
   hideBelowSection?: boolean;
   hideGenreSection?: boolean;
+  hideHomeScript?: boolean;
 }

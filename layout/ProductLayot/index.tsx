@@ -80,13 +80,11 @@ const ProductLayout: NextPageWithLayout<ILayout> = ({
               : 'none',
           }}
         >
-          <Toolbar sx={{ paddingTop: 0, paddingBottom: '8px' }}>
-            <Header
-              handleLeftDrawerToggle={handleLeftDrawerToggle}
-              hideSidebarIcon
-              hideBelowSection
-            />
-          </Toolbar>
+          <Header
+            handleLeftDrawerToggle={handleLeftDrawerToggle}
+            hideSidebarIcon
+            hideBelowSection
+          />
         </AppBar>
         <Container maxWidth="lg" disableGutters>
           {loading ? <LoadingScreen /> : <Main theme={theme}>{children}</Main>}
