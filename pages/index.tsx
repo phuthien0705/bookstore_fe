@@ -50,11 +50,18 @@ const Home = () => {
       <Container
         maxWidth="lg"
         sx={{
-          paddingRight: { xs: '8px', md: '16px' },
-          paddingLeft: { xs: '8px', md: '16px' },
+          px: { xs: '8px', md: '16px' },
         }}
       >
-        <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: '1rem' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: '1rem',
+            borderRadius: '8px',
+            overflow: 'hidden',
+          }}
+        >
           <ProductCardItems
             slideToShow={5}
             isLoading={isBookLoading}

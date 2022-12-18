@@ -60,6 +60,7 @@ const ProductCardItems: React.FunctionComponent<IProductCardItems> = ({
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
+          borderRadius: '8px',
         }}
       >
         <CustomNoRowsOverlay />

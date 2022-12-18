@@ -26,9 +26,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     marginRight: 0,
     padding: 0,
     [theme.breakpoints.down('md')]: {
-      marginTop: '100px',
-      paddingLeft: '8px',
-      paddingRight: '8px',
+      marginTop: '89px',
     },
   })
 );

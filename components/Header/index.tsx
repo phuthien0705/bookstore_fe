@@ -29,7 +29,6 @@ const Header: FC<IHeader> = ({
   hideCart = false,
   maxWidth = 'lg',
   hideBelowSection = false,
-  hideGenreSection = false,
   hideHomeScript = false,
 }) => {
   const router = useRouter();
@@ -55,6 +54,8 @@ const Header: FC<IHeader> = ({
               display: 'flex',
               flexDirection: 'column',
               paddingBottom: 1,
+              paddingLeft: { xs: '8px', md: '16px' },
+              paddingRight: { xs: '8px', md: '16px' },
               '::before': {
                 content: '""',
                 position: 'absolute',
@@ -66,6 +67,8 @@ const Header: FC<IHeader> = ({
               },
             }
           : {
+              paddingLeft: { xs: '8px', md: '16px' },
+              paddingRight: { xs: '8px', md: '16px' },
               display: 'flex',
               flexDirection: 'column',
               paddingBottom: 1,
@@ -98,12 +101,23 @@ const Header: FC<IHeader> = ({
             <LogoSection />
           </Box>
         </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-          <Box
-            sx={{ display: 'flex', alignItems: 'center', width: 'fit-content' }}
-          >
-            {' '}
-            {!hideHomeScript && matches && (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%',
+            justifyContent: { xs: 'space-between', md: 'space-between' },
+          }}
+        >
+          {!hideHomeScript && matches && (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                width: 'fit-content',
+              }}
+            >
+              {' '}
               <Typography
                 onClick={() => {
                   router?.pathname !== '/' && router.push({ pathname: '/' });
@@ -119,9 +133,10 @@ const Header: FC<IHeader> = ({
               >
                 Trang chủ
               </Typography>
-            )}
-            {!hideGenreSection && <GenreSection />}
-          </Box>
+              <GenreSection />
+            </Box>
+          )}
+
           {!hideSidebarIcon && (
             <IconButton
               size="small"

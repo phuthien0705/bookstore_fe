@@ -30,7 +30,7 @@ const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(
     },
     [theme.breakpoints.down('md')]: {
       width: '100%',
-      marginLeft: 4,
+      marginLeft: 0,
       background: '#fff',
     },
   })
@@ -47,7 +47,7 @@ const SearchSection = () => {
         sx={{
           width: '100%',
           marginRight: 0.5,
-          marginLeft: 1.5,
+          marginLeft: { xs: 0, md: 1.5 },
           display: 'flex',
           justifyContent: 'flex-end',
         }}

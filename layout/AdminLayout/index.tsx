@@ -13,7 +13,7 @@ import Sidebar from '../../components/Sidebar';
 import { setMenu, toggleSidebar } from '../../store/sidebarReducer';
 import CustomizedSnackbar from '../../components/snackbar/CustomizedSnackbar';
 import authService from '../../services/authService';
-import { drawerWidth } from '../../store/constant';
+import { drawerWidth, appDrawerWidth } from '../../store/constant';
 import { useRouter, Router } from 'next/router';
 import { ILayout } from '@/interfaces/layout.interface';
 import { NextPageWithLayout } from '@/pages/page';
@@ -36,6 +36,9 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
         marginLeft: '20px',
         width: `calc(100% - ${drawerWidth}px)`,
         padding: '16px',
+        marginTop: '100px',
+        paddingLeft: '8px',
+        paddingRight: '8px',
       },
       [theme.breakpoints.down('sm')]: {
         marginLeft: '10px',
@@ -116,7 +119,6 @@ const AdminLayout: NextPageWithLayout<ILayout> = ({ children }) => {
               hideCart
               maxWidth="xl"
               hideBelowSection
-              hideGenreSection
               hideHomeScript
             />
           </Toolbar>

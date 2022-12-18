@@ -57,17 +57,24 @@ const fakedata = [
   },
 ];
 const OrdersHistory = () => {
-  // const { data, isLoading, isFetching } = useGetListOrder();
-  // console.log(data);
+  const { data, isLoading, isFetching } = useGetListOrder();
+  console.log(data);
   return (
     <ProductLayout>
       <Container maxWidth="md" disableGutters>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Paper sx={{ backgroundColor: '#fff', p: { xs: 2, md: 3 }, mb: 2 }}>
+          <Paper
+            sx={{
+              backgroundColor: '#fff',
+              px: { xs: 1.5, md: 2 },
+              py: { xs: 1, md: 2 },
+              mb: { xs: 1, md: 2 },
+            }}
+          >
             <OrderTitle />
           </Paper>
           {/* <Paper sx={{ backgroundColor: '#fff', p: { xs: 2, md: 3 } }}> */}
-          <OrderTable items={fakedata} />
+          <OrderTable items={data?.orders || []} />
           {/* </Paper> */}
         </Box>
       </Container>
