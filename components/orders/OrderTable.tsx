@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
   Box,
   Stack,
@@ -12,6 +13,9 @@ import { Typography, Paper } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { IItemTable } from '@/interfaces/compontents/cart.interface';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import { moneyFormat } from '@/utils/moneyFormat';
+import EmptyOrder from './EmptyOrder';
+
 const ImageStyle = styled('img')({
   borderRadius: 4,
   objectFit: 'contain',
@@ -19,10 +23,26 @@ const ImageStyle = styled('img')({
   width: '100px',
   height: 'auto',
 });
+
 const OrderTable: React.FunctionComponent<IItemTable> = ({
   items,
   addressMode = false,
 }) => {
+  const calcTotalBookPrice = useCallback((item: any) => {
+    let total = 0;
+    item?.order_details?.forEach((element: any) => {
+      total += Number(element.price) * Number(element.quantity);
+    });
+    return total;
+  }, []);
+
+  if (!items && items?.length === 0) {
+    return (
+      <Box sx={{ backgroundColor: '#fff', padding: 2, borderRadius: '8px' }}>
+        <EmptyOrder />
+      </Box>
+    );
+  }
   return items.map((row: any) => (
     <TableContainer component={Paper} key={row.id} sx={{ mb: 2 }}>
       <Table sx={{ maxWidth: 1762, marginTop: 2 }}>
@@ -32,17 +52,15 @@ const OrderTable: React.FunctionComponent<IItemTable> = ({
               <Stack display="flex" direction="row" alignItems="center">
                 <LocalShippingIcon sx={{ color: 'black' }} />
                 <Typography ml={addressMode ? 0 : 2} variant="h4">
-                  Giao thành công
+                  Đã đặt hàng
                 </Typography>
               </Stack>
             </TableCell>
             <TableCell>
-              <Typography variant="h5" textAlign="center">
-                Số lượng
-              </Typography>
+              <Typography textAlign="center">Số lượng</Typography>
             </TableCell>
             <TableCell colSpan={addressMode ? 1 : 2}>
-              <Typography variant="h5">Thành tiền</Typography>
+              <Typography>Thành tiền</Typography>
             </TableCell>
           </TableRow>
         </TableHead>
@@ -74,7 +92,7 @@ const OrderTable: React.FunctionComponent<IItemTable> = ({
                       justifyContent="space-between"
                       spacing={40}
                     >
-                      <Typography fontSize="16px" fontWeight="500">
+                      <Typography fontSize="14px">
                         {item?.book?.name}
                       </Typography>
                     </Stack>
@@ -82,25 +100,36 @@ const OrderTable: React.FunctionComponent<IItemTable> = ({
                 </Stack>
               </TableCell>
               <TableCell>
-                <Typography
-                  fontSize="16px"
-                  fontWeight="bold"
-                  textAlign="center"
-                >
+                <Typography fontWeight="bold" textAlign="center">
                   {item.quantity}
                 </Typography>
               </TableCell>
               <TableCell>
-                <Typography fontSize="16px" fontWeight="bold" textAlign="left">
-                  {item.price * item.quantity}đ
+                <Typography fontWeight="bold" textAlign="left">
+                  {moneyFormat(item.price * item.quantity || 0)} đ
                 </Typography>
               </TableCell>
             </TableRow>
           ))}
           <TableRow>
-            <TableCell rowSpan={2}>
-              <Stack display="flex" direction="row" justifyContent="flex-end">
-                <Typography variant="h3">Tổng tiền: </Typography>
+            <TableCell colSpan={3}>
+              <Stack display="flex" direction="row" justifyContent="flex-start">
+                <Typography>
+                  Phí vận chuyển:{' '}
+                  {moneyFormat(
+                    (row?.payment?.total || 0) - (calcTotalBookPrice(row) || 0)
+                  )}{' '}
+                  đ
+                </Typography>
+              </Stack>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell colSpan={3}>
+              <Stack display="flex" direction="row" justifyContent="flex-start">
+                <Typography fontWeight={700} fontSize={'18px'} color={'black'}>
+                  Tổng tiền: {moneyFormat(row?.payment?.total || 0)} đ
+                </Typography>
               </Stack>
             </TableCell>
           </TableRow>

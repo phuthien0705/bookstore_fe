@@ -26,15 +26,14 @@ const Statistic = () => {
   return (
     <AdminLayout>
       <Typography>hello this is statistic page</Typography>
-      <Box>
-        {/* {typeof window !== 'undefined' && (
-          <Chart
-            options={chartInfo.options}
-            series={chartInfo.series}
-            type="bar"
-            width="500"
-          />
-        )} */}
+      <Box
+        sx={{
+          backgroundColor: '#fff',
+          width: 'fit-content',
+          p: '8px',
+          borderRadius: '8px',
+        }}
+      >
         <Chart
           options={chartInfo.options}
           series={chartInfo.series}
