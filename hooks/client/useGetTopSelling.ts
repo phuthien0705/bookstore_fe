@@ -4,8 +4,9 @@ import { useQuery } from 'react-query';
 
 const useGetTopSelling = () => {
   const getListQuery: any = useQuery(TOP_SELLING, () => getTopSelling(), {
-    refetchOnMount: true,
-    keepPreviousData: true,
+    cacheTime: Infinity,
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
   });
 
   return getListQuery;
