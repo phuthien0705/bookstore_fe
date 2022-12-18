@@ -1,32 +1,9 @@
 import ProductLayout from '@/layout/ProductLayot';
 import MainCard from '@/components/cards/MainCard';
-import {
-  Typography,
-  Box,
-  Container,
-  Grid,
-  Card,
-  CardContent,
-  Paper,
-  IconButton,
-  Button,
-  Popper,
-  ClickAwayListener,
-  Grow,
-  MenuItem,
-  MenuList,
-  FormControl,
-  FormControlLabel,
-  Checkbox,
-  RadioGroup,
-  Radio,
-  ButtonGroup,
-  Drawer,
-  Stack,
-  Link,
-} from '@mui/material';
+import { Typography, Box, Container, Paper } from '@mui/material';
 import OrderTitle from '@/components/orders/OrderTitle';
 import OrderTable from '@/components/orders/OrderTable';
+import useGetListOrder from '@/hooks/client/usetGetListOrder';
 const fakedata = [
   {
     id: 1,
@@ -80,21 +57,21 @@ const fakedata = [
   },
 ];
 const OrdersHistory = () => {
+  // const { data, isLoading, isFetching } = useGetListOrder();
+  // console.log(data);
   return (
-    <>
-      <ProductLayout>
-        <Container maxWidth="md" disableGutters>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Paper sx={{ backgroundColor: '#fff', p: { xs: 2, md: 3 }, mb: 2 }}>
-              <OrderTitle />
-            </Paper>
-            {/* <Paper sx={{ backgroundColor: '#fff', p: { xs: 2, md: 3 } }}> */}
-            <OrderTable items={fakedata} />
-            {/* </Paper> */}
-          </Box>
-        </Container>
-      </ProductLayout>
-    </>
+    <ProductLayout>
+      <Container maxWidth="md" disableGutters>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Paper sx={{ backgroundColor: '#fff', p: { xs: 2, md: 3 }, mb: 2 }}>
+            <OrderTitle />
+          </Paper>
+          {/* <Paper sx={{ backgroundColor: '#fff', p: { xs: 2, md: 3 } }}> */}
+          <OrderTable items={fakedata} />
+          {/* </Paper> */}
+        </Box>
+      </Container>
+    </ProductLayout>
   );
 };
 export default OrdersHistory;

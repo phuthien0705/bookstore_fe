@@ -12,10 +12,12 @@ import dynamic from 'next/dynamic';
 import CustomizedSnackbar from '@/components/snackbar/CustomizedSnackbar';
 import { Router } from 'next/router';
 import LoadingScreen from '@/components/loading/LoadingScreen';
-import ScrollToTopButton from '@/components/button/ScrollToTopButton';
 
 const Footer = dynamic(() => import('../../components/Footer'), { ssr: false });
-
+const ScrollToTopButton = dynamic(
+  () => import('@/components/button/ScrollToTopButton'),
+  { ssr: false }
+);
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme }: { theme: any }) => ({
     ...theme?.typography?.mainContent2,
@@ -23,6 +25,11 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     borderBottomRightRadius: 0,
     marginRight: 0,
     padding: 0,
+    [theme.breakpoints.down('md')]: {
+      marginTop: '100px',
+      paddingLeft: '8px',
+      paddingRight: '8px',
+    },
   })
 );
 

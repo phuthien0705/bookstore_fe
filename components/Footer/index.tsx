@@ -28,7 +28,7 @@ const Footer = () => {
         backgroundColor: '#e3f2fd',
       }}
     >
-      <Box sx={{ backgroundColor: '#fff', p: 1, mt: 2 }}>
+      <Box sx={{ backgroundColor: '#fff', p: 1 }}>
         <Box textAlign="center" mt={2}>
           <LogoSection />
           <Stack
