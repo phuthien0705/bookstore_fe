@@ -16,3 +16,5 @@ export const LIST_DISTRICT = 'list-district';
 export const USER_PROFILE = 'user-profile';
 export const USER_ADMIN = 'user-admin';
 export const ORDERS = 'orders';
+export const STATISTICS = 'statistics';
+export const TOP_SELLING = 'top-selling';

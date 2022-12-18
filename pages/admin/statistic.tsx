@@ -2,10 +2,20 @@ import { useState } from 'react';
 import AdminLayout from '@/layout/AdminLayout';
 import { Box, Typography } from '@mui/material';
 import dynamic from 'next/dynamic';
+import useGetStatistic from '@/hooks/useGetStatistic';
+import { partStatisticTime } from '@/utils/parseTime';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const Statistic = () => {
+  const date = new Date();
+  const { data, isLoading, isFetching } = useGetStatistic({
+    startDate: partStatisticTime(
+      new Date(date.getFullYear(), date.getMonth() - 1, 1).toISOString()
+    ),
+    endDate: partStatisticTime(new Date().toISOString()),
+  });
+  console.log('data', data?.data);
   const chartInfo = {
     options: {
       chart: {
@@ -25,7 +35,7 @@ const Statistic = () => {
 
   return (
     <AdminLayout>
-      <Typography>hello this is statistic page</Typography>
+      <Typography sx={{ mb: 1, color: '#000' }}>Thống kê doanh thu</Typography>
       <Box
         sx={{
           backgroundColor: '#fff',

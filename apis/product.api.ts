@@ -15,7 +15,7 @@ export const getAllBook = async (
   );
 };
 export const getAllBookClient = async () => {
-  return httpRequest.get('/books?per_page=999');
+  return httpRequest.get('/books?per_page=100');
 };
 export const filterBook = async ({
   genres = '',
@@ -40,8 +40,8 @@ export const filterBook = async ({
     if (params) params = params + '&order_by=' + order_by;
     else params = params + 'order_by=' + order_by;
   }
-  if (params) params = '?' + params + '&per_page=999';
-  else params = '?per_page=999';
+  if (params) params = '?' + params + '&per_page=100';
+  else params = '?per_page=100';
   return httpRequest.get(`/books${params}`);
 };
 export const getBookDetailById = async (
@@ -68,4 +68,8 @@ export const createBook = async (data: FormData | any) => {
       'content-type': 'multipart/form-data',
     },
   });
+};
+
+export const getTopSelling = async () => {
+  return httpRequest.get(`/books?per_page=4&page=1&order_by=top_selling`);
 };

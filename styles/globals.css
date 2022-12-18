@@ -68,3 +68,7 @@
 .swiper {
   padding: 0 !important;
 }
+.swiper img {
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
