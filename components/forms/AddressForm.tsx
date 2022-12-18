@@ -31,7 +31,6 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
   const theme: any = useTheme();
   const dispatch = useDispatch();
   const data = currentAddress?.data;
-  console.log('$123', data);
   const { data: listCity } = useGetListCity();
   const [listDistrict, setListDistrict] = useState<any[]>([]);
 
@@ -123,6 +122,10 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
+          if (values.phone?.length !== 10) {
+            toast({ type: 'info', message: 'Số điện thoại phải có 10 ký tư' });
+            return;
+          }
           const req = {
             name: values.name,
             description: values.description,
