@@ -40,7 +40,6 @@ const Sidebar: React.FunctionComponent<ISideBar> = ({
           },
         }}
         ModalProps={{ keepMounted: true }}
-        color="inherit"
       >
         <>
           <Box sx={{ display: { xs: 'block', md: 'none' } }}>

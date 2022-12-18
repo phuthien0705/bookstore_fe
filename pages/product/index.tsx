@@ -43,26 +43,28 @@ import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 import { useToast } from '@/hooks/useToast';
+import OrderTitle from '@/components/orders/OrderTitle';
+import ProductTitle from '@/components/products/ProductTitle';
 
 const drawerWidth = 400;
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }: { theme: any; open: boolean }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3),
+const DivStyled = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }: { theme: any; open: boolean }) => ({
+  flexGrow: 1,
+  padding: theme.spacing(3),
+  transition: theme.transitions.create('margin', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  marginRight: -drawerWidth,
+  ...(open && {
     transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
     }),
-    marginRight: -drawerWidth,
-    ...(open && {
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginRight: 0,
-    }),
-  })
-);
+    marginRight: 0,
+  }),
+}));
 const Product = () => {
   const theme: any = useTheme();
   const router = useRouter();
@@ -178,37 +180,52 @@ const Product = () => {
       setGenreList([Number(router.query?.genre as any)] || []);
     }
   }, [router]);
+  useEffect(() => {
+    console.log('open', openFilter);
+  });
   return (
     <ProductLayout>
-      <Paper sx={{ backgroundColor: '#fff', p: 3, mt: 2, mb: 2 }}>
-        <Container
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            ml: 0,
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-          }}
-        >
-          <Typography variant="h4">Nhà sách</Typography>
-          <IconButton>
-            <ArrowForwardIosRoundedIcon fontSize="small" />
-          </IconButton>
-          <Typography variant="h4">Sản phẩm</Typography>
-        </Container>
-      </Paper>
-      <MainCard
-        title="Tất cả sách có sẵn"
-        sx={{ backgroundColor: '#f5f5f5f5' }}
+      <Paper
+        sx={{
+          backgroundColor: '#fff',
+          px: { xs: 1.5, md: 2 },
+          py: { xs: 1, md: 2 },
+          mb: { xs: 1, md: 2 },
+        }}
       >
+        <ProductTitle />
+      </Paper>
+      <Box
+        sx={{
+          backgroundColor: '#fff',
+          borderRadius: '8px',
+          px: { xs: 1.5, md: 2 },
+          pt: { xs: 1, md: 0.5 },
+          pb: { xs: 1, md: 2 },
+          mb: { xs: 1, md: 2 },
+        }}
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Box
+            onClick={() => {
+              handleToggleFilter();
+            }}
+            sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+          >
+            <IconButton>
+              <FilterAltIcon />
+            </IconButton>
+            <Typography>Bộ lọc</Typography>
+          </Box>
+        </Box>
         <Box sx={{ display: 'flex' }}>
           {/* Render Products */}
-          <Main open={openFilter} theme={theme}>
+          <DivStyled open={matches ? openFilter : true} theme={theme}>
             <ProductCardItems
               isLoading={isGetingListFilterBook}
               data={listBook || []}
             />
-          </Main>
+          </DivStyled>
           <Drawer
             variant={matches ? 'persistent' : 'temporary'}
             anchor="right"
@@ -220,7 +237,7 @@ const Product = () => {
               '& .MuiDrawer-paper': {
                 mt: matches ? '25px' : '80px',
                 borderRadius: matches ? '8px' : '0',
-                width: matches ? drawerWidth : '80%',
+                maxWidth: matches ? drawerWidth : drawerWidth,
                 height: matches ? 'auto' : '100%',
                 position: matches ? 'relative' : 'inherit',
                 display: 'flex',
@@ -229,8 +246,9 @@ const Product = () => {
             }}
           >
             <div style={{ position: 'relative' }}>
-              <Paper
-                style={{
+              <Box
+                sx={{
+                  marginTop: 0,
                   transform: 'none',
                   transition: 'transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms',
                   width: '100%',
@@ -240,6 +258,22 @@ const Product = () => {
                   {' '}
                   <CardContent>
                     <Grid container display="flex">
+                      <Grid item xs={12}>
+                        <Box
+                          onClick={() => {
+                            handleToggleFilter();
+                          }}
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          <IconButton sx={{ padding: '0 0 10px 0' }}>
+                            <ArrowForwardIosRoundedIcon />
+                          </IconButton>
+                        </Box>
+                      </Grid>
                       <Grid item xs={12}>
                         <Typography variant="h4">Thể loại</Typography>
                         <FormControl>
@@ -337,11 +371,11 @@ const Product = () => {
                     </Grid>
                   </CardContent>
                 </form>
-              </Paper>
+              </Box>
             </div>
           </Drawer>
         </Box>
-      </MainCard>
+      </Box>
     </ProductLayout>
   );
 };

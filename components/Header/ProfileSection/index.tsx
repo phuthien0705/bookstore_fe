@@ -25,8 +25,6 @@ import { CART_CLIENT } from '@/constants/queryKeyName';
 const ProfileSection: React.FunctionComponent = () => {
   const theme: any = useTheme();
   const router = useRouter();
-  const [sdm, setSdm] = useState(true);
-  const [value, setValue] = useState('');
   const [userInfo, setUserInfo] = useState<any>({ name: '', roles: ['user'] });
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -52,7 +50,7 @@ const ProfileSection: React.FunctionComponent = () => {
     router && router.push({ pathname: '/login' });
   };
 
-  const handleListItemClick = (event: any, route = '') => {
+  const handleListItemClick = (route = '') => {
     handleClose();
 
     if (route && route !== '') {
@@ -111,7 +109,7 @@ const ProfileSection: React.FunctionComponent = () => {
           <MenuList sx={{ padding: 0 }}>
             <ListItemButton
               selected={router.pathname.includes('/admin')}
-              onClick={(event) => handleListItemClick(event, '/admin/product')}
+              onClick={() => handleListItemClick('/admin/statistic')}
             >
               <ListItemIcon>
                 <IconAdjustments stroke={1.5} size="1.3rem" />
@@ -122,7 +120,7 @@ const ProfileSection: React.FunctionComponent = () => {
             </ListItemButton>
             <ListItemButton
               selected={router.pathname.includes('/orders')}
-              onClick={(event) => handleListItemClick(event, '/orders')}
+              onClick={() => handleListItemClick('/orders')}
             >
               <ListItemIcon>
                 <IconReceipt stroke={1.5} size="1.3rem" />
@@ -133,7 +131,7 @@ const ProfileSection: React.FunctionComponent = () => {
             </ListItemButton>
             <ListItemButton
               selected={router.pathname.includes('/profile')}
-              onClick={(event) => handleListItemClick(event, '/profile')}
+              onClick={() => handleListItemClick('/profile')}
             >
               <ListItemIcon>
                 <IconSettings stroke={1.5} size="1.3rem" />
@@ -157,7 +155,7 @@ const ProfileSection: React.FunctionComponent = () => {
           <MenuList>
             <ListItemButton
               selected={router.pathname.includes('/profile')}
-              onClick={(event) => handleListItemClick(event, '/profile')}
+              onClick={() => handleListItemClick('/profile')}
             >
               <ListItemIcon>
                 <IconSettings stroke={1.5} size="1.3rem" />
