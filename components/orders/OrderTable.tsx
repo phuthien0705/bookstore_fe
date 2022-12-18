@@ -7,14 +7,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Divider,
-  Card,
 } from '@mui/material';
-import { Typography, Paper, Grid, IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Typography, Paper } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import QuantityButton from '../extended/Quantity';
-import Checkbox from '@mui/material/Checkbox';
 import { IItemTable } from '@/interfaces/compontents/cart.interface';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 const ImageStyle = styled('img')({
@@ -52,8 +47,8 @@ const OrderTable: React.FunctionComponent<IItemTable> = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {row.product.map((item: any) => (
-            <TableRow key={item.id}>
+          {(row?.order_details || []).map((item: any, _index: number) => (
+            <TableRow key={`${item.id}_${_index}`}>
               <TableCell sx={{ maxWidth: '350px' }}>
                 <Stack
                   direction="column"
@@ -62,10 +57,10 @@ const OrderTable: React.FunctionComponent<IItemTable> = ({
                 >
                   <Box>
                     <ImageStyle
-                      alt={item.name}
+                      alt={item?.book?.name}
                       width="76"
                       height="76"
-                      src={item.book_image}
+                      src={item?.book?.book_image}
                     />
                   </Box>
                   <Box>
@@ -80,7 +75,7 @@ const OrderTable: React.FunctionComponent<IItemTable> = ({
                       spacing={40}
                     >
                       <Typography fontSize="16px" fontWeight="500">
-                        {item.name}
+                        {item?.book?.name}
                       </Typography>
                     </Stack>
                   </Box>

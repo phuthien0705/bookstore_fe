@@ -27,6 +27,7 @@ const Sidebar: React.FunctionComponent<ISideBar> = ({
         variant={matchUpMd ? 'persistent' : 'temporary'}
         anchor="left"
         open={drawerOpen}
+        onClose={() => drawerToggle()}
         sx={{
           '& .MuiDrawer-paper': {
             width: drawerWidth,

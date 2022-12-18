@@ -145,7 +145,7 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
           try {
             const req = { email: values.email, password: values.password };
             const res: any = await login(req);
-            console.log(res);
+
             authService.login({
               accessToken: res.access_token,
               name: res.user.name,
@@ -170,7 +170,7 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
             if (!checkIsAdminOrManager(res?.roles)) {
               router.push('/');
             } else {
-              router.push('/admin/product');
+              router.push('/admin/statistic');
             }
           } catch (err) {
             console.error(err);

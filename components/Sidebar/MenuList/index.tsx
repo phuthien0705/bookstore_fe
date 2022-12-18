@@ -8,12 +8,18 @@ import {
   IconUser,
   IconCategory,
   IconBuilding,
+  IconChartBar,
 } from '@tabler/icons';
 import { useMemo } from 'react';
 
 const MenuList = () => {
   const listItem = useMemo(
     () => [
+      {
+        title: 'Thống kê',
+        url: '/admin/statistic',
+        icon: IconChartBar,
+      },
       {
         title: 'Sản phẩm',
         url: '/admin/product',

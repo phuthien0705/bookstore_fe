@@ -14,7 +14,10 @@ import { Router } from 'next/router';
 import LoadingScreen from '@/components/loading/LoadingScreen';
 
 const Footer = dynamic(() => import('../../components/Footer'), { ssr: false });
-
+const ScrollToTopButton = dynamic(
+  () => import('@/components/button/ScrollToTopButton'),
+  { ssr: false }
+);
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme }: { theme: any }) => ({
     ...theme?.typography?.mainContent2,
@@ -22,6 +25,9 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     borderBottomRightRadius: 0,
     marginRight: 0,
     padding: 0,
+    [theme.breakpoints.down('md')]: {
+      marginTop: '89px',
+    },
   })
 );
 
@@ -85,6 +91,7 @@ const ProductLayout: NextPageWithLayout<ILayout> = ({
         {!hideFooter && <Footer />}
       </Box>
       <CustomizedSnackbar />
+      <ScrollToTopButton />
     </NavigationScroll>
   );
 };

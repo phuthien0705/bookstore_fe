@@ -15,3 +15,4 @@ export const LIST_CITY = 'list-city';
 export const LIST_DISTRICT = 'list-district';
 export const USER_PROFILE = 'user-profile';
 export const USER_ADMIN = 'user-admin';
+export const ORDERS = 'orders';
