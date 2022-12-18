@@ -6,24 +6,23 @@ import useGetListGenreClient from '../hooks/client/useGetListGenreClient';
 import ProductCardItems from '../components/cards/products/ProductCardItems';
 import CarouselCustumized from '@/components/carousel/CarouselCustumized';
 import HomeLayout from '@/layout/HomeLayout';
+import useGetTopSelling from '@/hooks/client/useGetTopSelling';
 
 const Home = () => {
   const theme = useTheme();
-  const getListBookQuery = useGetListBookClient();
-  const getListGenreQuery = useGetListGenreClient();
+  const { data: topSelling, isLoading: isTopSellLoading } = useGetTopSelling();
 
   const {
     data: genreData,
     isLoading: isGenreLoading,
     isFetching: isGenreFetching,
-  } = getListGenreQuery;
+  } = useGetListGenreClient(!!topSelling);
   const {
     data: bookData,
     isLoading: isBookLoading,
     isFetching: isBookFetching,
     refetch,
-  } = getListBookQuery;
-
+  } = useGetListBookClient();
   const renderGenres = () => {
     if (!isGenreLoading) {
       return (
@@ -46,11 +45,24 @@ const Home = () => {
   };
   return (
     <HomeLayout>
-      <CarouselCustumized />
+      <Container
+        maxWidth="lg"
+        sx={{
+          pt: 1,
+          px: {
+            xs: '8px !important',
+            sm: '8px !important',
+            md: '16px !important',
+          },
+        }}
+      >
+        <CarouselCustumized />
+      </Container>
       <Container
         maxWidth="lg"
         sx={{
           px: { xs: '8px', md: '16px' },
+          pb: 2,
         }}
       >
         <Box
@@ -58,15 +70,18 @@ const Home = () => {
             display: 'flex',
             flexDirection: 'column',
             rowGap: '1rem',
-            borderRadius: '8px',
-            overflow: 'hidden',
+
             paddingTop: '8px',
+            section: {
+              borderRadius: '8px !important',
+              overflow: 'hidden !important',
+            },
           }}
         >
           <ProductCardItems
             slideToShow={5}
-            isLoading={isBookLoading}
-            data={bookData?.data}
+            isLoading={isTopSellLoading}
+            data={topSelling?.data}
             title="Xu hướng mua sắm"
             titleIcon={<LocalFireDepartmentIcon color="error" />}
             titleBackground="#FCDDEF"
