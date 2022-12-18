@@ -28,11 +28,8 @@ const CartSection: React.FunctionComponent<ICartSection> = ({
     <Box
       onClick={() => handleClickCart()}
       sx={{
-        ml: 2,
-        mr: 2,
-        [theme.breakpoints.down('md')]: {
-          mr: 2,
-        },
+        ml: 1.5,
+        mr: 1.5,
       }}
     >
       <ButtonBase sx={{ borderRadius: '12px' }}>

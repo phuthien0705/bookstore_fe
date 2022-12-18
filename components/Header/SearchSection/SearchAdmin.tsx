@@ -36,7 +36,6 @@ const SearchAdminSection: FC<ISearchAdminSection> = ({
   const inputRef = useRef<any>(null);
   const [searchContent, setSearchContent] = useState<string>('');
   const handleSearch = useCallback(() => {
-    console.log('click - search');
     setValue(searchContent);
     setPage && setPage(1);
   }, [searchContent, setPage, setValue]);

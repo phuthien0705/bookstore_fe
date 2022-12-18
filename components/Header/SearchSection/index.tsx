@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTheme, styled } from '@mui/material/styles';
 import {
   Avatar,
@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { IconSearch } from '@tabler/icons';
 import { shouldForwardProp } from '@mui/system';
+import { useRouter } from 'next/router';
 
 const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(
   ({ theme }) => ({
@@ -37,22 +38,50 @@ const OutlineInputStyle = styled(OutlinedInput, { shouldForwardProp })(
 );
 
 const SearchSection = () => {
+  const inputRef = useRef<any>(null);
+  const router = useRouter();
   const theme = useTheme();
   const [value, setValue] = useState('');
   const matches = useMediaQuery('(min-width:900px)');
+  const handleClearSearch = () => {
+    setValue('');
+    if (router?.pathname === '/product') {
+      router.push({ pathname: 'product' });
+    }
+  };
+  const handleSearch = useCallback(() => {
+    if (router?.pathname !== '/product') {
+      router.push({ pathname: '/product', query: { search: value } });
+    }
+  }, [router]);
+
+  useEffect(() => {
+    const inputRefCurrent = inputRef?.current;
+    const handleKeyPress = function (event: any) {
+      if (event.key === 'Enter') {
+        handleSearch();
+      }
+    };
+    inputRefCurrent?.addEventListener('keypress', handleKeyPress);
+
+    return () => {
+      inputRefCurrent?.removeEventListener('keypress', handleKeyPress);
+    };
+  }, [handleSearch]);
 
   return (
     <>
       <Box
         sx={{
           width: '100%',
-          marginRight: 0.5,
+          marginRight: 0.25,
           marginLeft: { xs: 0, md: 1.5 },
           display: 'flex',
           justifyContent: 'flex-end',
         }}
       >
         <OutlineInputStyle
+          ref={inputRef}
           sx={{ width: matches ? '300px' : '100%' }}
           id="input-search-header"
           value={value}

@@ -62,7 +62,7 @@ const Home = () => {
         maxWidth="lg"
         sx={{
           px: { xs: '8px', md: '16px' },
-          pb: 2,
+          pb: 1,
         }}
       >
         <Box
