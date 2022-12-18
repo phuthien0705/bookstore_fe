@@ -43,3 +43,7 @@ export interface IPaymentTab {
   listAddress: any;
   refetchAddress: () => void;
 }
+
+export interface IOrderTable {
+  items: any;
+}

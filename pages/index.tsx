@@ -60,6 +60,7 @@ const Home = () => {
             rowGap: '1rem',
             borderRadius: '8px',
             overflow: 'hidden',
+            paddingTop: '8px',
           }}
         >
           <ProductCardItems

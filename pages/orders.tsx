@@ -7,7 +7,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 
 const OrdersHistory = () => {
   const { data, isLoading, isFetching } = useGetListOrder();
-  console.log(data);
+  console.log(data?.orders);
   return (
     <ProductLayout>
       <Container maxWidth="md" disableGutters>
