@@ -59,11 +59,11 @@ const Header: FC<IHeader> = ({
               '::before': {
                 content: '""',
                 position: 'absolute',
-                bottom: '-1.25rem',
+                bottom: '-0.4rem',
                 left: 0,
-                height: '1.25rem',
+                height: '0.4rem',
                 width: '100%',
-                background: 'linear-gradient(rgba(0,0,0,.06),transparent)',
+                background: 'linear-gradient(rgba(0,0,0,.3),transparent)',
               },
             }
           : {
