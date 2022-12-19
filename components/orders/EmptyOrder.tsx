@@ -5,7 +5,7 @@ const EmptyOrder: React.FunctionComponent = () => {
     <Grid container>
       <Grid item xs={12}>
         <Typography variant="h1" align="center">
-          Giỏ hàng trống
+          Đơn hàng trống
         </Typography>
       </Grid>
       <Grid item xs={12}>
