@@ -1,6 +1,6 @@
 import ProductLayout from '../layout/ProductLayot/index';
 import PayTermContent from '@/components/terms/paytermcontent';
-import { Typography, Paper } from '@mui/material';
+import { Paper } from '@mui/material';
 
 const PayTerm = () => {
   return (

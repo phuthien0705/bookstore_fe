@@ -1,7 +1,6 @@
 import { useTheme } from '@mui/material/styles';
 import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 import Link from 'next/link';
-import Logo from '../components/Logo';
 import AuthCardWrapper from '../components/auth/AuthCardWrapper';
 import AuthRegisterForm from '../components/forms/AuthRegisterForm';
 import AuthWrapper from '../components/auth/AuthWrapper';
