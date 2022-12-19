@@ -1,7 +1,6 @@
-import { Paper, Container, Typography, Divider } from '@mui/material';
+import { Paper, Container, Typography } from '@mui/material';
 import ProductLayout from '../layout/ProductLayot/index';
 import MainCard from '../components/cards/MainCard';
-import authService from '../services/authService';
 import AccountTabs from '../components/profile/AccountTabs';
 import { useState, useEffect } from 'react';
 import useGetUserProfile from '@/hooks/client/useGetUserProfile';

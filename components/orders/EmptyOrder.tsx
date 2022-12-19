@@ -10,7 +10,7 @@ const EmptyOrder: React.FunctionComponent = () => {
       </Grid>
       <Grid item xs={12}>
         <Typography variant="h4" align="center">
-          Bạn chưa mua đơn hàng nào.
+          Bạn có đơn hàng nào.
         </Typography>
       </Grid>
     </Grid>
