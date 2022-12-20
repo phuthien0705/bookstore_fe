@@ -23,7 +23,7 @@ const Statistic = () => {
 
   return (
     <AdminLayout>
-      <Grid container spacing={2} sx={{ px: 1 }}>
+      <Grid container spacing={{ md: 2, xs: 1 }} sx={{ px: { md: 1, xs: 0 } }}>
         <Grid item xs={6}>
           <TotalEarning data={data?.data || []} />
         </Grid>

@@ -107,7 +107,7 @@ const Header: FC<IHeader> = ({
             display: 'flex',
             alignItems: 'center',
             width: '100%',
-            justifyContent: { xs: 'space-between', md: 'space-between' },
+            justifyContent: { xs: 'space-between', md: 'flex-end' },
           }}
         >
           {!hideHomeScript && matches && (
@@ -138,7 +138,7 @@ const Header: FC<IHeader> = ({
             </Box>
           )}
 
-          {!hideSidebarIcon && (
+          {!hideSidebarIcon && !matches && (
             <Box
               className="shadow"
               sx={{ borderRadius: '8px' }}
