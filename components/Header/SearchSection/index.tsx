@@ -72,17 +72,23 @@ const SearchSection = () => {
   return (
     <>
       <Box
+        className="shadow"
         sx={{
           width: '100%',
           marginRight: 0.25,
           marginLeft: { xs: 0, md: 1.5 },
           display: 'flex',
           justifyContent: 'flex-end',
+          borderRadius: '8px',
+
+          '.css-wmrpzn-MuiOutlinedInput-notchedOutline': {
+            border: 'none !important',
+          },
         }}
       >
         <OutlineInputStyle
           ref={inputRef}
-          sx={{ width: matches ? '300px' : '100%' }}
+          sx={{ width: matches ? '300px' : '100%', border: 'none' }}
           id="input-search-header"
           value={value}
           onChange={(e) => setValue(e.target.value)}

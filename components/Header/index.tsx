@@ -63,7 +63,8 @@ const Header: FC<IHeader> = ({
                 left: 0,
                 height: '0.4rem',
                 width: '100%',
-                background: 'linear-gradient(rgba(0,0,0,.3),transparent)',
+                background:
+                  'linear-gradient(rgba(136, 165, 191, 0.48),transparent)',
               },
             }
           : {
@@ -138,21 +139,26 @@ const Header: FC<IHeader> = ({
           )}
 
           {!hideSidebarIcon && (
-            <IconButton
-              size="small"
-              color="secondary"
+            <Box
+              className="shadow"
+              sx={{ borderRadius: '8px' }}
               onClick={() => handleLeftDrawerToggle()}
-              sx={{
-                borderRadius: '12px',
-                overflow: 'hidden',
-                padding: '5px',
-                margin: 0,
-                height: 'fit-content',
-                width: 'fit-content !important',
-              }}
             >
-              <MenuIcon fontSize="small" />
-            </IconButton>
+              <IconButton
+                size="small"
+                color="secondary"
+                sx={{
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  padding: '5px',
+                  margin: 0,
+                  height: 'fit-content',
+                  width: 'fit-content !important',
+                }}
+              >
+                <MenuIcon fontSize="small" />
+              </IconButton>
+            </Box>
           )}
           {/* header search */}
           {!hideSearch && <SearchSection />}
