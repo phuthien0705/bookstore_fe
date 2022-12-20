@@ -1,12 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import {
-  Box,
-  Button,
-  Chip,
-  Pagination,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { useState, useCallback } from 'react';
+import { Box, Button, Chip, Pagination, Stack } from '@mui/material';
 import MainCard from '../../components/cards/MainCard';
 import SearchAdminSection from '../../components/Header/SearchSection/SearchAdmin';
 import { DataGrid } from '@mui/x-data-grid';
@@ -28,7 +21,7 @@ const UserManagement = () => {
   const [currentProduct, setCurrentProduct] = useState<any>(null);
   const [searchContent, setSearchContent] = useState<string>('');
   const [page, setPage] = useState<number>(1);
-  const { data, isLoading, isFetching, refetch } = useGetListUser(
+  const { data, isLoading, refetch } = useGetListUser(
     page,
     10,
     ['name', 'description'] as any,
@@ -121,9 +114,9 @@ const UserManagement = () => {
               disableSelectionOnClick
               autoHeight
               disableColumnMenu
-              loading={isLoading || isFetching}
+              loading={isLoading}
               columns={columns}
-              rows={isLoading || isFetching ? [] : data?.data}
+              rows={isLoading ? [] : data?.data}
               components={{
                 NoRowsOverlay: CustomNoRowsOverlay,
                 LoadingOverlay: LinearProgress,
