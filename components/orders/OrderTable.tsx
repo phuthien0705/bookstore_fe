@@ -159,7 +159,7 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
           </TableContainer>
         </>
       ))}
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 1.5 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1.5, mb: 2 }}>
         <Pagination
           className="shadow"
           sx={{ p: 2, borderRadius: '8px' }}
