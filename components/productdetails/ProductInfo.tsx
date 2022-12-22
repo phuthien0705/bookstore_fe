@@ -112,7 +112,7 @@ const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
             <Typography
               sx={{ fontSize: '32px', color: '#000', fontWeight: 500 }}
             >
-              {moneyFormat(data?.price)} đ
+              {moneyFormat(data?.price)}
             </Typography>
           </Grid>
           <Grid
