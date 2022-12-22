@@ -21,6 +21,7 @@ import useGetListCart from '@/hooks/client/useGetListCart';
 import BelowSection from './BelowSection';
 import GenreSection from './GenreSection';
 import { useRouter } from 'next/router';
+import { scrollToTop } from '@/utils/scrollToTop';
 
 const Header: FC<IHeader> = ({
   handleLeftDrawerToggle,
@@ -121,7 +122,11 @@ const Header: FC<IHeader> = ({
               {' '}
               <Typography
                 onClick={() => {
-                  router?.pathname !== '/' && router.push({ pathname: '/' });
+                  if (router?.pathname === '/') {
+                    scrollToTop();
+                  } else {
+                    router.push({ pathname: '/' });
+                  }
                 }}
                 sx={{
                   cursor: 'pointer',
