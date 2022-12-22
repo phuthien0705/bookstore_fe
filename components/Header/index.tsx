@@ -119,7 +119,6 @@ const Header: FC<IHeader> = ({
                 width: 'fit-content',
               }}
             >
-              {' '}
               <Typography
                 onClick={() => {
                   if (router?.pathname === '/') {
@@ -140,6 +139,38 @@ const Header: FC<IHeader> = ({
                 Trang chủ
               </Typography>
               <GenreSection />
+              <Typography
+                onClick={() => {
+                  router.push({ pathname: '/contact-us' });
+                }}
+                sx={{
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 400,
+                  marginRight: 1,
+                  whiteSpace: 'nowrap',
+                  color: 'rgb(29,37,69)',
+                  ml: '20px',
+                }}
+              >
+                Liên hệ
+              </Typography>
+              <Typography
+                onClick={() => {
+                  router.push({ pathname: '/about-us' });
+                }}
+                sx={{
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 400,
+                  marginRight: 1,
+                  whiteSpace: 'nowrap',
+                  color: 'rgb(29,37,69)',
+                  ml: '15px',
+                }}
+              >
+                Giới thiệu
+              </Typography>
             </Box>
           )}
 

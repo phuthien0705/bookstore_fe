@@ -85,7 +85,7 @@ const ProductCard: React.FunctionComponent<IProductCard> = ({
         type: 'info',
         message: 'Đăng nhập để thêm sản phẩm vào vỏ hàng',
       });
-      router.push('/login');
+      router.push({ pathname: '/login' });
     }
   }, [addToCartFunc, router, toast]);
 
