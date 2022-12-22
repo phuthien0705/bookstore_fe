@@ -265,20 +265,9 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
             <Stack
               direction="row"
               alignItems="center"
-              justifyContent="space-between"
+              justifyContent="flex-end"
               spacing={1}
             >
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={checked}
-                    onChange={(event) => setChecked(event.target.checked)}
-                    name="checked"
-                    color="primary"
-                  />
-                }
-                label="Ghi nhớ đăng nhập"
-              />
               <Typography
                 onClick={() => router.push('/forgot-password')}
                 variant="subtitle1"
