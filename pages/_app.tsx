@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 import '../styles/globals.css';
 import initRequest from '../services/initRequest';
 import { AppPropsWithLayout } from '@/interfaces/layout.interface';
+import Script from 'next/script';
 
 initRequest();
 
@@ -46,7 +47,24 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-
+       
+      <Script
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtag/js?id=G-JHCL42N0Q5"
+      />
+          
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-JHCL42N0Q5');
+        `,
+        }}
+      />
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={themes(customization)}>
