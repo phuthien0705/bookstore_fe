@@ -24,7 +24,7 @@ const GenreManagement = () => {
   const [currentProduct, setCurrentProduct] = useState<{ data: any } | null>(
     null
   );
-  const { data, isLoading, isFetching, refetch } = useGetListGenre(
+  const { data, isLoading, refetch } = useGetListGenre(
     page,
     10,
     ['name', 'description'] as any,
@@ -54,10 +54,6 @@ const GenreManagement = () => {
   const toggleModalEdit = useCallback((product: any) => {
     setCurrentProduct({ data: product });
   }, []);
-
-  const fetchData = useCallback(() => {
-    refetch();
-  }, [refetch]);
 
   const handleCloseModal = useCallback(async () => {
     setCurrentProduct(null);
@@ -152,7 +148,7 @@ const GenreManagement = () => {
               disableColumnMenu
               loading={isLoading || isMutateLoading}
               columns={columns}
-              rows={isLoading ? [] : data?.data}
+              rows={data?.datas ?? []}
               components={{
                 NoRowsOverlay: CustomNoRowsOverlay,
                 LoadingOverlay: LinearProgress,
@@ -164,11 +160,11 @@ const GenreManagement = () => {
           >
             <Pagination
               className="shadow"
-              sx={{ p: 2, borderRadius: '8px' }}
+              sx={{ p: 2, borderRadius: '6px' }}
               variant="outlined"
               shape="rounded"
               color="primary"
-              count={data?.meta?.last_page || 0}
+              count={data?.totalPages ?? 0}
               page={page}
               onChange={(event, value) => setPage(value)}
             />
@@ -177,7 +173,6 @@ const GenreManagement = () => {
             open={currentProduct !== null}
             currentProduct={currentProduct}
             handleClose={handleCloseModal}
-            refetchAfterClose={fetchData}
           />
         </MainCard>
       </>

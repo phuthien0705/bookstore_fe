@@ -1,21 +1,21 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { useMutation, useQueryClient } from 'react-query';
+import { DataGrid } from '@mui/x-data-grid';
+import AddIcon from '@mui/icons-material/Add';
+import LinearProgress from '@mui/material/LinearProgress';
 import { Box, Button, Pagination, Stack, Typography } from '@mui/material';
+import AdminLayout from '../../layout/AdminLayout';
 import MainCard from '../../components/cards/MainCard';
 import SearchAdminSection from '../../components/Header/SearchSection/SearchAdmin';
-import { DataGrid } from '@mui/x-data-grid';
-import LinearProgress from '@mui/material/LinearProgress';
 import CustomNoRowsOverlay from '../../components/empty/CustomNoRowsOverlay';
-import AddIcon from '@mui/icons-material/Add';
-import config from '../../config';
 import MenuActionAdmin from '../../components/menus/MenuActionAdmin';
-import { useDispatch } from 'react-redux';
-import { toggleSnackbar } from '../../store/snackbarReducer';
 import PublisherModal from '../../components/modals/PublisherModal';
 import { deletePublisher } from '../../apis/publisher.api';
-import { useMutation, useQueryClient } from 'react-query';
 import { PUBLISHERS } from '../../constants/queryKeyName';
 import useGetListPublisher from '../../hooks/useGetListPublisher';
-import AdminLayout from '../../layout/AdminLayout';
+import { toggleSnackbar } from '../../store/snackbarReducer';
+import config from '../../config';
 
 const PublisherManagement = () => {
   const queryClient = useQueryClient();
@@ -36,7 +36,8 @@ const PublisherManagement = () => {
     },
     [dispatch]
   );
-  const { mutate, isLoading: isMutateLoading } = useMutation(deletePublisher, {
+  console.log(data);
+  const { mutate, isLoading: isDeleting } = useMutation(deletePublisher, {
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries(PUBLISHERS);
@@ -52,10 +53,6 @@ const PublisherManagement = () => {
   const toggleModalEdit = useCallback((product: any) => {
     setCurrentProduct({ data: product });
   }, []);
-
-  const fetchData = useCallback(() => {
-    refetch();
-  }, [refetch]);
 
   const handleCloseModal = useCallback(async () => {
     setCurrentProduct(null);
@@ -73,6 +70,12 @@ const PublisherManagement = () => {
       headerName: 'Tên nhà xuất bản',
       description: 'Tên nhà xuất bản',
       width: 200,
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      description: 'Email xuất bản',
+      width: 100,
     },
     {
       field: 'description',
@@ -94,7 +97,6 @@ const PublisherManagement = () => {
     },
     {
       field: 'actions',
-
       headerName: 'Thao tác',
       description: 'Thao tác',
       width: 80,
@@ -162,9 +164,9 @@ const PublisherManagement = () => {
             disableSelectionOnClick
             autoHeight
             disableColumnMenu
-            loading={isLoading || isMutateLoading}
+            loading={isLoading || isDeleting}
             columns={columns}
-            rows={isLoading ? [] : data?.data}
+            rows={data?.datas ?? []}
             components={{
               NoRowsOverlay: CustomNoRowsOverlay,
               LoadingOverlay: LinearProgress,
@@ -176,11 +178,11 @@ const PublisherManagement = () => {
         >
           <Pagination
             className="shadow"
-            sx={{ p: 2, borderRadius: '8px' }}
+            sx={{ p: 2, borderRadius: '6px' }}
             variant="outlined"
             shape="rounded"
             color="primary"
-            count={data?.meta?.last_page || 0}
+            count={data?.totalPages ?? 0}
             page={page}
             onChange={(event, value) => setPage(value)}
           />
@@ -189,7 +191,6 @@ const PublisherManagement = () => {
           open={currentProduct !== null}
           currentProduct={currentProduct}
           handleClose={handleCloseModal}
-          refetchAfterClose={fetchData}
         />
       </MainCard>
     </AdminLayout>

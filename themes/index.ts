@@ -28,6 +28,10 @@ export const theme = (customization: any) => {
     menuSelected: color.secondaryDark,
     menuSelectedBack: color.secondaryLight,
     divider: color.grey200,
+    primaryMain: color.primaryMain,
+    primaryLight: color.primaryLight,
+    primaryDark: color.primaryDark,
+
     customization,
   };
 

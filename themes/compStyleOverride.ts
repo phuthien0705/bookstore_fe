@@ -7,6 +7,9 @@ export default function componentStyleOverrides(theme: any) {
           fontWeight: 500,
           borderRadius: '4px',
         },
+        containedPrimary: {
+          backgroundColor: `${theme.primaryMain} !important`,
+        },
       },
     },
     MuiPaper: {

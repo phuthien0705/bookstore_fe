@@ -1,5 +1,5 @@
-const checkIsAdminOrManager = (roles: any) => {
-  if (roles && (roles.includes('Admin') || roles.includes('Manager')))
+const checkIsAdminOrManager = (roles: string[] | undefined) => {
+  if (roles && (roles.includes('admin') || roles.includes('manager')))
     return true;
   return false;
 };

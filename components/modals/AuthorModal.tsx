@@ -19,27 +19,27 @@ import { toggleSnackbar } from '../../store/snackbarReducer';
 import { createAuthor, editAuthor } from '../../apis/author.api';
 import createRequest from '../../common/createRequest';
 import { IModal } from '@/interfaces/compontents/modal.interface';
+import { useQueryClient } from 'react-query';
+import { AUTHORS } from '@/constants/queryKeyName';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs from 'dayjs';
 
-const AuthorModal: FC<IModal> = ({
-  handleClose,
-  open,
-  currentProduct,
-  refetchAfterClose,
-}) => {
+const AuthorModal: FC<IModal> = ({ handleClose, open, currentProduct }) => {
   const theme: any = useTheme();
   const dispatch = useDispatch();
-
+  const queryClient = useQueryClient();
   const [showAlert, setShowAlert] = useState<any>(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   const data = currentProduct?.data;
 
   const initialValues = {
-    name: data?.name ? data?.name : '',
-    bio: data?.bio ? data?.bio : '',
-    address: data?.address ? data?.address : '',
-    phone: data?.phone ? data?.phone : '',
-    email: data?.email ? data?.email : '',
+    name: data?.name ?? '',
+    biography: data?.biography ?? '',
+    birthDate: data?.birthDate ?? '',
+    deathDate: data?.deathDate ?? '',
     submit: null,
   };
   const handleExit = (currentValues: any) => {
@@ -60,37 +60,33 @@ const AuthorModal: FC<IModal> = ({
           name: Yup.string()
             .max(255, 'Tên tác giả tối đa 255 ký tự')
             .required('Tên tác giả là bắt buộc'),
-          bio: Yup.string().max(255, 'Tiểu sử tác giả tối đa 255 ký tự'),
-          address: Yup.string().max(255, 'Địa chỉ tác giả tối đa 255 ký tự'),
-          phone: Yup.string().max(
+          biography: Yup.string().max(255, 'Tiểu sử tác giả tối đa 255 ký tự'),
+          birthDate: Yup.string().max(
             255,
-            'Số điện thoại tác giả tối đa 255 ký tự'
+            'Ngày sinh tác giả tối đa 255 ký tự'
           ),
-          email: Yup.string()
-            .email('Email phải đúng định dạng')
-            .max(255, 'Email tác giả tối đa 255 ký tự'),
+          deathDate: Yup.string().max(255, 'Ngày mất tác giả tối đa 255 ký tự'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
             const req = createRequest({
               name: values.name,
-              bio: values.bio,
-              address: values.address,
-              phone: values.phone,
-              email: values.email,
+              biography: values.biography,
+              birthDate: values.birthDate,
+              deathDate: values.deathDate,
             });
             if (data === null) {
               await createAuthor(req);
             } else {
               await editAuthor(data?.id, req);
             }
+            queryClient.refetchQueries([AUTHORS]);
             setStatus({ success: true });
             setSubmitting(false);
             toast({
               type: 'success',
               message: `${data === null ? 'Tạo' : 'Cập nhật'} thành công`,
             });
-            refetchAfterClose();
             setTimeout(() => {
               handleClose();
             }, 1000);
@@ -115,6 +111,7 @@ const AuthorModal: FC<IModal> = ({
           isSubmitting,
           touched,
           values,
+          setValues,
         }) => (
           <CustomModal
             open={open}
@@ -150,103 +147,107 @@ const AuthorModal: FC<IModal> = ({
               </FormControl>
               <FormControl
                 fullWidth
-                error={Boolean(touched.bio && errors.bio)}
+                error={Boolean(touched.biography && errors.biography)}
                 sx={{ ...theme.typography.customInput }}
               >
-                <InputLabel htmlFor="outlined-adornment-bio">
+                <InputLabel htmlFor="outlined-adornment-biography">
                   Tiểu sử tác giả
                 </InputLabel>
                 <OutlinedInput
-                  id="outlined-adornment-bio"
+                  id="outlined-adornment-biography"
                   type="text"
-                  value={values.bio}
-                  name="bio"
+                  value={values.biography}
+                  name="biography"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   label="Tiểu sử tác giả"
                   inputProps={{}}
                 />
-                {touched.bio && errors.bio && (
-                  <FormHelperText error id="standard-weight-helper-text-bio">
-                    {errors.bio as any}
-                  </FormHelperText>
-                )}
-              </FormControl>
-              <FormControl
-                fullWidth
-                error={Boolean(touched.address && errors.address)}
-                sx={{ ...theme.typography.customInput }}
-              >
-                <InputLabel htmlFor="outlined-adornment-address">
-                  Địa chỉ tác giả
-                </InputLabel>
-                <OutlinedInput
-                  id="outlined-adornment-address"
-                  type="text"
-                  value={values.address}
-                  name="address"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  label="Địa chỉ tác giả"
-                  inputProps={{}}
-                />
-                {touched.address && errors.address && (
+                {touched.biography && errors.biography && (
                   <FormHelperText
                     error
-                    id="standard-weight-helper-text-address"
+                    id="standard-weight-helper-text-biography"
                   >
-                    {errors.address as any}
+                    {errors.biography as any}
                   </FormHelperText>
                 )}
               </FormControl>
               <FormControl
                 fullWidth
-                error={Boolean(touched.phone && errors.phone)}
+                error={Boolean(touched.birthDate && errors.birthDate)}
                 sx={{ ...theme.typography.customInput }}
               >
-                <InputLabel htmlFor="outlined-adornment-phone">
-                  Số điện thoại tác giả
+                <InputLabel
+                  className="date"
+                  htmlFor="outlined-adornment-birthDate"
+                >
+                  Ngày sinh tác giả
                 </InputLabel>
                 <OutlinedInput
-                  id="outlined-adornment-phone"
-                  type="text"
-                  value={values.phone}
-                  name="phone"
+                  id="outlined-adornment-birthDate"
+                  type="date"
+                  value={values.birthDate}
+                  name="birthDate"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  label="Số điện thoại tác giả"
+                  label="Ngày sinh tác giả"
                   inputProps={{}}
                 />
-                {touched.phone && errors.phone && (
-                  <FormHelperText error id="standard-weight-helper-text-phone">
-                    {errors.phone as any}
+                {touched.birthDate && errors.birthDate && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-birthDate"
+                  >
+                    {errors.birthDate as any}
                   </FormHelperText>
                 )}
               </FormControl>
               <FormControl
                 fullWidth
-                error={Boolean(touched.email && errors.email)}
+                error={Boolean(touched.deathDate && errors.deathDate)}
                 sx={{ ...theme.typography.customInput }}
               >
-                <InputLabel htmlFor="outlined-adornment-email">
-                  Email tác giả
-                </InputLabel>
-                <OutlinedInput
-                  id="outlined-adornment-email"
-                  type="email"
-                  value={values.email}
-                  name="email"
+                {/* <InputLabel className="date" htmlFor="outlined-adornment-deathDate">
+                  Ngày mất tác giả
+                </InputLabel> */}
+                {/* <OutlinedInput
+                  id="outlined-adornment-deathDate"
+                  type="date"
+                  format="dd/mm/yyyy"
+                  value={values.deathDate}
+                  name="deathDate"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  label="Email tác giả"
+                  label="Ngày mất tác giả"
                   inputProps={{}}
-                />
-                {touched.email && errors.email && (
-                  <FormHelperText error id="standard-weight-helper-text-email">
-                    {errors.email as any}
+                /> */}
+                <p>Ngày mất tác giả</p>
+                <div className="w-full">
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      format="DD/MM/YYYY"
+                      className="w-full pt-2"
+                      value={dayjs(values.deathDate)}
+                      onChange={(newValue) => {
+                        //  console.log(dayjs(newValue).format("DD/MM/YYYY"));
+                        setValues((prev: any) => ({
+                          ...prev,
+                          deathDate: dayjs(newValue).format('DD/MM/YYYY'),
+                        }));
+                      }}
+                    />
+                  </LocalizationProvider>
+                </div>
+                {touched.deathDate && errors.deathDate && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-deathDate"
+                  >
+                    {errors.deathDate as any}
                   </FormHelperText>
                 )}
               </FormControl>
+
               {errors.submit && (
                 <Box sx={{ mt: 3 }}>
                   <FormHelperText error>{errors.submit}</FormHelperText>

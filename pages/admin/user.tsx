@@ -1,23 +1,23 @@
 import { useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { useMutation } from 'react-query';
+import Switch from '@mui/material/Switch';
 import { Box, Pagination, Stack } from '@mui/material';
-import MainCard from '../../components/cards/MainCard';
-import SearchAdminSection from '../../components/Header/SearchSection/SearchAdmin';
+import { styled } from '@mui/material/styles';
 import { DataGrid } from '@mui/x-data-grid';
 import LinearProgress from '@mui/material/LinearProgress';
+import AdminLayout from '../../layout/AdminLayout';
+import MainCard from '../../components/cards/MainCard';
+import SearchAdminSection from '../../components/Header/SearchSection/SearchAdmin';
 import CustomNoRowsOverlay from '../../components/empty/CustomNoRowsOverlay';
-import { styled } from '@mui/material/styles';
-import config from '../../config';
 import MenuActionAdmin from '../../components/menus/MenuActionAdmin';
 import CustomChip from '../../components/chip/CustomChip';
-import AdminLayout from '../../layout/AdminLayout';
-import useGetListUser from '@/hooks/useGetListUser';
-import { useMutation } from 'react-query';
 import { activeUser, unactiveUser } from '@/apis/user.api';
-import { useDispatch } from 'react-redux';
-import { useToast } from '@/hooks/useToast';
 import { toggleSnackbar } from '@/store/snackbarReducer';
-import Switch from '@mui/material/Switch';
 import UserModal from '@/components/modals/UserModal';
+import { useToast } from '@/hooks/useToast';
+import useGetListUser from '@/hooks/useGetListUser';
+import config from '../../config';
 
 const ImageStyle = styled('img')({
   width: '80%',

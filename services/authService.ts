@@ -4,6 +4,7 @@ class AuthService {
   login = ({ accessToken, name, roles, id, email }: any) => {
     cookie.set('accessToken', `${accessToken}`, { expires: 7 });
     const userPayload = { name, roles, id, email };
+    console.log(userPayload);
     const userStringify = JSON.stringify(userPayload);
     localStorage.setItem('user', userStringify);
   };
@@ -27,13 +28,13 @@ class AuthService {
 
   isAdmin = () => {
     const user: any = this.getUser();
-    if (user?.roles?.includes('Admin')) return true;
+    if (user?.roles?.includes('admin')) return true;
     return false;
   };
 
   isManger = () => {
     const user: any = this.getUser();
-    if (user?.roles?.includes('Manager')) return true;
+    if (user?.roles?.includes('manager')) return true;
     return false;
   };
 }

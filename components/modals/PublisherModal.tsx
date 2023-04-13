@@ -1,48 +1,42 @@
+import { useState, FC } from 'react';
+import { useDispatch } from 'react-redux';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 import {
   Box,
   FormControl,
-  FormControlLabel,
   FormHelperText,
-  IconButton,
-  InputAdornment,
   InputLabel,
   OutlinedInput,
-  Stack,
   useTheme,
   Alert,
   Button,
 } from '@mui/material';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
-import { useState, FC } from 'react';
 import CustomModal from './CustomModal';
-import objectEquals from '../../common/objectEquals';
-import ConfirmModal from './ConfirmModal';
-import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '../../store/snackbarReducer';
-import createRequest from '../../common/createRequest';
 import { createPublisher, editPublisher } from '../../apis/publisher.api';
 import { IModal } from '@/interfaces/compontents/modal.interface';
+import objectEquals from '../../common/objectEquals';
+import createRequest from '../../common/createRequest';
+import ConfirmModal from './ConfirmModal';
+import { useQueryClient } from 'react-query';
+import { PUBLISHERS } from '@/constants/queryKeyName';
 
-const PublisherModal: FC<IModal> = ({
-  handleClose,
-  open,
-  currentProduct,
-  refetchAfterClose,
-}) => {
+const PublisherModal: FC<IModal> = ({ handleClose, open, currentProduct }) => {
   const theme: any = useTheme();
   const dispatch = useDispatch();
-
+  const queryClient = useQueryClient();
   const [showAlert, setShowAlert] = useState<any>(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   const data = currentProduct?.data;
 
   const initialValues = {
-    name: data?.name ? data?.name : '',
-    description: data?.description ? data?.description : '',
-    address: data?.address ? data?.address : '',
-    phone: data?.phone ? data?.phone : '',
+    name: data?.name ?? '',
+    description: data?.description ?? '',
+    address: data?.address ?? '',
+    phone: data?.phone ?? '',
+    email: data?.email ?? '',
     submit: null,
   };
   const handleExit = (currentValues: any) => {
@@ -75,6 +69,7 @@ const PublisherModal: FC<IModal> = ({
               description: values.description,
               address: values.address,
               phone: values.phone,
+              email: values.email,
             });
             if (data === null) {
               await createPublisher(req);
@@ -87,7 +82,7 @@ const PublisherModal: FC<IModal> = ({
               type: 'success',
               message: `${data === null ? 'Tạo' : 'Cập nhật'} thành công`,
             });
-            refetchAfterClose();
+            queryClient.refetchQueries([PUBLISHERS]);
             setTimeout(() => {
               handleClose();
             }, 1000);
@@ -171,6 +166,30 @@ const PublisherModal: FC<IModal> = ({
                     id="standard-weight-helper-text-description"
                   >
                     {errors.description as any}
+                  </FormHelperText>
+                )}
+              </FormControl>
+              <FormControl
+                fullWidth
+                error={Boolean(touched.email && errors.email)}
+                sx={{ ...theme.typography.customInput }}
+              >
+                <InputLabel htmlFor="outlined-adornment-email">
+                  Email nhà xuất bản
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-email"
+                  type="text"
+                  value={values.email}
+                  name="email"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  label="Email nhà xuất bản"
+                  inputProps={{}}
+                />
+                {touched.email && errors.email && (
+                  <FormHelperText error id="standard-weight-helper-text-email">
+                    {errors.email as any}
                   </FormHelperText>
                 )}
               </FormControl>

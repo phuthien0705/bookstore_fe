@@ -1,13 +1,9 @@
 import {
   Box,
   FormControl,
-  FormControlLabel,
   FormHelperText,
-  IconButton,
-  InputAdornment,
   InputLabel,
   OutlinedInput,
-  Stack,
   useTheme,
   Alert,
   Button,
@@ -23,16 +19,13 @@ import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '../../store/snackbarReducer';
 import createRequest from '../../common/createRequest';
 import { IModal } from '@/interfaces/compontents/modal.interface';
+import { useQueryClient } from 'react-query';
+import { GENRES } from '@/constants/queryKeyName';
 
-const GenreModal: FC<IModal> = ({
-  handleClose,
-  open,
-  currentProduct,
-  refetchAfterClose,
-}) => {
+const GenreModal: FC<IModal> = ({ handleClose, open, currentProduct }) => {
   const theme: any = useTheme();
   const dispatch = useDispatch();
-
+  const queryClient = useQueryClient();
   const [showAlert, setShowAlert] = useState<any>(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -80,7 +73,7 @@ const GenreModal: FC<IModal> = ({
               type: 'success',
               message: `${data === null ? 'Tạo' : 'Cập nhật'} thành công`,
             });
-            refetchAfterClose();
+            queryClient.refetchQueries([GENRES]);
             setTimeout(() => {
               handleClose();
             }, 1000);

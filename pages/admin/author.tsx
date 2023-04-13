@@ -58,9 +58,7 @@ const AuthorManagement = () => {
   const handleCloseModal = useCallback(() => {
     setCurrentProduct(null);
   }, []);
-  const fetchData = useCallback(async () => {
-    refetch();
-  }, [refetch]);
+
   const columns = [
     { field: 'id', headerName: 'ID', description: 'ID sản phẩm', width: 50 },
     {
@@ -70,23 +68,24 @@ const AuthorManagement = () => {
       flex: 1,
     },
     {
-      field: 'bio',
+      field: 'biography',
       headerName: 'Tiểu sử',
       description: 'Tiểu sử tác giả',
       flex: 1,
     },
     {
-      field: 'email',
-      headerName: 'Email',
-      description: 'Email tác giả',
+      field: 'birthDate',
+      headerName: 'Ngày sinh',
+      description: 'Ngày sinh tác giả',
       flex: 1,
     },
     {
-      field: 'phone',
-      headerName: 'Điện thoại',
-      description: 'Số điện thoại',
+      field: 'deathDate',
+      headerName: 'Ngày mất',
+      description: 'Ngày mất tác giả',
       flex: 1,
     },
+
     {
       field: 'actions',
 
@@ -161,7 +160,7 @@ const AuthorManagement = () => {
               disableColumnMenu
               loading={isLoading || isMutateLoading}
               columns={columns}
-              rows={isLoading ? [] : data?.data}
+              rows={data?.datas ?? []}
               components={{
                 NoRowsOverlay: CustomNoRowsOverlay,
                 LoadingOverlay: LinearProgress,
@@ -173,11 +172,11 @@ const AuthorManagement = () => {
           >
             <Pagination
               className="shadow"
-              sx={{ p: 2, borderRadius: '8px' }}
+              sx={{ p: 2, borderRadius: '6px' }}
               variant="outlined"
               shape="rounded"
               color="primary"
-              count={data?.meta?.last_page || 0}
+              count={data?.totalPages ?? 0}
               page={page}
               onChange={(event, value) => setPage(value)}
             />
@@ -186,7 +185,6 @@ const AuthorManagement = () => {
             open={currentProduct !== null}
             currentProduct={currentProduct}
             handleClose={handleCloseModal}
-            refetchAfterClose={fetchData}
           />
         </MainCard>
       </>

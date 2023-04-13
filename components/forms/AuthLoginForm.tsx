@@ -3,13 +3,10 @@ import { useTheme } from '@mui/material/styles';
 import {
   Alert,
   Box,
-  Button,
   Checkbox,
-  Divider,
   FormControl,
   FormControlLabel,
   FormHelperText,
-  Grid,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -21,13 +18,10 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import Google from '../../assets/images/icons/social-google.svg';
-import config from '../../config';
 import { login, reSendVerifyEmail } from '../../apis/auth.api';
 import authService from '../../services/authService';
 import checkIsAdminOrManager from '../../common/checkIsAdminOrManager';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import { LoadingButton } from '@mui/lab';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -146,16 +140,16 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
           try {
             const req = { email: values.email, password: values.password };
             const res: any = await login(req);
-
+            console.log(res);
             authService.login({
-              accessToken: res.access_token,
+              accessToken: res.tokens.access.token,
               name: res.user.name,
               id: res.user.id,
-              roles: res.roles,
+              roles: res.user.roles,
               email: res.user.email,
             });
-            if (!res.is_active) {
-              await reSendVerifyEmail({ email: values.email });
+            if (!res.user.isActive) {
+              await reSendVerifyEmail();
               setShowAlert({
                 type: 'success',
                 content:

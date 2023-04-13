@@ -3,9 +3,7 @@ import { useTheme } from '@mui/material/styles';
 import {
   Alert,
   Box,
-  Button,
   Checkbox,
-  Divider,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -19,17 +17,14 @@ import {
 } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import Google from './../../assets/images/icons/social-google.svg';
 import {
   strengthColor,
   strengthIndicator,
 } from '../../utils/password-strength';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import config from '../../config';
 import { login, register } from '../../apis/auth.api';
 import authService from '../../services/authService';
-import Image from 'next/image';
 import { LoadingButton } from '@mui/lab';
 
 const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
@@ -162,10 +157,10 @@ const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
             const req2 = { email: values.email, password: values.password };
             const res2: any = await login(req2);
             authService.login({
-              accessToken: res2.access_token,
+              accessToken: res2.tokens.access.token,
               name: res2.user.name,
               id: res2.user.id,
-              roles: res2.roles,
+              roles: res2.user.roles,
               email: res2.user.email,
             });
             setShowAlertCheckMail({

@@ -2,30 +2,30 @@ import createSearchParams from '@/common/createSearchParams';
 import httpRequest from '../services/httpRequest';
 
 export const getAllPublisher = async (
-  current_page: number,
-  per_page = 10,
+  page: number,
+  limit = 10,
   searchFields = [],
   value = ''
 ) => {
   return httpRequest.get(
-    `/admin/publishers?per_page=${per_page}&page=${current_page}${createSearchParams(
+    `/publishers?limit=${limit}&page=${page}${createSearchParams(
       searchFields,
       value
     )}`
   );
 };
 export const getAllPublisherClient = async () => {
-  return httpRequest.get('/publishers?per_page=999');
+  return httpRequest.get('/publishers?limit=100&page=1');
 };
 export const editPublisher = async (
   id: string | number | undefined,
   data: { [key: string]: any }
 ) => {
-  return httpRequest.put(`/admin/publishers/${id}`, data);
+  return httpRequest.put(`/publishers/${id}`, data);
 };
 export const deletePublisher = async (id: string | number | undefined) => {
-  return httpRequest.delete(`/admin/publishers/${id}`);
+  return httpRequest.delete(`/publishers/${id}`);
 };
 export const createPublisher = async (data: { [key: string]: any }) => {
-  return httpRequest.post('/admin/publishers', data);
+  return httpRequest.post('/publishers', data);
 };

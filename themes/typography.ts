@@ -77,6 +77,14 @@ export default function themeTypography(theme: any) {
           top: 5,
         },
       },
+      '& > label.date': {
+        top: 23,
+        left: 0,
+        color: theme.grey500,
+        '&[data-shrink="false"]': {
+          top: -5,
+        },
+      },
       '& > div > input': {
         padding: '30.5px 14px 11.5px !important',
       },
@@ -105,7 +113,7 @@ export default function themeTypography(theme: any) {
       width: '100%',
       minHeight: 'calc(100vh - 68px)',
       flexGrow: 1,
-      padding: '20px',
+      padding: '10px',
       marginTop: '68px',
       marginRight: '0',
       borderRadius: `${theme?.customization?.borderRadius}px`,

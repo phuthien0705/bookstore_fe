@@ -10,10 +10,10 @@ export const forgotPassword = async (data: any) => {
   return httpRequest.post('/auth/forgot-password', data);
 };
 export const verifyEmail = async (param: any) => {
-  return httpRequest.get('/email/verify' + param);
+  return httpRequest.post('/auth/verify-email' + param, null);
 };
-export const reSendVerifyEmail = async (data: any) => {
-  return httpRequest.post('/email/verification-notification', data);
+export const reSendVerifyEmail = async () => {
+  return httpRequest.post('/auth/send-verification-email', null);
 };
 export const resetPassword = async (params: any, data: any) => {
   return httpRequest.post(`/auth/reset-password${params}`, data);

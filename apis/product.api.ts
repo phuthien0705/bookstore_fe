@@ -2,13 +2,13 @@ import createSearchParams from '@/common/createSearchParams';
 import httpRequest from '../services/httpRequest';
 
 export const getAllBook = async (
-  current_page: number,
-  per_page = 10,
+  page: number,
+  limit = 10,
   searchFields = [],
   value = ''
 ) => {
   return httpRequest.get(
-    `/admin/books?per_page=${per_page}&page=${current_page}${createSearchParams(
+    `/books?limit=${limit}&page=${page}${createSearchParams(
       searchFields,
       value
     )}`
@@ -54,17 +54,17 @@ export const editBook = async (
   id: string | number | undefined,
   data: FormData | any
 ) => {
-  return httpRequest.post(`/admin/books/${id}`, data, {
+  return httpRequest.post(`/books/${id}`, data, {
     headers: {
       'content-type': 'multipart/form-data',
     },
   });
 };
 export const deleteBook = async (id: string | number | undefined) => {
-  return httpRequest.delete(`/admin/books/${id}`);
+  return httpRequest.delete(`/books/${id}`);
 };
 export const createBook = async (data: FormData | any) => {
-  return httpRequest.post('/admin/books', data, {
+  return httpRequest.post('/books', data, {
     headers: {
       'content-type': 'multipart/form-data',
     },
@@ -72,15 +72,15 @@ export const createBook = async (data: FormData | any) => {
 };
 
 export const getTopSelling = async () => {
-  return httpRequest.get(`/books?per_page=5&page=1&order_by=top_selling`);
+  return httpRequest.get(`/books?limit=5&page=1&sortBy=createdAt%3Adesc`);
 };
 
 export const getRelateBook = async (genres = '') => {
-  return httpRequest.get(`/books?per_page=10&page=1=&genre=${genres}`);
+  return httpRequest.get(`/books?limit=10&page=1=&genre=${genres}`);
 };
 
 export const getListBookByGenre = async (genresid: any, slideToShow = 5) => {
   return httpRequest.get(
-    `/books?per_page=${slideToShow}&page=1=&genre=${genresid}`
+    `/books?limit=${slideToShow}&page=1=&genre=${genresid}`
   );
 };

@@ -7,12 +7,12 @@ import Head from 'next/head';
 import themes from '../themes';
 import { store } from '../store';
 import { Provider } from 'react-redux';
-import '../styles/globals.css';
 import initRequest from '../services/initRequest';
 import { AppPropsWithLayout } from '@/interfaces/layout.interface';
 import Script from 'next/script';
 import * as gtag from '../lib/gtag';
 import { useRouter } from 'next/router';
+import '../styles/globals.css';
 
 initRequest();
 

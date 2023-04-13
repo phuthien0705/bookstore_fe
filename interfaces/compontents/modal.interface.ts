@@ -4,7 +4,7 @@ export interface IModal {
   handleClose: Function;
   open: boolean;
   currentProduct: any;
-  refetchAfterClose: Function;
+  refetchAfterClose?: Function;
 }
 export interface IConfirmModal {
   open: boolean;

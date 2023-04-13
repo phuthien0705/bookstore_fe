@@ -3,16 +3,16 @@ import { GENRES } from '../constants/queryKeyName';
 import { useQuery } from 'react-query';
 
 const useGetListGenre = (
-  current_page: number,
-  per_page = 10,
+  page: number,
+  limit = 10,
   searchFields = [],
   value = ''
 ) => {
   const getListQuery: any = useQuery(
-    GENRES,
-    () => getAllGenre(current_page, per_page, searchFields, value),
+    [GENRES],
+    () => getAllGenre(page, limit, searchFields, value),
     {
-      refetchOnMount: true,
+      staleTime: Infinity,
       keepPreviousData: true,
     }
   );
