@@ -21,10 +21,6 @@ import createRequest from '../../common/createRequest';
 import { IModal } from '@/interfaces/compontents/modal.interface';
 import { useQueryClient } from 'react-query';
 import { AUTHORS } from '@/constants/queryKeyName';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import dayjs from 'dayjs';
 
 const AuthorModal: FC<IModal> = ({ handleClose, open, currentProduct }) => {
   const theme: any = useTheme();
@@ -207,37 +203,22 @@ const AuthorModal: FC<IModal> = ({ handleClose, open, currentProduct }) => {
                 error={Boolean(touched.deathDate && errors.deathDate)}
                 sx={{ ...theme.typography.customInput }}
               >
-                {/* <InputLabel className="date" htmlFor="outlined-adornment-deathDate">
+                <InputLabel
+                  className="date"
+                  htmlFor="outlined-adornment-deathDate"
+                >
                   Ngày mất tác giả
-                </InputLabel> */}
-                {/* <OutlinedInput
+                </InputLabel>
+                <OutlinedInput
                   id="outlined-adornment-deathDate"
                   type="date"
-                  format="dd/mm/yyyy"
                   value={values.deathDate}
                   name="deathDate"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  label="Ngày mất tác giả"
+                  label="Ngày sinh tác giả"
                   inputProps={{}}
-                /> */}
-                <p>Ngày mất tác giả</p>
-                <div className="w-full">
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      format="DD/MM/YYYY"
-                      className="w-full pt-2"
-                      value={dayjs(values.deathDate)}
-                      onChange={(newValue) => {
-                        //  console.log(dayjs(newValue).format("DD/MM/YYYY"));
-                        setValues((prev: any) => ({
-                          ...prev,
-                          deathDate: dayjs(newValue).format('DD/MM/YYYY'),
-                        }));
-                      }}
-                    />
-                  </LocalizationProvider>
-                </div>
+                />
                 {touched.deathDate && errors.deathDate && (
                   <FormHelperText
                     error

@@ -31,7 +31,7 @@ export const theme = (customization: any) => {
     primaryMain: color.primaryMain,
     primaryLight: color.primaryLight,
     primaryDark: color.primaryDark,
-
+    secondaryMain: color.secondaryMain,
     customization,
   };
 

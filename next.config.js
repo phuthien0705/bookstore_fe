@@ -8,7 +8,22 @@ const nextConfig = {
     SITE_URL: process.env.SITE_URL,
   },
   images: {
-    domains: ['storage.googleapis.com'],
+    domains: ['storage.googleapis.com', 'book-image.s3-hcm-r1.longvan.net'],
+  },
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+
+    //webpack will need this in order to render 'fs' modules
+    config.resolve.fallback = {
+      ...config.resolve.fallback, // if you miss it, all the other options in fallback, specified
+      // by next.js will be dropped. Doesn't make much sense, but how it is
+      fs: false, // the solution
+    };
+
+    return config;
   },
 };
 

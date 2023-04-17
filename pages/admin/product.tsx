@@ -20,6 +20,10 @@ import useGetListAuthor from '../../hooks/useGetListAuthor';
 import useGetListPublisher from '../../hooks/useGetListPublisher';
 import MainCard from '../../components/cards/MainCard';
 import config from '../../config';
+import {
+  PreviewImageModal,
+  TDataImage,
+} from '@/components/modals/PreviewImageModal';
 
 const ImageStyle = styled('img')({
   borderRadius: 4,
@@ -34,6 +38,8 @@ const ProductManagement = () => {
   const [currentProduct, setCurrentProduct] = useState<{ data: any } | null>(
     null
   );
+  const [previewImage, setPreViewImage] = useState<TDataImage[] | null>(null);
+
   const { data: authorData, isLoading: isAuthorLoading } = useGetListAuthor(
     1,
     100
@@ -96,7 +102,15 @@ const ProductManagement = () => {
   }, [refetch]);
 
   const columns: any[] = [
-    { field: 'id', headerName: 'ID', description: 'ID sản phẩm', width: 50 },
+    {
+      field: '_id',
+      headerName: 'ID',
+      description: 'ID sản phẩm',
+      width: 50,
+      renderCell: (params: any) => {
+        return <p className="truncate">{params?.row?._id}</p>;
+      },
+    },
     {
       field: 'image',
       headerName: 'Hình ảnh',
@@ -104,10 +118,15 @@ const ProductManagement = () => {
       width: 150,
       renderCell: (params: any) => {
         return (
-          <ImageStyle
-            src={`${params?.row?.book_image}`}
-            alt={params?.row?.name}
-          />
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => {
+              setPreViewImage(params?.row?.images as unknown as TDataImage[]);
+            }}
+          >
+            Xem ảnh
+          </Button>
         );
       },
     },
@@ -132,13 +151,13 @@ const ProductManagement = () => {
     },
 
     {
-      field: 'available_quantity',
+      field: 'availableQuantity',
       headerName: 'Số lượng',
       description: 'Số lượng sản phẩm',
       width: 100,
     },
     {
-      field: 'total_pages',
+      field: 'totalPages',
       headerName: 'Số trang',
       description: 'Số trang',
       width: 100,
@@ -155,7 +174,7 @@ const ProductManagement = () => {
         return (
           <MenuActionAdmin
             id={params?.row?.id}
-            deleteCallback={() => mutate(params?.row?.id)}
+            deleteCallback={() => mutate(params?.row?._id)}
             editCallback={() => toggleModalEdit(params?.row)}
           />
         );
@@ -165,6 +184,7 @@ const ProductManagement = () => {
   useEffect(() => {
     refetch();
   }, [refetch, page, searchContent]);
+  console.log(bookData);
   return (
     <AdminLayout>
       {' '}
@@ -210,6 +230,7 @@ const ProductManagement = () => {
           </Stack>
           <Box mt={2} sx={{ height: 610, width: '100%' }}>
             <DataGrid
+              getRowId={(row) => row._id}
               className="shadow"
               sx={{
                 border: 'none !important',
@@ -229,7 +250,7 @@ const ProductManagement = () => {
               disableColumnMenu
               loading={isBookLoading || isMutateLoading}
               columns={columns}
-              rows={isBookLoading ? [] : bookData?.data}
+              rows={bookData?.datas ?? []}
               components={{
                 NoRowsOverlay: CustomNoRowsOverlay,
                 LoadingOverlay: LinearProgress,
@@ -246,7 +267,7 @@ const ProductManagement = () => {
               variant="outlined"
               shape="rounded"
               color="primary"
-              count={bookData?.meta?.last_page || 0}
+              count={bookData?.totalPage ?? 0}
               page={page}
               onChange={(event, value) => setPage(value)}
             />
@@ -256,12 +277,19 @@ const ProductManagement = () => {
             currentProduct={currentProduct}
             handleClose={handleCloseModal}
             refetchAfterClose={fetchData}
-            authors={authorData?.data}
-            genres={genreData?.data}
-            publishers={publisherData?.data}
+            authors={authorData?.datas}
+            genres={genreData?.datas}
+            publishers={publisherData?.datas}
             findAuthor={findAuthor}
             findGenre={findGenre}
             findPublisher={findPublisher}
+          />
+          <PreviewImageModal
+            isOpen={!!previewImage}
+            closeModal={() => {
+              setPreViewImage(null);
+            }}
+            data={previewImage}
           />
         </MainCard>
       </>

@@ -66,9 +66,9 @@
 .swiper-button-prev::after {
   font-size: 30px !important;
 }
-.swiper-pagination {
+/* .swiper-pagination:not(.not-custom) {
   bottom: 20px !important;
-}
+} */
 .swiper {
   padding: 0 !important;
 }

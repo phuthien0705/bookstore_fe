@@ -54,7 +54,7 @@ export const editBook = async (
   id: string | number | undefined,
   data: FormData | any
 ) => {
-  return httpRequest.post(`/books/${id}`, data, {
+  return httpRequest.put(`/books/${id}`, data, {
     headers: {
       'content-type': 'multipart/form-data',
     },
@@ -76,11 +76,11 @@ export const getTopSelling = async () => {
 };
 
 export const getRelateBook = async (genres = '') => {
-  return httpRequest.get(`/books?limit=10&page=1=&genre=${genres}`);
+  return httpRequest.get(`/books?limit=10&page=1&genre=${genres}`);
 };
 
 export const getListBookByGenre = async (genresid: any, slideToShow = 5) => {
   return httpRequest.get(
-    `/books?limit=${slideToShow}&page=1=&genre=${genresid}`
+    `/books?limit=${slideToShow}&page=1&genres=${genresid}`
   );
 };

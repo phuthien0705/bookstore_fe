@@ -10,6 +10,9 @@ export default function componentStyleOverrides(theme: any) {
         containedPrimary: {
           backgroundColor: `${theme.primaryMain} !important`,
         },
+        containedSecondary: {
+          backgroundColor: `${theme.secondaryMain} !important`,
+        },
       },
     },
     MuiPaper: {

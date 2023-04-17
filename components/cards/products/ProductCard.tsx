@@ -3,7 +3,6 @@ import {
   Box,
   Card,
   CardContent,
-  CardMedia,
   Rating,
   Stack,
   Typography,
@@ -53,12 +52,12 @@ const ProductCard: React.FunctionComponent<IProductCard> = ({
   const handleClickItem = useCallback(() => {
     router.push({
       pathname: '/product/[pid]',
-      query: { pid: product?.id },
+      query: { pid: product?._id },
     });
   }, [product, router]);
   const toast = useToast(dispatch, toggleSnackbar);
   const { mutate: addToCartFunc, isLoading: isLoadingAddToCart } = useMutation(
-    () => addToCart({ book_id: product?.id, quantity: 1 }),
+    () => addToCart({ book_id: product?._id, quantity: 1 }),
     {
       onSuccess: () => {
         // Invalidate and refetch
@@ -111,7 +110,7 @@ const ProductCard: React.FunctionComponent<IProductCard> = ({
       >
         <Image
           style={{ objectFit: 'contain', padding: '1rem 0', cursor: 'pointer' }}
-          src={product?.book_image || '/img/product-not-found.png'}
+          src={product?.images[0]?.url || '/img/product-not-found.png'}
           quality={75}
           width={150}
           height={slideMode ? 150 : 200}

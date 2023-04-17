@@ -14,24 +14,22 @@ import {
 } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import { useState, FC } from 'react';
+import { useState, FC, useContext } from 'react';
+import { useDispatch } from 'react-redux';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import CustomModal from './CustomModal';
 import objectEquals from '../../common/objectEquals';
 import ConfirmModal from './ConfirmModal';
-import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '../../store/snackbarReducer';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { styled } from '@mui/material/styles';
 import createFormDataRequest from '../../common/createFormDataRequest';
 import { createBook, editBook } from '../../apis/product.api';
 import { IBookModal } from '@/interfaces/compontents/modal.interface';
-
-const ImageStyle = styled('img')({
-  height: '100%',
-  width: '100%',
-  borderRadius: 4,
-  objectFit: 'cover',
-});
+import { resizeImage } from '@/utils/fileUtils';
+import { TDataImage } from './PreviewImageModal';
+import { ListImage } from '../swiper/ListImage';
+import { MainContext } from '@/pages/_app';
+import { deepClone } from '@/common/deepClone';
+import dayjs from 'dayjs';
 
 const BookModal: FC<IBookModal> = ({
   handleClose,
@@ -49,29 +47,31 @@ const BookModal: FC<IBookModal> = ({
   const dispatch = useDispatch();
   const [showAlert, setShowAlert] = useState<any>(false);
   const [showConfirm, setShowConfirm] = useState<any>(false);
-  const [image, setImage] = useState(null);
-
+  const [image, setImage] = useState<string[] | null>(null);
+  const { setBackdrop } = useContext(MainContext);
   const data = currentProduct?.data;
 
   const initialValues = {
-    name: data?.name ? data?.name : '',
-    description: data?.description ? data?.description : '',
-    available_quantity: data?.available_quantity
-      ? data?.available_quantity
-      : '',
-    isbn: data?.isbn ? data?.isbn : '',
+    name: data?.name ?? '',
+    description: data?.description ?? '',
+    availableQuantity: data?.availableQuantity ?? '',
+    isbn: data?.isbn ?? '',
     language: 'vn',
-    total_pages: data?.total_pages ? data?.total_pages : '',
-    price: data?.price ? data?.price : '',
-    book_image: data?.book_image ? data?.book_image : '',
-    published_date: data?.published_date ? data?.published_date : '',
-    publisher_id: data?.publisher?.id ? data?.publisher?.id : '',
-    genres: data?.genres ? data?.genres.map((genre: any) => genre?.id) : [],
-    authors: data?.authors
-      ? data?.authors?.map((author: any) => author?.id)
-      : [],
+    totalPages: data?.totalPages ?? '',
+    price: data?.price ?? '',
+    priceDiscount: data?.priceDiscount ?? '',
+    images: data?.images
+      ? data?.images.map((image: TDataImage) => image.url)
+      : null,
+    publishedDate: data?.publishedDate
+      ? dayjs(data?.publishedDate).format('YYYY-MM-DD')
+      : '',
+    publisherId: data?.publisherId ?? '',
+    genres: data?.genres ?? [],
+    authors: data?.authors ?? [],
     submit: null,
   };
+  console.log(data, initialValues);
   const handleExit = (currentValues: any) => {
     if (objectEquals(initialValues, currentValues)) {
       handleClose();
@@ -82,6 +82,43 @@ const BookModal: FC<IBookModal> = ({
   const toast = ({ type, message }: { type: string; message: string }) => {
     dispatch(toggleSnackbar({ open: true, message, type }));
   };
+  const onSelectImage = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    setValues: Function
+  ) => {
+    const promises: Promise<string>[] = [];
+    const fileList: FileList | null = event.target.files;
+    if (fileList && fileList.length > 0) {
+      const numberOfImage: number = Object.keys(fileList).length;
+      if (numberOfImage > 15) {
+        toast({
+          type: 'warning',
+          message: 'Bạn có thể chọn tối đa 5 ảnh',
+        });
+        return;
+      }
+      setBackdrop(true);
+      for (let key in fileList) {
+        // the object is {File: 1, File: 2, length: 2, item: ...} so we need to skip loops where key is not number
+        if (isNaN(parseFloat(key))) {
+          continue;
+        }
+        promises.push(resizeImage(fileList[key]));
+      }
+      Promise.all(promises)
+        .then((result) => {
+          setBackdrop(false);
+          setImage(result);
+          setValues((prev: any) => ({
+            ...prev,
+            images: result,
+          }));
+        })
+        .catch(() => {
+          setBackdrop(false);
+        });
+    }
+  };
   return open ? (
     <>
       <Formik
@@ -91,37 +128,38 @@ const BookModal: FC<IBookModal> = ({
             .max(255, 'Tên sách tối đa 255 ký tự')
             .required('Tên sách là bắt buộc'),
           description: Yup.string(),
-          available_quantity: Yup.number()
+          availableQuantity: Yup.number()
             .integer('Số lượng sách phải là số nguyên')
             .typeError('Số lượng sách phải là số nguyên'),
           isbn: Yup.string().max(20, 'Mã sách tối đa 20 ký tự'),
-          total_pages: Yup.number()
+          totalPages: Yup.number()
             .integer('Số trang phải là số nguyên')
             .typeError('Số trang phải là số nguyên'),
           price: Yup.number().typeError('Giá sản phẩm phải là số'),
-          book_image: Yup.string().required('Hình ảnh là bắt buộc'),
+          priceDiscount: Yup.number().typeError(
+            'Giá giảm giá sản phẩm phải là số'
+          ),
+          images: Yup.array().required('Hình ảnh là bắt buộc'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+          const cloneValues = deepClone(values);
+          const publishedDate = new Date(cloneValues.publishedDate);
+
+          cloneValues.totalPages = parseInt(cloneValues.totalPages);
+          cloneValues.priceDiscount = parseInt(cloneValues.priceDiscount);
+          cloneValues.price = parseInt(cloneValues.price);
+          cloneValues.publishedDate = publishedDate.toISOString();
+
           try {
             const req = createFormDataRequest({
-              name: values.name,
-              description: values.description,
-              available_quantity: values.available_quantity,
-              isbn: values.isbn,
-              language: values.language,
-              total_pages: values.total_pages,
-              price: values.price,
-              book_image: image,
-              published_date: values.published_date,
-              publisher_id: values.publisher_id,
-              genres: values.genres,
-              authors: values.authors,
+              ...cloneValues,
             });
 
+            console.log(req);
             if (data === null) {
               await createBook(req);
             } else {
-              await editBook(data?.id, req);
+              await editBook(data?._id, req);
             }
             setStatus({ success: true });
             setSubmitting(false);
@@ -129,7 +167,7 @@ const BookModal: FC<IBookModal> = ({
               type: 'success',
               message: `${data === null ? 'Tạo' : 'Cập nhật'} thành công`,
             });
-            refetchAfterClose();
+            refetchAfterClose && refetchAfterClose();
             setTimeout(() => {
               handleClose();
             }, 1000);
@@ -218,29 +256,29 @@ const BookModal: FC<IBookModal> = ({
               <FormControl
                 fullWidth
                 error={Boolean(
-                  touched.available_quantity && errors.available_quantity
+                  touched.availableQuantity && errors.availableQuantity
                 )}
                 sx={{ ...theme.typography.customInput }}
               >
-                <InputLabel htmlFor="outlined-adornment-available_quantity">
+                <InputLabel htmlFor="outlined-adornment-availableQuantity">
                   Số lượng sách còn lại
                 </InputLabel>
                 <OutlinedInput
-                  id="outlined-adornment-available_quantity"
+                  id="outlined-adornment-availableQuantity"
                   type="text"
-                  value={values.available_quantity}
-                  name="available_quantity"
+                  value={values.availableQuantity}
+                  name="availableQuantity"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   label="Mô tả thể loại"
                   inputProps={{}}
                 />
-                {touched.available_quantity && errors.available_quantity && (
+                {touched.availableQuantity && errors.availableQuantity && (
                   <FormHelperText
                     error
-                    id="standard-weight-helper-text-available_quantity"
+                    id="standard-weight-helper-text-availableQuantity"
                   >
-                    {errors.available_quantity as any}
+                    {errors.availableQuantity as any}
                   </FormHelperText>
                 )}
               </FormControl>
@@ -270,28 +308,28 @@ const BookModal: FC<IBookModal> = ({
               </FormControl>
               <FormControl
                 fullWidth
-                error={Boolean(touched.total_pages && errors.total_pages)}
+                error={Boolean(touched.totalPages && errors.totalPages)}
                 sx={{ ...theme.typography.customInput }}
               >
-                <InputLabel htmlFor="outlined-adornment-total_pages">
+                <InputLabel htmlFor="outlined-adornment-totalPages">
                   Tổng số trang
                 </InputLabel>
                 <OutlinedInput
-                  id="outlined-adornment-total_pages"
+                  id="outlined-adornment-totalPages"
                   type="text"
-                  value={values.total_pages}
-                  name="total_pages"
+                  value={values.totalPages}
+                  name="totalPages"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   label="Mô tả thể loại"
                   inputProps={{}}
                 />
-                {touched.total_pages && errors.total_pages && (
+                {touched.totalPages && errors.totalPages && (
                   <FormHelperText
                     error
-                    id="standard-weight-helper-text-total_pages"
+                    id="standard-weight-helper-text-totalPages"
                   >
-                    {errors.total_pages as any}
+                    {errors.totalPages as any}
                   </FormHelperText>
                 )}
               </FormControl>
@@ -310,7 +348,7 @@ const BookModal: FC<IBookModal> = ({
                   name="price"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  label="Mô tả thể loại"
+                  label="Giá thể loại"
                   inputProps={{}}
                 />
                 {touched.price && errors.price && (
@@ -319,9 +357,38 @@ const BookModal: FC<IBookModal> = ({
                   </FormHelperText>
                 )}
               </FormControl>
+
               <FormControl
                 fullWidth
-                error={Boolean(touched.book_image && errors.book_image)}
+                error={Boolean(touched.priceDiscount && errors.priceDiscount)}
+                sx={{ ...theme.typography.customInput }}
+              >
+                <InputLabel htmlFor="outlined-adornment-priceDiscount">
+                  Giá giảm giá {'(vnd)'}
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-priceDiscount"
+                  type="text"
+                  value={values.priceDiscount}
+                  name="priceDiscount"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  label="Giá giảm giá thể loại"
+                  inputProps={{}}
+                />
+                {touched.priceDiscount && errors.priceDiscount && (
+                  <FormHelperText
+                    error
+                    id="standard-weight-helper-text-priceDiscount"
+                  >
+                    {errors.priceDiscount as any}
+                  </FormHelperText>
+                )}
+              </FormControl>
+
+              <FormControl
+                fullWidth
+                error={Boolean(touched.images && errors.images)}
                 sx={{ ...theme.typography.customInput }}
               >
                 <Box
@@ -333,7 +400,6 @@ const BookModal: FC<IBookModal> = ({
                     backgroundColor: '#fafafa',
                     border: '1px solid rgba(0, 0, 0, 0.23)',
                     borderRadius: '8px',
-
                     padding: '0.5rem 1rem',
                     '&:hover': {
                       border: '1px solid #000',
@@ -344,17 +410,19 @@ const BookModal: FC<IBookModal> = ({
                   <Box
                     sx={{
                       display: 'flex',
-                      flexDirection: values.book_image ? 'column' : 'row',
+                      flexDirection: values.images ? 'column' : 'row',
                       justifyContent: 'space-between',
                       columnGap: '0.5rem',
                       rowGap: '0.5rem',
                     }}
                   >
-                    {values.book_image ? (
-                      <ImageStyle src={values.book_image} />
-                    ) : (
-                      <div>Chưa có hình ảnh</div>
-                    )}
+                    <div className="pt-2">
+                      {values?.images ? (
+                        <ListImage listImage={values.images} />
+                      ) : (
+                        <div>Chưa có hình ảnh</div>
+                      )}
+                    </div>
                     <IconButton
                       sx={{
                         width: 'fit-content',
@@ -366,34 +434,29 @@ const BookModal: FC<IBookModal> = ({
                       component="label"
                     >
                       <input
+                        multiple
                         id="outlined-adornment-book_image"
                         hidden
                         accept="image/*"
                         type="file"
-                        onChange={(e: any) => {
-                          setImage(e.target.files[0]);
-                          setValues((prev) => ({
-                            ...prev,
-                            book_image: URL.createObjectURL(e.target.files[0]),
-                          }));
-                        }}
+                        onChange={(e) => onSelectImage(e, setValues)}
                       />
                       <PhotoCamera />
                     </IconButton>
                   </Box>
                 </Box>
-                {touched.book_image && errors.book_image && (
+                {touched.images && errors.images && (
                   <FormHelperText
                     error
                     id="standard-weight-helper-text-book_image"
                   >
-                    {errors.book_image as any}
+                    {errors.images as any}
                   </FormHelperText>
                 )}
               </FormControl>
               <FormControl
                 fullWidth
-                error={Boolean(touched.published_date && errors.published_date)}
+                error={Boolean(touched.publishedDate && errors.publishedDate)}
                 sx={{ ...theme.typography.customInput }}
               >
                 <Typography
@@ -408,41 +471,41 @@ const BookModal: FC<IBookModal> = ({
                   Ngày phát hành
                 </Typography>
                 <OutlinedInput
-                  id="outlined-adornment-published_date"
+                  id="outlined-adornment-publishedDate"
                   type="date"
-                  value={values.published_date}
-                  name="published_date"
+                  value={values.publishedDate}
+                  name="publishedDate"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   label="Ngày phát hành"
                   inputProps={{}}
                 />
-                {touched.published_date && errors.published_date && (
+                {touched.publishedDate && errors.publishedDate && (
                   <FormHelperText
                     error
-                    id="standard-weight-helper-text-published_date"
+                    id="standard-weight-helper-text-publishedDate"
                   >
-                    {errors.published_date as any}
+                    {errors.publishedDate as any}
                   </FormHelperText>
                 )}
               </FormControl>
               <FormControl
                 fullWidth
-                error={Boolean(touched.publisher_id && errors.publisher_id)}
+                error={Boolean(touched.publisherId && errors.publisherId)}
                 sx={{ ...theme.typography.customInput }}
               >
-                <InputLabel htmlFor="select-publisher_id">
+                <InputLabel htmlFor="select-publisherId">
                   Nhà xuất bản
                 </InputLabel>
 
                 <Select
-                  id="select-publisher_id"
-                  value={values.publisher_id}
+                  id="select-publisherId"
+                  value={values.publisherId}
                   label="Nhà xuất bản"
                   onChange={(event) => {
                     setValues((prev) => ({
                       ...prev,
-                      publisher_id: event.target.value,
+                      publisherId: event.target.value,
                     }));
                   }}
                 >
@@ -453,12 +516,12 @@ const BookModal: FC<IBookModal> = ({
                     </MenuItem>
                   ))}
                 </Select>
-                {touched.publisher_id && errors.publisher_id && (
+                {touched.publisherId && errors.publisherId && (
                   <FormHelperText
                     error
-                    id="standard-weight-helper-text-publisher_id"
+                    id="standard-weight-helper-text-publisherId"
                   >
-                    {errors.publisher_id as any}
+                    {errors.publisherId as any}
                   </FormHelperText>
                 )}
               </FormControl>
@@ -540,11 +603,11 @@ const BookModal: FC<IBookModal> = ({
 
               <Box sx={{ mt: 2 }}>
                 <Button
+                  type="submit"
                   disableElevation
                   disabled={isSubmitting}
                   fullWidth
                   size="large"
-                  type="submit"
                   variant="contained"
                   color="primary"
                 >

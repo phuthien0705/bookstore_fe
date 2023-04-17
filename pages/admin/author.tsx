@@ -1,22 +1,22 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import AddIcon from '@mui/icons-material/Add';
 import { Box, Button, Pagination, Stack, Typography } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
+import { useMutation, useQueryClient } from 'react-query';
+import LinearProgress from '@mui/material/LinearProgress';
+import dayjs from 'dayjs';
+import AdminLayout from '../../layout/AdminLayout';
 import MainCard from '../../components/cards/MainCard';
 import SearchAdminSection from '../../components/Header/SearchSection/SearchAdmin';
-import { DataGrid } from '@mui/x-data-grid';
-import LinearProgress from '@mui/material/LinearProgress';
 import CustomNoRowsOverlay from '../../components/empty/CustomNoRowsOverlay';
-import AddIcon from '@mui/icons-material/Add';
-import config from '../../config';
 import MenuActionAdmin from '../../components/menus/MenuActionAdmin';
-import { useDispatch } from 'react-redux';
-import { toggleSnackbar } from '../../store/snackbarReducer';
-import { deleteAuthor } from '../../apis/author.api';
 import AuthorModal from '../../components/modals/AuthorModal';
-import { useMutation, useQueryClient } from 'react-query';
 import { AUTHORS } from '../../constants/queryKeyName';
+import { toggleSnackbar } from '../../store/snackbarReducer';
 import useGetListAuthor from '../../hooks/useGetListAuthor';
-import AdminLayout from '../../layout/AdminLayout';
-
+import { deleteAuthor } from '../../apis/author.api';
+import config from '../../config';
 const AuthorManagement = () => {
   const [page, setPage] = useState<number>(1);
   const [searchContent, setSearchContent] = useState<string>('');
@@ -78,12 +78,18 @@ const AuthorManagement = () => {
       headerName: 'Ngày sinh',
       description: 'Ngày sinh tác giả',
       flex: 1,
+      renderCell: (params: any) => {
+        return <p>{dayjs(params?.row?.birthDate).format('DD/MM/YYYY')}</p>;
+      },
     },
     {
       field: 'deathDate',
       headerName: 'Ngày mất',
       description: 'Ngày mất tác giả',
       flex: 1,
+      renderCell: (params: any) => {
+        return <p>{dayjs(params?.row?.deathDate).format('DD/MM/YYYY')}</p>;
+      },
     },
 
     {

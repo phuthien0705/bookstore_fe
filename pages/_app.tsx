@@ -1,20 +1,37 @@
-import { useEffect, useState } from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ThemeProvider } from '@mui/material';
-import { ReactQueryDevtools } from 'react-query/devtools';
-import config from '../config';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useEffect,
+  useState,
+} from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { Backdrop, CircularProgress, ThemeProvider } from '@mui/material';
+import { ReactQueryDevtools } from 'react-query/devtools';
+import Script from 'next/script';
+import { Provider } from 'react-redux';
+import config from '../config';
 import themes from '../themes';
 import { store } from '../store';
-import { Provider } from 'react-redux';
 import initRequest from '../services/initRequest';
 import { AppPropsWithLayout } from '@/interfaces/layout.interface';
-import Script from 'next/script';
 import * as gtag from '../lib/gtag';
-import { useRouter } from 'next/router';
 import '../styles/globals.css';
 
 initRequest();
+
+interface IMainContext {
+  backdrop: boolean;
+  setBackdrop: Dispatch<SetStateAction<boolean>>;
+}
+const defaultMainContextValue: IMainContext = {
+  backdrop: false,
+  setBackdrop: () => undefined,
+};
+
+export const MainContext = createContext<IMainContext>(defaultMainContextValue);
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const customization = {
@@ -22,7 +39,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     borderRadius: config?.borderRadius,
   };
   const router = useRouter();
-
+  const [backdrop, setBackdrop] = useState<boolean>(false);
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -81,7 +98,16 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={themes(customization)}>
-            <Component {...pageProps} />
+            <MainContext.Provider value={{ backdrop, setBackdrop }}>
+              <Component {...pageProps} />
+            </MainContext.Provider>
+            <Backdrop
+              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.modal + 1 }}
+              open={backdrop}
+              onClick={() => setBackdrop((p) => !p)}
+            >
+              <CircularProgress color="inherit" />
+            </Backdrop>
             <ReactQueryDevtools initialIsOpen={false} />
           </ThemeProvider>
         </QueryClientProvider>

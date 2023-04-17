@@ -3,16 +3,16 @@ import { BOOKS } from '../constants/queryKeyName';
 import { useQuery } from 'react-query';
 
 const useGetListBook = (
-  current_page: number,
-  per_page = 10,
+  page: number,
+  limit = 10,
   searchFields = [],
   value = ''
 ) => {
   const getListQuery: any = useQuery(
-    [BOOKS, current_page],
-    () => getAllBook(current_page, per_page, searchFields, value),
+    [BOOKS],
+    () => getAllBook(page, limit, searchFields, value),
     {
-      refetchOnMount: true,
+      staleTime: Infinity,
       keepPreviousData: true,
     }
   );

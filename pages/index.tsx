@@ -14,11 +14,12 @@ const Home = () => {
   const { data: genreData, isLoading: isGenreLoading } = useGetListGenreClient(
     !!topSelling
   );
+
   const renderGenres = () => {
     if (!isGenreLoading) {
       return (
         genreData &&
-        genreData?.data?.slice(0, 3)?.map((genre: any, _index: number) => {
+        genreData?.datas?.slice(0, 3)?.map((genre: any, _index: number) => {
           return (
             <ProductCardItemsByGenre
               key={_index}
@@ -81,7 +82,7 @@ const Home = () => {
             <ProductCardItems
               slideToShow={5}
               isLoading={isTopSellLoading}
-              data={topSelling?.data}
+              data={topSelling?.datas}
               title="Xu hướng mua sắm"
               titleIcon={<LocalFireDepartmentIcon color="error" />}
               titleBackground="#FCDDEF"
