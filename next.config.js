@@ -8,7 +8,11 @@ const nextConfig = {
     SITE_URL: process.env.SITE_URL,
   },
   images: {
-    domains: ['storage.googleapis.com', 'book-image.s3-hcm-r1.longvan.net'],
+    domains: [
+      'storage.googleapis.com',
+      'book-image.s3-hcm-r1.longvan.net',
+      'boxo-images.s3-hcm-r1.longvan.net',
+    ],
   },
   webpack(config) {
     config.module.rules.push({

@@ -93,7 +93,7 @@ const BookModal: FC<IBookModal> = ({
       if (numberOfImage > 15) {
         toast({
           type: 'warning',
-          message: 'Bạn có thể chọn tối đa 5 ảnh',
+          message: 'Bạn có thể chọn tối đa 15 ảnh',
         });
         return;
       }

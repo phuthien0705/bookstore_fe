@@ -1,7 +1,6 @@
 // material-ui
-import { Typography, List, Divider } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import NavItem from './NavItem';
+import { List, Divider } from '@mui/material';
+import { useMemo } from 'react';
 import {
   IconUsers,
   IconBook2,
@@ -9,8 +8,9 @@ import {
   IconCategory,
   IconBuilding,
   IconChartBar,
+  IconArticle,
 } from '@tabler/icons';
-import { useMemo } from 'react';
+import NavItem from './NavItem';
 
 const MenuList = () => {
   const listItem = useMemo(
@@ -20,6 +20,12 @@ const MenuList = () => {
         url: '/admin/statistic',
         icon: IconChartBar,
       },
+      {
+        title: 'Bài viết',
+        url: '/admin/post',
+        icon: IconArticle,
+      },
+
       {
         title: 'Sản phẩm',
         url: '/admin/product',
@@ -49,7 +55,6 @@ const MenuList = () => {
     ],
     []
   );
-  const theme: any = useTheme();
 
   return (
     <>
