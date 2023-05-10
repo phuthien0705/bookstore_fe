@@ -79,21 +79,22 @@ const PostModal: FC<IModal> = ({ handleClose, open, currentProduct }) => {
               name: values.name,
               content: values.content,
             });
-            if (data === null) {
-              await createGenre(req);
-            } else {
-              await editGenre(data?.id, req);
-            }
+            console.log(req);
+            // if (data === null) {
+            //   await createGenre(req);
+            // } else {
+            //   await editGenre(data?.id, req);
+            // }
             setStatus({ success: true });
             setSubmitting(false);
-            toast({
-              type: 'success',
-              message: `${data === null ? 'Tạo' : 'Cập nhật'} thành công`,
-            });
-            queryClient.refetchQueries([GENRES]);
-            setTimeout(() => {
-              handleClose();
-            }, 1000);
+            // toast({
+            //   type: 'success',
+            //   message: `${data === null ? 'Tạo' : 'Cập nhật'} thành công`,
+            // });
+            // queryClient.refetchQueries([GENRES]);
+            // setTimeout(() => {
+            //   handleClose();
+            // }, 1000);
           } catch (err) {
             console.error(err);
             toast({
