@@ -141,6 +141,22 @@ const Header: FC<IHeader> = ({
               <GenreSection />
               <Typography
                 onClick={() => {
+                  router.push({ pathname: '/blogs' });
+                }}
+                sx={{
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 400,
+                  marginRight: 1,
+                  whiteSpace: 'nowrap',
+                  color: 'rgb(29,37,69)',
+                  ml: '20px',
+                }}
+              >
+                Bài viết
+              </Typography>
+              <Typography
+                onClick={() => {
                   router.push({ pathname: '/contact-us' });
                 }}
                 sx={{

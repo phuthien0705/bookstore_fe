@@ -24,7 +24,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useDispatch } from 'react-redux';
-import { login, reSendVerifyEmail } from '../../apis/auth.api';
+import { login, postLoginGoogle, reSendVerifyEmail } from '../../apis/auth.api';
 import authService from '../../services/authService';
 import checkIsAdminOrManager from '../../common/checkIsAdminOrManager';
 import { useRouter } from 'next/router';
@@ -49,8 +49,27 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
     setShowPassword(!showPassword);
   };
 
-  const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => console.log(tokenResponse),
+  const loginGoogle = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      const result: any = await postLoginGoogle({
+        accessToken: tokenResponse.access_token,
+      });
+      authService.login({
+        accessToken: result.tokens.access.token,
+        name: result.user.name,
+        id: result.user.id,
+        roles: result.user.roles,
+        email: result.user.email,
+      });
+      if (!checkIsAdminOrManager(result?.user?.roles)) {
+        router.push('/');
+      } else {
+        router.push('/admin/statistic');
+      }
+    },
+    onError: () => {
+      toast({ type: 'error', message: 'Xảy ra lỗi khi đăng nhập với Google' });
+    },
   });
 
   const handleMouseDownPassword: MouseEventHandler<HTMLButtonElement> = (
@@ -59,42 +78,12 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
     event.preventDefault();
   };
 
-  const successLoginGoogle = (res: any) => {
-    const { tokenId } = res;
-    console.log('hahaha');
-    console.log('$test', res);
-    // call api here
-
-    // handleSendGoogleIdToken({
-    //   idToken: tokenId,
-    //   setLoading,
-    //   toast,
-    //   router,
-    //   disableRedirect,
-    //   successCallback,
-    // });
-    // toast('Đăng nhập thành công');
-  };
-
-  const failLoginGoogle = async ({ error }: { error: string }) => {
-    console.log(error);
-    if (
-      error !== 'popup_closed_by_user' &&
-      error !== 'idpiframe_initialization_failed'
-    ) {
-      toast({
-        type: 'error',
-        message: 'Có lỗi xảy ra khi tiếp tục với Google, vui lòng thử lại sau!',
-      });
-    }
-  };
-
   return (
     <>
       <Grid container direction="column" justifyContent="center" spacing={2}>
         <Grid item xs={12}>
           <Button
-            onClick={() => login()}
+            onClick={() => loginGoogle()}
             disableElevation
             fullWidth
             size="large"
@@ -106,13 +95,6 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
               display: 'flex',
             }}
           >
-            {/* <Image
-                    src={'/../../assets/images/icons/social-google.svg'}
-                    alt="google"
-                    width={16}
-                    height={16}
-                    style={{ marginRight: matchDownSM ? 8 : 16 }}
-                  /> */}
             <GoogleIcon sx={{ marginRight: '8px' }} />
             Đăng nhập với google
           </Button>
@@ -181,7 +163,6 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
           try {
             const req = { email: values.email, password: values.password };
             const res: any = await login(req);
-            console.log(res);
             authService.login({
               accessToken: res.tokens.access.token,
               name: res.user.name,
@@ -203,7 +184,7 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
             }
             setStatus({ success: true });
             setSubmitting(false);
-            if (!checkIsAdminOrManager(res?.roles)) {
+            if (!checkIsAdminOrManager(res?.user?.roles)) {
               router.push('/');
             } else {
               router.push('/admin/statistic');

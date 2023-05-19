@@ -13,6 +13,7 @@ const nextConfig = {
       'storage.googleapis.com',
       'book-image.s3-hcm-r1.longvan.net',
       'boxo-images.s3-hcm-r1.longvan.net',
+      'lh3.googleusercontent.com',
     ],
   },
   webpack(config) {

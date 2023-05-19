@@ -19,10 +19,10 @@ const Home = () => {
     if (!isGenreLoading) {
       return (
         genreData &&
-        genreData?.datas?.slice(0, 3)?.map((genre: any, _index: number) => {
+        genreData?.datas?.slice(0, 3)?.map((genre: any) => {
           return (
             <ProductCardItemsByGenre
-              key={_index}
+              key={genre?.id}
               slideToShow={5}
               title={genre?.name}
               titleBackground={'#e8d5f9'}
@@ -32,6 +32,7 @@ const Home = () => {
         })
       );
     }
+    return null;
   };
   return (
     <>
@@ -80,7 +81,7 @@ const Home = () => {
             }}
           >
             <ProductCardItems
-              slideToShow={5}
+              slideToShow={4}
               isLoading={isTopSellLoading}
               data={topSelling?.datas}
               title="Xu hướng mua sắm"

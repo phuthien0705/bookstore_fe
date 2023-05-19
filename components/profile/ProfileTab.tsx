@@ -1,4 +1,6 @@
-import MainCard from '../cards/MainCard';
+import { useEffect, useState } from 'react';
+import { useMutation } from 'react-query';
+import { useDispatch } from 'react-redux';
 import {
   Grid,
   Stack,
@@ -8,17 +10,13 @@ import {
   TextField,
   Box,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import authService from '../../services/authService';
-import { IProfileTab } from '@/interfaces/compontents/profile.interface';
 import LinearProgress from '@mui/material/LinearProgress';
-import useGetUserProfile from '@/hooks/client/useGetUserProfile';
 import { LoadingButton } from '@mui/lab';
-import { useMutation } from 'react-query';
+import useGetUserProfile from '@/hooks/client/useGetUserProfile';
 import { updateProfile } from '@/apis/user.api';
-import { useDispatch } from 'react-redux';
 import { useToast } from '@/hooks/useToast';
+import MainCard from '../cards/MainCard';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 import createFormDataRequest from '@/common/createFormDataRequest';
 
@@ -27,6 +25,7 @@ const ProfileTab: React.FunctionComponent = () => {
   const toast = useToast(dispatch, toggleSnackbar);
   const [previewAvatar, setPreviewAvatar] = useState('');
   const { data, isLoading, isFetching } = useGetUserProfile();
+  console.log(data);
   const defaultAvatar =
     '../../static/media/user-round.27fe79b102ea6aad2f60e66cff82818d.svg';
   const [values, setValues] = useState<any>({
@@ -108,15 +107,15 @@ const ProfileTab: React.FunctionComponent = () => {
   }, [values?.avatar]);
 
   useEffect(() => {
-    setPreviewAvatar(data?.userInfo?.avatar);
+    setPreviewAvatar(data?.avatar);
     setValues((prevValue: any) => ({
       ...prevValue,
-      bio: data?.userInfo?.bio || '',
-      address: data?.userInfo?.address || '',
-      phone: data?.userInfo?.phone || '',
+      biography: data?.biography ?? '',
+      address: data?.address ?? '',
+      phone: data?.phone ?? '',
     }));
   }, [data]);
-
+  console.log(previewAvatar);
   if (isLoading) {
     return (
       <Box sx={{ width: '100%' }}>
@@ -137,7 +136,7 @@ const ProfileTab: React.FunctionComponent = () => {
           >
             <Avatar
               alt="avatar"
-              src={previewAvatar || defaultAvatar || ''}
+              src={previewAvatar}
               sx={{ width: 150, height: 150 }}
             />
             <Typography>Tải lên/Thay đổi ảnh đại diện.</Typography>
