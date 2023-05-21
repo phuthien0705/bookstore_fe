@@ -7,8 +7,11 @@ export const getUserProfile = async () => {
 export const updateProfile = async (data: any) => {
   return httpRequest.post('/profile', data);
 };
-export const updatePassword = async (data: any) => {
-  return httpRequest.put('/password', data);
+export const updatePassword = async (data: {
+  oldPassword: string;
+  newPassword: string;
+}) => {
+  return httpRequest.put('/profile/password', data);
 };
 export const getUserForAdmin = async (
   current_page: number,

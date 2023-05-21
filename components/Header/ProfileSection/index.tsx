@@ -37,14 +37,10 @@ const ProfileSection: React.FunctionComponent = () => {
     setAnchorEl(null);
   };
   const handleLogout = async () => {
-    if (router.pathname.includes('/admin')) {
-      router && router.push('/');
-    }
-
-    handleClose();
     authService.logOut();
-
     queryClient.setQueryData(CART_CLIENT, []);
+    handleClose();
+    router && router.push('/login');
   };
   const handleClickLogin = () => {
     router && router.push({ pathname: '/login' });
