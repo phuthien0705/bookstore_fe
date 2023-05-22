@@ -19,3 +19,4 @@ export const ORDERS = 'orders';
 export const STATISTICS = 'statistics';
 export const TOP_SELLING = 'top-selling';
 export const BOOK_GENRE = 'book-genre';
+export const POST = 'post';

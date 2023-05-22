@@ -13,23 +13,25 @@ import MenuActionAdmin from '../../components/menus/MenuActionAdmin';
 import { toggleSnackbar } from '../../store/snackbarReducer';
 import { deleteGenre } from '../../apis/genre.api';
 import { GENRES } from '../../constants/queryKeyName';
-import useGetListGenre from '../../hooks/useGetListGenre';
 import AdminLayout from '../../layout/AdminLayout';
 import PostModal from '@/components/modals/PostModal';
+import useGetListPost from '@/hooks/useGetListPost';
+import PreviewContentModal from '@/components/modals/PreviewContentModal';
 
 const PostManagement = () => {
   const queryClient = useQueryClient();
   const [searchContent, setSearchContent] = useState<string>('');
-  const [page, setPage] = useState<number>(1);
   const [currentProduct, setCurrentProduct] = useState<{ data: any } | null>(
     null
   );
-  const { data, isLoading, refetch } = useGetListGenre(
+  const [previewContent, setPreviewContent] = useState('');
+  const {
+    queryReturn: { data, isLoading, refetch },
     page,
-    10,
-    ['name', 'description'] as any,
-    searchContent
-  );
+    setPage,
+  } = useGetListPost();
+  console.log('$test', data);
+
   const dispatch = useDispatch();
   const toast = useCallback(
     ({ type, message }: { type: string; message: string }) => {
@@ -60,18 +62,28 @@ const PostManagement = () => {
   }, []);
 
   const columns = [
-    { field: 'id', headerName: 'ID', description: 'ID sản phẩm', width: 50 },
+    { field: 'id', headerName: 'ID', description: 'ID bài viết', width: 50 },
     {
-      field: 'name',
-      headerName: 'Tên sản phẩm',
-      description: 'Tên sản phẩm',
+      field: 'title',
+      headerName: 'Tên bài viết',
+      description: 'Tên bài viết',
       width: 200,
     },
     {
-      field: 'description',
-      headerName: 'Mô tả',
-      description: 'Mô tả sản phẩm',
+      field: 'content',
+      headerName: 'Nội dung',
+      description: 'Nội dung bài viết',
       flex: 1,
+      renderCell: (params: any) => (
+        <Button
+          variant="contained"
+          onClick={() => {
+            setPreviewContent(params?.row?.content);
+          }}
+        >
+          Xem nội dung
+        </Button>
+      ),
     },
     {
       field: 'actions',
@@ -79,15 +91,13 @@ const PostManagement = () => {
       description: 'Thao tác',
       width: 80,
       sortable: false,
-      renderCell: (params: any) => {
-        return (
-          <MenuActionAdmin
-            id={params?.row?.id}
-            deleteCallback={() => mutate(params?.row?.id)}
-            editCallback={() => toggleModalEdit(params?.row)}
-          />
-        );
-      },
+      renderCell: (params: any) => (
+        <MenuActionAdmin
+          id={params?.row?.id}
+          deleteCallback={() => mutate(params?.row?.id)}
+          editCallback={() => toggleModalEdit(params?.row)}
+        />
+      ),
     },
   ];
 
@@ -172,6 +182,11 @@ const PostManagement = () => {
             open={currentProduct !== null}
             currentProduct={currentProduct}
             handleClose={handleCloseModal}
+          />
+          <PreviewContentModal
+            open={!!previewContent}
+            content={previewContent as string}
+            handleClose={() => setPreviewContent('')}
           />
         </MainCard>
       </>
