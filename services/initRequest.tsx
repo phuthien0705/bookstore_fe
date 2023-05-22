@@ -21,9 +21,7 @@ export default function initRequest() {
     (config) => {
       const accessToken = getAccessToken();
       if (accessToken) {
-        config.headers = {
-          Authorization: `Bearer ${accessToken}`,
-        };
+        config.headers.Authorization = `Bearer ${accessToken}`;
       }
 
       return config;
