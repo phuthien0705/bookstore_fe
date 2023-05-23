@@ -1,12 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState, useRef } from 'react';
+import { useRouter } from 'next/router';
 import { Box, Paper, Stack, Typography, Button } from '@mui/material';
 import ProductInfo from '../../components/productdetails/ProductInfo';
 import ProductSlides from '../../components/productdetails/ProductSlides';
-import useGetListBookDetail from '../../hooks/client/useGetListBookDetail';
+import useGetListBookDetail from '../../hooks/book/useGetListBookDetail';
 import ProductLayout from '../../layout/ProductLayot';
-import { useRouter } from 'next/router';
-import { useEffect, useState, useRef } from 'react';
 import LoadingScreen from '../../components/loading/LoadingScreen';
-import useGetRelativeBook from '@/hooks/client/useGetRelativeBook';
+import useGetRelativeBook from '@/hooks/book/useGetRelativeBook';
 
 const ProductDetail = () => {
   const router = useRouter();

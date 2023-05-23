@@ -3,8 +3,8 @@ import ProductCardItem from './ProductCardItem';
 import ProductCardSkeleton from '../Skeleton/ProductCardSkelection';
 import CustomNoRowsOverlay from '../../empty/CustomNoRowsOverlay';
 import { IProductCardItemsByGenre } from '@/interfaces/compontents/card.interface';
-import useGetBookByGenre from '@/hooks/client/useGetBookByGenre';
 import config from '../../../config';
+import useGetBookByGenre from '@/hooks/book/useGetBookByGenre';
 
 const ProductCardItemsByGenre: React.FunctionComponent<
   IProductCardItemsByGenre

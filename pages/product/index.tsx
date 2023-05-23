@@ -1,3 +1,6 @@
+import { useState, useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useMutation } from 'react-query';
 import {
   Typography,
   Box,
@@ -11,28 +14,23 @@ import {
   Checkbox,
   RadioGroup,
   Radio,
-  ButtonGroup,
   Drawer,
   CircularProgress,
   Pagination,
 } from '@mui/material';
 import { useTheme, styled } from '@mui/material/styles';
-import { useState, useRef, useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import ProductLayout from '../../layout/ProductLayot';
-import ProductCardItems from '../../components/cards/products/ProductCardItems';
-import useGetListGenreClient from '@/hooks/client/useGetListGenreClient';
-import useGetListPublisherClient from '@/hooks/client/useGetListPublisherClient';
 import { useRouter } from 'next/router';
+import ProductCardItems from '../../components/cards/products/ProductCardItems';
+import useGetListGenreClient from '@/hooks/genre/useGetListGenreClient';
 import { filterBook } from '@/apis/product.api';
-import { useMutation } from 'react-query';
-import { useDispatch } from 'react-redux';
+import ProductLayout from '../../layout/ProductLayot';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 import { useToast } from '@/hooks/useToast';
 import ProductTitle from '@/components/products/ProductTitle';
+import useGetListPublisherClient from '@/hooks/publisher/useGetListPublisherClient';
 
 const drawerWidth = 400;
 const DivStyled = styled('div', {

@@ -1,12 +1,12 @@
 import Head from 'next/head';
 import { Box, Container } from '@mui/material';
-import HomeLayout from '@/layout/HomeLayout';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+import HomeLayout from '@/layout/HomeLayout';
 import ProductCardItems from '../components/cards/products/ProductCardItems';
 import CarouselCustumized from '@/components/carousel/CarouselCustumized';
 import ProductCardItemsByGenre from '@/components/cards/products/ProductCartItemsByGenre';
-import useGetTopSelling from '@/hooks/client/useGetTopSelling';
-import useGetListGenreClient from '../hooks/client/useGetListGenreClient';
+import useGetTopSelling from '@/hooks/book/useGetTopSelling';
+import useGetListGenreClient from '../hooks/genre/useGetListGenreClient';
 
 const Home = () => {
   const { data: topSelling, isLoading: isTopSellLoading } = useGetTopSelling();

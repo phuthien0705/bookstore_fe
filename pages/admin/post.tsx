@@ -8,40 +8,38 @@ import { useDispatch } from 'react-redux';
 import MainCard from '../../components/cards/MainCard';
 import CustomNoRowsOverlay from '../../components/empty/CustomNoRowsOverlay';
 import SearchAdminSection from '../../components/Header/SearchSection/SearchAdmin';
-import config from '../../config';
 import MenuActionAdmin from '../../components/menus/MenuActionAdmin';
-import { toggleSnackbar } from '../../store/snackbarReducer';
-import { deleteGenre } from '../../apis/genre.api';
-import { GENRES } from '../../constants/queryKeyName';
-import useGetListGenre from '../../hooks/useGetListGenre';
+import { POST } from '../../constants/queryKeyName';
 import AdminLayout from '../../layout/AdminLayout';
 import PostModal from '@/components/modals/PostModal';
+import useGetListPost from '@/hooks/post/useGetListPost';
+import PreviewContentModal from '@/components/modals/PreviewContentModal';
+import { useToast } from '@/hooks/useToast';
+import { toggleSnackbar } from '@/store/snackbarReducer';
+import { deletePost } from '@/apis/post.api';
+import config from '../../config';
 
 const PostManagement = () => {
   const queryClient = useQueryClient();
   const [searchContent, setSearchContent] = useState<string>('');
-  const [page, setPage] = useState<number>(1);
   const [currentProduct, setCurrentProduct] = useState<{ data: any } | null>(
     null
   );
-  const { data, isLoading, refetch } = useGetListGenre(
+  const [previewContent, setPreviewContent] = useState('');
+  const {
+    queryReturn: { data, isLoading, refetch },
     page,
-    10,
-    ['name', 'description'] as any,
-    searchContent
-  );
+    setPage,
+  } = useGetListPost();
+
   const dispatch = useDispatch();
-  const toast = useCallback(
-    ({ type, message }: { type: string; message: string }) => {
-      dispatch(toggleSnackbar({ open: true, message, type }));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },
-    [dispatch]
-  );
-  const { mutate, isLoading: isMutateLoading } = useMutation(deleteGenre, {
+
+  const toast = useToast(dispatch, toggleSnackbar);
+
+  const { mutate, isLoading: isMutateLoading } = useMutation(deletePost, {
     onSuccess: () => {
       // Invalidate and refetch
-      queryClient.invalidateQueries(GENRES);
+      queryClient.invalidateQueries(POST);
     },
     onError: () => {
       toast({
@@ -60,18 +58,28 @@ const PostManagement = () => {
   }, []);
 
   const columns = [
-    { field: 'id', headerName: 'ID', description: 'ID sản phẩm', width: 50 },
+    { field: 'id', headerName: 'ID', description: 'ID bài viết', width: 50 },
     {
-      field: 'name',
-      headerName: 'Tên sản phẩm',
-      description: 'Tên sản phẩm',
+      field: 'title',
+      headerName: 'Tên bài viết',
+      description: 'Tên bài viết',
       width: 200,
     },
     {
-      field: 'description',
-      headerName: 'Mô tả',
-      description: 'Mô tả sản phẩm',
+      field: 'content',
+      headerName: 'Nội dung',
+      description: 'Nội dung bài viết',
       flex: 1,
+      renderCell: (params: any) => (
+        <Button
+          variant="contained"
+          onClick={() => {
+            setPreviewContent(params?.row?.content);
+          }}
+        >
+          Xem nội dung
+        </Button>
+      ),
     },
     {
       field: 'actions',
@@ -79,15 +87,13 @@ const PostManagement = () => {
       description: 'Thao tác',
       width: 80,
       sortable: false,
-      renderCell: (params: any) => {
-        return (
-          <MenuActionAdmin
-            id={params?.row?.id}
-            deleteCallback={() => mutate(params?.row?.id)}
-            editCallback={() => toggleModalEdit(params?.row)}
-          />
-        );
-      },
+      renderCell: (params: any) => (
+        <MenuActionAdmin
+          id={params?.row?.id}
+          deleteCallback={() => mutate(params?.row?.id)}
+          editCallback={() => toggleModalEdit(params?.row)}
+        />
+      ),
     },
   ];
 
@@ -172,6 +178,11 @@ const PostManagement = () => {
             open={currentProduct !== null}
             currentProduct={currentProduct}
             handleClose={handleCloseModal}
+          />
+          <PreviewContentModal
+            open={!!previewContent}
+            content={previewContent as string}
+            handleClose={() => setPreviewContent('')}
           />
         </MainCard>
       </>

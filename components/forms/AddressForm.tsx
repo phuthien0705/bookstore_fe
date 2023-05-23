@@ -1,23 +1,20 @@
 import { useTheme } from '@mui/material/styles';
+import { LoadingButton } from '@mui/lab';
 import {
   Box,
   Button,
   FormControl,
-  FormControlLabel,
   FormHelperText,
   InputLabel,
   MenuItem,
   OutlinedInput,
   Select,
   Stack,
-  Typography,
-  useMediaQuery,
 } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '@/store/snackbarReducer';
-import useGetListAddress from '@/hooks/client/useGetListAddress';
 import useGetListCity from '@/hooks/client/useGetListCity';
 import Grid from '@mui/material/Grid';
 import { useEffect, useState } from 'react';
@@ -25,7 +22,6 @@ import { useMutation } from 'react-query';
 import { getListDistrict } from '@/apis/city.api';
 import { addAddress, updateAddress } from '@/apis/address.api';
 import { useToast } from '@/hooks/useToast';
-import { LoadingButton } from '@mui/lab';
 
 const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
   const theme: any = useTheme();

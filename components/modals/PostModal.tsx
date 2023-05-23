@@ -1,3 +1,5 @@
+import { FC, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   Box,
   FormControl,
@@ -10,23 +12,21 @@ import {
   styled,
   Skeleton,
 } from '@mui/material';
-import * as Yup from 'yup';
+import { useQueryClient } from 'react-query';
 import { Formik } from 'formik';
-import { FC, useState } from 'react';
+import * as Yup from 'yup';
 import CustomModal from './CustomModal';
 import objectEquals from '../../common/objectEquals';
 import ConfirmModal from './ConfirmModal';
-import { createGenre, editGenre } from '../../apis/genre.api';
-import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '../../store/snackbarReducer';
-import createRequest from '../../common/createRequest';
 import { IModal } from '@/interfaces/compontents/modal.interface';
-import { useQueryClient } from 'react-query';
-import { GENRES } from '@/constants/queryKeyName';
 import { Editor } from '@tinymce/tinymce-react';
 import { resizeImage } from '@/utils/fileUtils';
 import { detectWrapper } from '@/common/detectWrapper';
 import { detectLink } from '@/common/detectLink';
+import { postCreatePost, postUpdatePost } from '@/apis/post.api';
+import { IEachPostData } from '@/interfaces/post.interface';
+import { POST } from '@/constants/queryKeyName';
 
 const BlogEditorWrapper = styled('div')({
   '.mce-content-body': { outline: 'none' },
@@ -41,15 +41,14 @@ const BlogEditorWrapper = styled('div')({
 const PostModal: FC<IModal> = ({ handleClose, open, currentProduct }) => {
   const theme: any = useTheme();
   const dispatch = useDispatch();
-  const queryClient = useQueryClient();
   const [showAlert, setShowAlert] = useState<any>(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [editorLoading, setEditorLoading] = useState(true);
-
-  const data = currentProduct?.data;
+  const queryClient = useQueryClient();
+  const data = currentProduct?.data as IEachPostData | null;
 
   const initialValues = {
-    name: data?.name ?? '',
+    title: data?.title ?? '',
     content: data?.content ?? '',
     submit: null,
   };
@@ -68,33 +67,37 @@ const PostModal: FC<IModal> = ({ handleClose, open, currentProduct }) => {
       <Formik
         initialValues={initialValues}
         validationSchema={Yup.object().shape({
-          name: Yup.string()
+          title: Yup.string()
             .max(255, 'Tên bài viết tối đa 255 ký tự')
             .required('Tên bài viết là bắt buộc'),
           description: Yup.string().max(255, 'Mô tả bài viết tối đa 255 ký tự'),
         })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+        onSubmit={async (values, { setStatus, setSubmitting }) => {
           try {
-            const req = createRequest({
-              name: values.name,
-              content: values.content,
-            });
-            console.log(req);
-            // if (data === null) {
-            //   await createGenre(req);
-            // } else {
-            //   await editGenre(data?.id, req);
-            // }
+            if (data === null) {
+              await postCreatePost({
+                title: values.title,
+                content: values.content,
+              });
+            } else {
+              await postUpdatePost(
+                {
+                  title: values.title,
+                  content: values.content,
+                },
+                data.id
+              );
+            }
             setStatus({ success: true });
             setSubmitting(false);
-            // toast({
-            //   type: 'success',
-            //   message: `${data === null ? 'Tạo' : 'Cập nhật'} thành công`,
-            // });
-            // queryClient.refetchQueries([GENRES]);
-            // setTimeout(() => {
-            //   handleClose();
-            // }, 1000);
+            toast({
+              type: 'success',
+              message: `${data === null ? 'Tạo' : 'Cập nhật'} thành công`,
+            });
+            queryClient.refetchQueries([POST]);
+            setTimeout(() => {
+              handleClose();
+            }, 1000);
           } catch (err) {
             console.error(err);
             toast({
@@ -129,25 +132,25 @@ const PostModal: FC<IModal> = ({ handleClose, open, currentProduct }) => {
             <form noValidate onSubmit={handleSubmit}>
               <FormControl
                 fullWidth
-                error={Boolean(touched.name && errors.name)}
+                error={Boolean(touched.title && errors.title)}
                 sx={{ ...theme.typography.customInput }}
               >
-                <InputLabel htmlFor="outlined-adornment-name">
+                <InputLabel htmlFor="outlined-adornment-title">
                   Tên bài viết
                 </InputLabel>
                 <OutlinedInput
-                  id="outlined-adornment-name"
+                  id="outlined-adornment-title"
                   type="text"
-                  value={values.name}
-                  name="name"
+                  value={values.title}
+                  name="title"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   label="Tên bài viết"
                   inputProps={{}}
                 />
-                {touched.name && errors.name && (
-                  <FormHelperText error id="standard-weight-helper-text-name">
-                    {errors.name as any}
+                {touched.title && errors.title && (
+                  <FormHelperText error id="standard-weight-helper-text-title">
+                    {errors.title as any}
                   </FormHelperText>
                 )}
               </FormControl>
