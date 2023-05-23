@@ -1,4 +1,7 @@
-import { IEachAddressOfUserData } from '@/interfaces/address.interface';
+import {
+  IEachAddressOfUserData,
+  IShippingCostResponse,
+} from '@/interfaces/address.interface';
 import httpRequest from '@/services/httpRequest';
 
 export const getListAddress = async () => {
@@ -18,4 +21,7 @@ export const getDetailAddress = async (id: number) => {
 };
 export const updateAddress = async (id: string | number, data: any) => {
   return httpRequest.put(`/addresses/${id}`, data);
+};
+export const getShippingCost = () => {
+  return httpRequest.get<IShippingCostResponse>(`/addresses/shipping-cost`);
 };

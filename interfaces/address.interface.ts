@@ -7,3 +7,6 @@ export interface IEachAddressOfUserData {
   phone: string;
   userId: string;
 }
+export interface IShippingCostResponse {
+  value: number;
+}

@@ -177,7 +177,7 @@ const ProductManagement = () => {
   useEffect(() => {
     refetch();
   }, [refetch, page, searchContent]);
-  console.log(bookData);
+
   return (
     <AdminLayout>
       {' '}
@@ -260,7 +260,7 @@ const ProductManagement = () => {
               variant="outlined"
               shape="rounded"
               color="primary"
-              count={bookData?.totalPage ?? 0}
+              count={bookData?.totalPages ?? 0}
               page={page}
               onChange={(event, value) => setPage(value)}
             />

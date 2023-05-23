@@ -20,3 +20,4 @@ export const STATISTICS = 'statistics';
 export const TOP_SELLING = 'top-selling';
 export const BOOK_GENRE = 'book-genre';
 export const POST = 'post';
+export const SHIPPING_COST = 'shipping-cost';

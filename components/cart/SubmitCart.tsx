@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { useCallback } from 'react';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 import { moneyFormat } from '@/utils/moneyFormat';
+import useGetShippingCost from '@/hooks/address/useGetShippingCost';
 
 const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
   currentIndex,
@@ -17,6 +18,15 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
   refetchListCart,
 }) => {
   const dispatch = useDispatch();
+
+  const {
+    queryReturn: { data },
+  } = useGetShippingCost();
+
+  const isUnCheckAll = items.every(
+    (item: IEachCartData) => item.isChecked === false
+  );
+
   const toast = useCallback(
     ({ type, message }: { type: string; message: string }) => {
       dispatch(toggleSnackbar({ open: true, message, type }));
@@ -24,6 +34,7 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
     },
     [dispatch]
   );
+
   const { mutate: checkoutFunc } = useMutation(() => checkoutProduct(), {
     onSuccess: () => {
       toast({ type: 'success', message: 'Mua hàng thành công' });
@@ -66,28 +77,46 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
           justifyContent={'space-between'}
           alignItems={'center'}
         >
-          <Stack direction="row" spacing={2}>
-            <Typography
-              sx={{ fontWeight: 600, fontSize: '20px', color: '#000' }}
-            >
-              Tổng tiền:
-            </Typography>
-            <Typography
-              sx={{ fontWeight: 500, fontSize: '20px', color: '#000' }}
-            >
-              {items
-                ? moneyFormat(
-                    items.reduce(
-                      (prev: number, curr: IEachCartData) =>
-                        curr.isChecked === true
-                          ? Number(prev) +
-                            Number(curr.price) * Number(curr.quantity)
-                          : Number(prev) + 0,
-                      0
+          <Stack>
+            {!isUnCheckAll && (
+              <Stack direction="row" spacing={2}>
+                <Typography
+                  sx={{ fontWeight: 600, fontSize: '16px', color: '#000' }}
+                >
+                  Phí vận chuyển:
+                </Typography>
+                <Typography
+                  sx={{ fontWeight: 500, fontSize: '16px', color: '#000' }}
+                >
+                  {moneyFormat(data?.value ?? 0)}
+                </Typography>
+              </Stack>
+            )}
+            <Stack direction="row" spacing={2}>
+              <Typography
+                sx={{ fontWeight: 600, fontSize: '20px', color: '#000' }}
+              >
+                Tổng tiền:
+              </Typography>
+              <Typography
+                sx={{ fontWeight: 500, fontSize: '20px', color: '#000' }}
+              >
+                {items
+                  ? moneyFormat(
+                      isUnCheckAll
+                        ? 0
+                        : items.reduce(
+                            (prev: number, curr: IEachCartData) =>
+                              curr.isChecked === true
+                                ? Number(prev) +
+                                  Number(curr.price) * Number(curr.quantity)
+                                : Number(prev) + 0,
+                            0
+                          ) + (data?.value ?? 0)
                     )
-                  )
-                : 0}
-            </Typography>
+                  : 0}
+              </Typography>
+            </Stack>
           </Stack>
           <Stack direction={'row'} spacing={1}>
             <Button
