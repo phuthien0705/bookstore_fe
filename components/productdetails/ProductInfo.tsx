@@ -9,7 +9,6 @@ import {
 } from '@mui/material';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { FC, useCallback } from 'react';
-import { addToCart } from '@/apis/cart.api';
 import { useMutation, useQueryClient } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '@/store/snackbarReducer';
@@ -20,6 +19,7 @@ import { CART_CLIENT } from '@/constants/queryKeyName';
 import { useRouter } from 'next/router';
 import { moneyFormat } from '@/utils/moneyFormat';
 import authService from '@/services/authService';
+import { postAddToCart } from '@/apis/cart.api';
 
 const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
   const queryClient = useQueryClient();
@@ -33,7 +33,7 @@ const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
     [dispatch]
   );
   const { mutate: addToCartFunc, isLoading: isLoadingAddToCart } = useMutation(
-    () => addToCart({ book_id: data?.id, quantity: 1 }),
+    () => postAddToCart({ bookId: data?.id, quantity: 1 }),
     {
       onSuccess: () => {
         // Invalidate and refetch

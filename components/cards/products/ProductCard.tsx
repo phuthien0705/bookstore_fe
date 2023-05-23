@@ -18,11 +18,11 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ProductCardSkeleton from '../Skeleton/ProductCardSkelection';
 import { IProductCard } from '@/interfaces/compontents/card.interface';
 import { toggleSnackbar } from '@/store/snackbarReducer';
-import { addToCart } from '@/apis/cart.api';
 import authService from '@/services/authService';
 import { CART_CLIENT } from '@/constants/queryKeyName';
 import { useToast } from '@/hooks/useToast';
 import { moneyFormat } from '@/utils/moneyFormat';
+import { postAddToCart } from '@/apis/cart.api';
 
 const useStyles = makeStyles({
   root: {
@@ -56,7 +56,7 @@ const ProductCard: React.FunctionComponent<IProductCard> = ({
   }, [product, router]);
   const toast = useToast(dispatch, toggleSnackbar);
   const { mutate: addToCartFunc, isLoading: isLoadingAddToCart } = useMutation(
-    () => addToCart({ book_id: product?._id, quantity: 1 }),
+    () => postAddToCart({ bookId: product?._id, quantity: 1 }),
     {
       onSuccess: () => {
         // Invalidate and refetch

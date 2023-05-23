@@ -1,14 +1,14 @@
-import { getListPost } from '@/apis/post.api';
-import { POST } from '@/constants/queryKeyName';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
+import { POST } from '@/constants/queryKeyName';
+import { getListPost } from '@/apis/post.api';
 
 export default function useGetListPost() {
   const [page, setPage] = useState<number>(1);
   const limit = 10;
   const queryReturn = useQuery({
-    queryKey: [POST, page, limit],
-    queryFn: getListPost,
+    queryKey: [POST],
+    queryFn: () => getListPost({ page, limit }),
     refetchOnMount: true,
   });
 

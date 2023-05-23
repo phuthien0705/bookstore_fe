@@ -1,7 +1,7 @@
 import httpRequest from '@/services/httpRequest';
 
 export const getListAddress = async () => {
-  return httpRequest.get('/addresses');
+  return httpRequest.get('/addresses?page=1&limit=100');
 };
 export const addAddress = async (data: any) => {
   return httpRequest.post('/addresses', data);

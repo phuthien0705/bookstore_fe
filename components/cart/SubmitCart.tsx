@@ -1,5 +1,8 @@
 import { checkoutProduct } from '@/apis/checkout.api';
-import { ISubmitCart } from '@/interfaces/compontents/cart.interface';
+import {
+  IEachCartData,
+  ISubmitCart,
+} from '@/interfaces/compontents/cart.interface';
 import { Stack, Button, Container, Box, Typography } from '@mui/material';
 import { useMutation } from 'react-query';
 import { useRouter } from 'next/router';
@@ -100,8 +103,8 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
                 {items
                   ? moneyFormat(
                       items.reduce(
-                        (prev: number, curr: any) =>
-                          curr.is_checked === 1
+                        (prev: number, curr: IEachCartData) =>
+                          curr.isChecked === true
                             ? Number(prev) +
                               Number(curr.price) * Number(curr.quantity)
                             : Number(prev) + 0,

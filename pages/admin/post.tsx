@@ -8,15 +8,16 @@ import { useDispatch } from 'react-redux';
 import MainCard from '../../components/cards/MainCard';
 import CustomNoRowsOverlay from '../../components/empty/CustomNoRowsOverlay';
 import SearchAdminSection from '../../components/Header/SearchSection/SearchAdmin';
-import config from '../../config';
 import MenuActionAdmin from '../../components/menus/MenuActionAdmin';
-import { toggleSnackbar } from '../../store/snackbarReducer';
-import { deleteGenre } from '../../apis/genre.api';
-import { GENRES } from '../../constants/queryKeyName';
+import { POST } from '../../constants/queryKeyName';
 import AdminLayout from '../../layout/AdminLayout';
 import PostModal from '@/components/modals/PostModal';
-import useGetListPost from '@/hooks/useGetListPost';
+import useGetListPost from '@/hooks/post/useGetListPost';
 import PreviewContentModal from '@/components/modals/PreviewContentModal';
+import { useToast } from '@/hooks/useToast';
+import { toggleSnackbar } from '@/store/snackbarReducer';
+import { deletePost } from '@/apis/post.api';
+import config from '../../config';
 
 const PostManagement = () => {
   const queryClient = useQueryClient();
@@ -30,20 +31,15 @@ const PostManagement = () => {
     page,
     setPage,
   } = useGetListPost();
-  console.log('$test', data);
 
   const dispatch = useDispatch();
-  const toast = useCallback(
-    ({ type, message }: { type: string; message: string }) => {
-      dispatch(toggleSnackbar({ open: true, message, type }));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },
-    [dispatch]
-  );
-  const { mutate, isLoading: isMutateLoading } = useMutation(deleteGenre, {
+
+  const toast = useToast(dispatch, toggleSnackbar);
+
+  const { mutate, isLoading: isMutateLoading } = useMutation(deletePost, {
     onSuccess: () => {
       // Invalidate and refetch
-      queryClient.invalidateQueries(GENRES);
+      queryClient.invalidateQueries(POST);
     },
     onError: () => {
       toast({

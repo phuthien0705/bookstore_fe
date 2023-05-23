@@ -14,7 +14,7 @@ import MenuActionAdmin from '../../components/menus/MenuActionAdmin';
 import { deleteBook } from '../../apis/product.api';
 import { toggleSnackbar } from '../../store/snackbarReducer';
 import BookModal from '../../components/modals/BookModal';
-import useGetListBook from '../../hooks/useGetListBook';
+import useGetListBook from '../../hooks/book/useGetListBook';
 import useGetListGenre from '../../hooks/useGetListGenre';
 import useGetListAuthor from '../../hooks/useGetListAuthor';
 import useGetListPublisher from '../../hooks/useGetListPublisher';
