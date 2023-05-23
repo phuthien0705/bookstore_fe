@@ -1,40 +1,23 @@
-import { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 import { Grid, Tabs, Tab } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PaymentIcon from '@mui/icons-material/Payment';
 import SubmitCart from './SubmitCart';
 import EmptyCart from './EmptyCart';
-import { toggleSnackbar } from '@/store/snackbarReducer';
-import useGetListAddress from '@/hooks/client/useGetListAddress';
 import ItemTab from './tabs/ItemTab';
 import PaymentTab from './tabs/PaymentTab';
+import useGetListAddress from '@/hooks/address/useGetListAddress';
 import useGetListCart from '@/hooks/cart/useGetListCart';
 
 const CartItems: React.FunctionComponent = () => {
-  const dispatch = useDispatch();
-  const toast = useCallback(
-    ({ type, message }: { type: string; message: string }) => {
-      dispatch(toggleSnackbar({ open: true, message, type }));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },
-    [dispatch]
-  );
   const [currentIndex, setCurrentIndex] = useState(0);
-
   const { data, isLoading, isFetching, refetch } = useGetListCart();
+  const { data: listAddress, refetch: refetchAddress } = useGetListAddress();
 
-  console.log('$test', data?.items);
-
-  const {
-    data: listAddress,
-    isLoading: isListAddressLoading,
-    isFetching: isListAddressFetching,
-    refetch: refetchAddress,
-  } = useGetListAddress();
   const handleChange = (event: any, newValue: any) => {
     setCurrentIndex(newValue);
   };
+
   return (
     <>
       <Grid container sx={{ paddingBottom: '60px', position: 'relative' }}>
@@ -89,7 +72,6 @@ const CartItems: React.FunctionComponent = () => {
             items={data?.items ?? []}
             setCurrentIndex={setCurrentIndex}
             currentIndex={currentIndex}
-            listAddress={listAddress?.data}
             refetchListCart={refetch}
           />
         )}

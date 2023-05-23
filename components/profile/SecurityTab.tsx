@@ -1,23 +1,18 @@
-import { useDispatch } from 'react-redux';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
 import {
   Box,
   Button,
   FormControl,
   FormHelperText,
-  IconButton,
-  InputAdornment,
   InputLabel,
   OutlinedInput,
   Stack,
   useTheme,
 } from '@mui/material';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 import { updatePassword } from '@/apis/user.api';
-import useTogglePassword from '@/hooks/input/useTogglePassword';
 
 type valueType = {
   old_password: string;
@@ -33,26 +28,11 @@ const SecurityTab: React.FunctionComponent = () => {
     new_password: '',
     re_enter_new_password: '',
   };
-  const {
-    handleClickShowPassword: handleClickShowOldPassword,
-    handleMouseDownPassword: handleMouseDownOldPassword,
-    showPassword: showOldPassword,
-  } = useTogglePassword();
-  const {
-    handleClickShowPassword: handleClickShowNewPassword,
-    handleMouseDownPassword: handleMouseDownNewPassword,
-    showPassword: showNewPassword,
-  } = useTogglePassword();
-  const {
-    handleClickShowPassword: handleClickShowReEnterNewPassword,
-    handleMouseDownPassword: handleMouseDownReEnterNewPassword,
-    showPassword: showReEnterNewPassword,
-  } = useTogglePassword();
+
   const dispatch = useDispatch();
   const toast = ({ type, message }: { type: string; message: string }) => {
     dispatch(toggleSnackbar({ open: true, message, type }));
   };
-
   return (
     <Box sx={{ maxWidth: '500px', margin: 'auto', paddingTop: 2 }}>
       <Formik
@@ -119,24 +99,11 @@ const SecurityTab: React.FunctionComponent = () => {
               </InputLabel>
               <OutlinedInput
                 id="outlined-adornment-old_password"
-                type={showOldPassword ? 'text' : 'password'}
+                type="password"
                 value={values.old_password}
                 name="old_password"
                 onChange={handleChange}
                 label=" Mật khẩu cũ"
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowOldPassword}
-                      onMouseDown={handleMouseDownOldPassword}
-                      edge="end"
-                      size="large"
-                    >
-                      {showOldPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
                 inputProps={{}}
               />
               {touched.old_password && errors.old_password && (
@@ -158,25 +125,12 @@ const SecurityTab: React.FunctionComponent = () => {
               </InputLabel>
               <OutlinedInput
                 id="outlined-adornment-new_password"
-                type={showNewPassword ? 'text' : 'password'}
+                type="password"
                 value={values.new_password}
                 name="new_password"
                 onChange={handleChange}
                 label="Mật khẩu mới"
                 inputProps={{}}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowNewPassword}
-                      onMouseDown={handleMouseDownNewPassword}
-                      edge="end"
-                      size="large"
-                    >
-                      {showNewPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
               />
               {touched.new_password && errors.new_password && (
                 <FormHelperText
@@ -199,29 +153,12 @@ const SecurityTab: React.FunctionComponent = () => {
               </InputLabel>
               <OutlinedInput
                 id="outlined-adornment-re_enter_new_password"
-                type={showReEnterNewPassword ? 'text' : 'password'}
+                type="password"
                 value={values.re_enter_new_password}
                 name="re_enter_new_password"
                 onChange={handleChange}
                 label="Nhập lại mật khẩu"
                 inputProps={{}}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowReEnterNewPassword}
-                      onMouseDown={handleMouseDownReEnterNewPassword}
-                      edge="end"
-                      size="large"
-                    >
-                      {showReEnterNewPassword ? (
-                        <Visibility />
-                      ) : (
-                        <VisibilityOff />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                }
               />
               {touched.re_enter_new_password &&
                 errors.re_enter_new_password && (

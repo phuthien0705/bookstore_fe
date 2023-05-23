@@ -14,13 +14,13 @@ import {
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import LinearProgress from '@mui/material/LinearProgress';
 import { LoadingButton } from '@mui/lab';
-import useGetUserProfile from '@/hooks/client/useGetUserProfile';
 import { updateProfile } from '@/apis/user.api';
 import { useToast } from '@/hooks/useToast';
 import MainCard from '../cards/MainCard';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 import createFormDataRequest from '@/common/createFormDataRequest';
 import authService from '@/services/authService';
+import useGetUserProfile from '@/hooks/user/useGetUserProfile';
 
 const AvatarImg = styled('img')({
   width: 150,
@@ -32,7 +32,7 @@ const ProfileTab: React.FunctionComponent = () => {
   const dispatch = useDispatch();
   const toast = useToast(dispatch, toggleSnackbar);
   const [previewAvatar, setPreviewAvatar] = useState('');
-  const { data, isLoading, isFetching } = useGetUserProfile();
+  const { data, isLoading } = useGetUserProfile();
   const defaultAvatar =
     '../../static/media/user-round.27fe79b102ea6aad2f60e66cff82818d.svg';
   const [values, setValues] = useState<any>({

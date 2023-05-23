@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   ButtonBase,
   Box,
@@ -9,13 +10,11 @@ import {
   Avatar,
 } from '@mui/material';
 import { useTheme } from '@emotion/react';
-import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import useGetListGenreClient from '@/hooks/client/useGetListGenreClient';
 import CircularProgress from '@mui/material/CircularProgress';
-import WidgetsIcon from '@mui/icons-material/Widgets';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { IconCategory2 } from '@tabler/icons';
+import useGetListGenreClient from '@/hooks/genre/useGetListGenreClient';
 
 const GenreSection: React.FunctionComponent = () => {
   const theme: any = useTheme();
@@ -23,11 +22,7 @@ const GenreSection: React.FunctionComponent = () => {
   const matches = useMediaQuery('(min-width:900px)');
 
   const getListGenreQuery = useGetListGenreClient();
-  const {
-    data: genreData,
-    isLoading: isGenreLoading,
-    isFetching: isGenreFetching,
-  } = getListGenreQuery;
+  const { data: genreData, isLoading: isGenreLoading } = getListGenreQuery;
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {

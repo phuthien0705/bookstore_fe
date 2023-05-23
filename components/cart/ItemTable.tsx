@@ -8,11 +8,11 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { Typography, Paper, Grid, IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { styled } from '@mui/material/styles';
-import QuantityButton from '../extended/Quantity';
 import Checkbox from '@mui/material/Checkbox';
+import { Typography, Paper, IconButton } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import DeleteIcon from '@mui/icons-material/Delete';
+import QuantityButton from '../extended/Quantity';
 import {
   IEachCartData,
   IItemTable,

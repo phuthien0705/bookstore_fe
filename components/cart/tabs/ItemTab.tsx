@@ -22,7 +22,7 @@ const ItemTab: React.FunctionComponent<{
   refetch: () => void;
   isLoading: boolean;
   isFetching: boolean;
-}> = ({ data, refetch, isLoading, isFetching }) => {
+}> = ({ data, refetch, isLoading }) => {
   const matches = useMediaQuery('(min-width:900px)');
 
   const [showConfirmModal, setShowConfirmModal] = useState<any>(null);
