@@ -16,8 +16,8 @@ import { activeUser, unactiveUser } from '@/apis/user.api';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 import UserModal from '@/components/modals/UserModal';
 import { useToast } from '@/hooks/useToast';
-import useGetListUser from '@/hooks/useGetListUser';
 import config from '../../config';
+import useGetListUser from '@/hooks/user/useGetListUser';
 
 const ImageStyle = styled('img')({
   width: '80%',

@@ -6,7 +6,6 @@ import { Box, Button, Pagination, Stack, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import LinearProgress from '@mui/material/LinearProgress';
 import AddIcon from '@mui/icons-material/Add';
-import { styled } from '@mui/material/styles';
 import AdminLayout from '../../layout/AdminLayout';
 import SearchAdminSection from '../../components/Header/SearchSection/SearchAdmin';
 import CustomNoRowsOverlay from '../../components/empty/CustomNoRowsOverlay';
@@ -14,10 +13,10 @@ import MenuActionAdmin from '../../components/menus/MenuActionAdmin';
 import { deleteBook } from '../../apis/product.api';
 import { toggleSnackbar } from '../../store/snackbarReducer';
 import BookModal from '../../components/modals/BookModal';
-import useGetListBook from '../../hooks/useGetListBook';
-import useGetListGenre from '../../hooks/useGetListGenre';
-import useGetListAuthor from '../../hooks/useGetListAuthor';
-import useGetListPublisher from '../../hooks/useGetListPublisher';
+import useGetListBook from '../../hooks/book/useGetListBook';
+import useGetListGenre from '../../hooks/genre/useGetListGenre';
+import useGetListAuthor from '../../hooks/author/useGetListAuthor';
+import useGetListPublisher from '../../hooks/publisher/useGetListPublisher';
 import MainCard from '../../components/cards/MainCard';
 import config from '../../config';
 import {
@@ -25,12 +24,6 @@ import {
   TDataImage,
 } from '@/components/modals/PreviewImageModal';
 
-const ImageStyle = styled('img')({
-  borderRadius: 4,
-  objectFit: 'cover',
-  padding: '5px 0',
-  height: '100px',
-});
 const ProductManagement = () => {
   const dispatch = useDispatch();
   const [searchContent, setSearchContent] = useState<string>('');
@@ -184,7 +177,7 @@ const ProductManagement = () => {
   useEffect(() => {
     refetch();
   }, [refetch, page, searchContent]);
-  console.log(bookData);
+
   return (
     <AdminLayout>
       {' '}
@@ -267,7 +260,7 @@ const ProductManagement = () => {
               variant="outlined"
               shape="rounded"
               color="primary"
-              count={bookData?.totalPage ?? 0}
+              count={bookData?.totalPages ?? 0}
               page={page}
               onChange={(event, value) => setPage(value)}
             />

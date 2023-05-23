@@ -3,10 +3,13 @@ import { useTheme } from '@mui/material/styles';
 import {
   Alert,
   Box,
+  Button,
   Checkbox,
+  Divider,
   FormControl,
   FormControlLabel,
   FormHelperText,
+  Grid,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -18,29 +21,56 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { login, reSendVerifyEmail } from '../../apis/auth.api';
+import GoogleIcon from '@mui/icons-material/Google';
+import { useGoogleLogin } from '@react-oauth/google';
+import { useDispatch } from 'react-redux';
+import { login, postLoginGoogle, reSendVerifyEmail } from '../../apis/auth.api';
 import authService from '../../services/authService';
 import checkIsAdminOrManager from '../../common/checkIsAdminOrManager';
 import { useRouter } from 'next/router';
 import { LoadingButton } from '@mui/lab';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import config from '@/config';
+import { useToast } from '@/hooks/useToast';
+import { toggleSnackbar } from '@/store/snackbarReducer';
 
 const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
   const theme: any = useTheme();
   const router = useRouter();
   const matches = useMediaQuery('(min-width:400px)');
-
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+  const dispatch = useDispatch();
+  const toast = useToast(dispatch, toggleSnackbar);
   const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showAlert, setShowAlert] = useState<any>(null);
-  const googleHandler = async () => {
-    console.error('Login');
-  };
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
+
+  const loginGoogle = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      const result: any = await postLoginGoogle({
+        accessToken: tokenResponse.access_token,
+      });
+      authService.login({
+        accessToken: result.tokens.access.token,
+        name: result.user.name,
+        id: result.user.id,
+        roles: result.user.roles,
+        email: result.user.email,
+      });
+      if (!checkIsAdminOrManager(result?.user?.roles)) {
+        router.push('/');
+      } else {
+        router.push('/admin/statistic');
+      }
+    },
+    onError: () => {
+      toast({ type: 'error', message: 'Xảy ra lỗi khi đăng nhập với Google' });
+    },
+  });
 
   const handleMouseDownPassword: MouseEventHandler<HTMLButtonElement> = (
     event
@@ -50,29 +80,22 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
 
   return (
     <>
-      {/* <Grid container direction="column" justifyContent="center" spacing={2}>
+      <Grid container direction="column" justifyContent="center" spacing={2}>
         <Grid item xs={12}>
           <Button
+            onClick={() => loginGoogle()}
             disableElevation
             fullWidth
-            onClick={googleHandler}
             size="large"
             variant="outlined"
             sx={{
               color: 'grey.700',
               backgroundColor: theme.palette.grey[50],
               borderColor: theme.palette.grey[100],
+              display: 'flex',
             }}
           >
-            <Box sx={{ mr: { xs: 1, sm: 2, width: 20 }, height: '20px' }}>
-              <Image
-                src={Google}
-                alt="google"
-                width={16}
-                height={16}
-                style={{ marginRight: matchDownSM ? 8 : 16 }}
-              />
-            </Box>
+            <GoogleIcon sx={{ marginRight: '8px' }} />
             Đăng nhập với google
           </Button>
         </Grid>
@@ -118,7 +141,7 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
             <Typography variant="subtitle1">Đăng nhập bằng Email</Typography>
           </Box>
         </Grid>
-      </Grid> */}
+      </Grid>
 
       <Formik
         initialValues={{
@@ -140,7 +163,6 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
           try {
             const req = { email: values.email, password: values.password };
             const res: any = await login(req);
-            console.log(res);
             authService.login({
               accessToken: res.tokens.access.token,
               name: res.user.name,
@@ -162,7 +184,7 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
             }
             setStatus({ success: true });
             setSubmitting(false);
-            if (!checkIsAdminOrManager(res?.roles)) {
+            if (!checkIsAdminOrManager(res?.user?.roles)) {
               router.push('/');
             } else {
               router.push('/admin/statistic');

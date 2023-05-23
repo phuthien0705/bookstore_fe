@@ -7,6 +7,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Backdrop, CircularProgress, ThemeProvider } from '@mui/material';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -19,6 +20,7 @@ import initRequest from '../services/initRequest';
 import { AppPropsWithLayout } from '@/interfaces/layout.interface';
 import * as gtag from '../lib/gtag';
 import '../styles/globals.css';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 initRequest();
 
@@ -95,23 +97,28 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         `,
         }}
       />
-      <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider theme={themes(customization)}>
-            <MainContext.Provider value={{ backdrop, setBackdrop }}>
-              <Component {...pageProps} />
-            </MainContext.Provider>
-            <Backdrop
-              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.modal + 1 }}
-              open={backdrop}
-              onClick={() => setBackdrop((p) => !p)}
-            >
-              <CircularProgress color="inherit" />
-            </Backdrop>
-            <ReactQueryDevtools initialIsOpen={false} />
-          </ThemeProvider>
-        </QueryClientProvider>
-      </Provider>
+      <GoogleOAuthProvider clientId={process.env.CLIENT_ID ?? ''}>
+        <Provider store={store}>
+          <QueryClientProvider client={queryClient}>
+            <ThemeProvider theme={themes(customization)}>
+              <MainContext.Provider value={{ backdrop, setBackdrop }}>
+                <Component {...pageProps} />
+              </MainContext.Provider>
+              <Backdrop
+                sx={{
+                  color: '#fff',
+                  zIndex: (theme) => theme.zIndex.modal + 1,
+                }}
+                open={backdrop}
+                onClick={() => setBackdrop((p) => !p)}
+              >
+                <CircularProgress color="inherit" />
+              </Backdrop>
+              <ReactQueryDevtools initialIsOpen={false} />
+            </ThemeProvider>
+          </QueryClientProvider>
+        </Provider>
+      </GoogleOAuthProvider>
     </>
   );
 }

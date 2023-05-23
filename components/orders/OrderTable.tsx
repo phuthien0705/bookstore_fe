@@ -25,13 +25,13 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
   data,
 }) => {
   const sortedItems = sortOrdersByDate(items);
-  const calcTotalBookPrice = useCallback((item: any) => {
-    let total = 0;
-    item?.order_details?.forEach((element: any) => {
-      total += Number(element.price) * Number(element.quantity);
-    });
-    return total;
-  }, []);
+  // const calcTotalBookPrice = useCallback((item: any) => {
+  //   let total = 0;
+  //   item?.books?.forEach((element: any) => {
+  //     total += Number(element.price) * Number(element.quantity);
+  //   });
+  //   return total;
+  // }, []);
 
   if (!sortedItems || sortedItems?.length === 0) {
     return (
@@ -60,51 +60,41 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
                     <Stack display="flex" direction="row" alignItems="center">
                       <LocalShippingIcon sx={{ color: 'black' }} />
                       <Typography ml={2} variant="h4">
-                        Đã đặt hàng
+                        {row?.status}
                       </Typography>
                     </Stack>
                   </TableCell>
+
                   <TableCell>
                     <Typography textAlign="center">Số lượng</Typography>
                   </TableCell>
+                  <TableCell>
+                    <Typography textAlign="center">Đơn giá</Typography>
+                  </TableCell>
                   <TableCell colSpan={2}>
-                    <Typography>Thành tiền</Typography>
+                    <Typography textAlign="center">Thành tiền</Typography>
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {(row?.order_details || []).map((item: any, _index: number) => (
+                {(row?.books || []).map((item: any, _index: number) => (
                   <TableRow key={`${item.id}_${_index}`}>
                     <TableCell sx={{ maxWidth: '350px' }}>
                       <Stack
-                        direction="column"
+                        direction="row"
                         justifyContent="flex-start"
+                        alignItems="center"
                         spacing={2}
                       >
-                        <Box>
-                          <ImageOrderStyle
-                            alt={item?.book?.name}
-                            width="76"
-                            height="76"
-                            src={item?.book?.book_image}
-                          />
-                        </Box>
-                        <Box>
-                          <Stack
-                            sx={{
-                              width: '100%',
-                              height: '100%',
-                              padding: '10px 0',
-                            }}
-                            direction="row"
-                            justifyContent="space-between"
-                            spacing={40}
-                          >
-                            <Typography fontSize="14px">
-                              {item?.book?.name}
-                            </Typography>
-                          </Stack>
-                        </Box>
+                        <ImageOrderStyle
+                          alt={item.name}
+                          width="76"
+                          height="76"
+                          src={item.imageUrl}
+                        />
+                        <Typography fontSize="14px" textAlign="center">
+                          {item?.name}
+                        </Typography>
                       </Stack>
                     </TableCell>
                     <TableCell>
@@ -113,9 +103,39 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
                       </Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography fontWeight="bold" textAlign="left">
-                        {moneyFormat(item.price * item.quantity || 0)} đ
-                      </Typography>
+                      {!item?.priceDiscount ? (
+                        <Typography fontWeight="bold" textAlign="center">
+                          {moneyFormat(item.price || 0)}
+                        </Typography>
+                      ) : (
+                        <Stack>
+                          <Typography fontWeight="bold" textAlign="center">
+                            {moneyFormat(item.priceDiscount || 0)}
+                          </Typography>
+                          <Typography
+                            fontWeight="lighter"
+                            textAlign="center"
+                            style={{ textDecorationLine: 'line-through' }}
+                          >
+                            {moneyFormat(item.price || 0)}
+                          </Typography>
+                        </Stack>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {!item?.priceDiscount ? (
+                        <Typography fontWeight="bold" textAlign="center">
+                          {moneyFormat(item.price * item.quantity || 0)}
+                        </Typography>
+                      ) : (
+                        <Stack>
+                        <Typography fontWeight="bold" textAlign="center">
+                            {moneyFormat(
+                              item.priceDiscount * item.quantity || 0
+                            )}
+                          </Typography>
+                        </Stack>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -127,11 +147,20 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
                       justifyContent="flex-start"
                     >
                       <Typography>
-                        Phí vận chuyển:{' '}
-                        {moneyFormat(
-                          (row?.payment?.total || 0) -
-                            (calcTotalBookPrice(row) || 0)
-                        )}
+                        Phí vận chuyển: {moneyFormat(row?.shipping?.value || 0)}
+                      </Typography>
+                    </Stack>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={3}>
+                    <Stack
+                      display="flex"
+                      direction="row"
+                      justifyContent="flex-start"
+                    >
+                      <Typography>
+                        Giảm giá: {moneyFormat(row?.discount || 0)}
                       </Typography>
                     </Stack>
                   </TableCell>
@@ -148,7 +177,7 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
                         fontSize={'18px'}
                         color={'black'}
                       >
-                        Tổng tiền: {moneyFormat(row?.payment?.total || 0)} đ
+                        Tổng tiền: {moneyFormat(row?.totalPayment || 0)}
                       </Typography>
                     </Stack>
                   </TableCell>

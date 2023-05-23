@@ -6,9 +6,15 @@ const nextConfig = {
     REACT_APP_API_URL: process.env.REACT_APP_API_URL,
     GA_MEASUREMENT_ID: process.env.GA_MEASUREMENT_ID,
     SITE_URL: process.env.SITE_URL,
+    CLIENT_ID: process.env.CLIENT_ID,
   },
   images: {
-    domains: ['storage.googleapis.com', 'book-image.s3-hcm-r1.longvan.net'],
+    domains: [
+      'storage.googleapis.com',
+      'book-image.s3-hcm-r1.longvan.net',
+      'boxo-images.s3-hcm-r1.longvan.net',
+      'lh3.googleusercontent.com',
+    ],
   },
   webpack(config) {
     config.module.rules.push({

@@ -1,12 +1,9 @@
-import { useTheme } from '@mui/material/styles';
+import { FC, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import {
-  Avatar,
   Box,
-  ButtonBase,
-  Stack,
   Container,
   IconButton,
-  Button,
   Typography,
   useMediaQuery,
 } from '@mui/material';
@@ -15,13 +12,11 @@ import LogoSection from '../LogoSection';
 import SearchSection from './SearchSection';
 import ProfileSection from './ProfileSection';
 import CartSection from './CartSection';
-import { FC, useState, useEffect } from 'react';
 import { IHeader } from '@/interfaces/compontents/header.interface';
-import useGetListCart from '@/hooks/client/useGetListCart';
 import BelowSection from './BelowSection';
 import GenreSection from './GenreSection';
-import { useRouter } from 'next/router';
 import { scrollToTop } from '@/utils/scrollToTop';
+import useGetListCart from '@/hooks/cart/useGetListCart';
 
 const Header: FC<IHeader> = ({
   handleLeftDrawerToggle,
@@ -141,6 +136,22 @@ const Header: FC<IHeader> = ({
               <GenreSection />
               <Typography
                 onClick={() => {
+                  router.push({ pathname: '/blogs' });
+                }}
+                sx={{
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 400,
+                  marginRight: 1,
+                  whiteSpace: 'nowrap',
+                  color: 'rgb(29,37,69)',
+                  ml: '20px',
+                }}
+              >
+                Bài viết
+              </Typography>
+              <Typography
+                onClick={() => {
                   router.push({ pathname: '/contact-us' });
                 }}
                 sx={{
@@ -201,7 +212,7 @@ const Header: FC<IHeader> = ({
           {/*  profile & cart */}
           {!hideCart && (
             <CartSection
-              data={data}
+              data={data?.items ?? []}
               isLoading={isLoading}
               isFetching={isFetching}
               refetch={refetch}

@@ -2,13 +2,16 @@ import createSearchParams from '@/common/createSearchParams';
 import httpRequest from '@/services/httpRequest';
 
 export const getUserProfile = async () => {
-  return httpRequest.get('/user/profile');
+  return httpRequest.get('/profile');
 };
 export const updateProfile = async (data: any) => {
-  return httpRequest.post('/user/profile', data);
+  return httpRequest.post('/profile', data);
 };
-export const updatePassword = async (data: any) => {
-  return httpRequest.put('/user/password', data);
+export const updatePassword = async (data: {
+  oldPassword: string;
+  newPassword: string;
+}) => {
+  return httpRequest.put('/profile/password', data);
 };
 export const getUserForAdmin = async (
   current_page: number,

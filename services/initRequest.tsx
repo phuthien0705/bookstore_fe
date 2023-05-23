@@ -20,10 +20,8 @@ export default function initRequest() {
   axiosInstance.interceptors.request.use(
     (config) => {
       const accessToken = getAccessToken();
-      if (accessToken) {
-        config.headers = {
-          Authorization: `Bearer ${accessToken}`,
-        };
+      if (accessToken && config.headers) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
       }
 
       return config;

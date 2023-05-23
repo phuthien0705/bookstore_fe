@@ -1,12 +1,12 @@
 import Head from 'next/head';
 import { Box, Container } from '@mui/material';
-import HomeLayout from '@/layout/HomeLayout';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+import HomeLayout from '@/layout/HomeLayout';
 import ProductCardItems from '../components/cards/products/ProductCardItems';
 import CarouselCustumized from '@/components/carousel/CarouselCustumized';
 import ProductCardItemsByGenre from '@/components/cards/products/ProductCartItemsByGenre';
-import useGetTopSelling from '@/hooks/client/useGetTopSelling';
-import useGetListGenreClient from '../hooks/client/useGetListGenreClient';
+import useGetTopSelling from '@/hooks/book/useGetTopSelling';
+import useGetListGenreClient from '../hooks/genre/useGetListGenreClient';
 
 const Home = () => {
   const { data: topSelling, isLoading: isTopSellLoading } = useGetTopSelling();
@@ -19,10 +19,10 @@ const Home = () => {
     if (!isGenreLoading) {
       return (
         genreData &&
-        genreData?.datas?.slice(0, 3)?.map((genre: any, _index: number) => {
+        genreData?.datas?.slice(0, 3)?.map((genre: any) => {
           return (
             <ProductCardItemsByGenre
-              key={_index}
+              key={genre?.id}
               slideToShow={5}
               title={genre?.name}
               titleBackground={'#e8d5f9'}
@@ -32,6 +32,7 @@ const Home = () => {
         })
       );
     }
+    return null;
   };
   return (
     <>
@@ -80,7 +81,7 @@ const Home = () => {
             }}
           >
             <ProductCardItems
-              slideToShow={5}
+              slideToShow={4}
               isLoading={isTopSellLoading}
               data={topSelling?.datas}
               title="Xu hướng mua sắm"

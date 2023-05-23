@@ -1,4 +1,4 @@
-import { Dispatch } from 'react';
+import { Breakpoint } from '@mui/system';
 
 export interface IModal {
   handleClose: Function;
@@ -20,6 +20,7 @@ export interface ICustomModal {
   handleClose: Function;
   open: boolean;
   title: string;
+  maxWidth?: false | Breakpoint | undefined;
 }
 export interface IBookModal extends IModal {
   authors: any[];
