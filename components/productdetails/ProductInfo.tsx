@@ -76,49 +76,61 @@ const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
               quality={75}
               width={300}
               height={400}
-              src={data?.book_image || ''}
+              src={data?.images[0]?.url || ''}
               alt={data?.name}
               style={{ borderRadius: '10px', objectFit: 'cover' }}
+              referrerPolicy="no-referrer"
             />
           )}
         </Box>
       </Box>
       <Box className="shadow" sx={{ width: '100%', borderRadius: '8px' }}>
-        <Grid container sx={{ ml: { md: 4, xs: 4 }, pb: 2 }}>
+        <Grid
+          container
+          spacing={0}
+          sx={{ ml: { md: 4, xs: 4 }, pb: 2, height: '100%', gap: 0 }}
+        >
           <Grid
             item
-            xs={12}
-            sx={{ px: { xs: 0, md: 1.5 }, py: { xs: 1, md: 1.5 }, mt: 2 }}
+            xs={11}
+            sx={{
+              px: { xs: 0, md: 1.5 },
+              py: { xs: 1, md: 1.5 },
+              mt: 2,
+              alignSelf: 'flex-start',
+            }}
           >
-            <Typography variant="h3" fontSize="24px" fontWeight="500">
-              {data?.name}
-            </Typography>
-          </Grid>
-
-          <Grid
-            item
-            xs={12}
-            sx={{ px: { xs: 0, md: 1.5 }, py: { xs: 1, md: 1.5 } }}
-          >
-            <Stack direction="row" spacing={1}>
-              <Rating value={4.5} precision={0.5} readOnly />
+            <Stack spacing={2}>
+              <Typography variant="h3" fontSize="24px" fontWeight="500">
+                {data?.name}
+              </Typography>
+              <Stack direction="row" spacing={1}>
+                <Rating value={4.5} precision={0.5} readOnly />
+              </Stack>
+              <Typography
+                sx={{ fontSize: '32px', color: '#000', fontWeight: 500 }}
+              >
+                {moneyFormat(data?.price || 0)}
+              </Typography>
+              <Box className="line-clamp-4" >
+                {data?.description}On a rainy morning, an Irish man sat in front
+                of his piano, and was consumed by memories of Japan in the 90's
+                where we had lived and worked years ago. He remembered exquisite
+                details of a beautiful land, a nostalgic time, and every scene
+                scrolled by like clips in an old movie. And he saw again his
+                love and all the regrets that life gave and took away forever.
+              </Box>
             </Stack>
           </Grid>
+
+          {/* Button */}
           <Grid
             item
             xs={12}
-            sx={{ px: { xs: 0, md: 1.5 }, py: { xs: 1, md: 1.5 } }}
-          >
-            <Typography
-              sx={{ fontSize: '32px', color: '#000', fontWeight: 500 }}
-            >
-              {moneyFormat(data?.price || 0)}
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sx={{ px: { xs: 0, md: 1.5 }, py: { xs: 1, md: 1.5 } }}
+            sx={{
+              px: { xs: 0, md: 1.5 },
+              py: { xs: 1, md: 1.5, alignSelf: 'flex-end' },
+            }}
           >
             <Stack
               direction={{ xs: 'column', sm: 'row' }}
