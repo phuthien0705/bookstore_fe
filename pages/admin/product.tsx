@@ -96,12 +96,12 @@ const ProductManagement = () => {
 
   const columns: any[] = [
     {
-      field: '_id',
+      field: 'id',
       headerName: 'ID',
       description: 'ID sản phẩm',
       width: 50,
       renderCell: (params: any) => {
-        return <p className="truncate">{params?.row?._id}</p>;
+        return <p className="truncate">{params?.row?.id}</p>;
       },
     },
     {
@@ -167,7 +167,7 @@ const ProductManagement = () => {
         return (
           <MenuActionAdmin
             id={params?.row?.id}
-            deleteCallback={() => mutate(params?.row?._id)}
+            deleteCallback={() => mutate(params?.row?.id)}
             editCallback={() => toggleModalEdit(params?.row)}
           />
         );
@@ -223,7 +223,7 @@ const ProductManagement = () => {
           </Stack>
           <Box mt={2} sx={{ height: 610, width: '100%' }}>
             <DataGrid
-              getRowId={(row) => row._id}
+              getRowId={(row) => row.id}
               className="shadow"
               sx={{
                 border: 'none !important',
