@@ -67,8 +67,8 @@ const BookModal: FC<IBookModal> = ({
       ? dayjs(data?.publishedDate).format('YYYY-MM-DD')
       : '',
     publisherId: data?.publisherId ?? '',
-    genres: data?.genres ? data?.genres?.map((item: any) => item?._id) : [],
-    authors: data?.authors ? data?.authors?.map((item: any) => item?._id) : [],
+    genres: data?.genres ? data?.genres?.map((item: any) => item?.id) : [],
+    authors: data?.authors ? data?.authors?.map((item: any) => item?.id) : [],
     submit: null,
   };
 
@@ -158,7 +158,7 @@ const BookModal: FC<IBookModal> = ({
             if (data === null) {
               await createBook(req);
             } else {
-              await editBook(data?._id, req);
+              await editBook(data?.id, req);
             }
             setStatus({ success: true });
             setSubmitting(false);

@@ -51,12 +51,12 @@ const ProductCard: React.FunctionComponent<IProductCard> = ({
   const handleClickItem = useCallback(() => {
     router.push({
       pathname: '/product/[pid]',
-      query: { pid: product?._id },
+      query: { pid: product?.id },
     });
   }, [product, router]);
   const toast = useToast(dispatch, toggleSnackbar);
   const { mutate: addToCartFunc, isLoading: isLoadingAddToCart } = useMutation(
-    () => postAddToCart({ bookId: product?._id, quantity: 1 }),
+    () => postAddToCart({ bookId: product?.id, quantity: 1 }),
     {
       onSuccess: () => {
         // Invalidate and refetch
@@ -112,6 +112,7 @@ const ProductCard: React.FunctionComponent<IProductCard> = ({
           height={slideMode ? 150 : 200}
           alt={product?.name}
           onClick={handleClickItem}
+          referrerPolicy="no-referrer"
         />
       </Box>
       <CardContent sx={{ padding: 2, height: '100%' }}>
