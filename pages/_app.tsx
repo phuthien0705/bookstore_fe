@@ -7,7 +7,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Backdrop, CircularProgress, ThemeProvider } from '@mui/material';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -20,7 +20,6 @@ import initRequest from '../services/initRequest';
 import { AppPropsWithLayout } from '@/interfaces/layout.interface';
 import * as gtag from '../lib/gtag';
 import '../styles/globals.css';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 
 initRequest();
 
