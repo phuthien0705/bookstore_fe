@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import {
   Box,
   Pagination,
@@ -129,7 +128,7 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
                         </Typography>
                       ) : (
                         <Stack>
-                        <Typography fontWeight="bold" textAlign="center">
+                          <Typography fontWeight="bold" textAlign="center">
                             {moneyFormat(
                               item.priceDiscount * item.quantity || 0
                             )}

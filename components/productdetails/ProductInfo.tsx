@@ -112,14 +112,7 @@ const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
               >
                 {moneyFormat(data?.price || 0)}
               </Typography>
-              <Box className="line-clamp-4" >
-                {data?.description}On a rainy morning, an Irish man sat in front
-                of his piano, and was consumed by memories of Japan in the 90's
-                where we had lived and worked years ago. He remembered exquisite
-                details of a beautiful land, a nostalgic time, and every scene
-                scrolled by like clips in an old movie. And he saw again his
-                love and all the regrets that life gave and took away forever.
-              </Box>
+              <Box className="line-clamp-4">{data?.description}</Box>
             </Stack>
           </Grid>
 
