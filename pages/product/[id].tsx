@@ -146,7 +146,7 @@ const ProductDetail = () => {
                     </Typography>
                     <Box>{data && data?.available_quantity}</Box>
                   </Stack>
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
+                  {/* <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
                     <Typography
                       noWrap
                       sx={{ fontWeight: 600, color: '#000', minWidth: 150 }}
@@ -186,7 +186,7 @@ const ProductDetail = () => {
                           </Button>
                         )}
                     </Stack>
-                  </Stack>
+                  </Stack> */}
                 </Stack>
               </Stack>
             </Stack>

@@ -58,6 +58,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@tailwindcss/line-clamp": "^0.4.4",
     "@types/js-cookie": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "autoprefixer": "^10.4.13",

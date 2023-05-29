@@ -76,7 +76,8 @@ export const getTopSelling = async () => {
 };
 
 export const getRelateBook = async (genres = '') => {
-  return httpRequest.get(`/books?limit=10&page=1&genre=${genres}`);
+  if (genres) return httpRequest.get(`/books?limit=10&page=1&genres=${genres}`);
+  return httpRequest.get(`/books?limit=10&page=1`);
 };
 
 export const getListBookByGenre = async (genresid: any, slideToShow = 5) => {
