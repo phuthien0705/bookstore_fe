@@ -66,7 +66,7 @@ export default function blogs() {
             {data?.datas &&
               data.datas.map((item) => {
                 return (
-                  <Stack key={item.id} spacing={theme.spacing(1)}>
+                  <Stack key={item._id} spacing={theme.spacing(1)}>
                     <Typography
                       sx={{
                         fontWeight: 700,
@@ -76,7 +76,7 @@ export default function blogs() {
                         '&:hover': { textDecoration: 'underline' },
                       }}
                       className="line-clamp-2"
-                      onClick={() => handleRedirectToBlogDetail(item.id)}
+                      onClick={() => handleRedirectToBlogDetail(item._id)}
                     >
                       {item.title}
                     </Typography>
