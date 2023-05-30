@@ -1,3 +1,4 @@
+import '../styles/globals.css';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import {
@@ -19,7 +20,7 @@ import { store } from '../store';
 import initRequest from '../services/initRequest';
 import { AppPropsWithLayout } from '@/interfaces/layout.interface';
 import * as gtag from '../lib/gtag';
-import '../styles/globals.css';
+import SocketsProvider from '@/socket/socket-context';
 
 initRequest();
 
@@ -101,7 +102,9 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
           <QueryClientProvider client={queryClient}>
             <ThemeProvider theme={themes(customization)}>
               <MainContext.Provider value={{ backdrop, setBackdrop }}>
-                <Component {...pageProps} />
+                <SocketsProvider>
+                  <Component {...pageProps} />
+                </SocketsProvider>
               </MainContext.Provider>
               <Backdrop
                 sx={{
