@@ -9,8 +9,8 @@ function getAccessToken() {
 }
 
 const requestConfig = {
-  baseURL: process.env.REACT_APP_API_URL
-    ? `${process.env.REACT_APP_API_URL}`
+  baseURL: process.env.REACT_APP
+    ? `${process.env.REACT_APP}`
     : 'https://bookstore-39jw3.ondigitalocean.app/api',
 };
 
