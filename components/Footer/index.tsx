@@ -1,12 +1,4 @@
-import {
-  Box,
-  Container,
-  Paper,
-  Link,
-  Typography,
-  IconButton,
-  Stack,
-} from '@mui/material';
+import { Box, Link, Typography, IconButton, Stack } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -17,7 +9,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 const Footer = () => {
   const matches = useMediaQuery('(min-width:750px)');
-  const matches2 = useMediaQuery('(max-width:815px)');
 
   const theme: any = useTheme();
   return (

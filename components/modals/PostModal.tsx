@@ -85,7 +85,7 @@ const PostModal: FC<IModal> = ({ handleClose, open, currentProduct }) => {
                   title: values.title,
                   content: values.content,
                 },
-                data.id
+                data._id
               );
             }
             setStatus({ success: true });

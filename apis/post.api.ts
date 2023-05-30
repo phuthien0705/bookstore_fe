@@ -1,6 +1,7 @@
 import httpRequest from '@/services/httpRequest';
 import { IPaginationResponse } from '@/interfaces/general.interface';
 import { IEachPostData } from '@/interfaces/post.interface';
+import { QueryFunctionContext } from 'react-query';
 
 /** Querykey format: [key] */
 export const getListPost = ({
@@ -28,4 +29,8 @@ export const postUpdatePost = (
 
 export const deletePost = (postId: string) => {
   return httpRequest.delete(`/posts/${postId}`);
+};
+/** queryKey: [key, postId] */
+export const getPostDetail = ({ queryKey }: QueryFunctionContext) => {
+  return httpRequest.get<IEachPostData>(`/posts/${queryKey[1]}`);
 };
