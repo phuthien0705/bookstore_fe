@@ -1,5 +1,6 @@
 import {
   Dispatch,
+  ReactNode,
   SetStateAction,
   createContext,
   useContext,
@@ -43,7 +44,7 @@ export interface ISocketContext {
 
 const SocketContext = createContext<ISocketContext>(defautContext);
 
-const SocketsProvider = () => {
+const SocketsProvider = ({ children }: { children: ReactNode }) => {
   const [haveNoti, setHaveNoti] = useState<boolean>(false);
 
   const { setBackdrop } = useContext(MainContext);
@@ -143,7 +144,11 @@ const SocketsProvider = () => {
     }
   }, [accessToken]);
 
-  return <SocketContext.Provider value={{ socket, haveNoti, setHaveNoti }} />;
+  return (
+    <SocketContext.Provider value={{ socket, haveNoti, setHaveNoti }}>
+      {children}
+    </SocketContext.Provider>
+  );
 };
 
 export const useSockets = () => useContext(SocketContext);
