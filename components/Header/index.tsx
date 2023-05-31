@@ -17,6 +17,7 @@ import BelowSection from './BelowSection';
 import GenreSection from './GenreSection';
 import { scrollToTop } from '@/utils/scrollToTop';
 import useGetListCart from '@/hooks/cart/useGetListCart';
+import NotificationSection from './NotificationSection';
 
 const Header: FC<IHeader> = ({
   handleLeftDrawerToggle,
@@ -26,6 +27,7 @@ const Header: FC<IHeader> = ({
   maxWidth = 'lg',
   hideBelowSection = false,
   hideHomeScript = false,
+  hideNoti = false,
 }) => {
   const router = useRouter();
   const [isShadow, setShadow] = useState(false);
@@ -207,8 +209,10 @@ const Header: FC<IHeader> = ({
               </IconButton>
             </Box>
           )}
+
           {/* header search */}
           {!hideSearch && <SearchSection />}
+
           {/*  profile & cart */}
           {!hideCart && (
             <CartSection
@@ -218,6 +222,10 @@ const Header: FC<IHeader> = ({
               refetch={refetch}
             />
           )}
+          {/* noti section */}
+          {!hideNoti && <NotificationSection />}
+
+          {/* profile section */}
           <ProfileSection />
         </Box>
       </Box>

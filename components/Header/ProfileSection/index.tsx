@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useTheme } from '@mui/material/styles';
 import {
   Avatar,
   ButtonBase,
@@ -9,6 +8,7 @@ import {
   Menu,
   MenuList,
   Typography,
+  useTheme,
 } from '@mui/material';
 import {
   IconLogout,
@@ -23,7 +23,7 @@ import { useQueryClient } from 'react-query';
 import { CART_CLIENT } from '@/constants/queryKeyName';
 
 const ProfileSection: React.FunctionComponent = () => {
-  const theme: any = useTheme();
+  const theme = useTheme();
   const router = useRouter();
   const [userInfo, setUserInfo] = useState<any>({ name: '', roles: ['user'] });
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -64,16 +64,16 @@ const ProfileSection: React.FunctionComponent = () => {
         className="shadow"
         id="basic-base-button"
         onClick={handleClick}
-        sx={{ borderRadius: '12px' }}
+        sx={{ borderRadius: theme.spacing(1.5), ml: theme.spacing(1) }}
       >
         <Avatar
           variant="rounded"
           sx={{
             cursor: 'pointer',
-            borderRadius: '8px',
-            width: '34px',
-            height: '34px',
-            fontSize: '1.2rem',
+            borderRadius: theme.spacing(1),
+            width: theme.spacing(4.25),
+            height: theme.spacing(4.25),
+            fontSize: theme.spacing(2.4),
             transition: 'all .2s ease-in-out',
             background: theme.palette.secondary.light,
             color: theme.palette.secondary.dark,
