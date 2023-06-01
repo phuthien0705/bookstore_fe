@@ -7,6 +7,7 @@ import BusinessIcon from '@mui/icons-material/Business';
 import { IPaymentTab } from '@/interfaces/compontents/cart.interface';
 import AddressModal from '@/components/modals/AddressModal';
 import LinearProgress from '@mui/material/LinearProgress';
+import { IEachAddressOfUserData } from '@/interfaces/address.interface';
 
 const PaymentTab: React.FunctionComponent<IPaymentTab> = ({
   data,
@@ -20,7 +21,7 @@ const PaymentTab: React.FunctionComponent<IPaymentTab> = ({
 
   const renderDefaultAddress = () => {
     const defaultAddress = (listAddress || []).find(
-      (item: any) => item?.isDefault === 1
+      (item: IEachAddressOfUserData) => item?.isDefault === true
     );
     if (!defaultAddress)
       return (
@@ -48,13 +49,29 @@ const PaymentTab: React.FunctionComponent<IPaymentTab> = ({
         alignItems="center"
       >
         <Stack direction="row" spacing={2}>
-          <Stack direction="column" spacing={1} sx={{ width: 'fit-content' }}>
-            <Typography sx={{ fontWeight: 700 }}>
-              {defaultAddress?.name}
-            </Typography>
-            <Typography sx={{ fontWeight: 700 }}>
-              {defaultAddress?.phone}
-            </Typography>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={{ xs: 1, sm: 2 }}
+          >
+            <Stack direction="column" spacing={1} sx={{ width: 'fit-content' }}>
+              <Typography sx={{ fontWeight: 500 }}>
+                <b>Tên người nhận</b>: {defaultAddress?.name}
+              </Typography>
+              <Typography sx={{ fontWeight: 500 }}>
+                <b>SDT</b>: {defaultAddress?.phone}
+              </Typography>
+            </Stack>
+            <Stack direction="row" spacing={2}>
+              <Stack
+                direction="column"
+                spacing={1}
+                sx={{ width: 'fit-content' }}
+              >
+                <Typography sx={{ fontWeight: 500 }}>
+                  <b>Địa chỉ</b>: {defaultAddress?.description}
+                </Typography>
+              </Stack>
+            </Stack>
           </Stack>
         </Stack>
         <Stack direction="row" spacing={1} alignItems="center">
@@ -96,7 +113,7 @@ const PaymentTab: React.FunctionComponent<IPaymentTab> = ({
         handleClose={() => {
           setOpenAddressModal(false);
         }}
-        listAddress={listAddress}
+        listAddress={listAddress ?? []}
         refetchAddress={refetchAddress}
       />
     </>

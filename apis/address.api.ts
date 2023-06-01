@@ -13,8 +13,8 @@ export const addAddress = async (data: any) => {
 export const deleteAddress = async (id: number | string) => {
   return httpRequest.delete(`/addresses/${id}`);
 };
-export const setDefaultAddress = async (id: string | number) => {
-  return httpRequest.put(`/addresses/set-default/${id}`, null);
+export const setDefaultAddress = async (id: string | number, isDefault: boolean) => {
+  return httpRequest.put(`/addresses/${id}`, {isDefault});
 };
 export const getDetailAddress = async (id: number) => {
   return httpRequest.get(`/addresses/${id}`);

@@ -22,6 +22,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import AddressForm from '../forms/AddressForm';
 import { IAddressModal } from '@/interfaces/compontents/modal.interface';
 import { useToast } from '@/hooks/useToast';
+import { IEachAddressOfUserData } from '@/interfaces/address.interface';
 
 const AddressModal: React.FunctionComponent<IAddressModal> = ({
   open,
@@ -35,13 +36,15 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
   const dispatch = useDispatch();
   const toast = useToast(dispatch, toggleSnackbar);
 
-  const [value, setValue] = useState<number | null>(null);
+  const [value, setValue] = useState<string | null>(null);
   const [editMode, setEditMode] = useState<boolean | { data: any }>(false);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log((event?.target as any).value);
     setValue((event?.target as any).value);
   };
+
   const { mutate: changeDefaultAddressFunc, isLoading } = useMutation(
-    (id: string | number) => setDefaultAddress(id),
+    (id: string) => setDefaultAddress(id, true),
     {
       onSuccess: () => {
         refetchAddress();
@@ -103,7 +106,7 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
             value={value}
             onChange={handleChange}
           >
-            {listAddress.map((item: any, _index: number) => {
+            {listAddress.map((item: IEachAddressOfUserData, _index: number) => {
               return (
                 <>
                   <FormControlLabel
@@ -130,8 +133,8 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
                             <Typography sx={{ fontWeight: 700 }}>
                               {item?.phone}
                             </Typography>
+                            {/* <Typography>{item?.description}</Typography> */}
                           </Box>
-                          <Typography>{item?.description}</Typography>
                         </Stack>
                         <Stack>
                           <Button
@@ -174,20 +177,22 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
   };
   const handleSubmit = () => {
     const newDefaultAddress = listAddress?.find(
-      (item: any) => item?.id === Number(value)
+      (item: IEachAddressOfUserData) => item?.id === value
     );
     if (defaultAddress?.id === newDefaultAddress?.id) {
       handleClose();
     } else {
-      changeDefaultAddressFunc(newDefaultAddress?.id);
+      changeDefaultAddressFunc(newDefaultAddress?.id as string);
     }
     // close after 500ms
   };
   useEffect(() => {
     const defaultAddress = (listAddress || []).find(
-      (item: any) => item?.is_default === 1
+      (item: IEachAddressOfUserData) => item?.isDefault === true
     );
-    setValue(defaultAddress?.id);
+    if (defaultAddress) {
+      setValue(defaultAddress?.id ?? null);
+    }
   }, [listAddress, open]);
   useEffect(() => {
     setEditMode(false);
