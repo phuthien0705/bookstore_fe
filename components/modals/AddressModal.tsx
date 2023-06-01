@@ -39,7 +39,6 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
   const [value, setValue] = useState<string | null>(null);
   const [editMode, setEditMode] = useState<boolean | { data: any }>(false);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log((event?.target as any).value);
     setValue((event?.target as any).value);
   };
 

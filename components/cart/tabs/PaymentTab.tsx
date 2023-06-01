@@ -17,7 +17,6 @@ const PaymentTab: React.FunctionComponent<IPaymentTab> = ({
 }) => {
   const matches = useMediaQuery('(min-width:900px)');
   const [openAddressModal, setOpenAddressModal] = useState<boolean>(false);
-  console.log(listAddress);
 
   const renderDefaultAddress = () => {
     const defaultAddress = (listAddress || []).find(
