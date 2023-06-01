@@ -30,7 +30,7 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
   refetchAddress,
 }) => {
   const defaultAddress = (listAddress || []).find(
-    (item: any) => item?.is_default === 1
+    (item: any) => item?.isDefault === true
   );
   const dispatch = useDispatch();
   const toast = useToast(dispatch, toggleSnackbar);

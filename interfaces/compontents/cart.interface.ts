@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
+import { IEachAddressOfUserData } from '../address.interface';
 
 export interface IEachCartData {
   bookId: string;
@@ -58,8 +59,9 @@ export interface ISubmitCart {
 }
 export interface IPaymentTab {
   data: any;
-  listAddress: any;
+  listAddress: IEachAddressOfUserData[];
   refetchAddress: () => void;
+  isLoading: boolean;
 }
 
 export interface IOrderTable {

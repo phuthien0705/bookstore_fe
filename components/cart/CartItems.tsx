@@ -12,7 +12,11 @@ import useGetListCart from '@/hooks/cart/useGetListCart';
 const CartItems: React.FunctionComponent = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { data, isLoading, isFetching, refetch } = useGetListCart();
-  const { data: listAddress, refetch: refetchAddress } = useGetListAddress();
+  const {
+    data: listAddress,
+    refetch: refetchAddress,
+    isLoading: isLoadingListAddress,
+  } = useGetListAddress();
 
   const handleChange = (event: any, newValue: any) => {
     setCurrentIndex(newValue);
@@ -55,8 +59,9 @@ const CartItems: React.FunctionComponent = () => {
         {currentIndex === 1 && (
           <PaymentTab
             data={data?.items ?? []}
-            listAddress={listAddress}
+            listAddress={listAddress ?? []}
             refetchAddress={refetchAddress}
+            isLoading={isLoadingListAddress}
           />
         )}
 
