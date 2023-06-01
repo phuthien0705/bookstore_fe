@@ -6,7 +6,6 @@ const useGetListAddress = () => {
   const getListQuery = useQuery(LIST_ADDRESS, getListAddress, {
     cacheTime: Infinity,
     refetchOnWindowFocus: false,
-    staleTime: Infinity,
   });
   return getListQuery;
 };

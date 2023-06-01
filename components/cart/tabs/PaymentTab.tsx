@@ -12,13 +12,15 @@ const PaymentTab: React.FunctionComponent<IPaymentTab> = ({
   data,
   listAddress,
   refetchAddress,
+  isLoading,
 }) => {
   const matches = useMediaQuery('(min-width:900px)');
   const [openAddressModal, setOpenAddressModal] = useState<boolean>(false);
+  console.log(listAddress);
 
   const renderDefaultAddress = () => {
-    const defaultAddress = (listAddress?.data || []).find(
-      (item: any) => item?.is_default === 1
+    const defaultAddress = (listAddress || []).find(
+      (item: any) => item?.isDefault === 1
     );
     if (!defaultAddress)
       return (
@@ -54,7 +56,6 @@ const PaymentTab: React.FunctionComponent<IPaymentTab> = ({
               {defaultAddress?.phone}
             </Typography>
           </Stack>
-          <Typography>{defaultAddress?.description}</Typography>
         </Stack>
         <Stack direction="row" spacing={1} alignItems="center">
           <Button onClick={() => setOpenAddressModal(true)} sx={{ padding: 0 }}>
@@ -75,7 +76,7 @@ const PaymentTab: React.FunctionComponent<IPaymentTab> = ({
             Địa chỉ nhận hàng
           </Typography>
         </Stack>
-        {listAddress?.data ? (
+        {!isLoading ? (
           renderDefaultAddress()
         ) : (
           <Box sx={{ width: '100%' }}>
@@ -95,7 +96,7 @@ const PaymentTab: React.FunctionComponent<IPaymentTab> = ({
         handleClose={() => {
           setOpenAddressModal(false);
         }}
-        listAddress={listAddress?.data}
+        listAddress={listAddress}
         refetchAddress={refetchAddress}
       />
     </>
