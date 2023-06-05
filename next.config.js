@@ -18,6 +18,10 @@ const nextConfig = {
       'books.google.com',
     ],
   },
+  i18n: {
+    locales: ['vi', 'en'],
+    defaultLocale: 'vi',
+  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,

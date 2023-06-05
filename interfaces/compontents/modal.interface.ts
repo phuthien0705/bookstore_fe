@@ -1,4 +1,5 @@
 import { Breakpoint } from '@mui/system';
+import { IEachAddressOfUserData } from '../address.interface';
 
 export interface IModal {
   handleClose: Function;
@@ -33,7 +34,14 @@ export interface IBookModal extends IModal {
 export interface IAddressModal {
   open: boolean;
   handleClose: () => void;
-  listAddress: any;
+  listAddress: IEachAddressOfUserData[];
 
   refetchAddress: () => void;
+}
+
+export interface IReviewModal {
+  open: boolean;
+  handleClose: () => void;
+  bookId: string;
+  refetchReviews: () => void;
 }

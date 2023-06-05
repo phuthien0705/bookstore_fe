@@ -1,29 +1,12 @@
-import { Avatar, Box, ButtonBase, useTheme } from '@mui/material';
-import { IconShoppingCart } from '@tabler/icons';
-import { useRouter } from 'next/router';
-import { useCallback } from 'react';
-import Badge from '@mui/material/Badge';
-import { ICartSection } from '@/interfaces/compontents/cart.interface';
-import authService from '@/services/authService';
-import { EPathName } from '@/constants/pathname';
-
-const CartSection: React.FunctionComponent<ICartSection> = ({ data }) => {
+import { Avatar, Badge, Box, ButtonBase, useTheme } from '@mui/material';
+import { IconBell } from '@tabler/icons-react';
+export default function NotificationSection() {
   const theme = useTheme();
-  const router = useRouter();
-
-  const handleClickCart = useCallback(() => {
-    if (!authService.isAuthenticated()) {
-      router.push(EPathName.LOGIN);
-    } else if (!router.pathname.includes(EPathName.CART)) {
-      router.push(EPathName.CART);
-    }
-  }, [router]);
-
+  const data: any = [];
   return (
     <Box
-      onClick={() => handleClickCart()}
       sx={{
-        ml: theme.spacing(1.5),
+        ml: theme.spacing(1),
         mr: theme.spacing(1),
       }}
     >
@@ -47,12 +30,10 @@ const CartSection: React.FunctionComponent<ICartSection> = ({ data }) => {
             }}
             color="inherit"
           >
-            <IconShoppingCart stroke={1.5} size="1.3rem" />
+            <IconBell stroke={1.5} size="1.3rem" />
           </Avatar>
         </Badge>
       </ButtonBase>
     </Box>
   );
-};
-
-export default CartSection;
+}

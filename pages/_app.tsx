@@ -21,6 +21,9 @@ import initRequest from '../services/initRequest';
 import { AppPropsWithLayout } from '@/interfaces/layout.interface';
 import * as gtag from '../lib/gtag';
 import SocketsProvider from '@/socket/socket-context';
+import vi from '../lang/vi.json';
+import en from '../lang/en.json';
+import { IntlProvider } from 'react-intl';
 
 initRequest();
 
@@ -35,13 +38,21 @@ const defaultMainContextValue: IMainContext = {
 
 export const MainContext = createContext<IMainContext>(defaultMainContextValue);
 
+const messages = {
+  vi,
+  en,
+};
+
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const customization = {
     fontFamily: config?.fontFamily,
     borderRadius: config?.borderRadius,
   };
   const router = useRouter();
+  const { locale, defaultLocale } = router;
+
   const [backdrop, setBackdrop] = useState<boolean>(false);
+
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -98,28 +109,36 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         }}
       />
       <GoogleOAuthProvider clientId={process.env.CLIENT_ID ?? ''}>
-        <Provider store={store}>
-          <QueryClientProvider client={queryClient}>
-            <ThemeProvider theme={themes(customization)}>
-              <MainContext.Provider value={{ backdrop, setBackdrop }}>
-                <SocketsProvider>
-                  <Component {...pageProps} />
-                </SocketsProvider>
-              </MainContext.Provider>
-              <Backdrop
-                sx={{
-                  color: '#fff',
-                  zIndex: (theme) => theme.zIndex.modal + 1,
-                }}
-                open={backdrop}
-                onClick={() => setBackdrop((p) => !p)}
-              >
-                <CircularProgress color="inherit" />
-              </Backdrop>
-              <ReactQueryDevtools initialIsOpen={false} />
-            </ThemeProvider>
-          </QueryClientProvider>
-        </Provider>
+        <IntlProvider
+          locale={locale ?? 'vi'}
+          defaultLocale={defaultLocale}
+          messages={
+            messages[(locale as unknown as keyof typeof messages) ?? 'vi']
+          }
+        >
+          <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+              <ThemeProvider theme={themes(customization)}>
+                <MainContext.Provider value={{ backdrop, setBackdrop }}>
+                  <SocketsProvider>
+                    <Component {...pageProps} />
+                  </SocketsProvider>
+                </MainContext.Provider>
+                <Backdrop
+                  sx={{
+                    color: '#fff',
+                    zIndex: (theme) => theme.zIndex.modal + 1,
+                  }}
+                  open={backdrop}
+                  onClick={() => setBackdrop((p) => !p)}
+                >
+                  <CircularProgress color="inherit" />
+                </Backdrop>
+                <ReactQueryDevtools initialIsOpen={false} />
+              </ThemeProvider>
+            </QueryClientProvider>
+          </Provider>
+        </IntlProvider>
       </GoogleOAuthProvider>
     </>
   );
