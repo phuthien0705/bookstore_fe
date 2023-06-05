@@ -23,6 +23,7 @@ import AddressForm from '../forms/AddressForm';
 import { IAddressModal } from '@/interfaces/compontents/modal.interface';
 import { useToast } from '@/hooks/useToast';
 import { IEachAddressOfUserData } from '@/interfaces/address.interface';
+import ConfirmModal from './ConfirmModal';
 
 const AddressModal: React.FunctionComponent<IAddressModal> = ({
   open,
@@ -38,6 +39,10 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
 
   const [value, setValue] = useState<string | null>(null);
   const [editMode, setEditMode] = useState<boolean | { data: any }>(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [deletingAddressId, setDeletingAddressId] = useState<string | null>(
+    null
+  );
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event?.target as any).value);
   };
@@ -145,7 +150,11 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
                           </Button>
                           <Button
                             color="error"
-                            onClick={() => deleteAddressFunc(item?.id)}
+                            // onClick={() => deleteAddressFunc(item?.id)}
+                            onClick={() => {
+                              setShowConfirm(true);
+                              setDeletingAddressId(item?.id);
+                            }}
                           >
                             Xóa
                           </Button>
@@ -171,6 +180,7 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
     }
     return null;
   };
+
   const handleSubmit = () => {
     const newDefaultAddress = listAddress?.find(
       (item: IEachAddressOfUserData) => item?.id === value
@@ -268,6 +278,23 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
           </>
         )}
       </Stack>
+      <ConfirmModal
+        open={showConfirm}
+        handleClose={() => {
+          setShowConfirm(false);
+        }}
+        handleConfirm={() => {
+          setShowConfirm(false);
+          if (deletingAddressId) {
+            deleteAddressFunc(deletingAddressId);
+          }
+          handleClose();
+        }}
+        contentHeader="Xác nhận xóa"
+        textContent="Bạn có chắc chắn xóa địa chỉ này?"
+        confirmContent="Có"
+        cancelContent="Không"
+      />
     </Dialog>
   );
 };
