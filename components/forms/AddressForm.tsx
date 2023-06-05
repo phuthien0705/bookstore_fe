@@ -92,14 +92,14 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
     name: data?.name ?? '',
     description: data?.description ?? '',
     phone: data?.phone ?? '',
-    cityId: data?.city?.id ?? '',
-    provinceId: data?.city?.provinceId ?? '',
+    cityId: data?.cityId.id ?? '',
+    provinceId: data?.cityId?.province ?? '',
     submit: null,
   };
 
   useEffect(() => {
-    if (data?.city?.provinceId) {
-      getListCitiesFunc(data?.city?.provinceId);
+    if (data?.cityId?.province) {
+      getListCitiesFunc(data?.cityId?.province);
     }
   }, [data, getListCitiesFunc]);
   return (
@@ -224,7 +224,7 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
             <Select
               id="select-city"
               value={values.provinceId}
-              label="Tác giả"
+              label="Tỉnh/Thành phố"
               onChange={(event) => {
                 getListCitiesFunc(event.target.value);
                 setValues((prev) => ({
@@ -233,13 +233,11 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
                 }));
               }}
             >
-              {(listProvince || [])?.map(
-                (province: any, _index: number) => (
-                  <MenuItem key={_index} value={province?.id}>
-                    {province?.name}
-                  </MenuItem>
-                )
-              )}
+              {(listProvince || [])?.map((province: any, _index: number) => (
+                <MenuItem key={_index} value={province?.id}>
+                  {province?.name}
+                </MenuItem>
+              ))}
             </Select>
             {touched.provinceId && errors.provinceId && (
               <FormHelperText error id="standard-weight-helper-text-cityId">

@@ -122,17 +122,14 @@ const AddressModal: React.FunctionComponent<IAddressModal> = ({
                         justifyContent={'space-between'}
                         direction="row"
                         spacing={1}
+                        alignItems={'center'}
                       >
                         <Stack spacing={0.5}>
                           <Box>
-                            <Typography sx={{ fontWeight: 700 }}>
-                              {item?.name} |
+                            <Typography sx={{ fontWeight: 500 }}>
+                              <b>{item?.name}</b> | {item?.phone}
                             </Typography>
-
-                            <Typography sx={{ fontWeight: 700 }}>
-                              {item?.phone}
-                            </Typography>
-                            {/* <Typography>{item?.description}</Typography> */}
+                            <Typography>{item?.description}</Typography>
                           </Box>
                         </Stack>
                         <Stack>
