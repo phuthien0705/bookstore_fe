@@ -18,7 +18,8 @@ import { sortOrdersByDate } from '@/common/sortOrdersByDate';
 import { ImageOrderStyle } from './ImageOrderStyle';
 
 import statusMaping from '@/common/oderStatusMaping';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
+import ReviewModal from '../modals/ReviewModal';
 const OrderTable: React.FunctionComponent<IOrderTable> = ({
   items,
   page,
@@ -26,6 +27,7 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
   data,
 }) => {
   const sortedItems = sortOrdersByDate(items);
+  const [openReviewModal, setOpenReviewModal] = useState<boolean>(false);
   // const calcTotalBookPrice = useCallback((item: any) => {
   //   let total = 0;
   //   item?.books?.forEach((element: any) => {
@@ -160,20 +162,24 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
                       </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell colSpan={3} align="right" >
+                      <TableCell colSpan={3} align="right">
                         <Button
                           variant="contained"
                           sx={{
                             width: { xs: 'fit-content', sm: 'inherit' },
                             marginRight: '10px',
                           }}
+                          onClick={() => setOpenReviewModal(true)}
                         >
                           Đánh giá
                         </Button>
-                        <Button variant="contained" color="secondary"
-                        sx={{
-                          marginRight: '30px'
-                        }}>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          sx={{
+                            marginRight: '30px',
+                          }}
+                        >
                           Mua lại
                         </Button>
                       </TableCell>
@@ -240,6 +246,16 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
           onChange={(event, value) => setPage(value)}
         />
       </Box>
+      <ReviewModal
+        open={openReviewModal}
+        handleClose={() => {
+          setOpenReviewModal(false);
+        }}
+        bookId={''}
+        refetchReviews={function (): void {
+          throw new Error('Function not implemented.');
+        }}
+      />
     </div>
   );
 };

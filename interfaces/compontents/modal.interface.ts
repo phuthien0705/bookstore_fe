@@ -38,3 +38,10 @@ export interface IAddressModal {
 
   refetchAddress: () => void;
 }
+
+export interface IReviewModal {
+  open: boolean;
+  handleClose: () => void;
+  bookId: string;
+  refetchReviews: () => void;
+}
