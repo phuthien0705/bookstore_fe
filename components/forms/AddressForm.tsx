@@ -92,14 +92,14 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
     name: data?.name ?? '',
     description: data?.description ?? '',
     phone: data?.phone ?? '',
-    city_id: data?.city?.id ?? '',
-    province_id: data?.city?.province_id ?? '',
+    cityId: data?.cityId.id ?? '',
+    provinceId: data?.cityId?.province ?? '',
     submit: null,
   };
 
   useEffect(() => {
-    if (data?.city?.province_id) {
-      getListCitiesFunc(data?.city?.province_id);
+    if (data?.cityId?.province) {
+      getListCitiesFunc(data?.cityId?.province);
     }
   }, [data, getListCitiesFunc]);
   return (
@@ -110,8 +110,8 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
           .max(255, 'Họ và tên tối đa 255 ký tự')
           .required('Họ và tên là bắt buộc'),
         description: Yup.string().required('Địa chỉ cụ thể là bắt buộc'),
-        province_id: Yup.string().required('Tỉnh/Thành phố là bắt buộc'),
-        city_id: Yup.string().required('Quận/Huyện là bắt buộc'),
+        provinceId: Yup.string().required('Tỉnh/Thành phố là bắt buộc'),
+        cityId: Yup.string().required('Quận/Huyện là bắt buộc'),
         phone: Yup.number()
           .required('Số điện thoại là bắt buộc')
           .integer('Số điện thoại phải là số nguyên')
@@ -127,7 +127,7 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
             name: values.name,
             description: values.description,
             phone: values.phone,
-            city_id: values.city_id,
+            cityId: values.cityId,
           };
 
           if (!data) {
@@ -216,54 +216,52 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
           {/* provinces */}
           <FormControl
             fullWidth
-            error={Boolean(touched.province_id && errors.province_id)}
+            error={Boolean(touched.provinceId && errors.provinceId)}
             sx={{ ...theme.typography.customInput }}
           >
             <InputLabel htmlFor="select-city">Tỉnh/Thành phố</InputLabel>
 
             <Select
               id="select-city"
-              value={values.province_id}
-              label="Tác giả"
+              value={values.provinceId}
+              label="Tỉnh/Thành phố"
               onChange={(event) => {
                 getListCitiesFunc(event.target.value);
                 setValues((prev) => ({
                   ...prev,
-                  province_id: event.target.value,
+                  provinceId: event.target.value,
                 }));
               }}
             >
-              {(listProvince || [])?.map(
-                (province: any, _index: number) => (
-                  <MenuItem key={_index} value={province?.id}>
-                    {province?.name}
-                  </MenuItem>
-                )
-              )}
+              {(listProvince || [])?.map((province: any, _index: number) => (
+                <MenuItem key={_index} value={province?.id}>
+                  {province?.name}
+                </MenuItem>
+              ))}
             </Select>
-            {touched.province_id && errors.province_id && (
-              <FormHelperText error id="standard-weight-helper-text-city_id">
-                {errors.province_id as any}
+            {touched.provinceId && errors.provinceId && (
+              <FormHelperText error id="standard-weight-helper-text-cityId">
+                {errors.provinceId as any}
               </FormHelperText>
             )}
           </FormControl>
           {/* city  */}
           <FormControl
-            disabled={!values?.province_id}
+            disabled={!values?.provinceId}
             fullWidth
-            error={Boolean(touched.city_id && errors.city_id)}
+            error={Boolean(touched.cityId && errors.cityId)}
             sx={{ ...theme.typography.customInput }}
           >
             <InputLabel htmlFor="select-district">Quận/Huyện</InputLabel>
 
             <Select
               id="select-district"
-              value={values.city_id}
+              value={values.cityId}
               label="Quận/Huyện"
               onChange={(event) => {
                 setValues((prev) => ({
                   ...prev,
-                  city_id: event.target.value,
+                  cityId: event.target.value,
                 }));
               }}
             >
@@ -273,12 +271,12 @@ const AddressForm = ({ currentAddress, setEditMode, refetchAddress }: any) => {
                 </MenuItem>
               ))}
             </Select>
-            {touched.city_id && errors.city_id && (
+            {touched.cityId && errors.cityId && (
               <FormHelperText
                 error
                 id="standard-weight-helper-text-district_id"
               >
-                {errors.city_id as any}
+                {errors.cityId as any}
               </FormHelperText>
             )}
           </FormControl>

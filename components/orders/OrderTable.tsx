@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Pagination,
   Stack,
   Table,
@@ -11,12 +12,13 @@ import {
 } from '@mui/material';
 import { Typography, Paper } from '@mui/material';
 import { IOrderTable } from '@/interfaces/compontents/cart.interface';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import { moneyFormat } from '@/utils/moneyFormat';
 import EmptyOrder from './EmptyOrder';
 import { sortOrdersByDate } from '@/common/sortOrdersByDate';
 import { ImageOrderStyle } from './ImageOrderStyle';
 
+import statusMaping from '@/common/oderStatusMaping';
+import { Fragment } from 'react';
 const OrderTable: React.FunctionComponent<IOrderTable> = ({
   items,
   page,
@@ -42,6 +44,7 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
       </Box>
     );
   }
+
   return (
     <div>
       {(sortedItems || []).map((row: any) => (
@@ -57,15 +60,11 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
                 <TableRow>
                   <TableCell>
                     <Stack display="flex" direction="row" alignItems="center">
-                      <LocalShippingIcon sx={{ color: 'black' }} />
+                      {statusMaping(row?.status).icon}
                       <Typography ml={2} variant="h4">
-                        {row?.status}
+                        {statusMaping(row?.status).content}
                       </Typography>
                     </Stack>
-                  </TableCell>
-
-                  <TableCell>
-                    <Typography textAlign="center">Số lượng</Typography>
                   </TableCell>
                   <TableCell>
                     <Typography textAlign="center">Đơn giá</Typography>
@@ -77,66 +76,109 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
               </TableHead>
               <TableBody>
                 {(row?.books || []).map((item: any, _index: number) => (
-                  <TableRow key={`${item.id}_${_index}`}>
-                    <TableCell sx={{ maxWidth: '350px' }}>
-                      <Stack
-                        direction="row"
-                        justifyContent="flex-start"
-                        alignItems="center"
-                        spacing={2}
-                      >
-                        <ImageOrderStyle
-                          alt={item.name}
-                          width="76"
-                          height="76"
-                          src={item.imageUrl}
-                        />
-                        <Typography fontSize="14px" textAlign="center">
-                          {item?.name}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell>
-                      <Typography fontWeight="bold" textAlign="center">
-                        {item.quantity}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      {!item?.priceDiscount ? (
-                        <Typography fontWeight="bold" textAlign="center">
-                          {moneyFormat(item.price || 0)}
-                        </Typography>
-                      ) : (
-                        <Stack>
-                          <Typography fontWeight="bold" textAlign="center">
-                            {moneyFormat(item.priceDiscount || 0)}
-                          </Typography>
+                  <Fragment key={`${item.id}_${_index}`}>
+                    <TableRow>
+                      <TableCell sx={{ maxWidth: '350px' }}>
+                        <Stack
+                          direction="row"
+                          justifyContent="flex-start"
+                          alignItems="center"
+                          spacing={2}
+                        >
+                          <Box sx={{ position: 'relative' }}>
+                            <ImageOrderStyle
+                              alt={item.name}
+                              width="76"
+                              height="76"
+                              src={item.imageUrl}
+                            />
+                            <span
+                              style={{
+                                fontSize: 14,
+                                fontWeight: 'bold',
+                                position: 'absolute',
+                                color: '#808089',
+                                textAlign: 'center',
+                                width: 35,
+                                height: 35,
+                                backgroundColor: 'rgb(235, 235, 240)',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderTopLeftRadius: 10,
+                                borderBottomRightRadius: 4,
+                                bottom: 0,
+                                right: 0,
+                              }}
+                            >
+                              x{item?.quantity}
+                            </span>
+                          </Box>
                           <Typography
-                            fontWeight="lighter"
+                            fontSize="14px"
                             textAlign="center"
-                            style={{ textDecorationLine: 'line-through' }}
+                            color="black"
                           >
+                            {item?.name}
+                          </Typography>
+                        </Stack>
+                      </TableCell>
+                      <TableCell>
+                        {!item?.priceDiscount ? (
+                          <Typography fontWeight="bold" textAlign="center">
                             {moneyFormat(item.price || 0)}
                           </Typography>
-                        </Stack>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      {!item?.priceDiscount ? (
-                        <Typography fontWeight="bold" textAlign="center">
-                          {moneyFormat(item.price * item.quantity || 0)}
-                        </Typography>
-                      ) : (
-                        <Stack>
+                        ) : (
+                          <Stack>
+                            <Typography fontWeight="bold" textAlign="center">
+                              {moneyFormat(item.priceDiscount || 0)}
+                            </Typography>
+                            <Typography
+                              fontWeight="lighter"
+                              textAlign="center"
+                              style={{ textDecorationLine: 'line-through' }}
+                            >
+                              {moneyFormat(item.price || 0)}
+                            </Typography>
+                          </Stack>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {!item?.priceDiscount ? (
                           <Typography fontWeight="bold" textAlign="center">
-                            {moneyFormat(
-                              item.priceDiscount * item.quantity || 0
-                            )}
+                            {moneyFormat(item.price * item.quantity || 0)}
                           </Typography>
-                        </Stack>
-                      )}
-                    </TableCell>
-                  </TableRow>
+                        ) : (
+                          <Stack>
+                            <Typography fontWeight="bold" textAlign="center">
+                              {moneyFormat(
+                                item.priceDiscount * item.quantity || 0
+                              )}
+                            </Typography>
+                          </Stack>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell colSpan={3} align="right" >
+                        <Button
+                          variant="contained"
+                          sx={{
+                            width: { xs: 'fit-content', sm: 'inherit' },
+                            marginRight: '10px',
+                          }}
+                        >
+                          Đánh giá
+                        </Button>
+                        <Button variant="contained" color="secondary"
+                        sx={{
+                          marginRight: '30px'
+                        }}>
+                          Mua lại
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  </Fragment>
                 ))}
                 <TableRow>
                   <TableCell colSpan={3}>
