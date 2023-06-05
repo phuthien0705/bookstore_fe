@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import {
-  ButtonBase,
+  Avatar,
   Box,
-  Typography,
-  Menu,
-  MenuList,
+  ButtonBase,
   ListItemButton,
   ListItemText,
-  Avatar,
+  Menu,
+  MenuList,
+  Typography,
 } from '@mui/material';
 import { useTheme } from '@emotion/react';
 import { useRouter } from 'next/router';
@@ -15,6 +15,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { IconCategory2 } from '@tabler/icons';
 import useGetListGenreClient from '@/hooks/genre/useGetListGenreClient';
+import { FormattedMessage } from 'react-intl';
 
 const GenreSection: React.FunctionComponent = () => {
   const theme: any = useTheme();
@@ -66,7 +67,7 @@ const GenreSection: React.FunctionComponent = () => {
               whiteSpace: 'nowrap',
             }}
           >
-            Sản Phẩm
+            <FormattedMessage id={'sidebar.product'} />
           </Typography>
         </ButtonBase>
       ) : (

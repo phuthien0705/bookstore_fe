@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useQueryClient } from 'react-query';
 import {
   Avatar,
   ButtonBase,
@@ -11,16 +13,15 @@ import {
   useTheme,
 } from '@mui/material';
 import {
-  IconLogout,
-  IconSettings,
   IconAdjustments,
+  IconLogout,
   IconReceipt,
+  IconSettings,
 } from '@tabler/icons';
 import authService from '../../../services/authService';
 import checkIsAdminOrManager from '../../../common/checkIsAdminOrManager';
-import { useRouter } from 'next/router';
-import { useQueryClient } from 'react-query';
 import { CART_CLIENT } from '@/constants/queryKeyName';
+import { FormattedMessage } from 'react-intl';
 
 const ProfileSection: React.FunctionComponent = () => {
   const theme = useTheme();
@@ -99,7 +100,11 @@ const ProfileSection: React.FunctionComponent = () => {
         {!authService.isAuthenticated() ? (
           <ListItemButton selected={false} onClick={handleClickLogin}>
             <ListItemText
-              primary={<Typography variant="body2">Đăng nhập</Typography>}
+              primary={
+                <Typography variant="body2">
+                  {<FormattedMessage id="profileSection.login" />}
+                </Typography>
+              }
             />
           </ListItemButton>
         ) : checkIsAdminOrManager(userInfo?.roles) ? (
@@ -112,7 +117,11 @@ const ProfileSection: React.FunctionComponent = () => {
                 <IconAdjustments stroke={1.5} size="1.3rem" />
               </ListItemIcon>
               <ListItemText
-                primary={<Typography variant="body2">Quản lý</Typography>}
+                primary={
+                  <Typography variant="body2">
+                    {<FormattedMessage id="profileSection.manage" />}
+                  </Typography>
+                }
               />
             </ListItemButton>
             <ListItemButton
@@ -123,7 +132,12 @@ const ProfileSection: React.FunctionComponent = () => {
                 <IconReceipt stroke={1.5} size="1.3rem" />
               </ListItemIcon>
               <ListItemText
-                primary={<Typography variant="body2">Đơn hàng</Typography>}
+                primary={
+                  <Typography variant="body2">
+                    {' '}
+                    {<FormattedMessage id="profileSection.oder" />}
+                  </Typography>
+                }
               />
             </ListItemButton>
             <ListItemButton
@@ -135,7 +149,10 @@ const ProfileSection: React.FunctionComponent = () => {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  <Typography variant="body2">Cài đặt tài khoản</Typography>
+                  <Typography variant="body2">
+                    {' '}
+                    {<FormattedMessage id="profileSection.setting" />}
+                  </Typography>
                 }
               />
             </ListItemButton>
@@ -144,7 +161,12 @@ const ProfileSection: React.FunctionComponent = () => {
                 <IconLogout stroke={1.5} size="1.3rem" />
               </ListItemIcon>
               <ListItemText
-                primary={<Typography variant="body2">Đăng xuất</Typography>}
+                primary={
+                  <Typography variant="body2">
+                    {' '}
+                    {<FormattedMessage id="profileSection.logout" />}
+                  </Typography>
+                }
               />
             </ListItemButton>
           </MenuList>
@@ -158,7 +180,11 @@ const ProfileSection: React.FunctionComponent = () => {
                 <IconReceipt stroke={1.5} size="1.3rem" />
               </ListItemIcon>
               <ListItemText
-                primary={<Typography variant="body2">Đơn hàng</Typography>}
+                primary={
+                  <Typography variant="body2">
+                    {<FormattedMessage id="profileSection.oder" />}
+                  </Typography>
+                }
               />
             </ListItemButton>
             <ListItemButton
@@ -170,7 +196,9 @@ const ProfileSection: React.FunctionComponent = () => {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  <Typography variant="body2">Cài đặt tài khoản</Typography>
+                  <Typography variant="body2">
+                    {<FormattedMessage id="profileSection.setting" />}
+                  </Typography>
                 }
               />
             </ListItemButton>
@@ -179,7 +207,11 @@ const ProfileSection: React.FunctionComponent = () => {
                 <IconLogout stroke={1.5} size="1.3rem" />
               </ListItemIcon>
               <ListItemText
-                primary={<Typography variant="body2">Đăng xuất</Typography>}
+                primary={
+                  <Typography variant="body2">
+                    {<FormattedMessage id="profileSection.logout" />}
+                  </Typography>
+                }
               />
             </ListItemButton>
           </MenuList>
