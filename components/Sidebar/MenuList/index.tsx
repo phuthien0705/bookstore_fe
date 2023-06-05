@@ -9,6 +9,7 @@ import {
   IconBuilding,
   IconChartBar,
   IconArticle,
+  IconClipboardCheck,
 } from '@tabler/icons';
 import NavItem from './NavItem';
 
@@ -51,6 +52,11 @@ const MenuList = () => {
         title: 'Người dùng',
         url: '/admin/user',
         icon: IconUsers,
+      },
+      {
+        title: 'Đơn hàng',
+        url: '/admin/order',
+        icon: IconClipboardCheck,
       },
     ],
     []

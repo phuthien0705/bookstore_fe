@@ -12,3 +12,7 @@ export const postProcessOrder = ({
 }) => {
   return httpRequest.post(`/orders/payment`, { type });
 };
+
+export const getAllUserOrder = async (page = 1, limit = 10) => {
+  return httpRequest.get(`/orders/all?limit=${limit}&page=${page}`);
+};

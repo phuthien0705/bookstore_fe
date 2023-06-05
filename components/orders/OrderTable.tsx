@@ -9,21 +9,14 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import PendingActionsIcon from '@mui/icons-material/PendingActions';
-import CreditScoreIcon from '@mui/icons-material/CreditScore';
-import ContentPasteGoIcon from '@mui/icons-material/ContentPasteGo';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-
 import { Typography, Paper } from '@mui/material';
 import { IOrderTable } from '@/interfaces/compontents/cart.interface';
 import { moneyFormat } from '@/utils/moneyFormat';
 import EmptyOrder from './EmptyOrder';
 import { sortOrdersByDate } from '@/common/sortOrdersByDate';
 import { ImageOrderStyle } from './ImageOrderStyle';
-import { EOrderStatus } from '@/interfaces/compontents/order.interface';
 
+import statusMaping from '@/common/oderStatusMaping';
 const OrderTable: React.FunctionComponent<IOrderTable> = ({
   items,
   page,
@@ -50,43 +43,6 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
     );
   }
 
-  const titleMapping = (
-    title: string
-  ): { content: string; icon: React.ReactNode | null } => {
-    switch (title) {
-      case EOrderStatus.PENDING:
-        return {
-          content: 'Đang xử lý',
-          icon: <PendingActionsIcon sx={{ color: 'black' }} />,
-        };
-      case EOrderStatus.PAID:
-        return {
-          content: 'Đã thanh toán',
-          icon: <CreditScoreIcon sx={{ color: 'black' }} />,
-        };
-      case EOrderStatus.SHIPPED:
-        return {
-          content: 'Đã lấy hàng, chuẩn bị giao',
-          icon: <ContentPasteGoIcon sx={{ color: 'black' }} />,
-        };
-      case EOrderStatus.DELIVERED:
-        return {
-          content: 'Giao thành công',
-          icon: <CheckBoxIcon sx={{ color: 'black' }} />,
-        };
-      case EOrderStatus.CANCELED:
-        return {
-          content: 'Đã Hủy',
-          icon: <LocalShippingIcon sx={{ color: 'black' }} />,
-        };
-      default:
-        return {
-          content: 'Chưa xác định',
-          icon: null,
-        };
-    }
-  };
-
   return (
     <div>
       {(sortedItems || []).map((row: any) => (
@@ -102,9 +58,9 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
                 <TableRow>
                   <TableCell>
                     <Stack display="flex" direction="row" alignItems="center">
-                      {titleMapping(row?.status).icon}
+                      {statusMaping(row?.status).icon}
                       <Typography ml={2} variant="h4">
-                        {titleMapping(row?.status).content}
+                        {statusMaping(row?.status).content}
                       </Typography>
                     </Stack>
                   </TableCell>
