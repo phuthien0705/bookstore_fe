@@ -1,15 +1,17 @@
-import { checkoutProduct } from '@/apis/checkout.api';
+import { useCallback, useContext } from 'react';
+import { Stack, Button, Container, Box, Typography } from '@mui/material';
+import { useMutation } from 'react-query';
+import { useDispatch } from 'react-redux';
+import { makeOrder } from '@/apis/checkout.api';
 import {
   IEachCartData,
   ISubmitCart,
 } from '@/interfaces/compontents/cart.interface';
-import { Stack, Button, Container, Box, Typography } from '@mui/material';
-import { useMutation } from 'react-query';
-import { useDispatch } from 'react-redux';
-import { useCallback } from 'react';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 import { moneyFormat } from '@/utils/moneyFormat';
 import useGetShippingCost from '@/hooks/address/useGetShippingCost';
+import { CartItemContext } from './CartItems';
+import { EProcessPayment } from '@/constants/processPayment';
 
 const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
   currentIndex,
@@ -18,6 +20,7 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
   refetchListCart,
 }) => {
   const dispatch = useDispatch();
+  const { payMethod, setMethod } = useContext(CartItemContext);
 
   const {
     queryReturn: { data },
@@ -35,19 +38,22 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
     [dispatch]
   );
 
-  const { mutate: checkoutFunc } = useMutation(() => checkoutProduct(), {
-    onSuccess: () => {
-      toast({ type: 'success', message: 'Mua hàng thành công' });
-      setCurrentIndex(0);
-      refetchListCart();
-    },
-    onError: () => {
-      toast({
-        type: 'error',
-        message: 'Xãy ra lỗi trong quá tình mua hàng',
-      });
-    },
-  });
+  const { mutate: makeOrderFunc } = useMutation(
+    () => makeOrder(EProcessPayment.CASH_ON_DELIVERY),
+    {
+      onSuccess: () => {
+        toast({ type: 'success', message: 'Mua hàng thành công' });
+        setCurrentIndex(0);
+        refetchListCart();
+      },
+      onError: () => {
+        toast({
+          type: 'error',
+          message: 'Xãy ra lỗi trong quá tình mua hàng',
+        });
+      },
+    }
+  );
   return (
     <Box
       sx={{
@@ -128,19 +134,22 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
               Quay lại
             </Button>
             <Button
-              disabled={items?.every((item: any) => item?.is_checked == false)}
+              disabled={items?.every((item: any) => item?.isChecked == false)}
               sx={{ width: 'fit-content' }}
               variant="contained"
               fullWidth
               onClick={() => {
                 if (currentIndex === 0) {
                   setCurrentIndex((prev: any) => prev + 1);
+                } else if (payMethod === 'cash') {
+                  makeOrderFunc();
                 } else {
-                  checkoutFunc();
+                  makeOrderFunc();
+                  // Tới màn hình thông tin thanh toán. gọi api thanh toán
                 }
               }}
             >
-              {currentIndex === 0 ? 'Tiếp theo' : 'Thanh toán'}
+              {currentIndex === 0 ? 'Tiếp theo' : 'Đặt hàng'}
             </Button>
           </Stack>
         </Stack>

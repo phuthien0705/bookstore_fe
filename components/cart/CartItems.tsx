@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, createContext, useState } from 'react';
 import { Grid, Tabs, Tab } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PaymentIcon from '@mui/icons-material/Payment';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import SubmitCart from './SubmitCart';
 import EmptyCart from './EmptyCart';
 import ItemTab from './tabs/ItemTab';
@@ -9,8 +9,20 @@ import PaymentTab from './tabs/PaymentTab';
 import useGetListAddress from '@/hooks/address/useGetListAddress';
 import useGetListCart from '@/hooks/cart/useGetListCart';
 
+interface ICartItemContent {
+  payMethod: string;
+  setMethod: Dispatch<SetStateAction<string>>;
+}
+const defaultContentValue: ICartItemContent = {
+  payMethod: 'cash',
+  setMethod: () => {},
+};
+export const CartItemContext =
+  createContext<ICartItemContent>(defaultContentValue);
+
 const CartItems: React.FunctionComponent = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [payMethod, setMethod] = useState<string>('cash');
   const { data, isLoading, isFetching, refetch } = useGetListCart();
   const {
     data: listAddress,
@@ -23,7 +35,7 @@ const CartItems: React.FunctionComponent = () => {
   };
 
   return (
-    <>
+    <CartItemContext.Provider value={{ payMethod, setMethod }}>
       <Grid container sx={{ paddingBottom: '60px', position: 'relative' }}>
         <Grid item xs={12}>
           <Tabs
@@ -34,13 +46,13 @@ const CartItems: React.FunctionComponent = () => {
           >
             <Tab
               icon={<ShoppingCartIcon />}
-              label="Giỏ"
+              label="Giỏ hàng"
               disabled={currentIndex !== 0}
             />
 
             <Tab
-              icon={<PaymentIcon />}
-              label="Thanh toán"
+              icon={<AssignmentIcon />}
+              label="Mua hàng"
               disabled={currentIndex !== 1}
             />
           </Tabs>
@@ -81,7 +93,7 @@ const CartItems: React.FunctionComponent = () => {
           />
         )}
       </Grid>
-    </>
+    </CartItemContext.Provider>
   );
 };
 

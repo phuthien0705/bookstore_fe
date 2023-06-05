@@ -1,8 +1,10 @@
 import httpRequest from '@/services/httpRequest';
+import { EProcessPayment } from '@/constants/processPayment';
 
-export const checkoutProduct = async () => {
-  return httpRequest.post(`/checkout/payment/confirm`, {
-    type: 2,
-    description: '',
-  });
+export const makeOrder = async ({
+  type = EProcessPayment.CASH_ON_DELIVERY,
+}: {
+  type: EProcessPayment;
+}) => {
+  return httpRequest.post(`/orders/payment`, { type });
 };
