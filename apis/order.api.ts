@@ -12,7 +12,21 @@ export const postProcessOrder = ({
 }) => {
   return httpRequest.post(`/orders/payment`, { type });
 };
-
-export const getAllUserOrder = async (page = 1, limit = 10) => {
+// admin route
+export const getAllUserOrder = async (page: number, limit = 10) => {
   return httpRequest.get(`/orders/all?limit=${limit}&page=${page}`);
+};
+
+export const getOrderDetail = async (orderId: string | string[] | undefined ) => {
+  return httpRequest.get(`/orders/${orderId}`);
+};
+// export const getOrderDetail = ({ queryKey }: QueryFunctionContext) => {
+//   return httpRequest.get<IEachPostData>(`/posts/${queryKey[1]}`);
+// };
+
+export const editOrderStatus = async (
+  id: string | number | undefined,
+  data: { [key: string]: any }
+) => {
+  return httpRequest.put(`/genres/${id}`, data);
 };

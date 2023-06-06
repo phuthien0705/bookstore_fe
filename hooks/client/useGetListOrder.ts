@@ -1,10 +1,10 @@
 import { getOrderOfClient } from '@/apis/order.api';
 import { useQuery } from 'react-query';
-import { ORDERS } from '../../constants/queryKeyName';
+import { ORDERS_CLIENT } from '../../constants/queryKeyName';
 
 const useGetListOrder = (page: number, limit = 10) => {
   const getListQuery: any = useQuery(
-    [ORDERS],
+    [ORDERS_CLIENT],
     () => getOrderOfClient(page, limit),
     {
       staleTime: Infinity,

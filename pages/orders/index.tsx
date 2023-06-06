@@ -2,13 +2,14 @@ import { useEffect, useState, useCallback } from 'react';
 import ProductLayout from '@/layout/ProductLayot';
 import { Box, Container, Paper } from '@mui/material';
 import OrderTitle from '@/components/orders/OrderTitle';
-import OrderTable from '@/components/orders/OrderTable';
+import
+OrderTable from '@/components/orders/OrderTable';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useMutation, useQueryClient } from 'react-query';
 import useGetListOrder from '@/hooks/client/useGetListOrder';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '@/store/snackbarReducer';
-import { ORDERS } from '@/constants/queryKeyName';
+import { ORDERS_CLIENT } from '@/constants/queryKeyName';
 import { string } from 'yup';
 
 const OrdersHistory = () => {
@@ -30,7 +31,7 @@ const OrdersHistory = () => {
   const { isLoading: isFetchingOrder } = useMutation({
     onSuccess: () => {
       // setData(data);
-      queryClient.invalidateQueries(ORDERS);
+      queryClient.invalidateQueries(ORDERS_CLIENT);
     },
     onError: () => {
       toast({

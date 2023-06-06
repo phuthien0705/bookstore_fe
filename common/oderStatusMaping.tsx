@@ -5,8 +5,6 @@ import PendingActionsIcon from '@mui/icons-material/PendingActions';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import ContentPasteGoIcon from '@mui/icons-material/ContentPasteGo';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import { style } from '@mui/system';
-import { useTheme } from '@mui/material/styles';
 
 const statusMaping = (
   title: string
@@ -32,8 +30,8 @@ const statusMaping = (
       };
     case EOrderStatus.DELIVERED:
       return {
-        color: '#56F000',
         content: 'Giao thành công',
+        color: '#56F000',
         icon: <CheckBoxIcon sx={{ color: 'black' }} />,
       };
     case EOrderStatus.CANCELED:
@@ -44,8 +42,9 @@ const statusMaping = (
       };
     default:
       return {
-        color: 'error',
+
         content: 'Chưa xác định',
+        color: 'error',
         icon: null,
       };
   }

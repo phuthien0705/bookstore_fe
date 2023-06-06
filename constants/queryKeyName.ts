@@ -16,9 +16,12 @@ export const LIST_DISTRICT = 'list-district';
 export const USER_PROFILE = 'user-profile';
 export const USER_ADMIN = 'user-admin';
 export const ORDERS = 'orders';
+export const ORDERS_CLIENT = 'orders-client';
 export const STATISTICS = 'statistics';
 export const TOP_SELLING = 'top-selling';
 export const BOOK_GENRE = 'book-genre';
 export const POST = 'post';
 export const SHIPPING_COST = 'shipping-cost';
 export const POST_DETAIL = 'post-detail';
+export const ORDER_DETAIL = 'order-detail';
+
