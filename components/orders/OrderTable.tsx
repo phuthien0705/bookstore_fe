@@ -29,6 +29,7 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
   const sortedItems = sortOrdersByDate(items);
   const [openReviewModal, setOpenReviewModal] = useState<boolean>(false);
   const [reviewBook, setReviewBook] = useState({
+    id: '',
     name: '',
     images: '',
   });
@@ -176,6 +177,7 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
                           onClick={() => {
                             setOpenReviewModal(true);
                             setReviewBook({
+                              id: item._id,
                               name: item.name,
                               images: item.imageUrl
                             })
