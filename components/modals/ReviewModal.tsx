@@ -30,11 +30,12 @@ import {
 import { useToast } from '@/hooks/useToast';
 import { IEachAddressOfUserData } from '@/interfaces/address.interface';
 import ConfirmModal from './ConfirmModal';
+import { ImageOrderStyle } from '../orders/ImageOrderStyle';
 
 const ReviewModal: React.FunctionComponent<IReviewModal> = ({
   open,
   handleClose,
-  bookId,
+  book,
 }) => {
   const dispatch = useDispatch();
   const toast = useToast(dispatch, toggleSnackbar);
@@ -68,6 +69,12 @@ const ReviewModal: React.FunctionComponent<IReviewModal> = ({
       },
     }
   );
+
+  useEffect(() => {
+    if (!open) {
+      setRating(0);
+    }
+  }, [open]);
 
   return (
     <Dialog onClose={() => handleClose()} open={open} fullWidth maxWidth="sm">
@@ -109,8 +116,19 @@ const ReviewModal: React.FunctionComponent<IReviewModal> = ({
         ) : (
           <>
             <Stack sx={{ marginBottom: 2 }} direction="column">
+              <Stack sx={{ position: 'relative', marginBottom: 1 }} direction="row">
+                <ImageOrderStyle
+                  alt={book.name}
+                  width="76"
+                  height="76"
+                  src={book.images}
+                />
+                <Typography fontSize="14px" color="black" sx={{ marginLeft: 2}}>
+                  {book.name}
+                </Typography>
+              </Stack>
               <Box
-                sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}
+                sx={{ display: 'flex', alignItems: 'center', marginBottom: 1 }}
               >
                 <Typography
                   variant="body1"
@@ -121,16 +139,14 @@ const ReviewModal: React.FunctionComponent<IReviewModal> = ({
                 </Typography>
                 <Rating
                   name="rating"
-                  value={2}
+                  value={rating}
                   onChange={handleRatingChange}
                   precision={1}
                   size="large"
                   emptyIcon={<StarBorderIcon fontSize="inherit" />}
                 />
               </Box>
-              <Box
-                sx={{ alignItems: 'center', marginBottom: 1 }}
-              >
+              <Box sx={{ alignItems: 'center', marginBottom: 1 }}>
                 <Typography
                   variant="body1"
                   fontWeight="bold"
@@ -160,9 +176,7 @@ const ReviewModal: React.FunctionComponent<IReviewModal> = ({
                 borderTop: '1px solid rgba(0,0,0,0.1)',
               }}
             >
-              <LoadingButton loading={isLoading} variant="contained">
-                Hoàn thành
-              </LoadingButton>
+              <Button variant="contained">Hoàn thành</Button>
             </Box>
           </>
         )}
