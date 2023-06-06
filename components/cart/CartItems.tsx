@@ -8,6 +8,7 @@ import ItemTab from './tabs/ItemTab';
 import PaymentTab from './tabs/PaymentTab';
 import useGetListAddress from '@/hooks/address/useGetListAddress';
 import useGetListCart from '@/hooks/cart/useGetListCart';
+import { useIntl } from 'react-intl';
 
 const CartItems: React.FunctionComponent = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -17,11 +18,12 @@ const CartItems: React.FunctionComponent = () => {
     refetch: refetchAddress,
     isLoading: isLoadingListAddress,
   } = useGetListAddress();
-
+  const intl = useIntl();
   const handleChange = (event: any, newValue: any) => {
     setCurrentIndex(newValue);
   };
-
+  const cartContent = intl.formatMessage({ id: 'cart.title' });
+  const paymentContent = intl.formatMessage({ id: 'cart.payment' });
   return (
     <>
       <Grid container sx={{ paddingBottom: '60px', position: 'relative' }}>
@@ -34,13 +36,13 @@ const CartItems: React.FunctionComponent = () => {
           >
             <Tab
               icon={<ShoppingCartIcon />}
-              label="Giỏ"
+              label={cartContent}
               disabled={currentIndex !== 0}
             />
 
             <Tab
               icon={<PaymentIcon />}
-              label="Thanh toán"
+              label={paymentContent}
               disabled={currentIndex !== 1}
             />
           </Tabs>
