@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Paper, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Paper, Rating, Stack, Typography, useTheme } from '@mui/material';
 import ProductInfo from '../../components/productdetails/ProductInfo';
 import ProductSlides from '../../components/productdetails/ProductSlides';
 import useGetListBookDetail from '../../hooks/book/useGetListBookDetail';
@@ -230,7 +230,7 @@ const ProductDetail = () => {
               </Stack>
             </Stack>
 
-            {/* user review  */}
+            {/* review  */}
             <Stack
               className="shadow"
               sx={{
@@ -245,10 +245,102 @@ const ProductDetail = () => {
                 sx={{
                   py: { xs: theme.spacing(1), md: theme.spacing(1) },
                   px: { xs: theme.spacing(1), md: theme.spacing(1) },
+                  mb: 2,
                 }}
               >
-                Đánh giá của người dùng
+                Đánh giá sản phẩm
               </Typography>
+
+              {/* rating */}
+
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  mb: 2
+                }}
+              > 
+                {/* ratingStar */}
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  mb={2}
+                  sx={{ flexDirection: 'column', ml: 2, mr: 4 }}
+                >
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'flex-end',
+                      mb: 1,
+                    }}
+                  >
+                    <Typography
+                      variant="body1"
+                      ml={1}
+                      fontWeight="bold"
+                      fontSize={50}
+                      lineHeight={0.8}
+                    >
+                      {2}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      fontSize={25}
+                      lineHeight={0.8}
+                    >
+                      /{5}
+                    </Typography>
+                  </Box>
+                  <Rating name="product-rating" value={2} readOnly />
+                  <Typography variant="body2">({13} đánh giá)</Typography>
+                </Box>
+
+                {/* progressBar */}
+                <Box
+                  sx={{ display: 'flex', flexDirection: 'column', mr: 2 }}
+                  alignItems="center"
+                  mb={2}
+                >
+                  {[5, 4, 3, 2, 1].map((rating) => (
+                    <Box
+                      key={rating}
+                      mr={1}
+                      display="inline-flex"
+                      alignItems="center"
+                      sx={{ whiteSpace: 'nowrap' }}
+                    >
+                      <Typography variant="body2" sx={{ mr: 1 }}>
+                        {rating} sao
+                      </Typography>
+                      <Box
+                        sx={{
+                          width: 250,
+                          height: 10,
+                          bgcolor: 'grey.300',
+                          borderRadius: 5,
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            width: `${20}%`,
+                            height: '100%',
+                            bgcolor: 'primary.main',
+                            borderRadius: 5,
+                          }}
+                        />
+                      </Box>
+                      <Typography variant="body2" align="center" sx={{ ml: 1 }}>
+                        {20}%
+                      </Typography>
+                    </Box>
+                  ))}
+                </Box>
+              </Box>
+
+              {/* user comment */}
               <Stack
                 direction="column"
                 spacing={{ xs: theme.spacing(2), sm: theme.spacing(1) }}
