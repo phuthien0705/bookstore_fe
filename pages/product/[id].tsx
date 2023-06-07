@@ -31,6 +31,7 @@ const ProductDetail = () => {
   const [hiddenDescriptionFlag, setHiddenDescriptionFlag] =
     useState<boolean>(false);
   const [hiddenDescription, setHiddenDescription] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { data, isLoading } = useGetListBookDetail(id, !!id);
   const {
     data: slideData,
@@ -78,6 +79,10 @@ const ProductDetail = () => {
       setHiddenDescriptionFlag(true);
     }
   });
+
+  useEffect(() => {
+    setIsAuthenticated(authService.isAuthenticated());
+  }, []);
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -355,7 +360,7 @@ const ProductDetail = () => {
                   </Box>
 
                   {/* addReviewButton */}
-                  {authService.isAuthenticated() ? (
+                  {isAuthenticated ? (
                     <Box sx={{ ml: 20, display: 'flex', alignItems: 'center' }}>
                       <Button
                         variant="outlined"
@@ -378,11 +383,7 @@ const ProductDetail = () => {
                           đăng nhập
                         </Link>{' '}
                         hoặc{' '}
-                        <Link
-                          href="/dang-ky"
-                          underline="none"
-                          color="primary"
-                        >
+                        <Link href="/dang-ky" underline="none" color="primary">
                           đăng ký
                         </Link>
                         .

@@ -1,4 +1,5 @@
 import cookie from 'js-cookie';
+import { getCookie } from '@/common/session';
 
 class AuthService {
   login = ({ accessToken, name, roles, id, email, refreshToken }: any) => {
@@ -22,7 +23,7 @@ class AuthService {
     return user;
   };
 
-  getAccessToken = () => cookie.get('accessToken') || '';
+  getAccessToken = () => getCookie('accessToken') || '';
 
   isAuthenticated = () => !!this.getAccessToken() && !!this.getUser();
 

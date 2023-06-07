@@ -38,8 +38,8 @@ const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
   const intl = useIntl();
   const translateContent = {
     requiredLogin: intl.formatMessage({ id: 'requiredLogin' }),
-    addToCartFailed: intl.formatMessage({ id: 'addToCartFailed' }),
-    addToCartSuccess: intl.formatMessage({ id: 'addToCartSuccess' }),
+    addToCartFailed: intl.formatMessage({ id: 'product.addToCartFailed' }),
+    addToCartSuccess: intl.formatMessage({ id: 'product.addToCartSuccess' }),
   };
   const { mutate: addToCartFunc, isLoading: isLoadingAddToCart } = useMutation(
     () => postAddToCart({ bookId: data?.id, quantity: 1 }),

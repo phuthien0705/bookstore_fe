@@ -9,7 +9,6 @@ import {
 } from 'react';
 import { useDispatch } from 'react-redux';
 import io, { Socket } from 'socket.io-client';
-import { getCookie } from '@/common/session';
 import { useToast } from '@/hooks/useToast';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 import { MainContext } from '@/pages/_app';
