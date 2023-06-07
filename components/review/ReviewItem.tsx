@@ -8,15 +8,16 @@ const ReviewItem: React.FunctionComponent<IReviewItem> = ({
   user,
 }) => {
   return (
-    <Stack >
+    <Stack>
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'row',
+          ml: 2
         }}
       >
-        <Avatar sx={{ width: 50, height: 50, mr: 1.5 }} />
+        <Avatar sx={{ width: 50, height: 50, mr: 2 }} />
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Typography variant="body1" sx={{ mb: 0.5, fontWeight: 'bold' }}>
             {user}
