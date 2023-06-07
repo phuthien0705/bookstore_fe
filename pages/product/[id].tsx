@@ -9,6 +9,7 @@ import ProductLayout from '../../layout/ProductLayot';
 import LoadingScreen from '../../components/loading/LoadingScreen';
 import useGetRelativeBook from '@/hooks/book/useGetRelativeBook';
 import { FormattedMessage } from 'react-intl';
+import ReviewItem from '@/components/review/ReviewItem';
 
 const ProductDetail = () => {
   const theme = useTheme();
@@ -29,6 +30,29 @@ const ProductDetail = () => {
     if (desRef?.current) return desRef?.current?.clientHeight / 20;
     return 0;
   };
+
+  const reviews = [
+    {
+      user: 'Huỳnh Gia Phú',
+      rating: 1,
+      comment: 'Sách dở, không đáng đọc',
+    },
+    {
+      user: 'Lê Tấn Lộc',
+      rating: 5,
+      comment: 'Sách hay',
+    },
+    {
+      user: 'Châu Nhật Long',
+      rating: 3,
+      comment: 'Sách đọc oke',
+    },
+    {
+      user: 'Hứa Phú Thiên',
+      rating: 1,
+      comment: 'Sách quá tệ',
+    },
+  ];
 
   useEffect(() => {
     if (router.isReady) {
@@ -67,6 +91,8 @@ const ProductDetail = () => {
             <Stack direction="row">
               <ProductInfo data={data} isLoading={isLoading} />
             </Stack>
+
+            {/* product info */}
             <Stack
               className="shadow"
               sx={{
@@ -157,7 +183,7 @@ const ProductDetail = () => {
                     >
                       <FormattedMessage id="product.remainder" />
                     </Typography>
-                    <Box>{data && data?.available_quantity}</Box>
+                    <Box>{data && data?.availableQuantity}</Box>
                   </Stack>
                   {/* <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
                     <Typography
@@ -201,6 +227,48 @@ const ProductDetail = () => {
                     </Stack>
                   </Stack> */}
                 </Stack>
+              </Stack>
+            </Stack>
+
+            {/* user review  */}
+            <Stack
+              className="shadow"
+              sx={{
+                px: { xs: theme.spacing(2), sm: theme.spacing(2) },
+                py: { xs: theme.spacing(2), sm: theme.spacing(4) },
+                borderRadius: theme.spacing(1),
+                mt: { md: theme.spacing(1), xs: theme.spacing(1) },
+              }}
+            >
+              <Typography
+                variant="h3"
+                sx={{
+                  py: { xs: theme.spacing(1), md: theme.spacing(1) },
+                  px: { xs: theme.spacing(1), md: theme.spacing(1) },
+                }}
+              >
+                Đánh giá của người dùng
+              </Typography>
+              <Stack
+                direction="column"
+                spacing={{ xs: theme.spacing(2), sm: theme.spacing(1) }}
+                sx={{
+                  py: { xs: theme.spacing(1), md: theme.spacing(1) },
+                  px: { xs: theme.spacing(1), md: theme.spacing(1) },
+                }}
+              >
+                {reviews.length > 0 ? (
+                  reviews.map((review, index) => (
+                    <ReviewItem
+                      key={index}
+                      rating={review.rating}
+                      comment={review.comment}
+                      user={review.user}
+                    />
+                  ))
+                ) : (
+                  <Typography variant="body1">No reviews available</Typography>
+                )}
               </Stack>
             </Stack>
           </Stack>
