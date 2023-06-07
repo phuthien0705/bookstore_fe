@@ -1,12 +1,9 @@
-import { EOrderStatus } from '@/interfaces/compontents/order.interface';
-
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import ContentPasteGoIcon from '@mui/icons-material/ContentPasteGo';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import { style } from '@mui/system';
-import { useTheme } from '@mui/material/styles';
+import { EOrderStatus } from '@/interfaces/compontents/order.interface';
 
 const statusMaping = (
   title: string
