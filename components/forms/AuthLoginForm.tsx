@@ -1,4 +1,4 @@
-import { MouseEventHandler, useState } from 'react';
+import { MouseEventHandler, useContext, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useRouter } from 'next/router';
@@ -34,6 +34,7 @@ import checkIsAdminOrManager from '../../common/checkIsAdminOrManager';
 import config from '@/config';
 import { useToast } from '@/hooks/useToast';
 import { toggleSnackbar } from '@/store/snackbarReducer';
+import { SocketContext } from '@/socket/socket-context';
 
 const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
   const theme: any = useTheme();
@@ -45,6 +46,7 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
   const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showAlert, setShowAlert] = useState<any>(null);
+  const { handleConnect } = useContext(SocketContext);
 
   const localeContent = {
     emailOrPasswordIncorrect: intl.formatMessage({
@@ -79,6 +81,7 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
         roles: result.user.roles,
         email: result.user.email,
       });
+      handleConnect();
       if (!checkIsAdminOrManager(result?.user?.roles)) {
         router.push('/');
       } else {
@@ -191,6 +194,7 @@ const AuthLoginForm = ({ ...others }: { [others: string]: unknown }) => {
               roles: result.user.roles,
               email: result.user.email,
             });
+            handleConnect();
             if (!result.user.isActive) {
               await reSendVerifyEmail();
               setShowAlert({

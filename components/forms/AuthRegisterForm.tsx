@@ -1,4 +1,4 @@
-import { useState, useEffect, MouseEventHandler } from 'react';
+import { useState, useEffect, MouseEventHandler, useContext } from 'react';
 import { useTheme } from '@mui/material/styles';
 import {
   Alert,
@@ -26,10 +26,10 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { login, register } from '../../apis/auth.api';
 import authService from '../../services/authService';
 import { LoadingButton } from '@mui/lab';
+import { SocketContext } from '@/socket/socket-context';
 
 const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
   const theme: any = useTheme();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(true);
 
@@ -39,9 +39,7 @@ const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
     [key: string]: any;
   } | null>(null);
 
-  const googleHandler = async () => {
-    console.error('Register');
-  };
+  const { handleConnect } = useContext(SocketContext);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -65,67 +63,6 @@ const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
 
   return (
     <>
-      {/* <Grid container direction="column" justifyContent="center" spacing={2}>
-        <Grid item xs={12}>
-          <Button
-            variant="outlined"
-            fullWidth
-            onClick={googleHandler}
-            size="large"
-            sx={{
-              color: 'grey.700',
-              backgroundColor: theme.palette.grey[50],
-              borderColor: theme.palette.grey[100],
-            }}
-          >
-            <Box sx={{ mr: { xs: 1, sm: 2, width: 20 }, height: '20px' }}>
-              <Image
-                src={Google}
-                alt="google"
-                width={16}
-                height={16}
-                style={{ marginRight: matchDownSM ? 8 : 16 }}
-              />
-            </Box>
-            Đăng ký với Google
-          </Button>
-        </Grid>
-        <Grid item xs={12}>
-          <Box sx={{ alignItems: 'center', display: 'flex' }}>
-            <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-            <Button
-              variant="outlined"
-              sx={{
-                cursor: 'unset',
-                m: 2,
-                py: 0.5,
-                px: 7,
-                borderColor: `${theme.palette.grey[100]} !important`,
-                color: `${theme.palette.grey[900]}!important`,
-                fontWeight: 500,
-                borderRadius: `${config.borderRadius}px`,
-              }}
-              disableRipple
-              disabled
-            >
-              Hoặc
-            </Button>
-            <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-          </Box>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          container
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Box sx={{ mb: 2 }}>
-            <Typography variant="subtitle1">Đăng ký bằng Email</Typography>
-          </Box>
-        </Grid>
-      </Grid> */}
-
       <Formik
         initialValues={{
           name: '',
@@ -139,7 +76,7 @@ const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
             .max(255, 'Email tối đa 255 ký tự')
             .required('Email là bắt buộc'),
           password: Yup.string()
-            .min(8, 'Mật khẩu phải ít nhất 8 ký tự')
+            .min(6, 'Mật khẩu phải ít nhất 6 ký tự')
             .max(255, 'Mật khẩu tối đa 255 ký tự')
             .required('Mật khẩu là bắt buộc'),
           name: Yup.string()
