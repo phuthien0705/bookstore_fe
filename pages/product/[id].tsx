@@ -1,7 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Paper, Rating, Stack, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  Divider,
+  Link,
+  Paper,
+  Rating,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import ProductInfo from '../../components/productdetails/ProductInfo';
 import ProductSlides from '../../components/productdetails/ProductSlides';
 import useGetListBookDetail from '../../hooks/book/useGetListBookDetail';
@@ -10,6 +20,8 @@ import LoadingScreen from '../../components/loading/LoadingScreen';
 import useGetRelativeBook from '@/hooks/book/useGetRelativeBook';
 import { FormattedMessage } from 'react-intl';
 import ReviewItem from '@/components/review/ReviewItem';
+import CreateIcon from '@mui/icons-material/Create';
+import authService from '@/services/authService';
 
 const ProductDetail = () => {
   const theme = useTheme();
@@ -252,93 +264,136 @@ const ProductDetail = () => {
               </Typography>
 
               {/* rating */}
-
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  mb: 2
-                }}
-              > 
-                {/* ratingStar */}
+              <Stack>
                 <Box
-                  display="flex"
-                  alignItems="center"
-                  mb={2}
-                  sx={{ flexDirection: 'column', ml: 2, mr: 4 }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                  }}
                 >
+                  {/* ratingStar */}
                   <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'flex-end',
-                      mb: 1,
-                    }}
+                    display="flex"
+                    alignItems="center"
+                    mb={2}
+                    sx={{ flexDirection: 'column', ml: 4, mr: 4 }}
                   >
-                    <Typography
-                      variant="body1"
-                      ml={1}
-                      fontWeight="bold"
-                      fontSize={50}
-                      lineHeight={0.8}
-                    >
-                      {2}
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      fontSize={25}
-                      lineHeight={0.8}
-                    >
-                      /{5}
-                    </Typography>
-                  </Box>
-                  <Rating name="product-rating" value={2} readOnly />
-                  <Typography variant="body2">({13} đánh giá)</Typography>
-                </Box>
-
-                {/* progressBar */}
-                <Box
-                  sx={{ display: 'flex', flexDirection: 'column', mr: 2 }}
-                  alignItems="center"
-                  mb={2}
-                >
-                  {[5, 4, 3, 2, 1].map((rating) => (
                     <Box
-                      key={rating}
-                      mr={1}
-                      display="inline-flex"
-                      alignItems="center"
-                      sx={{ whiteSpace: 'nowrap' }}
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'flex-end',
+                        mb: 1,
+                      }}
                     >
-                      <Typography variant="body2" sx={{ mr: 1 }}>
-                        {rating} sao
-                      </Typography>
-                      <Box
-                        sx={{
-                          width: 250,
-                          height: 10,
-                          bgcolor: 'grey.300',
-                          borderRadius: 5,
-                        }}
+                      <Typography
+                        variant="body1"
+                        ml={1}
+                        fontWeight="bold"
+                        fontSize={50}
+                        lineHeight={0.8}
                       >
-                        <Box
-                          sx={{
-                            width: `${20}%`,
-                            height: '100%',
-                            bgcolor: 'primary.main',
-                            borderRadius: 5,
-                          }}
-                        />
-                      </Box>
-                      <Typography variant="body2" align="center" sx={{ ml: 1 }}>
-                        {20}%
+                        {2}
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        fontSize={25}
+                        lineHeight={0.8}
+                      >
+                        /{5}
                       </Typography>
                     </Box>
-                  ))}
+                    <Rating name="product-rating" value={2} readOnly />
+                    <Typography variant="body2">({13} đánh giá)</Typography>
+                  </Box>
+
+                  {/* progressBar */}
+                  <Box
+                    sx={{ display: 'flex', flexDirection: 'column', ml: 4 }}
+                    alignItems="center"
+                    mb={2}
+                  >
+                    {[5, 4, 3, 2, 1].map((rating) => (
+                      <Box
+                        key={rating}
+                        mr={1}
+                        display="inline-flex"
+                        alignItems="center"
+                        sx={{ whiteSpace: 'nowrap', mb: 0.5 }}
+                      >
+                        <Typography variant="body2" sx={{ mr: 1 }}>
+                          {rating} sao
+                        </Typography>
+                        <Box
+                          sx={{
+                            width: 250,
+                            height: 10,
+                            bgcolor: 'grey.300',
+                            borderRadius: 5,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              width: `${20}%`,
+                              height: '100%',
+                              bgcolor: 'primary.main',
+                              borderRadius: 5,
+                            }}
+                          />
+                        </Box>
+                        <Typography
+                          variant="body2"
+                          align="center"
+                          sx={{ ml: 1 }}
+                        >
+                          {20}%
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Box>
+
+                  {/* addReviewButton */}
+                  {authService.isAuthenticated() ? (
+                    <Box sx={{ ml: 20, display: 'flex', alignItems: 'center' }}>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        startIcon={<CreateIcon />}
+                        sx={{ width: '300px', borderWidth: 2 }}
+                      >
+                        Viết đánh giá
+                      </Button>
+                    </Box>
+                  ) : (
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Typography variant="body1" sx={{ mx: 4, mb: 2 }}>
+                        Chỉ có thành viên mới có thể viết nhận xét. Vui lòng{' '}
+                        <Link
+                          href="/dang-nhap"
+                          underline="none"
+                          color="primary"
+                        >
+                          đăng nhập
+                        </Link>{' '}
+                        hoặc{' '}
+                        <Link
+                          href="/dang-ky"
+                          underline="none"
+                          color="primary"
+                        >
+                          đăng ký
+                        </Link>
+                        .
+                      </Typography>
+                    </Box>
+                  )}
                 </Box>
-              </Box>
+                <Box sx={{ width: '100%', my: 2 }}>
+                  <Divider />
+                </Box>
+              </Stack>
 
               {/* user comment */}
               <Stack
@@ -359,7 +414,9 @@ const ProductDetail = () => {
                     />
                   ))
                 ) : (
-                  <Typography variant="body1">No reviews available</Typography>
+                  <Typography variant="body1">
+                    Không có bài đánh giá nào
+                  </Typography>
                 )}
               </Stack>
             </Stack>
