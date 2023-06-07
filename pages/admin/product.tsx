@@ -50,18 +50,18 @@ const ProductManagement = () => {
   } = useGetListBook(page, 5, ['name', 'description'] as any, searchContent);
 
   const findPublisher = useCallback((id: any) => {
-    if (publisherData?.data) {
-      return publisherData?.data.find((publisher: any) => publisher.id === id);
+    if (publisherData?.datas) {
+      return publisherData?.datas.find((publisher: any) => publisher.id === id);
     }
   }, []);
   const findGenre = useCallback((id: any) => {
-    if (genreData?.data) {
-      return genreData?.data.find((genre: any) => genre.id === id);
+    if (genreData?.datas) {
+      return genreData?.datas.find((genre: any) => genre.id === id);
     }
   }, []);
   const findAuthor = useCallback((id: any) => {
-    if (authorData?.data) {
-      return authorData?.data.find((author: any) => author.id === id);
+    if (authorData?.datas) {
+      return authorData?.datas.find((author: any) => author.id === id);
     }
   }, []);
 
@@ -270,9 +270,9 @@ const ProductManagement = () => {
             currentProduct={currentProduct}
             handleClose={handleCloseModal}
             refetchAfterClose={fetchData}
-            authors={authorData?.datas}
-            genres={genreData?.datas}
-            publishers={publisherData?.datas}
+            authors={authorData?.datas ?? []}
+            genres={genreData?.datas ?? []}
+            publishers={publisherData?.datas ?? []}
             findAuthor={findAuthor}
             findGenre={findGenre}
             findPublisher={findPublisher}

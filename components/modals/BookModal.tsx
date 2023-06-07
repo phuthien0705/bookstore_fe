@@ -39,9 +39,6 @@ const BookModal: FC<IBookModal> = ({
   authors,
   genres,
   publishers,
-  findAuthor,
-  findGenre,
-  findPublisher,
 }) => {
   const theme: any = useTheme();
   const dispatch = useDispatch();

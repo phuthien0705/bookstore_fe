@@ -6,7 +6,7 @@ export const getCartItems = async () => {
 };
 
 export const postAddToCart = async (data: {
-  bookId: number;
+  bookId: string;
   quantity: number;
 }) => {
   return httpRequest.post('/cart/add-to-cart', data);

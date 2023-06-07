@@ -3,7 +3,7 @@ import { GENRES_CLIENT } from '../../constants/queryKeyName';
 import { useQuery } from 'react-query';
 
 const useGetListGenreClient = (enabled = true) => {
-  const getListQuery: any = useQuery(GENRES_CLIENT, getAllGenreClient, {
+  const getListQuery = useQuery(GENRES_CLIENT, getAllGenreClient, {
     cacheTime: Infinity,
     refetchOnWindowFocus: false,
     staleTime: Infinity,

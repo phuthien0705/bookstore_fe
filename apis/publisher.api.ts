@@ -1,5 +1,7 @@
 import createSearchParams from '@/common/createSearchParams';
 import httpRequest from '../services/httpRequest';
+import { IPaginationResponse } from '@/interfaces/general.interface';
+import { IEachPublisherData } from '@/interfaces/publisher.interface';
 
 export const getAllPublisher = async (
   page: number,
@@ -7,7 +9,7 @@ export const getAllPublisher = async (
   searchFields = [],
   value = ''
 ) => {
-  return httpRequest.get(
+  return httpRequest.get<IPaginationResponse<IEachPublisherData>>(
     `/publishers?limit=${limit}&page=${page}${createSearchParams(
       searchFields,
       value
@@ -15,7 +17,9 @@ export const getAllPublisher = async (
   );
 };
 export const getAllPublisherClient = async () => {
-  return httpRequest.get('/publishers?limit=100&page=1');
+  return httpRequest.get<IPaginationResponse<IEachPublisherData>>(
+    '/publishers?limit=100&page=1'
+  );
 };
 export const editPublisher = async (
   id: string | number | undefined,

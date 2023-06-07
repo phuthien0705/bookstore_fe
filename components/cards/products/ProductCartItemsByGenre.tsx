@@ -5,6 +5,7 @@ import CustomNoRowsOverlay from '../../empty/CustomNoRowsOverlay';
 import { IProductCardItemsByGenre } from '@/interfaces/compontents/card.interface';
 import config from '../../../config';
 import useGetBookByGenre from '@/hooks/book/useGetBookByGenre';
+import { IEachBookData } from '@/interfaces/book.interface';
 
 const ProductCardItemsByGenre: React.FunctionComponent<
   IProductCardItemsByGenre
@@ -16,18 +17,16 @@ const ProductCardItemsByGenre: React.FunctionComponent<
   );
   const renderProducts = () => {
     if (isLoading)
-      return (
-        <>
-          <ProductCardSkeleton />
-          <ProductCardSkeleton />
-          <ProductCardSkeleton />
-          <ProductCardSkeleton />
-          <ProductCardSkeleton />
-        </>
-      );
+      return new Array(slideToShow)
+        .fill(0)
+        .map((placeholder, placeholderIndex) => (
+          <div key={placeholderIndex}>
+            <ProductCardSkeleton />
+          </div>
+        ));
 
-    return dataFiltered && dataFiltered?.datas?.length > 0 ? (
-      dataFiltered?.datas.map((product: any, index: number) => {
+    return dataFiltered && dataFiltered.datas.length > 0 ? (
+      dataFiltered.datas.map((product: IEachBookData, index: number) => {
         return <ProductCardItem key={index} product={product} index={index} />;
       })
     ) : (
