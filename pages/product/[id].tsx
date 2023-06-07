@@ -22,6 +22,7 @@ import { FormattedMessage } from 'react-intl';
 import ReviewItem from '@/components/review/ReviewItem';
 import CreateIcon from '@mui/icons-material/Create';
 import authService from '@/services/authService';
+import ReviewModal from '@/components/modals/ReviewModal';
 
 const ProductDetail = () => {
   const theme = useTheme();
@@ -32,6 +33,12 @@ const ProductDetail = () => {
     useState<boolean>(false);
   const [hiddenDescription, setHiddenDescription] = useState<boolean>(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [openReviewModal, setOpenReviewModal] = useState<boolean>(false);
+  const [reviewBook, setReviewBook] = useState({
+    id: '',
+    name: '',
+    images: '',
+  });
   const { data, isLoading } = useGetListBookDetail(id, !!id);
   const {
     data: slideData,
@@ -367,6 +374,14 @@ const ProductDetail = () => {
                         color="primary"
                         startIcon={<CreateIcon />}
                         sx={{ width: '300px', borderWidth: 2 }}
+                        onClick={() => {
+                          setOpenReviewModal(true);
+                          setReviewBook({
+                            id: data.id,
+                            name: data.name,
+                            images: data.images[0].url
+                          })
+                        }}
                       >
                         Viết đánh giá
                       </Button>
@@ -445,6 +460,16 @@ const ProductDetail = () => {
             isSlideFetching={isSlideFetching}
           />
         </Stack>
+        <ReviewModal
+          open={openReviewModal}
+          handleClose={() => {
+            setOpenReviewModal(false);
+          }}
+          book={reviewBook}
+          refetchReviews={function (): void {
+            throw new Error('Function not implemented.');
+          }}
+        />
       </Box>
     </ProductLayout>
   );
