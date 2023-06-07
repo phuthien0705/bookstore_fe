@@ -3,6 +3,8 @@ import { Stack, Button, Container, Box, Typography } from '@mui/material';
 import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { makeOrder } from '@/apis/checkout.api';
+
+import { useRouter } from 'next/router';
 import {
   IEachCartData,
   ISubmitCart,
@@ -12,8 +14,35 @@ import { moneyFormat } from '@/utils/moneyFormat';
 import useGetShippingCost from '@/hooks/address/useGetShippingCost';
 import { CartItemContext } from './CartItems';
 import { EProcessPayment } from '@/constants/processPayment';
+import { METHODS } from 'http';
+
+const payMethodMaping = (method: string): { EMethod: EProcessPayment } => {
+  switch (method) {
+    case 'credit':
+      return {
+        EMethod: EProcessPayment.CREDIT_CARD,
+      };
+    case 'banking':
+      return {
+        EMethod: EProcessPayment.ONLINE_BANKING,
+      };
+    case 'cash':
+      return {
+        EMethod: EProcessPayment.CASH_ON_DELIVERY,
+      };
+    case 'paypal':
+      return {
+        EMethod: EProcessPayment.PAYPAL,
+      };
+    default:
+      return {
+        EMethod: EProcessPayment.CASH_ON_DELIVERY,
+      };
+  }
+};
 
 const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
+  userId,
   currentIndex,
   setCurrentIndex,
   items,
@@ -21,7 +50,7 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
 }) => {
   const dispatch = useDispatch();
   const { payMethod, setMethod } = useContext(CartItemContext);
-
+  const router = useRouter();
   const {
     queryReturn: { data },
   } = useGetShippingCost();
@@ -37,9 +66,13 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
     },
     [dispatch]
   );
-
+  const paymentDetails = {
+    discountCode: 'none',
+    type: EProcessPayment.CASH_ON_DELIVERY,
+  };
+  paymentDetails.type = payMethodMaping(payMethod).EMethod;
   const { mutate: makeOrderFunc } = useMutation(
-    () => makeOrder(EProcessPayment.CASH_ON_DELIVERY),
+    () => makeOrder(userId, paymentDetails),
     {
       onSuccess: () => {
         toast({ type: 'success', message: 'Mua hàng thành công' });
@@ -138,14 +171,20 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
               sx={{ width: 'fit-content' }}
               variant="contained"
               fullWidth
-              onClick={() => {
+              onClick={(e) => {
                 if (currentIndex === 0) {
                   setCurrentIndex((prev: any) => prev + 1);
                 } else if (payMethod === 'cash') {
                   makeOrderFunc();
-                } else {
+                } else if (payMethod === 'credit') {
                   makeOrderFunc();
-                  // Tới màn hình thông tin thanh toán. gọi api thanh toán
+                  e.preventDefault();
+                } else if (payMethod === 'banking') {
+                  //router to credit
+                  makeOrderFunc();
+                } else if (payMethod === 'paypal') {
+                  //router to credit
+                  makeOrderFunc();
                 }
               }}
             >

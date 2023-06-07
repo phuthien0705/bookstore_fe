@@ -86,6 +86,7 @@ const CartItems: React.FunctionComponent = () => {
 
         {data?.items && data.items?.length !== 0 && (
           <SubmitCart
+            userId={data?.userId}
             items={data?.items ?? []}
             setCurrentIndex={setCurrentIndex}
             currentIndex={currentIndex}
