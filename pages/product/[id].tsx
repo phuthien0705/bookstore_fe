@@ -49,15 +49,8 @@ const ProductDetail = () => {
     isFetching: isSlideFetching,
   } = useGetRelativeBook(data, !!data);
 
-  const { data: reviews, isLoading: isReviewsLoading } = useGetListReview(data?.id);
+  const { data: reviews, isLoading: isReviewsLoading } = useGetListReview(data?.id || '');
 
-  const { mutate: getListBookReviewsFunc } = useMutation(
-    (id: string | number) => getBookReviews(data.id),
-    {
-      onSuccess: (data: any) => {},
-      onError: () => {},
-    }
-  );
 
   const numberOfLine = () => {
     if (desRef?.current) return desRef?.current?.clientHeight / 20;
@@ -156,14 +149,6 @@ const ProductDetail = () => {
                           return <span key={_index}>{author?.name}, </span>;
                         })}
                     </Box>
-                  </Stack>
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
-                    <Typography
-                      sx={{ fontWeight: 600, color: '#000', minWidth: 150 }}
-                    >
-                      <FormattedMessage id="product.publisher" />
-                    </Typography>
-                    <Box>{data && data?.publisher?.name}</Box>{' '}
                   </Stack>
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
                     <Typography
@@ -367,9 +352,9 @@ const ProductDetail = () => {
                         onClick={() => {
                           setOpenReviewModal(true);
                           setReviewBook({
-                            id: data.id,
-                            name: data.name,
-                            images: data.images[0].url,
+                            id: data?.id ?? '',
+                            name: data?.name ?? '',
+                            images: data?.images[0].url ?? '',
                           });
                         }}
                       >
@@ -378,7 +363,10 @@ const ProductDetail = () => {
                     </Box>
                   ) : (
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Typography variant="body1" sx={{ mx: 4, mb: 2 }}>
+                      <Typography
+                        variant="body1"
+                        sx={{ mx: theme.spacing(4), mb: theme.spacing(2) }}
+                      >
                         Chỉ có thành viên mới có thể viết nhận xét. Vui lòng{' '}
                         <Link
                           href="/dang-nhap"
@@ -396,7 +384,7 @@ const ProductDetail = () => {
                     </Box>
                   )}
                 </Box>
-                <Box sx={{ width: '100%', my: 2 }}>
+                <Box sx={{ width: '100%', my: theme.spacing(2) }}>
                   <Divider />
                 </Box>
               </Stack>

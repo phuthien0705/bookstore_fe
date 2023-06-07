@@ -8,7 +8,7 @@ const useGetListBook = (
   searchFields = [],
   value = ''
 ) => {
-  const getListQuery: any = useQuery(
+  const getListQuery = useQuery(
     [BOOKS],
     () => getAllBook(page, limit, searchFields, value),
     {

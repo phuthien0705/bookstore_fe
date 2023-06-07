@@ -8,7 +8,7 @@ const useGetListAuthor = (
   searchFields = [],
   value = ''
 ) => {
-  const getListQuery: any = useQuery(
+  const getListQuery = useQuery(
     [AUTHORS],
     () => getAllAuthor(page, limit, searchFields, value),
     {

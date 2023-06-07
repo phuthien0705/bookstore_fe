@@ -1,5 +1,7 @@
 import createSearchParams from '@/common/createSearchParams';
 import httpRequest from '../services/httpRequest';
+import { IPaginationResponse } from '@/interfaces/general.interface';
+import { IEachBookData } from '@/interfaces/book.interface';
 
 export const getAllBook = async (
   page: number,
@@ -7,7 +9,7 @@ export const getAllBook = async (
   searchFields = [],
   value = ''
 ) => {
-  return httpRequest.get(
+  return httpRequest.get<IPaginationResponse<IEachBookData>>(
     `/books?limit=${limit}&page=${page}${createSearchParams(
       searchFields,
       value
@@ -43,12 +45,12 @@ export const filterBook = async ({
   }
   if (params) params = '?' + params + '&limit=12&page=' + page;
   else params = '?limit=12';
-  return httpRequest.get(`/books${params}`);
+  return httpRequest.get<IPaginationResponse<IEachBookData>>(`/books${params}`);
 };
 export const getBookDetailById = async (
   id: string | number | null | undefined
 ) => {
-  return httpRequest.get(`books/${id}`);
+  return httpRequest.get<IEachBookData>(`books/${id}`);
 };
 export const editBook = async (
   id: string | number | undefined,
@@ -72,16 +74,23 @@ export const createBook = async (data: FormData | any) => {
 };
 
 export const getTopSelling = async () => {
-  return httpRequest.get(`/books?limit=5&page=1&sortBy=createdAt`);
+  return httpRequest.get<IPaginationResponse<IEachBookData>>(
+    `/books?limit=5&page=1&sortBy=createdAt`
+  );
 };
 
 export const getRelateBook = async (genres = '') => {
-  if (genres) return httpRequest.get(`/books?limit=10&page=1&genres=${genres}`);
-  return httpRequest.get(`/books?limit=10&page=1`);
+  if (genres)
+    return httpRequest.get<IPaginationResponse<IEachBookData>>(
+      `/books?limit=10&page=1&genres=${genres}`
+    );
+  return httpRequest.get<IPaginationResponse<IEachBookData>>(
+    `/books?limit=10&page=1`
+  );
 };
 
 export const getListBookByGenre = async (genresid: any, slideToShow = 5) => {
-  return httpRequest.get(
+  return httpRequest.get<IPaginationResponse<IEachBookData>>(
     `/books?limit=${slideToShow}&page=1&genres=${genresid}`
   );
 };

@@ -27,12 +27,12 @@ const Home = () => {
     if (!isGenreLoading) {
       return (
         genreData &&
-        genreData?.datas?.slice(0, 3)?.map((genre: any) => {
+        genreData.datas?.slice(0, 3)?.map((genre) => {
           return (
             <ProductCardItemsByGenre
-              key={genre?.id}
+              key={genre.id}
               slideToShow={5}
-              title={genre?.name}
+              title={genre.name}
               titleBackground={'#e8d5f9'}
               genreId={genre?.id}
             />

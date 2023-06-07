@@ -1,4 +1,9 @@
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
+import 'swiper/css';
 import { FC } from 'react';
+import { useTheme } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper';
 import { makeStyles } from '@mui/styles';
@@ -8,11 +13,8 @@ import ProductCardSkeleton from '../cards/Skeleton/ProductCardSkelection';
 import { IProductSlides } from '@/interfaces/compontents/product.interface';
 import RelativeProductEmpty from './RelativeProductEmpty';
 import config from '../../config';
+import { IEachBookData } from '@/interfaces/book.interface';
 
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/autoplay';
-import 'swiper/css';
 const useStyles = makeStyles({
   carousel: {
     position: 'relative',
@@ -48,6 +50,7 @@ const ProductSlides: FC<IProductSlides> = ({
   isSlideFetching,
 }) => {
   const classes = useStyles();
+  const theme = useTheme();
   const matchSm = useMediaQuery('(max-width:600px)');
   const matchMd = useMediaQuery('(max-width:900px)');
   if (!isSlideLoading && detailData && detailData?.genres?.length === 0) {
@@ -55,7 +58,11 @@ const ProductSlides: FC<IProductSlides> = ({
   }
   return (
     <div
-      style={{ position: 'relative', borderRadius: '8px', padding: 3 }}
+      style={{
+        position: 'relative',
+        borderRadius: theme.spacing(1),
+        padding: theme.spacing(3),
+      }}
       className="shadow"
     >
       <Swiper
@@ -70,17 +77,19 @@ const ProductSlides: FC<IProductSlides> = ({
         {/* get only 10 item */}
         {detailData &&
           detailData?.genres?.length !== 0 &&
-          slideData?.data &&
-          slideData?.data.slice(0, 10).map((data: any, index: number) => (
-            <SwiperSlide key={index}>
-              <ProductCard
-                product={data}
-                slideMode
-                isLoading={isSlideFetching || isSlideLoading}
-                index={index}
-              />
-            </SwiperSlide>
-          ))}
+          slideData?.datas &&
+          slideData?.datas
+            .slice(0, 10)
+            .map((data: IEachBookData, index: number) => (
+              <SwiperSlide key={index}>
+                <ProductCard
+                  product={data}
+                  slideMode
+                  isLoading={isSlideFetching || isSlideLoading}
+                  index={index}
+                />
+              </SwiperSlide>
+            ))}
         {(isSlideLoading || isSlideFetching) && (
           <>
             <SwiperSlide>

@@ -8,17 +8,18 @@ import {
   Menu,
   MenuList,
   Typography,
+  useTheme,
 } from '@mui/material';
-import { useTheme } from '@emotion/react';
 import { useRouter } from 'next/router';
-import CircularProgress from '@mui/material/CircularProgress';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { IconCategory2 } from '@tabler/icons';
-import useGetListGenreClient from '@/hooks/genre/useGetListGenreClient';
 import { FormattedMessage } from 'react-intl';
+import { IEachGenreData } from '@/interfaces/genres.interface';
+import CircularProgress from '@mui/material/CircularProgress';
+import useGetListGenreClient from '@/hooks/genre/useGetListGenreClient';
 
 const GenreSection: React.FunctionComponent = () => {
-  const theme: any = useTheme();
+  const theme = useTheme();
   const router = useRouter();
   const matches = useMediaQuery('(min-width:900px)');
 
@@ -129,16 +130,17 @@ const GenreSection: React.FunctionComponent = () => {
               <ListItemButton onClick={() => handleRedirectToProduct()}>
                 <ListItemText>{'Đến trang sản phẩm'}</ListItemText>
               </ListItemButton>
-              {genreData?.data?.map((genre: any, index: number) => {
-                return (
-                  <ListItemButton
-                    onClick={() => handleClick(genre?.id)}
-                    key={index}
-                  >
-                    <ListItemText>{genre?.name}</ListItemText>
-                  </ListItemButton>
-                );
-              })}
+              {genreData &&
+                genreData?.datas?.map((genre: IEachGenreData) => {
+                  return (
+                    <ListItemButton
+                      key={genre.id}
+                      onClick={() => handleClick(genre?.id)}
+                    >
+                      <ListItemText>{genre?.name}</ListItemText>
+                    </ListItemButton>
+                  );
+                })}
             </>
           )}
         </MenuList>

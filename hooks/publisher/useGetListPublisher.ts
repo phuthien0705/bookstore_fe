@@ -8,7 +8,7 @@ const useGetListPublisher = (
   searchFields = [],
   value = ''
 ) => {
-  const getListQuery: any = useQuery(
+  const getListQuery = useQuery(
     [PUBLISHERS],
     () => getAllPublisher(page, limit, searchFields, value),
     {

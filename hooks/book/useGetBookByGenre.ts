@@ -3,7 +3,7 @@ import { BOOK_GENRE } from '@/constants/queryKeyName';
 import { useQuery } from 'react-query';
 
 const useGetBookByGenre = (id: any, slideToShow = 5, enabled = true) => {
-  const getListQuery: any = useQuery(
+  const getListQuery = useQuery(
     [BOOK_GENRE, id],
     () => getListBookByGenre(id, slideToShow),
     {

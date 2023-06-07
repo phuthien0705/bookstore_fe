@@ -1,14 +1,15 @@
 import { ReactNode } from 'react';
+import { IEachBookData } from '../book.interface';
 
 export interface IProductCard {
-  product: any;
+  product: IEachBookData;
   slideMode?: boolean;
   isLoading?: boolean;
   index: number;
 }
 
 export interface IProductCardItem {
-  product: any;
+  product: IEachBookData;
   index: number;
 }
 
@@ -19,7 +20,7 @@ export interface IProductCardItems {
   titleBackground?: string;
   isLoading?: boolean;
   slideToShow?: number;
-  genreId?: number | null;
+  genreId?: string | null;
 }
 
 export interface IProductCardItemsByGenre {
@@ -27,7 +28,7 @@ export interface IProductCardItemsByGenre {
   titleIcon?: ReactNode;
   titleBackground?: string;
   slideToShow?: number;
-  genreId?: number | null;
+  genreId?: string | null;
 }
 
 export interface IProductCardSkeleton {

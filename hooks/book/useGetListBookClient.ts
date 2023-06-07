@@ -3,7 +3,7 @@ import { BOOKS_CLIENT } from '../../constants/queryKeyName';
 import { useQuery } from 'react-query';
 
 const useGetListBookClient = (enabled = true) => {
-  const getListQuery: any = useQuery(BOOKS_CLIENT, getAllBookClient, {
+  const getListQuery = useQuery(BOOKS_CLIENT, getAllBookClient, {
     cacheTime: Infinity,
     refetchOnWindowFocus: false,
     staleTime: Infinity,
