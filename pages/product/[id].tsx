@@ -23,6 +23,9 @@ import ReviewItem from '@/components/review/ReviewItem';
 import CreateIcon from '@mui/icons-material/Create';
 import authService from '@/services/authService';
 import ReviewModal from '@/components/modals/ReviewModal';
+import { getBookReviews } from '@/apis/review.api';
+import { useMutation } from 'react-query';
+import useGetListReview from '@/hooks/review/useGetListReview' 
 
 const ProductDetail = () => {
   const theme = useTheme();
@@ -46,33 +49,20 @@ const ProductDetail = () => {
     isFetching: isSlideFetching,
   } = useGetRelativeBook(data, !!data);
 
+  const { data: reviews, isLoading: isReviewsLoading } = useGetListReview(data?.id);
+
+  const { mutate: getListBookReviewsFunc } = useMutation(
+    (id: string | number) => getBookReviews(data.id),
+    {
+      onSuccess: (data: any) => {},
+      onError: () => {},
+    }
+  );
+
   const numberOfLine = () => {
     if (desRef?.current) return desRef?.current?.clientHeight / 20;
     return 0;
   };
-
-  const reviews = [
-    {
-      user: 'Huỳnh Gia Phú',
-      rating: 1,
-      comment: 'Sách dở, không đáng đọc',
-    },
-    {
-      user: 'Lê Tấn Lộc',
-      rating: 5,
-      comment: 'Sách hay',
-    },
-    {
-      user: 'Châu Nhật Long',
-      rating: 3,
-      comment: 'Sách đọc oke',
-    },
-    {
-      user: 'Hứa Phú Thiên',
-      rating: 1,
-      comment: 'Sách quá tệ',
-    },
-  ];
 
   useEffect(() => {
     if (router.isReady) {
@@ -318,7 +308,7 @@ const ProductDetail = () => {
                       </Typography>
                     </Box>
                     <Rating name="product-rating" value={2} readOnly />
-                    <Typography variant="body2">({13} đánh giá)</Typography>
+                    <Typography variant="body2">({reviews?.length} đánh giá)</Typography>
                   </Box>
 
                   {/* progressBar */}
@@ -379,8 +369,8 @@ const ProductDetail = () => {
                           setReviewBook({
                             id: data.id,
                             name: data.name,
-                            images: data.images[0].url
-                          })
+                            images: data.images[0].url,
+                          });
                         }}
                       >
                         Viết đánh giá
@@ -420,13 +410,13 @@ const ProductDetail = () => {
                   px: { xs: theme.spacing(1), md: theme.spacing(1) },
                 }}
               >
-                {reviews.length > 0 ? (
-                  reviews.map((review, index) => (
+                {reviews?.length > 0 ? (
+                  reviews?.map((review:any, index:any) => (
                     <ReviewItem
                       key={index}
-                      rating={review.rating}
-                      comment={review.comment}
-                      user={review.user}
+                      rating={review?.rating}
+                      comment={review?.comment}
+                      user={review?.user?.name}
                     />
                   ))
                 ) : (

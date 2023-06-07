@@ -1,7 +1,7 @@
 import httpRequest from '@/services/httpRequest';
 
 export const getBookReviews = async (bookId: string) => {
-  return httpRequest.get('/reviews?bookId=' + bookId)
+  return httpRequest.get(`/reviews/book/${bookId}`)
 }
 
 export const addReview = async (data: any) => {
