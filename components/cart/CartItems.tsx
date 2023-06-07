@@ -8,6 +8,7 @@ import ItemTab from './tabs/ItemTab';
 import PaymentTab from './tabs/PaymentTab';
 import useGetListAddress from '@/hooks/address/useGetListAddress';
 import useGetListCart from '@/hooks/cart/useGetListCart';
+import { useIntl } from 'react-intl';
 
 interface ICartItemContent {
   payMethod: string;
@@ -29,11 +30,12 @@ const CartItems: React.FunctionComponent = () => {
     refetch: refetchAddress,
     isLoading: isLoadingListAddress,
   } = useGetListAddress();
-
+  const intl = useIntl();
   const handleChange = (event: any, newValue: any) => {
     setCurrentIndex(newValue);
   };
-
+  const cartContent = intl.formatMessage({ id: 'cart.title' });
+  const paymentContent = intl.formatMessage({ id: 'cart.payment' });
   return (
     <CartItemContext.Provider value={{ payMethod, setMethod }}>
       <Grid container sx={{ paddingBottom: '60px', position: 'relative' }}>
