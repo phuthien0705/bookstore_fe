@@ -50,12 +50,30 @@ const ProductDetail = () => {
   } = useGetRelativeBook(data, !!data);
 
   const { data: reviews, isLoading: isReviewsLoading } = useGetListReview(data?.id || '');
-
+  const [ratingCounts, setRatingCounts] = useState<any[]>([]);
 
   const numberOfLine = () => {
     if (desRef?.current) return desRef?.current?.clientHeight / 20;
     return 0;
   };
+
+  useEffect(() => {
+    // Đếm số lượng đánh giá cho mỗi số sao
+    const countRatings = () => {
+      const counts = Array(5).fill(0); // Khởi tạo mảng đếm với giá trị ban đầu 0
+
+      if (reviews) {
+        reviews.forEach((review: any) => {
+          // Tăng số lượng đánh giá cho mỗi số sao tương ứng
+          counts[review.rating - 1]++;
+        });
+      }
+
+      setRatingCounts(counts);
+    };
+
+    countRatings();
+  }, [reviews]);
 
   useEffect(() => {
     if (router.isReady) {
@@ -302,16 +320,16 @@ const ProductDetail = () => {
                     alignItems="center"
                     mb={2}
                   >
-                    {[5, 4, 3, 2, 1].map((rating) => (
+                    {ratingCounts.map((count, index) => (
                       <Box
-                        key={rating}
+                        key={index}
                         mr={1}
                         display="inline-flex"
                         alignItems="center"
                         sx={{ whiteSpace: 'nowrap', mb: 0.5 }}
                       >
                         <Typography variant="body2" sx={{ mr: 1 }}>
-                          {rating} sao
+                          {index + 1} sao
                         </Typography>
                         <Box
                           sx={{
@@ -323,7 +341,7 @@ const ProductDetail = () => {
                         >
                           <Box
                             sx={{
-                              width: `${20}%`,
+                              width: `${count / reviews?.length * 100}%`,
                               height: '100%',
                               bgcolor: 'primary.main',
                               borderRadius: 5,
@@ -335,7 +353,7 @@ const ProductDetail = () => {
                           align="center"
                           sx={{ ml: 1 }}
                         >
-                          {20}%
+                          {Math.round(count / reviews?.length * 100)}%
                         </Typography>
                       </Box>
                     ))}
