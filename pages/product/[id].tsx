@@ -307,7 +307,7 @@ const ProductDetail = () => {
                         fontSize={50}
                         lineHeight={0.8}
                       >
-                        {2}
+                        {data?.rating ?? 0}
                       </Typography>
                       <Typography
                         variant="body1"
@@ -324,7 +324,7 @@ const ProductDetail = () => {
                       readOnly
                     />
                     <Typography variant="body2">
-                      ({reviews?.datas?.length} đánh giá)
+                      ({reviews && reviews.totalResults} đánh giá)
                     </Typography>
                   </Box>
 
@@ -473,7 +473,7 @@ const ProductDetail = () => {
                   variant="outlined"
                   shape="rounded"
                   color="primary"
-                  count={data?.totalPages ?? 0}
+                  count={reviews?.totalPages ?? 0}
                   page={page}
                   onChange={(event, value) => setPage(value)}
                 />
