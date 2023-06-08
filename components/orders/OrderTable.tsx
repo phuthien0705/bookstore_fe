@@ -54,7 +54,8 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
 
   return (
     <div>
-      {(sortedItems || []).map((row: any) => (
+      {(sortedItems || []).map((row: any) => {const colors = statusMaping(row?.status).color; return(
+
         <>
           <TableContainer
             className="shadow"
@@ -67,10 +68,14 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
                 <TableRow>
                   <TableCell>
                     <Stack display="flex" direction="row" alignItems="center">
-                      {statusMaping(row?.status).icon}
-                      <Typography ml={2} variant="h4">
+
+                      <Box style={{
+              backgroundColor: colors,
+              padding: '5px 3px ',
+              borderRadius: 6,
+            }}><Typography  variant="h4" textAlign="center"  >      {statusMaping(row?.status).icon}{'  '}
                         {statusMaping(row?.status).content}
-                      </Typography>
+                      </Typography></Box>
                     </Stack>
                   </TableCell>
                   <TableCell>
@@ -245,7 +250,7 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
             </Table>
           </TableContainer>
         </>
-      ))}
+      )})}
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1.5, mb: 2 }}>
         <Pagination
           className="shadow"

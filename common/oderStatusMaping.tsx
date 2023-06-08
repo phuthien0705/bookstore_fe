@@ -4,8 +4,8 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import ContentPasteGoIcon from '@mui/icons-material/ContentPasteGo';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-
+import DoneIcon from '@mui/icons-material/Done';
+import ClearIcon from '@mui/icons-material/Clear';
 const statusMaping = (
   title: string
 ): { content: string; color: string; icon: React.ReactNode | null } => {
@@ -32,13 +32,13 @@ const statusMaping = (
       return {
         content: 'Giao thành công',
         color: '#56F000',
-        icon: <CheckBoxIcon sx={{ color: 'black' }} />,
+        icon: <DoneIcon sx={{ color: 'black' }} />,
       };
     case EOrderStatus.CANCELED:
       return {
         content: 'Đã Hủy',
         color: '#A4ABB6',
-        icon: <LocalShippingIcon sx={{ color: 'black' }} />,
+        icon: <ClearIcon sx={{ color: 'black'  }} />,
       };
     default:
       return {

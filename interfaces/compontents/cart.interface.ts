@@ -71,3 +71,6 @@ export interface IOrderTable {
   setPage: Dispatch<SetStateAction<number>>;
   data: any;
 }
+export interface IOrderDetailTable {
+  data: any;
+}

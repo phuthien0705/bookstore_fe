@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { useMutation } from 'react-query';
 
 import { Box, Pagination, Stack, Typography } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import LinearProgress from '@mui/material/LinearProgress';
 
 import AdminLayout from '../../layout/AdminLayout';
@@ -54,7 +54,7 @@ const OrderManagement = () => {
     refetch();
   }, [refetch]);
 
-  const columns = [
+  const columns : GridColDef[] = [
     {
       field: 'orderId',
       headerName: 'Order ID',
@@ -76,10 +76,10 @@ const OrderManagement = () => {
       },
     },
     {
-      field: 'orderDate',
-      headerName: 'Date',
+      field: 'date',
+      headerName: 'Order Date',
       description: 'Ngày đặt hàng',
-      width: 150,
+      flex: 1,
       renderCell: (params: any) => {
         return <p>{dayjs(params?.row?.date).format('DD/MM/YYYY')}</p>;
       },
@@ -87,15 +87,16 @@ const OrderManagement = () => {
 
     {
       field: 'userName',
-      headerName: 'Customer',
+      headerName: 'Customer Name',
       description: 'Tên khách hàng',
-      width: 100,
+      width: 180,
     },
+
     {
       field: 'status',
       headerName: 'Status',
       description: 'Trạng thái',
-      width: 200,
+      width: 250,
       renderCell: (params: any) => {
         const colors = statusMaping(params?.row?.status).color;
         return (
@@ -106,9 +107,8 @@ const OrderManagement = () => {
               borderRadius: 8,
             }}
           >
-            <Typography>
+            <Typography color="white" fontWeight="bold">
               {statusMaping(params?.row?.status).icon}
-              {'  '}
               {statusMaping(params?.row?.status).content}
             </Typography>
           </Box>
@@ -128,7 +128,7 @@ const OrderManagement = () => {
       field: 'totalPrice',
       headerName: 'Total Price',
       description: 'Tổng tiền đơn hàng',
-      width: 100,
+      width: 150,
       renderCell: (params: any) => (
         <p>{moneyFormat(params?.row?.totalPrice)}</p>
       ),
@@ -141,7 +141,7 @@ const OrderManagement = () => {
       renderCell: (params: any) => {
         const colors = paymentMaping(params?.row?.paymentMethod).color;
         return (
-          <Typography color={'colors'}>
+          <Typography color={colors}>
             {paymentMaping(params?.row?.paymentMethod).icon}
             {'  '}
             {paymentMaping(params?.row?.paymentMethod).content}
@@ -180,11 +180,11 @@ const OrderManagement = () => {
             justifyContent={{ xs: 'space-between', sm: 'space-between' }}
             spacing={1}
           >
-            {/* <SearchAdminSection
+            <SearchAdminSection
               value={searchContent}
               setValue={setSearchContent}
               setPage={setPage}
-            /> */}
+            />
           </Stack>
           <Box mt={2} sx={{ height: 610, width: '100%' }}>
             <DataGrid
@@ -208,8 +208,8 @@ const OrderManagement = () => {
               loading={isLoading}
               columns={columns}
               rows={
-                data?.data
-                  ? data.data.map((item: any, index: number) => ({ ...item, id: index }))
+                data?.datas
+                  ? data.datas.map((item: any, index: number) => ({ ...item, id: index }))
                   : []
               }
               components={{

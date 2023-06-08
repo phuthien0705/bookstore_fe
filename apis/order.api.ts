@@ -1,5 +1,6 @@
 import { EProcessPayment } from '@/constants/processPayment';
 import httpRequest from '../services/httpRequest';
+import { EOrderStatus } from '@/interfaces/compontents/order.interface';
 
 export const getOrderOfClient = async (page: number, limit = 10) => {
   return httpRequest.get(`/orders?limit=${limit}&page=${page}`);
@@ -20,13 +21,10 @@ export const getAllUserOrder = async (page: number, limit = 10) => {
 export const getOrderDetail = async (orderId: string | string[] | undefined ) => {
   return httpRequest.get(`/orders/${orderId}`);
 };
-// export const getOrderDetail = ({ queryKey }: QueryFunctionContext) => {
-//   return httpRequest.get<IEachPostData>(`/posts/${queryKey[1]}`);
-// };
 
 export const editOrderStatus = async (
-  id: string | number | undefined,
-  data: { [key: string]: any }
+  orderId: string | number | undefined,
+  data: { [key: string]: EOrderStatus | undefined }
 ) => {
-  return httpRequest.put(`/genres/${id}`, data);
+  return httpRequest.put(`/orders/${orderId}`, data);
 };

@@ -3,47 +3,67 @@ import {
   FormControl,
   FormHelperText,
   InputLabel,
-  OutlinedInput,
   useTheme,
   Alert,
   Button,
+  Typography,
+  Select,
+  MenuItem,
 } from '@mui/material';
-import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { FC, useState } from 'react';
 import CustomModal from './CustomModal';
 import objectEquals from '../../common/objectEquals';
 import ConfirmModal from './ConfirmModal';
-import { createGenre, editGenre } from '../../apis/genre.api';
-
-import { editOrder } from '../../apis/order.api';
-
+import OrderDetailTable from '../orders/OrderDetailTable';
+import dayjs from 'dayjs';
+import { editOrderStatus } from '../../apis/order.api';
+import { EOrderStatus } from '@/interfaces/compontents/order.interface';
 import { useDispatch } from 'react-redux';
 import { toggleSnackbar } from '../../store/snackbarReducer';
 import createRequest from '../../common/createRequest';
 import { IModal } from '@/interfaces/compontents/modal.interface';
 import { useQueryClient } from 'react-query';
 import useGetOrderDetail from '../../hooks/order/useGetOrderDetail';
+import statusMaping from '../../common/oderStatusMaping';
 
-import { ORDERS } from '@/constants/queryKeyName';
+import { ORDERS, ORDERS_CLIENT } from '@/constants/queryKeyName';
 
 const OrderModal: FC<IModal> = ({ handleClose, open, currentProduct }) => {
   const theme: any = useTheme();
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
-
+  const statusCash = [
+    EOrderStatus.CANCELED,
+    EOrderStatus.PENDING,
+    EOrderStatus.SHIPPED,
+    EOrderStatus.DELIVERED,
+  ];
+  const statusOnline = [
+    EOrderStatus.CANCELED,
+    EOrderStatus.PENDING,
+    EOrderStatus.SHIPPED,
+    EOrderStatus.PAID,
+    EOrderStatus.DELIVERED,
+  ];
   const [showAlert, setShowAlert] = useState<any>(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   const order = currentProduct?.data;
-  const { data: orderDetailData, isLoading, refetch } = useGetOrderDetail(order?.orderId, !!order?.orderId);
-  console.log(orderDetailData, "$test");
-
+  const {
+    data: orderDetailData,
+    isLoading,
+    refetch,
+  } = useGetOrderDetail(order?.orderId, !!order?.orderId);
+  console.log(orderDetailData, '$test');
+  const status = orderDetailData?.status
+    ? orderDetailData?.status.EOrderStatus
+    : null;
   const initialValues = {
-    orderId: order?.orderId ? order?.orderId : '',
-    status: order?.status ? order?.status : '',
+    status,
     submit: null,
   };
+  const [statusState, setStatusOrder] = useState<any>(orderDetailData?.status);
   const handleExit = (currentValues: any) => {
     if (objectEquals(initialValues, currentValues)) {
       handleClose();
@@ -56,31 +76,37 @@ const OrderModal: FC<IModal> = ({ handleClose, open, currentProduct }) => {
   };
   return open ? (
     <>
-    {isLoading &&  <p>loading...</p>}
-      {!isLoading && <Formik
+      <Formik
         initialValues={initialValues}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
             const req = createRequest({
               status: values.status,
             });
-            await editGenre(data?.orderId, req);
+            if (order !== null) {
+              await editOrderStatus(orderDetailData?.id, req);
+            }
             setStatus({ success: true });
             setSubmitting(false);
             toast({
               type: 'success',
-              message: 'Cập nhật thành công',
+              message: `${
+                orderDetailData === null ? 'Tạo' : 'Cập nhật'
+              } thành công`,
             });
             queryClient.refetchQueries([ORDERS]);
+            queryClient.refetchQueries([ORDERS_CLIENT]);
             setTimeout(() => {
               handleClose();
             }, 1000);
           } catch (err) {
+            console.log(`values. status: `, values.status);
             console.error(err);
             toast({
               type: 'error',
-              message:
-                'Xảy ra lỗi trong quá trình cập nhật trạng thái đơn hàng',
+              message: `Xảy ra lỗi trong quá trình ${
+                order === null ? 'tạo' : 'cập nhật'
+              } trạng thái đơn hàng`,
             });
             setStatus({ success: false });
             setSubmitting(false);
@@ -95,63 +121,85 @@ const OrderModal: FC<IModal> = ({ handleClose, open, currentProduct }) => {
           isSubmitting,
           touched,
           values,
+          setValues,
         }) => (
           <CustomModal
             open={open}
             handleClose={() => {
               handleExit(values);
             }}
-            title="Chỉnh sửa trạng thái đơn hàng"
+            title={
+              orderDetailData === null
+                ? 'Đơn lỗi!'
+                : `Thông tin chi tiết đơn hàng: #BOXO${order.orderId
+                    .substr(-8)
+                    .toUpperCase()}`
+            }
           >
             <form noValidate onSubmit={handleSubmit}>
               <FormControl
                 fullWidth
-                // error={Boolean(touched.name && errors.name)}
+                error={Boolean(touched.status && errors.status)}
                 sx={{ ...theme.typography.customInput }}
               >
-                <InputLabel htmlFor="outlined-adornment-name">
-                  Tên thể loại
+                <InputLabel htmlFor="select-status">
+                  Trạng thái đơn hàng
                 </InputLabel>
-                <OutlinedInput
-                  id="outlined-adornment-name"
-                  type="text"
-                  value={values.orderId}
-                  name="name"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  label="Tên thể loại"
-                  inputProps={{}}
-                />
-                {touched.name && errors.name && (
-                  <FormHelperText error id="standard-weight-helper-text-name">
-                    {errors.name as any}
-                  </FormHelperText>
-                )}
-              </FormControl>
-              <FormControl
-                fullWidth
-                error={Boolean(touched.description && errors.description)}
-                sx={{ ...theme.typography.customInput }}
-              >
-                <InputLabel htmlFor="outlined-adornment-description">
-                  Mô tả thể loại
-                </InputLabel>
-                <OutlinedInput
-                  id="outlined-adornment-description"
-                  type="text"
-                  value={values.description}
-                  name="description"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  label="Mô tả thể loại"
-                  inputProps={{}}
-                />
-                {touched.description && errors.description && (
+
+                <Select
+                  defaultValue={order.status}
+                  id="select-status"
+                  value={values.status}
+                  label="Trạng thái đơn hàng"
+                  onChange={(event) => {
+                    console.log(event.target.value);
+                    setValues((prev) => ({
+                      ...prev,
+                      status: event.target.value,
+                    }));
+                  }}
+                >
+                  {orderDetailData?.payment?.type === 'cash_on_delivery'
+                    ? statusCash?.map(
+                        (status: EOrderStatus, _index: number) =>
+{
+  const colors =  statusMaping(status).color;
+                          return(
+                              <MenuItem
+                             key={_index}
+                             value={status}
+                           >
+                               <Typography color={colors}>
+                          {statusMaping(status).icon}
+                            {'  '}
+                            {statusMaping(status).content}
+                        </Typography>
+                           </MenuItem>
+
+
+                          )}
+                        )
+
+                    : statusOnline?.map(
+                        (status: EOrderStatus, _index: number) => { const colors =  statusMaping(status).color; return(
+
+                          <MenuItem key={_index} value={status}>
+                        <Typography color={colors}>
+                          {statusMaping(status).icon}
+                            {'  '}
+                            {statusMaping(status).content}
+                        </Typography>
+                          </MenuItem>
+
+                        )}
+                      )}
+                </Select>
+                {touched.status && errors.status && (
                   <FormHelperText
                     error
-                    id="standard-weight-helper-text-description"
+                    id="standard-weight-helper-text-publisherId"
                   >
-                    {errors.description as any}
+                    {errors.status as any}
                   </FormHelperText>
                 )}
               </FormControl>
@@ -171,7 +219,7 @@ const OrderModal: FC<IModal> = ({ handleClose, open, currentProduct }) => {
                   variant="contained"
                   color="primary"
                 >
-                  Lưu
+                  Cập nhật trạng thái
                 </Button>
                 {!!showAlert && (
                   <Alert
@@ -189,9 +237,23 @@ const OrderModal: FC<IModal> = ({ handleClose, open, currentProduct }) => {
                 )}
               </Box>
             </form>
+            <Box sx={{ mt: 2, mb: 2 }}>
+              <Typography align="center" variant="h3" sx={{ mt: 2, mb: 2 }}>
+                HÓA ĐƠN BÁN HÀNG
+              </Typography>
+              <Typography align="right" fontWeight="bold" sx={{ mt: 2, mb: 1 }}>
+                Ngày đặt hàng:{' '}
+                {dayjs(currentProduct?.data?.date).format('DD/MM/YYYY')}
+              </Typography>
+              <Typography align="right" fontWeight="bold" sx={{ mb: 2 }}>
+                Mã vận đơn: {orderDetailData?.shipping?.trackingNumber}{' '}
+              </Typography>
+              <OrderDetailTable data={orderDetailData} />
+            </Box>
           </CustomModal>
         )}
-      </Formik>}
+      </Formik>
+
       <ConfirmModal
         open={showConfirm}
         handleClose={() => {
