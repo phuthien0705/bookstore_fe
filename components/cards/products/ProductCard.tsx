@@ -140,7 +140,7 @@ const ProductCard: React.FunctionComponent<IProductCard> = ({
               <Rating
                 size="small"
                 name="read-only"
-                value={4.5}
+                value={product?.rating ?? 0}
                 readOnly
                 precision={0.5}
               />

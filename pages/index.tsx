@@ -54,11 +54,6 @@ const Home = () => {
         <link rel="alternate" href={`${hostname}`} hrefLang="x-default" />
         <link rel="alternate" href={`${hostname}`} hrefLang="vi" />
         <link rel="alternate" href={`${hostname}/en`} hrefLang="en" />
-        <link
-          rel="alternate"
-          href="http://example.com/nl-NL"
-          hrefLang="nl-NL"
-        />
       </Head>
       <HomeLayout>
         <Container
