@@ -57,12 +57,17 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
       {(sortedItems || []).map((row: any) => {const colors = statusMaping(row?.status).color; return(
 
         <>
+
           <TableContainer
             className="shadow"
             component={Paper}
             key={row.id}
             sx={{ mb: 2 }}
           >
+            <Typography  variant="h4" textAlign="center" sx={{mt: 2}}  >
+                   ĐƠN HÀNG:  #BOXO{row?.id.substr(-8).toUpperCase()}
+                      </Typography>
+
             <Table sx={{ maxWidth: 1762, marginTop: 0 }}>
               <TableHead>
                 <TableRow>
@@ -76,13 +81,15 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
             }}><Typography  variant="h4" textAlign="center"  >      {statusMaping(row?.status).icon}{'  '}
                         {statusMaping(row?.status).content}
                       </Typography></Box>
+
                     </Stack>
                   </TableCell>
                   <TableCell>
-                    <Typography textAlign="center">Đơn giá</Typography>
+
+                    <Typography textAlign="center" fontWeight="bold">Đơn giá</Typography>
                   </TableCell>
                   <TableCell colSpan={2}>
-                    <Typography textAlign="center">Thành tiền</Typography>
+                    <Typography textAlign="center" fontWeight="bold">Thành tiền</Typography>
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -243,6 +250,7 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
                       >
                         Tổng tiền: {moneyFormat(row?.totalPayment || 0)}
                       </Typography>
+
                     </Stack>
                   </TableCell>
                 </TableRow>
