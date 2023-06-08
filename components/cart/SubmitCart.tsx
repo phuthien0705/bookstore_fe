@@ -4,7 +4,6 @@ import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { makeOrder } from '@/apis/checkout.api';
 
-import { useRouter } from 'next/router';
 import {
   IEachCartData,
   ISubmitCart,
@@ -14,7 +13,6 @@ import { moneyFormat } from '@/utils/moneyFormat';
 import useGetShippingCost from '@/hooks/address/useGetShippingCost';
 import { CartItemContext } from './CartItems';
 import { EProcessPayment } from '@/constants/processPayment';
-import { METHODS } from 'http';
 
 const payMethodMaping = (method: string): { EMethod: EProcessPayment } => {
   switch (method) {
@@ -50,7 +48,6 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
 }) => {
   const dispatch = useDispatch();
   const { payMethod, setMethod } = useContext(CartItemContext);
-  const router = useRouter();
   const {
     queryReturn: { data },
   } = useGetShippingCost();
@@ -98,7 +95,6 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
         padding: '16px',
         boxShadow:
           '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
-
         '::before': {
           content: '""',
           position: 'absolute',
@@ -117,7 +113,7 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
           alignItems={'center'}
         >
           <Stack>
-            {!isUnCheckAll && (
+            {!isUnCheckAll && currentIndex !== 0 && (
               <Stack direction="row" spacing={2}>
                 <Typography
                   sx={{ fontWeight: 600, fontSize: '16px', color: '#000' }}
@@ -144,6 +140,15 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
                   ? moneyFormat(
                       isUnCheckAll
                         ? 0
+                        : currentIndex === 0
+                        ? items.reduce(
+                            (prev: number, curr: IEachCartData) =>
+                              curr.isChecked === true
+                                ? Number(prev) +
+                                  Number(curr.price) * Number(curr.quantity)
+                                : Number(prev) + 0,
+                            0
+                          )
                         : items.reduce(
                             (prev: number, curr: IEachCartData) =>
                               curr.isChecked === true
@@ -159,6 +164,7 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
           </Stack>
           <Stack direction={'row'} spacing={1}>
             <Button
+              variant="inherit"
               sx={{ display: currentIndex === 0 ? 'none' : 'block' }}
               onClick={() => {
                 setCurrentIndex((prev: any) => prev - 1);
