@@ -1,7 +1,7 @@
+import { ITotalSold } from '@/interfaces/compontents/statistic.interface';
 import { Box, Skeleton, Typography, useTheme } from '@mui/material';
-import { ITotalOrder } from '@/interfaces/compontents/statistic.interface';
 
-const TotalOrder: React.FunctionComponent<ITotalOrder> = ({
+const TotalSold: React.FunctionComponent<ITotalSold> = ({
   data,
   isLoading,
 }) => {
@@ -10,7 +10,7 @@ const TotalOrder: React.FunctionComponent<ITotalOrder> = ({
     if (data.length === 0) return 0;
     let total = 0;
     (data || [])?.forEach((item) => {
-      total += item.totalOrder;
+      total += item.totalSold;
     });
     return total;
   };
@@ -29,14 +29,14 @@ const TotalOrder: React.FunctionComponent<ITotalOrder> = ({
       ) : (
         <Box sx={{ padding: theme.spacing(2) }}>
           <Typography sx={{ fontWeight: 600, color: 'rgba(0,0,0,0.5)' }}>
-            Đơn hàng
+            Số sách bán ra
           </Typography>
           <Typography sx={{ fontWeight: 600, color: '#000' }}>
-            {calcTotalEarning()} đơn hàng
+            {calcTotalEarning()} quyển
           </Typography>
         </Box>
       )}
     </Box>
   );
 };
-export default TotalOrder;
+export default TotalSold;

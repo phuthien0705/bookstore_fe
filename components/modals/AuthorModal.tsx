@@ -63,7 +63,7 @@ const AuthorModal: FC<IModal> = ({ handleClose, open, currentProduct }) => {
           ),
           deathDate: Yup.string().max(255, 'Ngày mất tác giả tối đa 255 ký tự'),
         })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+        onSubmit={async (values, { setStatus, setSubmitting }) => {
           try {
             const req = createRequest({
               name: values.name,
@@ -107,7 +107,6 @@ const AuthorModal: FC<IModal> = ({ handleClose, open, currentProduct }) => {
           isSubmitting,
           touched,
           values,
-          setValues,
         }) => (
           <CustomModal
             open={open}

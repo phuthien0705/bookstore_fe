@@ -47,7 +47,7 @@ const ItemTab: React.FunctionComponent<{
     id: 'cart.deleteAllItemQuestion',
   });
   const deleteItemQuestionContent = intl.formatMessage({
-    id: 'cart.deleteItemQuestion',
+    id: 'cart.deleteItem',
   });
 
   const { mutate: updateCartFunc } = useMutation(

@@ -1,13 +1,17 @@
+import { Box, Skeleton, Typography, useTheme } from '@mui/material';
 import { ITotalEarning } from '@/interfaces/compontents/statistic.interface';
 import { moneyFormat } from '@/utils/moneyFormat';
-import { Box, Typography } from '@mui/material';
 
-const TotalEarning: React.FunctionComponent<ITotalEarning> = ({ data }) => {
+const TotalEarning: React.FunctionComponent<ITotalEarning> = ({
+  data,
+  isLoading,
+}) => {
+  const theme = useTheme();
   const calcTotalEarning = () => {
     if (data?.length === 0) return 0;
     let total = 0;
-    (data || [])?.forEach((item: any) => {
-      total += item?.sales;
+    data.forEach((item) => {
+      total += item.totalRevenue;
     });
     return total;
   };
@@ -16,19 +20,23 @@ const TotalEarning: React.FunctionComponent<ITotalEarning> = ({ data }) => {
       className="shadow"
       sx={{
         backgroundColor: '#fff',
-        p: 2,
-        borderRadius: '8px',
+        borderRadius: theme.spacing(1),
         display: 'flex',
         flexDirection: 'column',
-        rowGap: '10px',
       }}
     >
-      <Typography sx={{ fontWeight: 600, color: '#000' }}>
-        {moneyFormat(calcTotalEarning())}
-      </Typography>
-      <Typography sx={{ fontWeight: 600, color: 'rgba(0,0,0,0.5)' }}>
-        Số tiền thu được
-      </Typography>
+      {isLoading ? (
+        <Skeleton variant="rectangular" width={'100%'} height={100} />
+      ) : (
+        <Box sx={{ padding: theme.spacing(2) }}>
+          <Typography sx={{ fontWeight: 600, color: 'rgba(0,0,0,0.5)' }}>
+            Số tiền thu được
+          </Typography>{' '}
+          <Typography sx={{ fontWeight: 600, color: '#000' }}>
+            {moneyFormat(calcTotalEarning())}
+          </Typography>
+        </Box>
+      )}
     </Box>
   );
 };

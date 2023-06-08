@@ -67,6 +67,6 @@
   "confirm": "Confirm",
   "cart.deteleItem": "Delete Item",
   "cart.deleteAllItem": "Delete All Items",
-  "cart.deleteItemQuestion": "Do you want to delete the selected product?",
+  "cart.deleteItem": "Do you want to delete the selected product?",
   "cart.deleteAllItemQuestion": "Do you want to delete all selected products?"
 }
