@@ -33,7 +33,7 @@ const paymentMapping = (
       return {
         content: 'Tài khoản Paypal',
         color: '#40a1bf',
-        icon: <IconBrandPaypal sx={{ color: '#40a1bf' }} />,
+        icon: <IconBrandPaypal  color={'#40a1bf'}  />,
       };
     default:
       return {
