@@ -266,7 +266,7 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
           variant="outlined"
           shape="rounded"
           color="primary"
-          count={data?.meta?.last_page || 0}
+          count={data?.totalPages ?? 0}
           page={page}
           onChange={(event, value) => setPage(value)}
         />
