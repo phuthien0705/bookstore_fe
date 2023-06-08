@@ -6,6 +6,7 @@ import {
   Button,
   Divider,
   Link,
+  Pagination,
   Paper,
   Rating,
   Stack,
@@ -23,15 +24,14 @@ import ReviewItem from '@/components/review/ReviewItem';
 import CreateIcon from '@mui/icons-material/Create';
 import authService from '@/services/authService';
 import ReviewModal from '@/components/modals/ReviewModal';
-import { getBookReviews } from '@/apis/review.api';
-import { useMutation } from 'react-query';
-import useGetListReview from '@/hooks/review/useGetListReview' 
+import useGetListReview from '@/hooks/review/useGetListReview';
 
 const ProductDetail = () => {
   const theme = useTheme();
   const router = useRouter();
   const [id, setId] = useState(null);
   const desRef = useRef<HTMLDivElement>(null);
+  const [page, setPage] = useState<number>(1);
   const [hiddenDescriptionFlag, setHiddenDescriptionFlag] =
     useState<boolean>(false);
   const [hiddenDescription, setHiddenDescription] = useState<boolean>(false);
@@ -49,7 +49,11 @@ const ProductDetail = () => {
     isFetching: isSlideFetching,
   } = useGetRelativeBook(data, !!data);
 
-  const { data: reviews, isLoading: isReviewsLoading } = useGetListReview(data?.id || '');
+  const {
+    data: reviews,
+    isLoading: isReviewsLoading,
+    refetch,
+  } = useGetListReview(data?.id ?? '', page, 5);
   const [ratingCounts, setRatingCounts] = useState<any[]>([]);
 
   const numberOfLine = () => {
@@ -63,7 +67,7 @@ const ProductDetail = () => {
       const counts = Array(5).fill(0); // Khởi tạo mảng đếm với giá trị ban đầu 0
 
       if (reviews) {
-        reviews.forEach((review: any) => {
+        reviews.datas.forEach((review) => {
           // Tăng số lượng đánh giá cho mỗi số sao tương ứng
           counts[review.rating - 1]++;
         });
@@ -91,6 +95,10 @@ const ProductDetail = () => {
   useEffect(() => {
     setIsAuthenticated(authService.isAuthenticated());
   }, []);
+
+  useEffect(() => {
+    refetch();
+  }, [page, refetch]);
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -310,13 +318,23 @@ const ProductDetail = () => {
                         /{5}
                       </Typography>
                     </Box>
-                    <Rating name="product-rating" value={2} readOnly />
-                    <Typography variant="body2">({reviews?.length} đánh giá)</Typography>
+                    <Rating
+                      name="product-rating"
+                      value={data?.rating ?? 0}
+                      readOnly
+                    />
+                    <Typography variant="body2">
+                      ({reviews?.datas?.length} đánh giá)
+                    </Typography>
                   </Box>
 
                   {/* progressBar */}
                   <Box
-                    sx={{ display: 'flex', flexDirection: 'column', ml: 4 }}
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      ml: theme.spacing(4),
+                    }}
                     alignItems="center"
                     mb={2}
                   >
@@ -326,7 +344,7 @@ const ProductDetail = () => {
                         mr={1}
                         display="inline-flex"
                         alignItems="center"
-                        sx={{ whiteSpace: 'nowrap', mb: 0.5 }}
+                        sx={{ whiteSpace: 'nowrap', mb: theme.spacing(0.5) }}
                       >
                         <Typography variant="body2" sx={{ mr: 1 }}>
                           {index + 1} sao
@@ -336,24 +354,29 @@ const ProductDetail = () => {
                             width: 250,
                             height: 10,
                             bgcolor: 'grey.300',
-                            borderRadius: 5,
+                            borderRadius: theme.spacing(5),
                           }}
                         >
                           <Box
                             sx={{
-                              width: `${count / reviews?.length * 100}%`,
+                              width: `${
+                                reviews?.datas &&
+                                (count / reviews?.datas?.length) * 100
+                              }%`,
                               height: '100%',
                               bgcolor: 'primary.main',
-                              borderRadius: 5,
+                              borderRadius: theme.spacing(5),
                             }}
                           />
                         </Box>
                         <Typography
                           variant="body2"
                           align="center"
-                          sx={{ ml: 1 }}
+                          sx={{ ml: theme.spacing(1) }}
                         >
-                          {Math.round(count / reviews?.length * 100)}%
+                          {reviews?.datas &&
+                            Math.round((count / reviews?.datas?.length) * 100)}
+                          %
                         </Typography>
                       </Box>
                     ))}
@@ -361,12 +384,18 @@ const ProductDetail = () => {
 
                   {/* addReviewButton */}
                   {isAuthenticated ? (
-                    <Box sx={{ ml: 20, display: 'flex', alignItems: 'center' }}>
+                    <Box
+                      sx={{
+                        ml: theme.spacing(20),
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                    >
                       <Button
                         variant="outlined"
                         color="primary"
                         startIcon={<CreateIcon />}
-                        sx={{ width: '300px', borderWidth: 2 }}
+                        sx={{ width: '300px', borderWidth: theme.spacing(2) }}
                         onClick={() => {
                           setOpenReviewModal(true);
                           setReviewBook({
@@ -416,8 +445,8 @@ const ProductDetail = () => {
                   px: { xs: theme.spacing(1), md: theme.spacing(1) },
                 }}
               >
-                {reviews?.length > 0 ? (
-                  reviews?.map((review:any, index:any) => (
+                {reviews?.datas && reviews.datas.length > 0 ? (
+                  reviews.datas.map((review: any, index: any) => (
                     <ReviewItem
                       key={index}
                       rating={review?.rating}
@@ -431,6 +460,24 @@ const ProductDetail = () => {
                   </Typography>
                 )}
               </Stack>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  marginTop: 1.5,
+                }}
+              >
+                <Pagination
+                  className="shadow"
+                  sx={{ p: 2, borderRadius: '6px' }}
+                  variant="outlined"
+                  shape="rounded"
+                  color="primary"
+                  count={data?.totalPages ?? 0}
+                  page={page}
+                  onChange={(event, value) => setPage(value)}
+                />
+              </Box>
             </Stack>
           </Stack>
         </Paper>

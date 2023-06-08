@@ -1,18 +1,18 @@
-import { getBookReviews } from "@/apis/review.api";
-import { BOOK_REVIEW } from "@/constants/queryKeyName";
-import { useQuery } from "react-query";
+import { getBookReviews } from '@/apis/review.api';
+import { BOOK_REVIEW } from '@/constants/queryKeyName';
+import { useQuery } from 'react-query';
 
-const useGetListReview = (id: string) => {
-    const getListQuery: any = useQuery(
-      [BOOK_REVIEW, id],
-      () => getBookReviews(id),
-      {
-        refetchOnMount: true,
-        keepPreviousData: true,
-      }
-    );
-  
-    return getListQuery;
-  };
-  
-  export default useGetListReview;
+const useGetListReview = (id: string, page: number, limit = 5) => {
+  const getListQuery = useQuery(
+    [BOOK_REVIEW, id],
+    () => getBookReviews(id, page, limit),
+    {
+      refetchOnMount: true,
+      enabled: !!id,
+    }
+  );
+
+  return getListQuery;
+};
+
+export default useGetListReview;

@@ -126,7 +126,7 @@ const ProductInfo: FC<IProductInfo> = ({ data, isLoading }) => {
                 {data?.name}
               </Typography>
               <Stack direction="row" spacing={theme.spacing(1)}>
-                <Rating value={4.5} precision={0.5} readOnly />
+                <Rating value={data?.rating ?? 0} precision={0.5} readOnly />
               </Stack>
               <Typography
                 sx={{ fontSize: '32px', color: '#000', fontWeight: 500 }}

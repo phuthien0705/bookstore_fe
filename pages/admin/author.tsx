@@ -172,7 +172,7 @@ const AuthorManagement = () => {
                 LoadingOverlay: LinearProgress,
               }}
             />
-          </Box>{' '}
+          </Box>
           <Box
             sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 1.5 }}
           >
