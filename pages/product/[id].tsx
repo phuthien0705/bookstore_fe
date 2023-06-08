@@ -509,9 +509,7 @@ const ProductDetail = () => {
             setOpenReviewModal(false);
           }}
           book={reviewBook}
-          refetchReviews={function (): void {
-            throw new Error('Function not implemented.');
-          }}
+          refetchReviews={() => refetch()}
         />
       </Box>
     </ProductLayout>
