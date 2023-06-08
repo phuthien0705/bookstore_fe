@@ -2,9 +2,11 @@ import { Button, Fab } from '@mui/material';
 import { useEffect, useState, useCallback, memo } from 'react';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { scrollToTop } from '@/utils/scrollToTop';
+import colors from './../../assets/scss/_themes-vars.module.scss';
 
 const ScrollToTopButton: React.FunctionComponent = () => {
   const [visible, setVisible] = useState<boolean>(false);
+  const color = colors;
 
   const toggleVisible = useCallback(() => {
     const scrolled = document.documentElement.scrollTop;
@@ -23,7 +25,10 @@ const ScrollToTopButton: React.FunctionComponent = () => {
   }, [toggleVisible]);
 
   return (
-    <Button sx={{ width: 'fit-content', height: 'fit-content' }}>
+    <Button
+      variant="contained"
+      sx={{ width: 'fit-content', height: 'fit-content' }}
+    >
       <Fab
         onClick={scrollToTop}
         style={{
@@ -35,6 +40,7 @@ const ScrollToTopButton: React.FunctionComponent = () => {
           height: '40px',
           justifyContent: 'center',
           alignItems: 'center',
+          backgroundColor: color.secondaryMain,
         }}
         color="secondary"
         size="small"
