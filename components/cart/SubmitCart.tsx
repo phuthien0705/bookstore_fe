@@ -164,7 +164,7 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
           </Stack>
           <Stack direction={'row'} spacing={1}>
             <Button
-              variant="inherit"
+              variant={'inherit' as any}
               sx={{ display: currentIndex === 0 ? 'none' : 'block' }}
               onClick={() => {
                 setCurrentIndex((prev: any) => prev - 1);

@@ -395,7 +395,7 @@ const ProductDetail = () => {
                         variant="outlined"
                         color="primary"
                         startIcon={<CreateIcon />}
-                        sx={{ width: '300px', borderWidth: theme.spacing(2) }}
+                        sx={{ width: '300px', borderWidth: '1px' }}
                         onClick={() => {
                           setOpenReviewModal(true);
                           setReviewBook({
