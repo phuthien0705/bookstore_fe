@@ -53,7 +53,6 @@ const ResetPasswordForm = ({
         initialValues={{
           email: '',
           password: '',
-          password_confirmation: '',
           submit: null,
         }}
         validationSchema={Yup.object().shape({
@@ -63,15 +62,15 @@ const ResetPasswordForm = ({
             .required('Mật khẩu là bắt buộc'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          if (values.password !== values.password_confirmation) {
-            setShowAlert({
-              type: 'error',
-              content: 'Mật khẩu và mật khẩu nhập lại phải trùng nhau.',
-            });
-            setStatus({ success: true });
-            setSubmitting(false);
-            return;
-          }
+          // if (values.password !== values.passwordConfirmation) {
+          //   setShowAlert({
+          //     type: 'error',
+          //     content: 'Mật khẩu và mật khẩu nhập lại phải trùng nhau.',
+          //   });
+          //   setStatus({ success: true });
+          //   setSubmitting(false);
+          //   return;
+          // }
           try {
             const req = {
               password: values.password,
@@ -149,7 +148,6 @@ const ResetPasswordForm = ({
                 </FormHelperText>
               )}
             </FormControl>
-
             {errors.submit && (
               <Box sx={{ mt: 3 }}>
                 <FormHelperText error>{errors.submit}</FormHelperText>
@@ -166,7 +164,7 @@ const ResetPasswordForm = ({
                 variant="contained"
                 color="secondary"
               >
-                Gửi email
+               Đặt lại mật khẩu
               </Button>
 
               {!!showAlert && (
