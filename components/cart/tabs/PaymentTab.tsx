@@ -1,4 +1,4 @@
-import { SyntheticEvent, useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import {
   Grid,
   Typography,
@@ -8,11 +8,11 @@ import {
   FormControlLabel,
   FormControl,
   RadioGroup,
-  FormLabel,
   Radio,
 } from '@mui/material';
 import { IconBrandPaypal } from '@tabler/icons';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useQueryClient } from 'react-query';
 import ItemTable from '../ItemTable';
 import ItemTableMobile from '../ItemTableMobile';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -25,6 +25,7 @@ import AddressModal from '@/components/modals/AddressModal';
 import LinearProgress from '@mui/material/LinearProgress';
 import { IEachAddressOfUserData } from '@/interfaces/address.interface';
 import { CartItemContext } from '../CartItems';
+import { SHIPPING_COST } from '@/constants/queryKeyName';
 
 const PaymentTab: React.FunctionComponent<IPaymentTab> = ({
   data,
@@ -32,6 +33,7 @@ const PaymentTab: React.FunctionComponent<IPaymentTab> = ({
   refetchAddress,
   isLoading,
 }) => {
+  const client = useQueryClient();
   const { payMethod, setMethod } = useContext(CartItemContext);
   const matches = useMediaQuery('(min-width:900px)');
   const [openAddressModal, setOpenAddressModal] = useState<boolean>(false);
@@ -45,7 +47,7 @@ const PaymentTab: React.FunctionComponent<IPaymentTab> = ({
     if (!defaultAddress)
       return (
         <div>
-          Chưa có địa chỉ{' '}
+          Chưa có địa chỉ
           <Typography
             color="primary"
             sx={{
@@ -192,6 +194,7 @@ const PaymentTab: React.FunctionComponent<IPaymentTab> = ({
         open={openAddressModal}
         handleClose={() => {
           setOpenAddressModal(false);
+          client.refetchQueries([SHIPPING_COST]);
         }}
         listAddress={listAddress ?? []}
         refetchAddress={refetchAddress}

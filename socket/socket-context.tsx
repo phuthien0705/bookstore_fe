@@ -54,7 +54,6 @@ const SocketsProvider = ({ children }: { children: ReactNode }) => {
       },
     });
     setSocket(socket);
-
     setBackdrop(true);
     bindSocketEvent(socket);
     socket.connect();

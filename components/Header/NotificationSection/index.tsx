@@ -17,8 +17,8 @@ import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import authService from '@/services/authService';
-import useGetListOrder from '@/hooks/client/useGetListOrder';
 import { SocketContext } from '@/socket/socket-context';
+import useNotifications from '@/hooks/noti/useNotification';
 export default function NotificationSection() {
   const theme = useTheme();
   const router = useRouter();
@@ -36,7 +36,7 @@ export default function NotificationSection() {
   const handleClickLogin = () => {
     router && router.push({ pathname: '/login' });
   };
-  const { data: orderData, isLoading } = useGetListOrder(page, 5);
+  const { data: notificationData, isLoading } = useNotifications();
   return (
     <Box
       sx={{
@@ -109,23 +109,23 @@ export default function NotificationSection() {
           </ListItemButton>
         ) : (
           <MenuList sx={{ padding: 0 }}>
-            {orderData &&
-              orderData?.datas?.map((i: any, index: number) => (
+            {notificationData &&
+              notificationData?.map((i, index: number) => (
                 <>
-                  <ListItemButton key={i?.id}>
-                    {i?.status === 'pending' ? (
+                  <ListItemButton key={i._id}>
+                    {i?.orderStatus === 'pending' && i?.type === 'order' ? (
                       <ListItemText
                         primary={
                           <Typography variant="body2">
-                            Đơn hàng <b>{i?.id}</b> đang được xử lý
+                            Đơn hàng <b>{i?._id}</b> đang được xử lý
                           </Typography>
                         }
                       />
-                    ) : i?.status === 'canceled' ? (
+                    ) : i?.orderStatus === 'canceled' && i?.type === 'order' ? (
                       <ListItemText
                         primary={
                           <Typography variant="body2">
-                            Đơn hàng <b>{i?.id}</b> đã bị hủy
+                            Đơn hàng <b>{i?._id}</b> đã bị hủy
                           </Typography>
                         }
                       />
@@ -133,13 +133,13 @@ export default function NotificationSection() {
                       <ListItemText
                         primary={
                           <Typography variant="body2">
-                            Đơn hàng <b>{i?.id}</b> đã giao hàng thành công
+                            Đơn hàng <b>{i?._id}</b> đã giao hàng thành công
                           </Typography>
                         }
                       />
                     )}
                   </ListItemButton>
-                  {index !== orderData?.datas?.length - 1 && <Divider />}
+                  {index !== notificationData?.length - 1 && <Divider />}
                 </>
               ))}
           </MenuList>

@@ -25,4 +25,4 @@ export const POST = 'post';
 export const SHIPPING_COST = 'shipping-cost';
 export const POST_DETAIL = 'post-detail';
 export const ORDER_DETAIL = 'order-detail';
-
+export const NOTIFICATION = 'notification';
