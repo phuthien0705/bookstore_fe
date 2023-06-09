@@ -4,6 +4,7 @@ import {
   Box,
   ButtonBase,
   CircularProgress,
+  Divider,
   ListItemButton,
   ListItemText,
   Menu,
@@ -13,18 +14,21 @@ import {
 } from '@mui/material';
 import { IconBell } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import authService from '@/services/authService';
-import useGetOrderAllUser from '@/hooks/order/useGetOrderAllUser';
+import useGetListOrder from '@/hooks/client/useGetListOrder';
+import { SocketContext } from '@/socket/socket-context';
 export default function NotificationSection() {
   const theme = useTheme();
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const { haveNoti, setHaveNoti } = useContext(SocketContext);
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
+    haveNoti && setHaveNoti(false);
   };
   const handleClose = () => {
     setAnchorEl(null);
@@ -32,8 +36,7 @@ export default function NotificationSection() {
   const handleClickLogin = () => {
     router && router.push({ pathname: '/login' });
   };
-  const { data: orderData, isLoading } = useGetOrderAllUser(page, 5);
-  const data: any = [];
+  const { data: orderData, isLoading } = useGetListOrder(page, 5);
   return (
     <Box
       sx={{
@@ -47,7 +50,7 @@ export default function NotificationSection() {
         className="shadow"
         id="notification-button"
       >
-        <Badge badgeContent={data ? data?.length : 0} color="primary">
+        <Badge badgeContent={haveNoti ? 1 : 0} color="primary">
           <Avatar
             variant="rounded"
             sx={{
@@ -78,6 +81,11 @@ export default function NotificationSection() {
         MenuListProps={{
           'aria-labelledby': 'notification-button',
         }}
+        PaperProps={{
+          style: {
+            width: '30ch',
+          },
+        }}
       >
         {isLoading ? (
           <ListItemButton selected={false} onClick={handleClickLogin}>
@@ -102,22 +110,37 @@ export default function NotificationSection() {
         ) : (
           <MenuList sx={{ padding: 0 }}>
             {orderData &&
-              orderData?.datas?.map((i: any) => (
-                <ListItemButton
-                  key={i?.orderId}
-                  selected={router.pathname.includes('/admin')}
-                >
-                  {/* <ListItemIcon>
-                    <IconAdjustments stroke={1.5} size="1.3rem" />
-                  </ListItemIcon> */}
-                  <ListItemText
-                    primary={
-                      <Typography variant="body2">
-                        Đơn hàngĐơn hàng {i?.orderId}
-                      </Typography>
-                    }
-                  />
-                </ListItemButton>
+              orderData?.datas?.map((i: any, index: number) => (
+                <>
+                  <ListItemButton key={i?.id}>
+                    {i?.status === 'pending' ? (
+                      <ListItemText
+                        primary={
+                          <Typography variant="body2">
+                            Đơn hàng <b>{i?.id}</b> đang được xử lý
+                          </Typography>
+                        }
+                      />
+                    ) : i?.status === 'canceled' ? (
+                      <ListItemText
+                        primary={
+                          <Typography variant="body2">
+                            Đơn hàng <b>{i?.id}</b> đã bị hủy
+                          </Typography>
+                        }
+                      />
+                    ) : (
+                      <ListItemText
+                        primary={
+                          <Typography variant="body2">
+                            Đơn hàng <b>{i?.id}</b> đã giao hàng thành công
+                          </Typography>
+                        }
+                      />
+                    )}
+                  </ListItemButton>
+                  {index !== orderData?.datas?.length - 1 && <Divider />}
+                </>
               ))}
           </MenuList>
         )}

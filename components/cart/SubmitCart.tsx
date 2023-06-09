@@ -13,6 +13,7 @@ import { moneyFormat } from '@/utils/moneyFormat';
 import useGetShippingCost from '@/hooks/address/useGetShippingCost';
 import { CartItemContext } from './CartItems';
 import { EProcessPayment } from '@/constants/processPayment';
+import { SocketContext } from '@/socket/socket-context';
 
 const payMethodMaping = (method: string): { EMethod: EProcessPayment } => {
   switch (method) {
@@ -51,7 +52,7 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
   const {
     queryReturn: { data },
   } = useGetShippingCost();
-
+  const { setHaveNoti } = useContext(SocketContext);
   const isUnCheckAll = items.every(
     (item: IEachCartData) => item.isChecked === false
   );
@@ -75,6 +76,7 @@ const SubmitCart: React.FunctionComponent<ISubmitCart> = ({
         toast({ type: 'success', message: 'Mua hàng thành công' });
         setCurrentIndex(0);
         refetchListCart();
+        setHaveNoti(true);
       },
       onError: () => {
         toast({
