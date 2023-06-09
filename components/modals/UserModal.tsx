@@ -33,7 +33,7 @@ const UserModal: FC<IModal> = ({
   };
 
   const { mutate: assginRoleFunc } = useMutation(
-    (data: { user_id: number; role_id: number }) => assignRole(data),
+    (data: { userId: string; role: string }) => assignRole(data),
     {
       onSuccess: () => {
         toast({
@@ -51,7 +51,7 @@ const UserModal: FC<IModal> = ({
   );
 
   const { mutate: removeRoleFunc } = useMutation(
-    (data: { id: string; roles: string[] }) => removeRole(data),
+    (data: { userId: string; role: string }) => removeRole(data),
     {
       onSuccess: () => {
         toast({
@@ -93,9 +93,9 @@ const UserModal: FC<IModal> = ({
                 checked: boolean
               ) => {
                 if (checked) {
-                  assginRoleFunc({ user_id: data?.id, role_id: 1 });
+                  assginRoleFunc({ userId: data?.id, role: 'user' });
                 } else {
-                  removeRoleFunc({ user_id: data?.id, role_id: 1 });
+                  removeRoleFunc({ userId: data?.id, role: 'user' });
                 }
                 setValues((prev) => ({ ...prev, user: checked }));
               }}
@@ -110,9 +110,9 @@ const UserModal: FC<IModal> = ({
                 checked: boolean
               ) => {
                 if (checked) {
-                  assginRoleFunc({ user_id: data?.id, role_id: 2 });
+                  assginRoleFunc({ userId: data?.id, role: 'manager' });
                 } else {
-                  removeRoleFunc({ user_id: data?.id, role_id: 2 });
+                  removeRoleFunc({ userId: data?.id, role: 'manager' });
                 }
                 setValues((prev) => ({
                   ...prev,
@@ -130,9 +130,9 @@ const UserModal: FC<IModal> = ({
                 checked: boolean
               ) => {
                 if (checked) {
-                  assginRoleFunc({ user_id: data?.id, role_id: 3 });
+                  assginRoleFunc({ userId: data?.id, role: 'admin' });
                 } else {
-                  removeRoleFunc({ user_id: data?.id, role_id: 3 });
+                  removeRoleFunc({ userId: data?.id, role: 'admin' });
                 }
                 setValues((prev) => ({
                   ...prev,

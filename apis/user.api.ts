@@ -32,9 +32,9 @@ export const activeUser = async (data: any) => {
 export const unactiveUser = async (data: any) => {
   return httpRequest.put('/users/deactivate', data);
 };
-export const assignRole = async (data: any) => {
+export const assignRole = async (data: { userId: string; role: string }) => {
   return httpRequest.put('/users/assign-role', data);
 };
-export const removeRole = async (data: any) => {
+export const removeRole = async (data: { userId: string; role: string }) => {
   return httpRequest.put('/users/remove-role', data);
 };
