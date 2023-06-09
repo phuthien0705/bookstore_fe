@@ -11,7 +11,7 @@ const createFormDataRequest = (req: { [key: string]: any }) => {
       // const arrayJson = JSON.stringify(cloneReq[key]);
       // formData.append(key, arrayJson);
       cloneReq[key].forEach((item: any) => {
-        formData.append(key, item);
+        if (!!item) formData.append(key, item);
       });
     } else {
       formData.append(key, cloneReq[key]);
