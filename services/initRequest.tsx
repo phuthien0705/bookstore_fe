@@ -5,6 +5,8 @@ import {
   setCredentialsToCookies,
 } from '@/common/authFunction';
 import { postGetRefreshToken } from '@/apis/refresh.api';
+import { checkNullish } from '@/utils/checkNullish';
+import Cookies from 'js-cookie';
 
 export type IConfig = AxiosRequestConfig;
 
@@ -23,14 +25,15 @@ export const axiosInstance = axios.create(requestConfig);
 
 async function middlewareRefresh(error: AxiosError) {
   try {
-    const { data } = await postGetRefreshToken();
-    setCredentialsToCookies({
-      accessToken: data.access.token,
-      refreshToken: data.refresh.token,
-    });
-
-    if (error?.config?.headers)
-      error.config.headers.Authorization = `Bearer ${data.access.token}`;
+    if (checkNullish(Cookies.get('refreshToken'))) {
+      const { data } = await postGetRefreshToken();
+      setCredentialsToCookies({
+        accessToken: data.access.token,
+        refreshToken: data.refresh.token,
+      });
+      if (error?.config?.headers)
+        error.config.headers.Authorization = `Bearer ${data.access.token}`;
+    }
   } catch (error) {
     clearCookiesAndLocalStorage();
     window.location.replace('/login');
