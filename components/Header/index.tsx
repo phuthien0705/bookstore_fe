@@ -226,7 +226,9 @@ const Header: FC<IHeader> = ({
             />
           )}
           {/* noti section */}
-          {!hideNoti && <NotificationSection />}
+          {!hideNoti && !router.pathname.includes('/admin') && (
+            <NotificationSection />
+          )}
 
           {/* profile section */}
           <ProfileSection />
