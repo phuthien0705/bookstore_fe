@@ -109,7 +109,7 @@ const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
             setStatus({ success: true });
             setSubmitting(false);
             setTimeout(() => {
-              router.push('/login');
+              router.push('/');
             }, 3000);
           } catch (err: any) {
             console.error(err);
