@@ -6,7 +6,6 @@ export default function useGetShippingCost() {
   const queryReturn = useQuery({
     queryKey: [SHIPPING_COST],
     queryFn: getShippingCost,
-    refetchOnMount: true,
   });
 
   return { queryReturn };
