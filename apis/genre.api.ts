@@ -18,7 +18,7 @@ export const getAllGenre = async (
 };
 export const getAllGenreClient = async () => {
   return httpRequest.get<IPaginationResponse<IEachGenreData>>(
-    '/genres?limit=100'
+    '/genres?limit=100&page=1'
   );
 };
 export const editGenre = async (

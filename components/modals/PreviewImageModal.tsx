@@ -37,6 +37,7 @@ export const PreviewImageModal = ({
                 srcSet={`${item.url}`}
                 alt={item._id}
                 loading="lazy"
+                referrerPolicy="no-referrer"
               />
             </ImageListItem>
           ))}
