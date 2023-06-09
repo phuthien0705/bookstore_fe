@@ -13,7 +13,6 @@ import {
   InputLabel,
   OutlinedInput,
   Typography,
-  useMediaQuery,
 } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -27,6 +26,7 @@ import { login, register } from '../../apis/auth.api';
 import authService from '../../services/authService';
 import { LoadingButton } from '@mui/lab';
 import { SocketContext } from '@/socket/socket-context';
+import { useRouter } from 'next/router';
 
 const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
   const theme: any = useTheme();
@@ -40,7 +40,7 @@ const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
   } | null>(null);
 
   const { handleConnect } = useContext(SocketContext);
-
+  const router = useRouter();
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -103,10 +103,14 @@ const AuthRegisterForm = ({ ...others }: { [others: string]: unknown }) => {
             setShowAlertCheckMail({
               type: 'success',
               message:
-                'Đăng ký thành công vui lòng kiểm tra Email để kích hoạt tài khoản',
+                'Đăng ký thành công, bạn sẽ được chuyển về trang đăng nhập sau 3 giây.',
             });
+            handleConnect();
             setStatus({ success: true });
             setSubmitting(false);
+            setTimeout(() => {
+              router.push('/login');
+            }, 3000);
           } catch (err: any) {
             console.error(err);
             setShowAlertCheckMail({
