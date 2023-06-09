@@ -44,6 +44,12 @@ const ResetPasswordForm = ({
   ) => {
     event.preventDefault();
   };
+
+  const handleMouseDownPasswordConfirmation: MouseEventHandler<HTMLButtonElement> = (
+    event
+  ) => {
+    event.preventDefault();
+  };
   const handleClickShowPasswordConfirmation = () => {
     setShowPasswordConfirmation((i) => !i);
   };
@@ -53,6 +59,7 @@ const ResetPasswordForm = ({
         initialValues={{
           email: '',
           password: '',
+          passwordConfirm: '',
           submit: null,
         }}
         validationSchema={Yup.object().shape({
@@ -61,16 +68,22 @@ const ResetPasswordForm = ({
             .max(255, 'Mật khẩu tối đa 255 ký tự')
             .required('Mật khẩu là bắt buộc'),
         })}
+        validationSchema={Yup.object().shape({
+          passwordConfirm: Yup.string()
+            .min(8, 'Mật khẩu phải ít nhất 8 ký tự')
+            .max(255, 'Mật khẩu tối đa 255 ký tự')
+            .required('Mật khẩu là bắt buộc'),
+        })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          // if (values.password !== values.passwordConfirmation) {
-          //   setShowAlert({
-          //     type: 'error',
-          //     content: 'Mật khẩu và mật khẩu nhập lại phải trùng nhau.',
-          //   });
-          //   setStatus({ success: true });
-          //   setSubmitting(false);
-          //   return;
-          // }
+          if (values.password !== values.passwordConfirm) {
+            setShowAlert({
+              type: 'error',
+              content: 'Mật khẩu và mật khẩu nhập lại phải trùng nhau.',
+            });
+            setStatus({ success: true });
+            setSubmitting(false);
+            return;
+          }
           try {
             const req = {
               password: values.password,
@@ -148,6 +161,48 @@ const ResetPasswordForm = ({
                 </FormHelperText>
               )}
             </FormControl>
+
+            <FormControl
+              fullWidth
+              error={Boolean(touched.passwordConfirm && errors.passwordConfirm)}
+              sx={{ ...theme.typography.customInput }}
+            >
+              <InputLabel htmlFor="outlined-adornment-passwordConfirm-login">
+              Nhập lại mật khẩu
+              </InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-passwordConfirm-login"
+                type={showPasswordConfirmation ? 'text' : 'password'}
+                value={values.passwordConfirm}
+                name="passwordConfirm"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="outlined-adornment-passwordConfirm-login"
+                      onClick={handleClickShowPasswordConfirmation}
+                      onMouseDown={handleMouseDownPasswordConfirmation}
+                      edge="end"
+                      size="large"
+                    >
+                      {showPasswordConfirmation ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Nhập lại mật khẩu"
+                inputProps={{}}
+              />
+              {touched.passwordConfirm && errors.passwordConfirm && (
+                <FormHelperText
+                  error
+                  id="standard-weight-helper-text-passwordConfirm-login"
+                >
+                  {errors.passwordConfirm}
+                </FormHelperText>
+              )}
+            </FormControl>
+
             {errors.submit && (
               <Box sx={{ mt: 3 }}>
                 <FormHelperText error>{errors.submit}</FormHelperText>
