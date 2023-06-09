@@ -3,7 +3,7 @@ import httpRequest from '../services/httpRequest';
 import { EOrderStatus } from '@/interfaces/compontents/order.interface';
 
 export const getOrderOfClient = async (page: number, limit = 10) => {
-  return httpRequest.get(`/orders?limit=${limit}&page=${page}`);
+  return httpRequest.get(`/orders?limit=${limit}&page=${page}&sortBy=createdAt:desc`);
 };
 
 export const postProcessOrder = ({
@@ -15,7 +15,7 @@ export const postProcessOrder = ({
 };
 // admin route
 export const getAllUserOrder = async (page: number, limit = 10) => {
-  return httpRequest.get(`/orders/all?limit=${limit}&page=${page}`);
+  return httpRequest.get(`/orders/all?limit=${limit}&page=${page}&sortBy=createdAt:desc`);
 };
 
 export const getOrderDetail = async (orderId: string | string[] | undefined ) => {

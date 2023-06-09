@@ -14,8 +14,9 @@ import { Typography, Paper } from '@mui/material';
 import { IOrderTable } from '@/interfaces/compontents/cart.interface';
 import { moneyFormat } from '@/utils/moneyFormat';
 import EmptyOrder from './EmptyOrder';
-import { sortOrdersByDate } from '@/common/sortOrdersByDate';
+
 import { ImageOrderStyle } from './ImageOrderStyle';
+import dayjs from 'dayjs';
 
 import statusMaping from '@/common/oderStatusMaping';
 import { Fragment, useState } from 'react';
@@ -26,7 +27,8 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
   setPage,
   data,
 }) => {
-  const sortedItems = sortOrdersByDate(items);
+
+
   const [openReviewModal, setOpenReviewModal] = useState<boolean>(false);
   const [reviewBook, setReviewBook] = useState({
     id: '',
@@ -41,7 +43,7 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
   //   return total;
   // }, []);
 
-  if (!sortedItems || sortedItems?.length === 0) {
+  if (!items || items?.length === 0) {
     return (
       <Box
         className="shadow"
@@ -54,211 +56,237 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
 
   return (
     <div>
-      {(sortedItems || []).map((row: any) => {const colors = statusMaping(row?.status).color; return(
+      {(items || []).map((row: any) => {
+        const colors = statusMaping(row?.status).color;
+        return (
+          <>
+            <TableContainer
+              className="shadow"
+              component={Paper}
+              key={row.id}
+              sx={{ mb: 2 }}
+            >
+              <Typography
+                variant="h5"
+                textAlign="center"
+                fontWeight="bold"
+                sx={{ mt: 2 }}
+              >
+                ĐƠN HÀNG: #BOXO{row?.id.substr(-8).toUpperCase()}
 
-        <>
+              </Typography>
+              <Typography
+                textAlign="right"
+                sx={{ mr: 6 }}
+                >
+                 Ngày đặt: {dayjs(row?.createdAt).format('DD/MM/YYYY')}
 
-          <TableContainer
-            className="shadow"
-            component={Paper}
-            key={row.id}
-            sx={{ mb: 2 }}
-          >
-            <Typography  variant="h4" textAlign="center" sx={{mt: 2}}  >
-                   ĐƠN HÀNG:  #BOXO{row?.id.substr(-8).toUpperCase()}
-                      </Typography>
+              </Typography>
 
-            <Table sx={{ maxWidth: 1762, marginTop: 0 }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <Stack display="flex" direction="row" alignItems="center">
-
-                      <Box style={{
-              backgroundColor: colors,
-              padding: '5px 3px ',
-              borderRadius: 6,
-            }}><Typography  variant="h4" textAlign="center"  >      {statusMaping(row?.status).icon}{'  '}
-                        {statusMaping(row?.status).content}
-                      </Typography></Box>
-
-                    </Stack>
-                  </TableCell>
-                  <TableCell>
-
-                    <Typography textAlign="center" fontWeight="bold">Đơn giá</Typography>
-                  </TableCell>
-                  <TableCell colSpan={2}>
-                    <Typography textAlign="center" fontWeight="bold">Thành tiền</Typography>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {(row?.books || []).map((item: any, _index: number) => (
-                  <Fragment key={`${item.id}_${_index}`}>
-                    <TableRow>
-                      <TableCell sx={{ maxWidth: '350px' }}>
-                        <Stack
-                          direction="row"
-                          justifyContent="flex-start"
-                          alignItems="center"
-                          spacing={2}
+              <Table sx={{ maxWidth: 1762, marginTop: 0 }}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <Stack display="flex" direction="row" alignItems="center">
+                        <Box
+                          style={{
+                            backgroundColor: colors,
+                            padding: '5px 3px ',
+                            borderRadius: 6,
+                          }}
                         >
-                          <Box sx={{ position: 'relative' }}>
-                            <ImageOrderStyle
-                              alt={item.name}
-                              width="76"
-                              height="76"
-                              src={item.imageUrl}
-                            />
-                            <span
-                              style={{
-                                fontSize: 14,
-                                fontWeight: 'bold',
-                                position: 'absolute',
-                                color: '#808089',
-                                textAlign: 'center',
-                                width: 35,
-                                height: 35,
-                                backgroundColor: 'rgb(235, 235, 240)',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                borderTopLeftRadius: 10,
-                                borderBottomRightRadius: 4,
-                                bottom: 0,
-                                right: 0,
-                              }}
-                            >
-                              x{item?.quantity}
-                            </span>
-                          </Box>
                           <Typography
-                            fontSize="14px"
+                            variant="h4"
                             textAlign="center"
-                            color="black"
+                            color="white"
                           >
-                            {item?.name}
+                            {' '}
+                            {statusMaping(row?.status).icon}
+                            {'  '}
+                            {statusMaping(row?.status).content}
                           </Typography>
-                        </Stack>
-                      </TableCell>
-                      <TableCell>
-                        {!item?.priceDiscount ? (
-                          <Typography fontWeight="bold" textAlign="center">
-                            {moneyFormat(item.price || 0)}
-                          </Typography>
-                        ) : (
-                          <Stack>
-                            <Typography fontWeight="bold" textAlign="center">
-                              {moneyFormat(item.priceDiscount || 0)}
-                            </Typography>
+                        </Box>
+                      </Stack>
+                    </TableCell>
+                    <TableCell>
+                      <Typography textAlign="center" fontWeight="bold">
+                        Đơn giá
+                      </Typography>
+                    </TableCell>
+                    <TableCell colSpan={2}>
+                      <Typography textAlign="center" fontWeight="bold">
+                        Thành tiền
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {(row?.books || []).map((item: any, _index: number) => (
+                    <Fragment key={`${item.id}_${_index}`}>
+                      <TableRow>
+                        <TableCell sx={{ maxWidth: '350px' }}>
+                          <Stack
+                            direction="row"
+                            justifyContent="flex-start"
+                            alignItems="center"
+                            spacing={2}
+                          >
+                            <Box sx={{ position: 'relative' }}>
+                              <ImageOrderStyle
+                                alt={item.name}
+                                width="76"
+                                height="76"
+                                src={item.imageUrl}
+                              />
+                              <span
+                                style={{
+                                  fontSize: 14,
+                                  fontWeight: 'bold',
+                                  position: 'absolute',
+                                  color: '#808089',
+                                  textAlign: 'center',
+                                  width: 35,
+                                  height: 35,
+                                  backgroundColor: 'rgb(235, 235, 240)',
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  borderTopLeftRadius: 10,
+                                  borderBottomRightRadius: 4,
+                                  bottom: 0,
+                                  right: 0,
+                                }}
+                              >
+                                x{item?.quantity}
+                              </span>
+                            </Box>
                             <Typography
-                              fontWeight="lighter"
+                              fontSize="14px"
                               textAlign="center"
-                              style={{ textDecorationLine: 'line-through' }}
+                              color="black"
                             >
+                              {item?.name}
+                            </Typography>
+                          </Stack>
+                        </TableCell>
+                        <TableCell>
+                          {!item?.priceDiscount ? (
+                            <Typography fontWeight="bold" textAlign="center">
                               {moneyFormat(item.price || 0)}
                             </Typography>
-                          </Stack>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        {!item?.priceDiscount ? (
-                          <Typography fontWeight="bold" textAlign="center">
-                            {moneyFormat(item.price * item.quantity || 0)}
-                          </Typography>
-                        ) : (
-                          <Stack>
+                          ) : (
+                            <Stack>
+                              <Typography fontWeight="bold" textAlign="center">
+                                {moneyFormat(item.priceDiscount || 0)}
+                              </Typography>
+                              <Typography
+                                fontWeight="lighter"
+                                textAlign="center"
+                                style={{ textDecorationLine: 'line-through' }}
+                              >
+                                {moneyFormat(item.price || 0)}
+                              </Typography>
+                            </Stack>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {!item?.priceDiscount ? (
                             <Typography fontWeight="bold" textAlign="center">
-                              {moneyFormat(
-                                item.priceDiscount * item.quantity || 0
-                              )}
+                              {moneyFormat(item.price * item.quantity || 0)}
                             </Typography>
-                          </Stack>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell colSpan={3} align="right">
-                        <Button
-                          variant="contained"
-                          sx={{
-                            width: { xs: 'fit-content', sm: 'inherit' },
-                            marginRight: '10px',
-                          }}
-                          onClick={() => {
-                            setOpenReviewModal(true);
-                            setReviewBook({
-                              id: item._id,
-                              name: item.name,
-                              images: item.imageUrl
-                            })
-                          }}
-                        >
-                          Đánh giá
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          sx={{
-                            marginRight: '30px',
-                          }}
-                        >
-                          Mua lại
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  </Fragment>
-                ))}
-                <TableRow>
-                  <TableCell colSpan={3}>
-                    <Stack
-                      display="flex"
-                      direction="row"
-                      justifyContent="flex-start"
-                    >
-                      <Typography>
-                        Phí vận chuyển: {moneyFormat(row?.shipping?.value || 0)}
-                      </Typography>
-                    </Stack>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell colSpan={3}>
-                    <Stack
-                      display="flex"
-                      direction="row"
-                      justifyContent="flex-start"
-                    >
-                      <Typography>
-                        Giảm giá: {moneyFormat(row?.discount || 0)}
-                      </Typography>
-                    </Stack>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell colSpan={3}>
-                    <Stack
-                      display="flex"
-                      direction="row"
-                      justifyContent="flex-start"
-                    >
-                      <Typography
-                        fontWeight={700}
-                        fontSize={'18px'}
-                        color={'black'}
+                          ) : (
+                            <Stack>
+                              <Typography fontWeight="bold" textAlign="center">
+                                {moneyFormat(
+                                  item.priceDiscount * item.quantity || 0
+                                )}
+                              </Typography>
+                            </Stack>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell colSpan={3} align="right">
+                          <Button
+                            variant="contained"
+                            sx={{
+                              width: { xs: 'fit-content', sm: 'inherit' },
+                              marginRight: '10px',
+                            }}
+                            onClick={() => {
+                              setOpenReviewModal(true);
+                              setReviewBook({
+                                id: item._id,
+                                name: item.name,
+                                images: item.imageUrl,
+                              });
+                            }}
+                          >
+                            Đánh giá
+                          </Button>
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            sx={{
+                              marginRight: '30px',
+                            }}
+                          >
+                            Mua lại
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    </Fragment>
+                  ))}
+                  <TableRow>
+                    <TableCell colSpan={3}>
+                      <Stack
+                        display="flex"
+                        direction="row"
+                        justifyContent="flex-start"
                       >
-                        Tổng tiền: {moneyFormat(row?.totalPayment || 0)}
-                      </Typography>
-
-                    </Stack>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </>
-      )})}
+                        <Typography>
+                          Phí vận chuyển:{' '}
+                          {moneyFormat(row?.shipping?.value || 0)}
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={3}>
+                      <Stack
+                        display="flex"
+                        direction="row"
+                        justifyContent="flex-start"
+                      >
+                        <Typography>
+                          Giảm giá: {moneyFormat(row?.discount || 0)}
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={3}>
+                      <Stack
+                        display="flex"
+                        direction="row"
+                        justifyContent="flex-start"
+                      >
+                        <Typography
+                          fontWeight={700}
+                          fontSize={'18px'}
+                          color={'black'}
+                        >
+                          Tổng tiền: {moneyFormat(row?.totalPayment || 0)}
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </>
+        );
+      })}
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1.5, mb: 2 }}>
         <Pagination
           className="shadow"

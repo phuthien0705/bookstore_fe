@@ -51,7 +51,7 @@ const UserModal: FC<IModal> = ({
   );
 
   const { mutate: removeRoleFunc } = useMutation(
-    (data: { user_id: number; role_id: number }) => removeRole(data),
+    (data: { id: string; roles: string[] }) => removeRole(data),
     {
       onSuccess: () => {
         toast({

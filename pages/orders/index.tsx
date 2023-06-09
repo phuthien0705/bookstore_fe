@@ -18,7 +18,7 @@ const OrdersHistory = () => {
 
   const queryClient = useQueryClient();
 
-  const { data, refetch } = useGetListOrder(page, 10);
+  const { data, refetch, isLoadingOrders } = useGetListOrder(page, 10);
   const dispatch = useDispatch();
   const toast = useCallback(
     ({ type, message }: { type: string; message: string }) => {
@@ -40,7 +40,6 @@ const OrdersHistory = () => {
       });
     },
   });
-
   useEffect(() => {
     refetch();
   }, [refetch, page]);
@@ -60,7 +59,7 @@ const OrdersHistory = () => {
           >
             <OrderTitle />
           </Paper>
-          {isFetchingOrder ? (
+          {isLoadingOrders ? (
             <LinearProgress />
           ) : (
             <OrderTable

@@ -27,15 +27,15 @@ const ImageStyle = styled('img')({
 
 const UserManagement = () => {
   const dispatch = useDispatch();
+  const [page, setPage] = useState<number>(1);
   const toast = useToast(dispatch, toggleSnackbar);
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [searchContent, setSearchContent] = useState<string>('');
-  const [page, setPage] = useState<number>(1);
   const { data, isLoading, refetch } = useGetListUser(
     page,
     10,
     ['name', 'description'] as any,
-    searchContent
+    searchContent,
   );
   const deleteUser = useCallback((id: any) => () => {}, []);
   const toggleModalEdit = useCallback((user: any) => {
@@ -83,8 +83,6 @@ const UserManagement = () => {
       },
     },
     { field: 'name', headerName: 'Họ tên', description: 'Họ tên', flex: 1 },
-    { field: 'bio', headerName: 'Mô tả', description: 'Mô tả', flex: 1 },
-
     { field: 'email', headerName: 'Email', description: 'Email', flex: 1 },
     {
       field: 'role',
@@ -102,7 +100,7 @@ const UserManagement = () => {
       },
     },
     {
-      field: 'is_active',
+      field: 'isActive',
       width: 100,
       description: 'Trạng thái của user',
       headerName: 'Trạng thái',
@@ -193,7 +191,7 @@ const UserManagement = () => {
               variant="outlined"
               shape="rounded"
               color="primary"
-              count={data?.meta?.last_page || 0}
+              count={data?.totalPages ?? 0 }
               page={page}
               onChange={(event, value) => setPage(value)}
             />
