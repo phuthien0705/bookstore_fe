@@ -28,17 +28,17 @@ export const filterBook = async ({
 }: any) => {
   let params = '';
   if (genres) {
-    if (params) params = params + '&genre=' + genres;
-    else params = params + 'genre=' + genres;
+    if (params) params = params + '&genres=' + genres;
+    else params = params + 'genres=' + genres;
   }
-  if (publishers) {
-    if (params) params = params + '&publisher=' + publishers;
-    else params = params + 'publisher=' + publishers;
-  }
-  if (price) {
-    if (params) params = params + '&price=' + price;
-    else params = params + 'price=' + price;
-  }
+  // if (publishers) {
+  //   if (params) params = params + '&publisher=' + publishers;
+  //   else params = params + 'publisher=' + publishers;
+  // }
+  // if (price) {
+  //   if (params) params = params + '&price=' + price;
+  //   else params = params + 'price=' + price;
+  // }
   if (sortBy) {
     if (params) params = params + '&sortBy=' + sortBy;
     else params = params + 'sortBy=' + sortBy;
