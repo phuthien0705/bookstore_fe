@@ -19,9 +19,14 @@ import {
   CircularProgress,
   Pagination,
 } from '@mui/material';
+
+
 import { useTheme, styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
+import KeyboardDoubleArrowDownRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowDownRounded';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
+
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { useRouter } from 'next/router';
 import ProductCardItems from '../../components/cards/products/ProductCardItems';
@@ -31,7 +36,6 @@ import ProductLayout from '../../layout/ProductLayot';
 import { toggleSnackbar } from '@/store/snackbarReducer';
 import { useToast } from '@/hooks/useToast';
 import ProductTitle from '@/components/products/ProductTitle';
-import useGetListPublisherClient from '@/hooks/publisher/useGetListPublisherClient';
 
 const drawerWidth = 400;
 const DivStyled = styled('div', {
@@ -58,6 +62,7 @@ const Product = () => {
   const dispatch = useDispatch();
   const toast = useToast(dispatch, toggleSnackbar);
   const [page, setPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(12);
   const [listBook, setListBook] = useState<any[]>([]);
   const [meta, setMeta] = useState<{
     totalPages: number;
@@ -66,16 +71,18 @@ const Product = () => {
     totalPages: 0,
     totalResults: 0,
   });
+
   const [openSort, setOpenSort] = useState(false);
-  const [genreList, setGenreList] = useState<number[]>([]);
-  const [publisherList, setPublisherList] = useState<number[]>([]);
+
+  const [genreList, setGenreList] = useState<string[]>([]);
+
   const [price, setPrice] = useState<string>('');
+
+  const [sortPrice, setSortPrice] = useState<string>('price:');
+
   const [openFilter, setOpenFilter] = useState<boolean>(true);
   const getListGenreQuery = useGetListGenreClient();
-  const getListPublisherQuery = useGetListPublisherClient();
 
-  const { data: publisherData, isLoading: isPublisherLoading } =
-    getListPublisherQuery;
   const { data: genreData, isLoading: isGenreLoading } = getListGenreQuery;
 
   const { mutate: getFilterBook, isLoading: isGetingListFilterBook } =
@@ -93,6 +100,7 @@ const Product = () => {
     });
 
   const handleToggleFilter = () => {
+    setLimit(openSort ? 12 : 21);
     setOpenFilter((prevOpenSort) => !prevOpenSort);
   };
 
@@ -100,14 +108,15 @@ const Product = () => {
 
   const handleClearAllFilter = () => {
     setGenreList([]);
-    setPublisherList([]);
     setPrice('');
+    setPage(1);
+    setSortPrice('price:');
     getFilterBook({
       genres: '',
-      publishers: '',
       price: '',
-      order_by: '',
+      orderBy: '',
       page: 1,
+      limit: limit,
     });
   };
 
@@ -116,50 +125,78 @@ const Product = () => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     let genreParam = '';
-    let publisherParam = '';
-    genreList.forEach((genre: number) => {
-      genreParam += genre + '_';
-    });
-    publisherList.forEach((publisher: number) => {
-      publisherParam += publisher + '_';
-    });
 
+    genreList.forEach((genre: string) => {
+      genreParam += genre + ',';
+    });
     genreParam = genreParam.slice(0, -1);
-    publisherParam = publisherParam.slice(0, -1);
-
     setPage(1);
-
+    let orderBy = '';
+    if (sortPrice != 'price:'){
+      orderBy = sortPrice;
+    }
     getFilterBook({
       genres: genreParam || '',
-      publishers: publisherParam || '',
       price: price || '',
-      sortBy: '',
+      sortBy: orderBy,
       page: 1,
+      limit: limit,
     });
+  };
+  const handleSortASC = (e: any) => {
+    e.preventDefault();
+    if(sortPrice == 'price:' || sortPrice == 'price:desc' ){
+      setSortPrice('price:asc');
+    }
+    else if(sortPrice == 'price:asc'){
+      setSortPrice('price:');
+    }
+  };
+  const handleSortDESC = (e: any) => {
+    e.preventDefault();
+    if(sortPrice == 'price:' || sortPrice == 'price:asc' ){
+      setSortPrice('price:desc');
+    }
+    else if(sortPrice == 'price:desc'){
+      setSortPrice('price:');
+    }
+
   };
   useEffect(() => {
     if (prevOpenSort.current === true && openSort === false) {
       anchorRef.current.focus();
     }
-
     prevOpenSort.current = openSort;
   }, [openSort]);
+
+  // useEffect(() => {
+  //   if (router.isReady) {
+  //     getFilterBook({
+  //       genres: router.query?.genre ? router.query?.genre : '',
+  //       price: '',
+  //       sortBy: '',
+  //       page: page,
+  //     });
+  //   }
+  // }, [getFilterBook, router, page]);
+  // useEffect(() => {
+  //   if (router.isReady && router?.query?.genre) {
+  //     setGenreList(String(router.query?.genre as any) || '');
+  //   }
+  // }, [router]);
   useEffect(() => {
-    if (router.isReady) {
-      getFilterBook({
-        genres: router.query?.genre ? router.query?.genre : '',
-        publishers: '',
-        price: '',
-        sortBy: '',
-        page: page,
-      });
+    let orderBy = '';
+    if (sortPrice != 'price:'){
+      orderBy = sortPrice;
     }
-  }, [getFilterBook, router, page]);
-  useEffect(() => {
-    if (router.isReady && router?.query?.genre) {
-      setGenreList([Number(router.query?.genre as any)] || []);
-    }
-  }, [router]);
+    getFilterBook({
+      genres: genreList || '',
+      price: price || '',
+      sortBy: orderBy,
+      page: page,
+      limit: limit,
+    });
+  }, [page, sortPrice]);
   return (
     <>
       <Head>
@@ -200,6 +237,38 @@ const Product = () => {
               </IconButton>
               <Typography>Bộ lọc</Typography>
             </Box>
+
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Box
+
+              sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+            >
+              <Typography sx={{mr: 2 }}>Sắp xếp theo giá:{' '} </Typography>
+
+
+
+           <Box   sx={{  color: sortPrice == 'price:desc' ? 'blue' : 'black'}}>
+           <IconButton onClick={(e: any) =>
+               { handleSortDESC(e);}
+              }>
+                <Typography    color={sortPrice == 'price:desc' ? 'blue' : ''}>Giảm dần </Typography>
+                <KeyboardDoubleArrowDownRoundedIcon
+
+                    />
+              </IconButton>
+           </Box>
+             <Box   sx={{ color: sortPrice == 'price:asc' ? 'blue' : 'black'}}>
+             <IconButton  onClick={ (e: any) =>
+               { handleSortASC(e);}
+              }><Typography  color={sortPrice == 'price:asc' ? 'blue' : ''} >Tăng dần </Typography>
+                <KeyboardDoubleArrowUpRoundedIcon
+
+                />
+              </IconButton  >
+             </Box>
+            </Box>
+
           </Box>
           <Box sx={{ display: 'flex' }}>
             {/* Render Products */}
@@ -262,10 +331,10 @@ const Product = () => {
                     width: '100%',
                   }}
                 >
-                  <form onSubmit={handleSubmit}>
-                    {' '}
+
                     <CardContent>
                       <Grid container display="flex">
+
                         <Grid item xs={12}>
                           <Box
                             onClick={() => {
@@ -284,6 +353,8 @@ const Product = () => {
                             <Typography>Đóng bộ lọc</Typography>
                           </Box>
                         </Grid>
+
+                            <form onSubmit={handleSubmit}>
                         <Grid item xs={12}>
                           <Typography variant="h4">Thể loại</Typography>
                           <FormControl>
@@ -302,13 +373,13 @@ const Product = () => {
                                       label={genre?.name}
                                       checked={
                                         !!genreList?.find(
-                                          (item: number) => item === genre?.id
+                                          (item: any) => item === genre?.id
                                         )
                                       }
                                       onChange={() => {
                                         if (
                                           !!genreList?.find(
-                                            (item: number) => item === genre?.id
+                                            (item: any) => item === genre?.id
                                           )
                                         ) {
                                           const newGenreList = genreList.filter(
@@ -316,58 +387,9 @@ const Product = () => {
                                           );
                                           setGenreList(newGenreList);
                                         } else {
-                                          setGenreList((pre: number[]) => [
+                                          setGenreList((pre: any[]) => [
                                             ...pre,
                                             genre?.id,
-                                          ]);
-                                        }
-                                      }}
-                                      control={<Checkbox />}
-                                    />
-                                  )
-                                )
-                              )}
-                            </Grid>
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <Typography variant="h4">Nhà xuất bản</Typography>
-                          <FormControl>
-                            <Grid display="flex" container>
-                              {isPublisherLoading ? (
-                                <Grid item xs={12}>
-                                  <Box sx={{ display: 'flex', p: 2 }}>
-                                    <CircularProgress size={20} />
-                                  </Box>
-                                </Grid>
-                              ) : (
-                                publisherData?.datas?.map(
-                                  (publisher: any, _index: number) => (
-                                    <FormControlLabel
-                                      key={_index}
-                                      label={publisher?.name}
-                                      checked={
-                                        !!publisherList?.find(
-                                          (item: number) =>
-                                            item === publisher?.id
-                                        )
-                                      }
-                                      onChange={() => {
-                                        if (
-                                          !!publisherList?.find(
-                                            (item: number) =>
-                                              item === publisher?.id
-                                          )
-                                        ) {
-                                          const newPublisherList =
-                                            publisherList.filter(
-                                              (item) => item !== publisher?.id
-                                            );
-                                          setPublisherList(newPublisherList);
-                                        } else {
-                                          setPublisherList((pre: number[]) => [
-                                            ...pre,
-                                            publisher?.id,
                                           ]);
                                         }
                                       }}
@@ -394,6 +416,11 @@ const Product = () => {
                               }}
                               value={price}
                             >
+                                <FormControlLabel
+                                value="0"
+                                control={<Radio />}
+                                label="All(Tất cả)"
+                              />
                               <FormControlLabel
                                 value="0,50000"
                                 control={<Radio />}
@@ -410,13 +437,14 @@ const Product = () => {
                                 label="100.000 &#x20AB; - 200.000 &#x20AB; "
                               />
                               <FormControlLabel
-                                value="200000,1000000"
+                                value="200000"
                                 control={<Radio />}
                                 label="Trên 200.000 &#x20AB; "
                               />
                             </RadioGroup>
                           </FormControl>
                         </Grid>
+
                         <Grid
                           item
                           xs={12}
@@ -440,9 +468,9 @@ const Product = () => {
                             Xóa Tất Cả Lọc
                           </Button>
                         </Grid>
+                  </form>
                       </Grid>
                     </CardContent>
-                  </form>
                 </Box>
               </div>
             </Drawer>

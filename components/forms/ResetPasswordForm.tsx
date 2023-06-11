@@ -44,6 +44,12 @@ const ResetPasswordForm = ({
   ) => {
     event.preventDefault();
   };
+
+  const handleMouseDownPasswordConfirmation: MouseEventHandler<
+    HTMLButtonElement
+  > = (event) => {
+    event.preventDefault();
+  };
   const handleClickShowPasswordConfirmation = () => {
     setShowPasswordConfirmation((i) => !i);
   };
@@ -53,7 +59,7 @@ const ResetPasswordForm = ({
         initialValues={{
           email: '',
           password: '',
-          password_confirmation: '',
+          passwordConfirm: '',
           submit: null,
         }}
         validationSchema={Yup.object().shape({
@@ -61,9 +67,13 @@ const ResetPasswordForm = ({
             .min(8, 'Mật khẩu phải ít nhất 8 ký tự')
             .max(255, 'Mật khẩu tối đa 255 ký tự')
             .required('Mật khẩu là bắt buộc'),
+          passwordConfirm: Yup.string()
+            .min(8, 'Mật khẩu phải ít nhất 8 ký tự')
+            .max(255, 'Mật khẩu tối đa 255 ký tự')
+            .required('Mật khẩu là bắt buộc'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          if (values.password !== values.password_confirmation) {
+          if (values.password !== values.passwordConfirm) {
             setShowAlert({
               type: 'error',
               content: 'Mật khẩu và mật khẩu nhập lại phải trùng nhau.',
@@ -150,6 +160,51 @@ const ResetPasswordForm = ({
               )}
             </FormControl>
 
+            <FormControl
+              fullWidth
+              error={Boolean(touched.passwordConfirm && errors.passwordConfirm)}
+              sx={{ ...theme.typography.customInput }}
+            >
+              <InputLabel htmlFor="outlined-adornment-passwordConfirm-login">
+                Nhập lại mật khẩu
+              </InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-passwordConfirm-login"
+                type={showPasswordConfirmation ? 'text' : 'password'}
+                value={values.passwordConfirm}
+                name="passwordConfirm"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="outlined-adornment-passwordConfirm-login"
+                      onClick={handleClickShowPasswordConfirmation}
+                      onMouseDown={handleMouseDownPasswordConfirmation}
+                      edge="end"
+                      size="large"
+                    >
+                      {showPasswordConfirmation ? (
+                        <Visibility />
+                      ) : (
+                        <VisibilityOff />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Nhập lại mật khẩu"
+                inputProps={{}}
+              />
+              {touched.passwordConfirm && errors.passwordConfirm && (
+                <FormHelperText
+                  error
+                  id="standard-weight-helper-text-passwordConfirm-login"
+                >
+                  {errors.passwordConfirm}
+                </FormHelperText>
+              )}
+            </FormControl>
+
             {errors.submit && (
               <Box sx={{ mt: 3 }}>
                 <FormHelperText error>{errors.submit}</FormHelperText>
@@ -166,7 +221,7 @@ const ResetPasswordForm = ({
                 variant="contained"
                 color="secondary"
               >
-                Gửi email
+                Đặt lại mật khẩu
               </Button>
 
               {!!showAlert && (
