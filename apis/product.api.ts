@@ -26,22 +26,6 @@ export const filterBook = async ({
   page = 1,
   limit
 }: any) => {
-<<<<<<< HEAD
-  let params = '';
-  if (genres) {
-    if (params) params = params + '&genres=' + genres;
-    else params = params + 'genres=' + genres;
-  }
-  // if (publishers) {
-  //   if (params) params = params + '&publisher=' + publishers;
-  //   else params = params + 'publisher=' + publishers;
-  // }
-  // if (price) {
-  //   if (params) params = params + '&price=' + price;
-  //   else params = params + 'price=' + price;
-  // }
-  if (sortBy) {
-=======
   let params = '?';
   if (genres != '') {
    params = params + '&genres=' + genres;
@@ -50,7 +34,6 @@ export const filterBook = async ({
     params = params + '&price=' + price;
    }
   if (sortBy != '') {
->>>>>>> f6cadd28e847e17fee10a492025a937bc97199da
     if (params) params = params + '&sortBy=' + sortBy;
   }
   return httpRequest.get<IPaginationResponse<IEachBookData>>(`/books${params}&limit=${limit}&page=${page}`);
