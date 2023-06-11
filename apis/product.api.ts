@@ -21,31 +21,22 @@ export const getAllBookClient = async () => {
 };
 export const filterBook = async ({
   genres = '',
-  publishers = '',
   price = '',
   sortBy = '',
   page = 1,
+  limit
 }: any) => {
-  let params = '';
-  if (genres) {
-    if (params) params = params + '&genre=' + genres;
-    else params = params + 'genre=' + genres;
+  let params = '?';
+  if (genres != '') {
+   params = params + '&genres=' + genres;
   }
-  if (publishers) {
-    if (params) params = params + '&publisher=' + publishers;
-    else params = params + 'publisher=' + publishers;
-  }
-  if (price) {
-    if (params) params = params + '&price=' + price;
-    else params = params + 'price=' + price;
-  }
-  if (sortBy) {
+  if (price != '') {
+    params = params + '&price=' + price;
+   }
+  if (sortBy != '') {
     if (params) params = params + '&sortBy=' + sortBy;
-    else params = params + 'sortBy=' + sortBy;
   }
-  if (params) params = '?' + params + '&limit=12&page=' + page;
-  else params = '?limit=12';
-  return httpRequest.get<IPaginationResponse<IEachBookData>>(`/books${params}`);
+  return httpRequest.get<IPaginationResponse<IEachBookData>>(`/books${params}&limit=${limit}&page=${page}`);
 };
 export const getBookDetailById = async (
   id: string | number | null | undefined
