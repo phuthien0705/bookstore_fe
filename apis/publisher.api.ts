@@ -18,7 +18,7 @@ export const getAllPublisher = async (
 };
 export const getAllPublisherClient = async () => {
   return httpRequest.get<IPaginationResponse<IEachPublisherData>>(
-    '/publishers?limit=100&page=1'
+    '/publishers?limit=20&page=1&sortBy=id'
   );
 };
 export const editPublisher = async (

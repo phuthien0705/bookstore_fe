@@ -45,9 +45,9 @@ const ResetPasswordForm = ({
     event.preventDefault();
   };
 
-  const handleMouseDownPasswordConfirmation: MouseEventHandler<HTMLButtonElement> = (
-    event
-  ) => {
+  const handleMouseDownPasswordConfirmation: MouseEventHandler<
+    HTMLButtonElement
+  > = (event) => {
     event.preventDefault();
   };
   const handleClickShowPasswordConfirmation = () => {
@@ -67,8 +67,6 @@ const ResetPasswordForm = ({
             .min(8, 'Mật khẩu phải ít nhất 8 ký tự')
             .max(255, 'Mật khẩu tối đa 255 ký tự')
             .required('Mật khẩu là bắt buộc'),
-        })}
-        validationSchema={Yup.object().shape({
           passwordConfirm: Yup.string()
             .min(8, 'Mật khẩu phải ít nhất 8 ký tự')
             .max(255, 'Mật khẩu tối đa 255 ký tự')
@@ -168,7 +166,7 @@ const ResetPasswordForm = ({
               sx={{ ...theme.typography.customInput }}
             >
               <InputLabel htmlFor="outlined-adornment-passwordConfirm-login">
-              Nhập lại mật khẩu
+                Nhập lại mật khẩu
               </InputLabel>
               <OutlinedInput
                 id="outlined-adornment-passwordConfirm-login"
@@ -186,7 +184,11 @@ const ResetPasswordForm = ({
                       edge="end"
                       size="large"
                     >
-                      {showPasswordConfirmation ? <Visibility /> : <VisibilityOff />}
+                      {showPasswordConfirmation ? (
+                        <Visibility />
+                      ) : (
+                        <VisibilityOff />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -219,7 +221,7 @@ const ResetPasswordForm = ({
                 variant="contained"
                 color="secondary"
               >
-               Đặt lại mật khẩu
+                Đặt lại mật khẩu
               </Button>
 
               {!!showAlert && (
