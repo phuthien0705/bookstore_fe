@@ -66,14 +66,14 @@ export const createBook = async (data: FormData | any) => {
 
 export const getTopSelling = async () => {
   return httpRequest.get<IPaginationResponse<IEachBookData>>(
-    `/books?limit=5&page=1&sortBy=createdAt`
+    `/books/popular`
   );
 };
 
-export const getRelateBook = async (genres = '') => {
-  if (genres)
+export const getRelateBook = async (bookId = 0) => {
+  if (bookId)
     return httpRequest.get<IPaginationResponse<IEachBookData>>(
-      `/books?limit=10&page=1&genres=${genres}`
+      `/books/${bookId}/recommend`
     );
   return httpRequest.get<IPaginationResponse<IEachBookData>>(
     `/books?limit=10&page=1`

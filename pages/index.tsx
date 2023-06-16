@@ -93,7 +93,7 @@ const Home = () => {
             }}
           >
             <ProductCardItems
-              slideToShow={4}
+              slideToShow={5}
               isLoading={isTopSellLoading}
               data={topSelling?.datas}
               title={<p>{<FormattedMessage id="page.home.topselling" />}</p>}

@@ -7,16 +7,10 @@ const useGetRelativeBook = (
   data: IEachBookData | undefined,
   enabled = true
 ) => {
-  let genres = '';
-  data &&
-    data?.genres?.forEach((genre: any, _index: number) => {
-      if (_index === data?.genres?.length - 1) {
-        genres += genre?.id;
-      } else {
-        genres += genre?.id + '_';
-      }
-    });
-  const getListQuery = useQuery(BOOKS_CLIENT, () => getRelateBook(genres), {
+
+  const bookId = data?.id as unknown as number
+  
+  const getListQuery = useQuery(BOOKS_CLIENT, () => getRelateBook(bookId), {
     refetchOnMount: true,
     keepPreviousData: true,
     enabled,
