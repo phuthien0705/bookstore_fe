@@ -17,18 +17,18 @@ import EmptyOrder from './EmptyOrder';
 
 import { ImageOrderStyle } from './ImageOrderStyle';
 import dayjs from 'dayjs';
-
+import Link from 'next/link';
 import statusMaping from '@/common/oderStatusMaping';
-import { Fragment, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 import ReviewModal from '../modals/ReviewModal';
+import router from 'next/router';
 const OrderTable: React.FunctionComponent<IOrderTable> = ({
   items,
   page,
   setPage,
   data,
 }) => {
-
-
+  const [bookId, setBookId] = useState(null);
   const [openReviewModal, setOpenReviewModal] = useState<boolean>(false);
   const [reviewBook, setReviewBook] = useState({
     id: '',
@@ -73,14 +73,9 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
                 sx={{ mt: 2 }}
               >
                 ĐƠN HÀNG: #BOXO{row?.id.substr(-8).toUpperCase()}
-
               </Typography>
-              <Typography
-                textAlign="right"
-                sx={{ mr: 6 }}
-                >
-                 Ngày đặt: {dayjs(row?.createdAt).format('DD/MM/YYYY')}
-
+              <Typography textAlign="right" sx={{ mr: 6 }}>
+                Ngày đặt: {dayjs(row?.createdAt).format('DD/MM/YYYY')}
               </Typography>
 
               <Table sx={{ maxWidth: 1762, marginTop: 0 }}>
@@ -122,7 +117,7 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
                 </TableHead>
                 <TableBody>
                   {(row?.books || []).map((item: any, _index: number) => (
-                    <Fragment key={`${item.id}_${_index}`}>
+                    <Fragment key={`${item._id}_${_index}`}>
                       <TableRow>
                         <TableCell sx={{ maxWidth: '350px' }}>
                           <Stack
@@ -216,7 +211,7 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
                             onClick={() => {
                               setOpenReviewModal(true);
                               setReviewBook({
-                                id: item._id,
+                                id: item.bookId,
                                 name: item.name,
                                 images: item.imageUrl,
                               });
@@ -224,15 +219,17 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
                           >
                             Đánh giá
                           </Button>
-                          <Button
-                            variant="contained"
-                            color="secondary"
-                            sx={{
-                              marginRight: '30px',
-                            }}
-                          >
-                            Mua lại
-                          </Button>
+                          <Link href={`/product/${item.bookId}`}>
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              sx={{
+                                marginRight: '30px',
+                              }}
+                            >
+                              Mua lại
+                            </Button>
+                          </Link>
                         </TableCell>
                       </TableRow>
                     </Fragment>
@@ -306,7 +303,7 @@ const OrderTable: React.FunctionComponent<IOrderTable> = ({
         }}
         book={reviewBook}
         refetchReviews={function (): void {
-          throw new Error('Function not implemented.');
+          
         }}
       />
     </div>

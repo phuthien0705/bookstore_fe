@@ -66,6 +66,7 @@ const ReviewModal: React.FunctionComponent<IReviewModal> = ({
   );
 
   const handleAddReview = () => {
+
     const reviewData = {
       rating: rating,
       comment: comment,
